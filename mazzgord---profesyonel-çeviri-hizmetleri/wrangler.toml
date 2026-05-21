@@ -1,7 +1,0 @@
-name = "mazzgord---profesyonel-çeviri-hizmetleri"
-compatibility_date = "2026-05-21"
-
-[assets]
-directory = "./"
-html_handling = "auto-trailing-slash"
-not_found_handling = "404-page"
