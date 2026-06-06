@@ -86,7 +86,7 @@ export default function Home() {
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="text-2xl font-bold text-primary cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>Mazzgord</div>
           <div className="hidden md:flex gap-8">
-            <a href="/yeminli-tercume" className="text-foreground hover:text-primary transition">Hizmetler</a>
+            <a href="#services" className="text-foreground hover:text-primary transition">Hizmetler</a>
             <a href="/blog" className="text-foreground hover:text-primary transition">Blog</a>
             <a href="#contact" className="text-foreground hover:text-primary transition">İletişim</a>
           </div>
@@ -482,9 +482,9 @@ export default function Home() {
             <div>
               <h4 className="font-bold mb-4">Hizmetler</h4>
               <ul className="space-y-2 opacity-90">
-                <li><a href="/yeminli-tercume" className="hover:opacity-100 transition">Yeminli Tercüme</a></li>
-                <li><a href="/teknik-ceviri" className="hover:opacity-100 transition">Teknik Çeviri</a></li>
-                <li><a href="/akademik-ceviri" className="hover:opacity-100 transition">Akademik Çeviri</a></li>
+                <li><a href="#services" className="hover:opacity-100 transition">Yeminli Tercüme</a></li>
+                <li><a href="#services" className="hover:opacity-100 transition">Teknik Çeviri</a></li>
+                <li><a href="#services" className="hover:opacity-100 transition">Akademik Çeviri</a></li>
               </ul>
             </div>
             <div>

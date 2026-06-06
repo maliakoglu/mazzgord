@@ -86,7 +86,7 @@ export default function Home() {
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="text-2xl font-bold text-primary cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>Mazzgord</div>
           <div className="hidden md:flex gap-8">
-            <a href="/yeminli-tercume" className="text-foreground hover:text-primary transition">Hizmetler</a>
+            <a href="#services" className="text-foreground hover:text-primary transition">Hizmetler</a>
             <a href="/blog" className="text-foreground hover:text-primary transition">Blog</a>
             <a href="#contact" className="text-foreground hover:text-primary transition">İletişim</a>
           </div>
@@ -101,10 +101,10 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl">
             <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-              Profesyonel Çeviri Hizmetleri ve Yeminli Tercüme — Denizli
+              Profesyonel Çeviri Hizmetleri
             </h1>
             <p className="text-xl md:text-2xl mb-8 opacity-95">
-              Denizli merkezli Mazzgord olarak, İngilizce-Türkçe yeminli tercüme, teknik çeviri, akademik çeviri ve hukuki çeviri alanlarında profesyonel çeviri hizmetleri sunuyoruz. Hızlı teslimat, resmi belge çevirileri ve uzmanlaşmış tercüman kadromuzla yanınızdayız.
+              İngilizce-Türkçe yeminli tercüme ve uzmanlaşmış çeviri çözümleri
             </p>
             <div className="flex gap-4">
               <Button 
@@ -121,30 +121,6 @@ export default function Home() {
                 Daha Fazla Bilgi
               </Button>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SEO Content Section */}
-      <section className="py-16 bg-background">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-primary">Denizli'de Profesyonel Çeviri Hizmetleri</h2>
-          <div className="space-y-4 text-foreground text-lg leading-relaxed">
-            <p>
-              Mazzgord olarak Denizli ve çevresinde bireysel ve kurumsal müşterilerimize yüksek kaliteli çeviri hizmetleri sunuyoruz. Yeminli tercüme konusundaki uzmanlığımız sayesinde, resmi belgelerinizden akademik çalışmalarınıza kadar geniş bir yelpazede profesyonel destek sağlıyoruz.
-            </p>
-            <h3 className="text-2xl font-bold mt-8 mb-4 text-primary">Yeminli Tercüme ve Resmi Belge Çevirisi</h3>
-            <p>
-              Pasaport, diploma, evlilik cüzdanı, nüfus kayıt örneği ve ticaret sicil gazetesi gibi resmi belgelerinizin yeminli tercümesini noter onaylı şekilde gerçekleştiriyoruz. Vize başvuruları, göçmenlik işlemleri ve konsolosluk takibi için gerekli tüm evrak çevirilerinde hızlı ve güvenilir hizmet anlayışımızla fark yaratıyoruz.
-            </p>
-            <h3 className="text-2xl font-bold mt-8 mb-4 text-primary">Teknik ve Akademik Çeviri Uzmanlığı</h3>
-            <p>
-              Mühendislik raporları, kullanım kılavuzları, yazılım dokümantasyonu ve teknik şartnameler gibi alanlarda uzmanlaşmış teknik çeviri hizmetleri sunuyoruz. Ayrıca tez, makale, özet ve araştırma dokümanlarınız için akademik çeviri desteği de veriyoruz. Hukuki çeviri alanında sözleşme, vekaletname, mahkeme kararları ve yasal metinlerin titizlikle çevrilmesini sağlıyoruz.
-            </p>
-            <h3 className="text-2xl font-bold mt-8 mb-4 text-primary">Neden Mazzgord Çeviri Hizmetleri?</h3>
-            <p>
-              15 yılı aşkın deneyimimizle İngilizce-Türkçe çift yönlü çeviri hizmetleri sunuyoruz. Müşteri memnuniyeti ve gizlilik ilkelerimiz doğrultusunda, her projeyi özenle ve zamanında teslim ediyoruz. Online çeviri taleplerinizi hızlıca değerlendirip, rekabetçi fiyatlarla profesyonel çözümler üretiyoruz.
-            </p>
           </div>
         </div>
       </section>
@@ -482,9 +458,9 @@ export default function Home() {
             <div>
               <h4 className="font-bold mb-4">Hizmetler</h4>
               <ul className="space-y-2 opacity-90">
-                <li><a href="/yeminli-tercume" className="hover:opacity-100 transition">Yeminli Tercüme</a></li>
-                <li><a href="/teknik-ceviri" className="hover:opacity-100 transition">Teknik Çeviri</a></li>
-                <li><a href="/akademik-ceviri" className="hover:opacity-100 transition">Akademik Çeviri</a></li>
+                <li><a href="#services" className="hover:opacity-100 transition">Yeminli Tercüme</a></li>
+                <li><a href="#services" className="hover:opacity-100 transition">Teknik Çeviri</a></li>
+                <li><a href="#services" className="hover:opacity-100 transition">Akademik Çeviri</a></li>
               </ul>
             </div>
             <div>

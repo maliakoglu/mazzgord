@@ -7,3 +7,7 @@ directory = "./dist/public"
 html_handling = "auto-trailing-slash"
 not_found_handling = "single-page-application"
 binding = "ASSETS"
+
+[[routes]]
+pattern = "mazzgord.com/*"
+zone_name = "mazzgord.com"
