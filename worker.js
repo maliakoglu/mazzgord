@@ -195,16 +195,16 @@ export default {
       html = html.replace("</head>", `  ${languageMeta}\n</head>`);
     }
 
-    const headers = new Headers(response.headers);
-    headers.set("X-Content-Type-Options", "nosniff");
-    headers.set("X-Frame-Options", "DENY");
-    headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
-    headers.set("Cache-Control", "public, max-age=0, must-revalidate");
+    let finalHeaders = new Headers(response.headers);
+    finalHeaders.set("X-Content-Type-Options", "nosniff");
+    finalHeaders.set("X-Frame-Options", "DENY");
+    finalHeaders.set("Referrer-Policy", "strict-origin-when-cross-origin");
+    finalHeaders.set("Cache-Control", "public, max-age=0, must-revalidate");
 
     return new Response(html, {
       status: response.status,
       statusText: response.statusText,
-      headers
+      headers: finalHeaders
     });
   }
 };
