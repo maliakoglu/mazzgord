@@ -74,6 +74,27 @@ export default function About() {
               </div>
             </div>
           </div>
+          <div className="bg-secondary/30 rounded-xl p-8 mb-8">
+            <h2 className="text-2xl font-bold text-primary mb-6">Benimle Çalışmanın Farkı</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-card border border-border rounded-lg p-6">
+                <h3 className="font-bold text-foreground mb-2">Doğrudan İletişim</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">Talebinizi aracı bir satış ekibi yerine doğrudan tercümanla görüşürsünüz.</p>
+              </div>
+              <div className="bg-card border border-border rounded-lg p-6">
+                <h3 className="font-bold text-foreground mb-2">Belge Odaklı Çalışma</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">Belgenin türü, kullanım amacı ve teslim tarihi incelenerek teklif hazırlanır.</p>
+              </div>
+              <div className="bg-card border border-border rounded-lg p-6">
+                <h3 className="font-bold text-foreground mb-2">Açık Fiyatlandırma</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">Yeminli tercüme, noter, apostil, işlem/takip ve kargo bedelleri ayrı açıklanır.</p>
+              </div>
+              <div className="bg-card border border-border rounded-lg p-6">
+                <h3 className="font-bold text-foreground mb-2">Gerçekçi Süreç</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">Kurum kabulü veya vize sonucu garanti edilmez; başvuru makamının güncel şartları ayrıca kontrol edilir.</p>
+              </div>
+            </div>
+          </div>
           <div className="bg-secondary/30 rounded-xl p-8">
             <h2 className="text-2xl font-bold text-primary mb-4">Nasıl Çalışıyorum?</h2>
             <p className="text-muted-foreground leading-relaxed text-lg">Belgenizi WhatsApp veya teklif formu üzerinden gönderirsiniz. Belge türünü, dil yönünü, noter ve apostil ihtiyacını inceleyip net fiyat ve teslim süresi veririm. Teklifi onayladığınızda ödeme bilgileri gönderilir, ödeme doğrulanınca çeviri üretime alınır. Teslim öncesi isim, tarih, sayı ve kurum adlarını ikinci kez kontrol ederim.</p>
