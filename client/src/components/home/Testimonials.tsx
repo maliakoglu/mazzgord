@@ -7,21 +7,27 @@ export default function Testimonials({ openGallery }: { openGallery: (images: st
           Bionluk üzerinden alınan müşteri geri bildirimleri
         </p>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        <div className="grid md:grid-cols-2 gap-8 mb-12 max-w-4xl mx-auto">
           {[
             {
               name: "Yağız Can K.",
               service: "Resmi Belge Çevirisi",
+              source: "Bionluk",
+              permission: true,
               text: "Hızlı ve güvenilir bir hizmet aldım, teşekkürler.",
             },
             {
               name: "Tuna M.",
               service: "Vize Evrakı Çevirisi",
+              source: "Bionluk",
+              permission: true,
               text: "Mesajlara ve isteklere çok özen gösteren birisi. İşim acil olduğu için ekstra hızlı yaptı. 10 üzerinden 10 hizmet. Bundan sonra bütün vize işlemlerimde Mehmet Akoğlu'nu tercih edeceğim.",
             },
             {
               name: "Yusuf A. (tekrar eden müşteri)",
               service: "Resmi Belge Çevirisi",
+              source: "Bionluk",
+              permission: true,
               text: "Birkaç kez beraber çalıştık. Çözüm odaklı, hızlı ve güçlü iletişim. Diğer freelancerlar gibi her şeye ekstra fiyat çekmiyor, yaptığı işin karşılığını istiyor. Süper, devam.",
             },
           ].map((review, idx) => (
@@ -31,7 +37,7 @@ export default function Testimonials({ openGallery }: { openGallery: (images: st
                 <p className="font-bold text-primary">— {review.name}</p>
                 <span className="text-xs text-muted-foreground bg-secondary px-3 py-1 rounded-full">{review.service}</span>
               </div>
-              <p className="text-xs text-muted-foreground mt-3">Bionluk üzerinden alınan müşteri geri bildirimi</p>
+              <p className="text-xs text-muted-foreground mt-3">{review.source} üzerinden alınan müşteri geri bildirimi</p>
             </div>
           ))}
         </div>
