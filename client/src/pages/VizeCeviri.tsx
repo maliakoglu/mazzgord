@@ -70,7 +70,7 @@ export default function VizeCeviri() {
         <p className="text-xl text-muted-foreground mb-8">İngiltere, ABD, Almanya ve diğer ülke vize başvuruları için yeminli tercüme hizmeti. Konsolosluk kabul şartlarına uygun çeviri.</p>
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           <div className="flex gap-4 p-6 bg-card rounded-xl border border-border"><Plane className="w-8 h-8 text-primary flex-shrink-0" /><div><h3 className="font-bold mb-2">Vize Uzmanlığı</h3><p className="text-muted-foreground text-sm">İngiltere, ABD, Schengen vize başvurularında deneyimli.</p></div></div>
-          <div className="flex gap-4 p-6 bg-card rounded-xl border border-border"><FileCheck className="w-8 h-8 text-primary flex-shrink-0" /><div><h3 className="font-bold mb-2">Konsolosluk Onaylı</h3><p className="text-muted-foreground text-sm">Tüm konsolosluklar tarafından kabul edilen yeminli çeviri.</p></div></div>
+          <div className="flex gap-4 p-6 bg-card rounded-xl border border-border"><FileCheck className="w-8 h-8 text-primary flex-shrink-0" /><div><h3 className="font-bold mb-2">Konsolosluk Onaylı</h3><p className="text-muted-foreground text-sm">Çoğu konsolosluk tarafından kabul edilen yeminli çeviri; başvuru yapacağınız kurumun güncel şartlarını kontrol edin.</p></div></div>
           <div className="flex gap-4 p-6 bg-card rounded-xl border border-border"><Stamp className="w-8 h-8 text-primary flex-shrink-0" /><div><h3 className="font-bold mb-2">Yeminli Tercüme</h3><p className="text-muted-foreground text-sm">Yeminli tercüman imzası ve kaşesi ile resmi geçerlilik.</p></div></div>
         </div>
         <div className="bg-secondary/30 rounded-xl p-8 mb-8">
@@ -93,6 +93,27 @@ export default function VizeCeviri() {
           <p className="text-muted-foreground leading-relaxed">Denizli'den İngiltere'ye vize başvurusu yapacaklar için hızlı ve doğru çeviri yapıyorum.</p>
         </div>
         <div className="mb-8">
+          <h2 className="text-2xl font-bold text-primary mb-6">Sıkça Sorulan Sorular</h2>
+          <div className="space-y-4">
+            <div className="bg-card border border-border rounded-lg p-6">
+              <h3 className="font-bold text-foreground mb-2">Vize başvurusu için hangi belgelerin çevirisi gerekir?</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">Vize türüne göre değişmekle birlikte genellikle pasaport, banka hesap dökümü, maaş bordrosu, tapu senedi, evlilik cüzdanı, doğum belgesi ve sağlık sigortası belgelerinin çevirisi istenir. Başvuru yapacağınız konsolosluğun güncel belge listesini kontrol etmeniz gerekir.</p>
+            </div>
+            <div className="bg-card border border-border rounded-lg p-6">
+              <h3 className="font-bold text-foreground mb-2">Yeminli tercüme yeterli mi, noter onayı da gerekir mi?</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">Çoğu vize başvurusunda yeminli tercüme yeterlidir; ancak bazı konsolosluklar noter tasdiki de isteyebilir. Başvuru yapacağınız kurumun güncel şartlarını işlem öncesinde kontrol edin.</p>
+            </div>
+            <div className="bg-card border border-border rounded-lg p-6">
+              <h3 className="font-bold text-foreground mb-2">Vize çevirisi ne kadar sürede teslim edilir?</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">Standart belgeler çoğunlukla 1-3 iş günü içinde teslim edilir. Acil taleplerde aynı gün teslim kapasiteye bağlı olarak değerlendirilir.</p>
+            </div>
+            <div className="bg-card border border-border rounded-lg p-6">
+              <h3 className="font-bold text-foreground mb-2">Apostil gerekiyor mu?</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">Apostil, belgenin kullanılacağı ülkeye göre gerekebilir. Başvuru yapacağınız kurumun güncel şartlarını kontrol edin. Apostil işlem/takip hizmeti ayrıca sunulabilir.</p>
+            </div>
+          </div>
+        </div>
+        <div className="mb-8">
           <h2 className="text-2xl font-bold text-primary mb-6">Diğer Hizmetlerimiz</h2>
           <div className="grid md:grid-cols-2 gap-4">
             <a href="/yeminli-tercume" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Yeminli Tercüme</a>
@@ -106,7 +127,7 @@ export default function VizeCeviri() {
           <h2 className="text-2xl font-bold mb-4">Vize Başvurusu Çevirisi Teklifi Alın</h2>
           <p className="mb-6 opacity-90">Belgelerinizi gönderin, net teklif alın.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/teklif" className="px-8 py-3 bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg font-medium transition">Teklif Alın</a>
+            <a href="/teklif" className="px-8 py-3 bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg font-medium transition">Belgem İçin Teklif Al</a>
             <a href="https://wa.me/905386295040" target="_blank" className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition">WhatsApp</a>
           </div>
         </div>
