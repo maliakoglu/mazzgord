@@ -48,7 +48,7 @@ export default function BlogPasaportTercumesi() {
 
 <div className="grid md:grid-cols-2 gap-4 my-8">
   <div className="p-5 bg-slate-50 rounded-xl border border-border"><h3 className="font-bold text-primary mb-2">Vize Başvuruları</h3><p className="text-sm">İngiltere, ABD, AB ülkeleri ve diğer ülkelerin vize başvurularında pasaport çevirisi istenir.</p></div>
-  <div className="p-5 bg-slate-50 rounded-xl border border-border"><h3 className="font-bold text-primary mb-2">Göçmenlik Dosyaları</h3><p className="text-sm">ABD göçmenlik (USCIS) ve diğer ülke göçmenlik başvurularında pasaport çevirisi zorunludur.</p></div>
+  <div className="p-5 bg-slate-50 rounded-xl border border-border"><h3 className="font-bold text-primary mb-2">Göçmenlik Dosyaları</h3><p className="text-sm">ABD göçmenlik (USCIS) ve diğer ülke göçmenlik başvurularında pasaport çevirisi genellikle istenir; başvuru yapacağınız kurumun güncel şartlarını kontrol edin.</p></div>
   <div className="p-5 bg-slate-50 rounded-xl border border-border"><h3 className="font-bold text-primary mb-2">Yurt Dışı Eğitim</h3><p className="text-sm">Yurt dışı üniversite ve dil okulu başvurularında pasaport çevirisi talep edilir.</p></div>
   <div className="p-5 bg-slate-50 rounded-xl border border-border"><h3 className="font-bold text-primary mb-2">Konsolosluk İşlemleri</h3><p className="text-sm">Konsolosluk kayıt işlemleri, evlilik işlemleri ve pasaport yenileme süreçlerinde gerekebilir.</p></div>
 </div>
@@ -56,7 +56,7 @@ export default function BlogPasaportTercumesi() {
 <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">Pasaport Çevirisi Yeminli Tercüman Tarafından mı Yapılmalı?</h2>
 <p><strong>Evet, kesinlikle.</strong> Resmi kurumlar — konsolosluklar, göçmenlik büroları, üniversiteler — pasaport çevirisinin <strong>yeminli tercüman tarafından yapılmasını ve imzalanmasını</strong> şart koşar. Yeminli tercüman, yeminname vererek çevirisinin doğru ve eksiksiz olduğunu taahhüt eder.</p>
 
-<p>Kendinizin veya bir tanıdığınızın yaptığı çeviri, ne kadar doğru olursa olsun, resmi kurumlar tarafından <strong>kabul edilmez</strong>. Çevirinin resmi geçerlilik kazanması için yeminli tercüman imzası ve kaşesi zorunludur.</p>
+<p>Kendinizin veya bir tanıdığınızın yaptığı çeviri, ne kadar doğru olursa olsun, resmi kurumlar tarafından <strong>kabul edilmez</strong>. Çevirinin resmi geçerlilik kazanması için yeminli tercüman imzası ve kaşesi genellikle istenir.</p>
 
 <p>Daha fazla bilgi için <a href="/yeminli-tercume" className="text-primary font-semibold hover:underline">yeminli tercüme hizmetimiz</a> sayfasını inceleyebilirsiniz.</p>
 
@@ -99,7 +99,7 @@ export default function BlogPasaportTercumesi() {
 </div>
 
 <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">Sonuç</h2>
-<p>Pasaport çevirisi, vize başvuruları ve yurt dışı resmi işlemlerin önemli bir parçasıdır. Yeminli tercüman tarafından yapılması zorunludur ve genellikle aynı gün içinde tamamlanır. Online olarak yaptırabileceğiniz bu işlem, pasaportunuzun fotoğrafını göndermenizle başlar.</p>
+<p>Pasaport çevirisi, vize başvuruları ve yurt dışı resmi işlemlerin önemli bir parçasıdır. Yeminli tercüman tarafından yapılması genellikle istenir ve kapasite uygunsa aynı gün içinde tamamlanabilir. Online olarak yaptırabileceğiniz bu işlem, pasaportunuzun fotoğrafını göndermenizle başlar.</p>
 <p>İngilizce-Türkçe dil çiftinde pasaport çevirisi yapıyorum. <a href="/pasaport-ceviri" className="text-primary font-semibold hover:underline">Pasaport çevirisi sayfamdan</a> detaylı bilgi alabilir veya <a href="/teklif" className="text-primary font-semibold hover:underline">teklif</a> talep edebilirsiniz.</p>
     </BlogLayout>
   );

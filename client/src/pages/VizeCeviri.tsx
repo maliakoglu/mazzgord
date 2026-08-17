@@ -76,7 +76,7 @@ export default function VizeCeviri() {
         <div className="bg-secondary/30 rounded-xl p-8 mb-8">
           <h2 className="text-2xl font-bold text-primary mb-4">Vize Başvurusu İçin Çeviri</h2>
           <p className="text-muted-foreground leading-relaxed mb-4">Vize başvuruları, her ülkenin konsolosluğunun belirlediği kurallara göre yürütülen hassas işlemlerdir. Başvuru dosyasındaki belgelerin çevirisi, konsolosluğun istediği formata ve standartlara uygun olmalıdır. Aksi takdirde başvuru reddedilebilir.</p>
-          <p className="text-muted-foreground leading-relaxed mb-4">İngiltere vize başvurularında tüm Türkçe belgelerin İngilizceye yeminli tercüme ile çevrilmesi gerekmektedir. İngiltere konsolosluğu yeminli tercüman imzası taşımayan çevirileri kabul etmez. Aynı şekilde ABD göçmenlik başvurularında da yeminli çeviri zorunludur.</p>
+          <p className="text-muted-foreground leading-relaxed mb-4">İngiltere vize başvurularında tüm Türkçe belgelerin İngilizceye yeminli tercüme ile çevrilmesi gerekmektedir. İngiltere konsolosluğu genellikle yeminli tercüman imzası taşıyan çevirileri ister. ABD göçmenlik başvurularında da çoğu durumda yeminli çeviri istenir. Başvuru yapacağınız kurumun güncel şartlarını işlem öncesinde kontrol etmeniz gerekir.</p>
           <p className="text-muted-foreground leading-relaxed">İngiltere, ABD, Almanya, Fransa, Hollanda ve diğer ülkelerin konsolosluk şartlarına uygun çeviri yapıyorum.</p>
         </div>
         <div className="mb-8">

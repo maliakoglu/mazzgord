@@ -15,7 +15,7 @@ export default function Contact({ formData, handleChange, handleSubmit, submitSt
       <div className="container mx-auto px-4">
         <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-primary">İletişim</h2>
         <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto text-lg">
-          Çeviri ihtiyaçlarınız hakkında bilgi almak için bize ulaşın. Hızlı yanıt ve profesyonel danışmanlık garantisi.
+          Çeviri ihtiyaçlarınız hakkında bilgi almak için bize ulaşın. Hızlı yanıt ve profesyonel danışmanlık.
         </p>
 
         <div className="grid md:grid-cols-2 gap-12">

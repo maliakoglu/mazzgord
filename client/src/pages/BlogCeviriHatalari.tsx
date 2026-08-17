@@ -113,7 +113,7 @@ export default function BlogCeviriHatalari() {
             </ul>
           </div>
 
-          <p className="mt-4">Siz de projelerinizde risk almak istemiyor, belgelerinizin uluslararası standartlarda, eksiksiz ve güvenilir bir şekilde çevrilmesini istiyorsanız Mazzgord her zaman yanınızda. Detaylı bilgi almak ve projenize özel fiyat teklifimizi öğrenmek için bizimle hemen iletişime geçebilirsiniz. İşinizi kolaylaştırmak için buradayız!</p>
+          <p className="mt-4">Belgelerinizin eksiksiz ve güvenilir bir şekilde çevrilmesini istiyorsanız belgenizi gönderin; kapsamı, teslim süresini ve fiyatı netleştirelim. Detaylı bilgi ve projenize özel teklif için iletişime geçebilirsiniz.</p>
     </BlogLayout>
   )
 }

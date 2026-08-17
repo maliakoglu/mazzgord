@@ -137,7 +137,7 @@ export default function DiplomaCeviri() {
         <div className="bg-secondary/30 rounded-xl p-8 mb-8">
           <h2 className="text-2xl font-bold text-primary mb-4">Transkript Çevirisinde Dikkat Edilen Hususlar</h2>
           <p className="text-muted-foreground leading-relaxed mb-4">Transkript çevirisinde ders adlarının akademik karşılıkları büyük önem taşır. Türk üniversitelerindeki ders adları, İngilizce akademik sistemdeki karşılıklarına doğru şekilde aktarılır. Kredi saatleri, AKTS/ECTS kredileri ve not sistemleri (4'lük veya 100'lük) titizlikle çevrilir.</p>
-          <p className="text-muted-foreground leading-relaxed">Genel not ortalaması (GPA), harf notları (AA, BA, BB vb.) ve diğer akademik bilgiler uluslararası standartlara uygun şekilde çevrilir.</p>
+          <p className="text-muted-foreground leading-relaxed">Genel not ortalaması (GPA), harf notları (AA, BA, BB vb.) ve diğer akademik bilgiler kaynak belgeye sadık kalınarak çevrilir.</p>
         </div>
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-primary mb-6">Sıkça Sorulan Sorular</h2>

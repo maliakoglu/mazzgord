@@ -125,7 +125,7 @@ export default function BlogAkademikCeviri() {
 
           <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">Sonuç</h2>
           <p className="text-lg">Akademik çeviri, bilimsel bilginin evrenselleşmesi ve uluslararası iş birliklerinin güçlenmesi için <strong>vazgeçilmez bir köprüdür</strong>. Doğru terminoloji, akademik üslup ve biçimsel kurallara uygunluk, başarılı bir akademik çevirinin temelini oluşturur. Tezlerden makalelere, araştırma raporlarından kitaplara kadar akademik çeviri yapıyorum.</p>
-          <p>Bilimsel çalışmalarınızın uluslararası standartlarda, doğru ve güvenilir bir şekilde çevrilmesi için bize ulaşabilirsiniz. Akademik başarılarınıza katkıda bulunmaktan memnuniyet duyarız.</p>
+          <p>Bilimsel çalışmalarınızın doğru ve güvenilir bir şekilde çevrilmesi için belgenizi gönderebilirsiniz. Akademik belgeniz için net teklif almak için iletişime geçebilirsiniz.</p>
         <div className="mt-8 p-6 bg-secondary/30 rounded-xl border border-border">
           <h3 className="text-lg font-bold text-primary mb-4">İlgili Hizmetler</h3>
           <div className="grid md:grid-cols-2 gap-4">
