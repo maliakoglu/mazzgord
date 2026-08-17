@@ -15,19 +15,19 @@ export default function SSS() {
   const faqs = [
     {
       q: "Çeviri ücretleri nasıl belirleniyor?",
-      a: "Çeviri ücretleri; kelime sayısı, dil çifti, teknik zorluk derecesi, teslimat süresi ve belgenin yeminli tercüme gerektirip gerektirmediğine göre belirlenir. Ortalama olarak sayfa başı (yaklaşık 250 kelime) 150-400 TL arasında değişmektedir. Yeminli tercümelerde noter tasdik ücreti ayrıca eklenir. Hacimli projelerde ve kurumsal müşterilerimize özel indirimler uyguluyoruz."
+      a: "Çeviri ücretleri; kelime sayısı, dil çifti, teknik zorluk derecesi, teslimat süresi ve belgenin yeminli tercüme gerektirip gerektirmediğine göre belirlenir. Standart tek sayfalık belgelerde yeminli tercüme 950 TL'den başlayan fiyatlarla başlar. Belge türü, yoğunluk, dil çifti ve teslim tarihi fiyatı etkiler. Noter ve apostil bedelleri ayrı hesaplanır. Kesin fiyat belge görüldükten sonra belirlenir."
     },
     {
       q: "Yeminli tercüme ile normal tercüme arasındaki fark nedir?",
-      a: "Yeminli tercüme, noter huzurunda yemin etmiş ve 'yeminli tercüman' unvanı almış kişiler tarafından yapılan, resmi kurumlarca kabul edilen çeviridir. Normal tercüme ise herhangi bir resmi geçerliliği olmayan, günlük kullanım için yapılan çeviridir. Yeminli tercüme; mahkeme kararları, diploma, pasaport, evlilik cüzdanı gibi resmi belgelerde zorunludur."
+      a: "Yeminli tercüme, noter huzurunda yemin etmiş ve 'yeminli tercüman' unvanı almış kişiler tarafından yapılan, resmi kurumlarca kabul edilen çeviridir. Normal tercüme ise herhangi bir resmi geçerliliği olmayan, günlük kullanım için yapılan çeviridir. Yeminli tercüme; mahkeme kararları, diploma, pasaport, evlilik cüzdanı gibi resmi belgelerde genellikle istenir; başvuru yapacağınız kurumun güncel şartlarını kontrol etmeniz gerekir."
     },
     {
       q: "Çeviri ne kadar sürede teslim edilir?",
-      a: "Standart teslimat süremiz 1-3 iş günüdür. 10 sayfaya kadar olan belgelerde 24 saat içinde teslimat mümkündür. Acil durumlarda 4-6 saat içinde ekspres teslimat seçeneğimiz de mevcuttur (ek ücret karşılığı). Büyük projelerde (50+ sayfa) teslimat süresi proje bazında belirlenir."
+      a: "Standart teslimat süremiz 1-3 iş günüdür. 10 sayfaya kadar olan belgelerde 24 saat içinde teslimat mümkündür. Acil durumlarda aynı gün teslim kapasiteye bağlı olarak değerlendirilir (ek ücret uygulabilir). Büyük projelerde (50+ sayfa) teslimat süresi proje bazında belirlenir."
     },
     {
       q: "Hangi dillerde çeviri hizmeti veriyorsunuz?",
-      a: "Başlıca İngilizce-Türkçe çift yönlü çeviri hizmeti sunuyoruz. Yeminli tercüme, teknik çeviri, akademik çeviri ve vize başvurusu çevirileri başta olmak üzere tüm İngilizce çeviri ihtiyaçlarınız için profesyonel kadromuzla hizmetinizdeyiz. İletişime geçerek ihtiyacınızı belirtebilirsiniz."
+      a: "Başlıca İngilizce-Türkçe çift yönlü çeviri hizmeti sunuyoruz. Yeminli tercüme, teknik çeviri, akademik çeviri ve vize başvurusu çevirileri başta olmak üzere tüm İngilizce çeviri ihtiyaçlarınız için noter yeminli tercüman olarak hizmetinizdeyim. İletişime geçerek ihtiyacınızı belirtebilirsiniz."
     },
     {
       q: "Noter onayı süreci nasıl işliyor?",
@@ -39,15 +39,15 @@ export default function SSS() {
     },
     {
       q: "Akademik çeviri (tez, makale) yapıyor musunuz?",
-      a: "Evet, akademik çeviri konusunda uzman kadromuzla hizmet veriyoruz. Yüksek lisans tezi, doktora tezi, akademik makale, bildiri, araştırma raporu ve özet çevirileri yapıyoruz. Akademik terminolojiye hakim çevirmenlerimiz, çalışmanızın orijinal anlamını ve akademik üslubunu koruyarak çeviri yapar."
+      a: "Evet, akademik çeviri konusunda kişisel olarak hizmet veriyorum. Yüksek lisans tezi, doktora tezi, akademik makale, bildiri, araştırma raporu ve özet çevirileri yapıyoruz. Akademik terminolojiye hakim olarak, çalışmanızın orijinal anlamını ve akademik üslubunu koruyarak çeviriyi hazırlıyorum."
     },
     {
       q: "Çeviri kalitenizden nasıl emin olabilirim?",
-      a: "Tüm çevirilerimiz önce alanında uzman bir çevirmen tarafından yapılır, ardından ikinci bir uzman tarafından redaksiyon ve proofreading sürecinden geçirilir. Ayrıca müşterilerimize ücretsiz revizyon hakkı sunuyoruz. Memnun kalmadığınız takdirde çeviriyi ücretsiz olarak yeniden düzenliyoruz."
+      a: "Her çeviriyi kendim hazırlıyor ve teslim öncesinde kaynak metinle karşılaştırarak kontrol ediyorum. Yazım veya biçim hatası benden kaynaklıysa ücretsiz düzeltirim. Müşterinin sonradan yeni belge veya farklı format istemesi yeni kapsam olarak değerlendirilir."
     },
     {
       q: "Vize başvurusu için hangi belgelerin çevrilmesi gerekir?",
-      a: "Vize türüne göre değişmekle birlikte genellikle; pasaport (kimlik sayfası), davetiye mektubu, banka hesap dökümü, maaş bordrosu, tapu senedi, evlilik cüzdanı, doğum belgesi, ikametgah belgesi ve seyahat sağlık sigortası belgelerinin çevirisi istenir. Schengen, İngiltere, ABD ve Kanada vizesi için yeminli tercüme zorunludur."
+      a: "Vize türüne göre değişmekle birlikte genellikle; pasaport (kimlik sayfası), davetiye mektubu, banka hesap dökümü, maaş bordrosu, tapu senedi, evlilik cüzdanı, doğum belgesi, ikametgah belgesi ve seyahat sağlık sigortası belgelerinin çevirisi istenir. Schengen, İngiltere, ABD ve Kanada vizesi için çoğu durumda yeminli tercüme istenir; ancak başvuru yapacağınız kurumun güncel şartlarını işlem öncesinde kontrol etmeniz gerekir."
     },
     {
       q: "Noter onaylı çeviri nedir ve ne zaman gerekir?",
@@ -55,7 +55,7 @@ export default function SSS() {
     },
     {
       q: "Müşteri gizliliği nasıl korunuyor?",
-      a: "Tüm belgeleriniz gizlilik anlaşması (NDA) kapsamında işlenir. Belgeleriniz şifrelenmiş dijital kanallar üzerinden iletilir, çeviri tamamlandıktan sonra 30 gün içinde kalıcı olarak silinir. Hiçbir müşteri belgesi üçüncü taraflarla paylaşılmaz. KVKK kapsamında tüm veri koruma yükümlülüklerine uyuyoruz."
+      a: "Tüm belgeleriniz gizlilik ilkesi kapsamında işlenir. Belgeleriniz şifrelenmiş dijital kanallar üzerinden iletilir, çeviri tamamlandıktan sonra belirlenen saklama süresi (90 gün) sonunda kalıcı olarak silinir. Hiçbir müşteri belgesi üçüncü taraflarla paylaşılmaz. KVKK kapsamında tüm veri koruma yükümlülüklerine uyuyoruz."
     }
   ];
 
@@ -72,7 +72,7 @@ export default function SSS() {
           <a href="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition"><ArrowLeft className="w-5 h-5" /> Ana Sayfa</a>
           <div className="hidden md:flex gap-8">
             <a href="/fiyatlar" className="text-foreground hover:text-primary transition">Fiyatlar</a>
-            <a href="/blog" className="text-foreground hover:text-primary transition">Blog</a>
+            <a href="/blog" className="text-foreground hover:text-primary transition">Rehber</a>
             <a href="/hakkimizda" className="text-foreground hover:text-primary transition">Hakkımda</a>
             <a href="/teklif" className="bg-primary text-primary-foreground px-5 py-2 rounded-lg font-medium hover:bg-primary/90 transition no-underline">Teklif Al</a>
           </div>
@@ -89,7 +89,7 @@ export default function SSS() {
               <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setMobileOpen(false)}></div>
               <div className="fixed top-0 right-0 w-72 h-full bg-background z-50 shadow-2xl p-8 pt-24 flex flex-col gap-2 md:hidden">
                 <a href="/fiyatlar" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Fiyatlar</a>
-                <a href="/blog" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Blog</a>
+                <a href="/blog" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Rehber</a>
                 <a href="/hakkimizda" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Hakkımda</a>
                 <a href="/teklif" className="block px-4 py-3 bg-primary text-primary-foreground font-medium hover:bg-primary/90 rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Teklif Al</a>
               </div>
