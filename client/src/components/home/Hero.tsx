@@ -60,7 +60,7 @@ export default function Hero() {
           Noter Yeminli Tercüme
         </div>
         <h1 className="fade-up" style={{fontSize: 'clamp(2.5rem, 10vw, 4.8rem)', fontWeight: 800, marginBottom: '15px', lineHeight: 1.1, background: 'linear-gradient(to right, #fff, #60a5fa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>
-          Denizli Çeviri ve Tercüme Bürosu
+          Noter Yeminli İngilizce–Türkçe Tercüme
         </h1>
         <span className="fade-up fade-up-delay-1 block" style={{fontSize: 'clamp(1.1rem, 4.5vw, 1.8rem)', fontWeight: 600, marginBottom: '20px', color: '#fff'}}>
           İngilizce-Türkçe Resmi Belge ve Vize Çevirisi
@@ -74,7 +74,7 @@ export default function Hero() {
             style={{background: '#00c2ff', color: '#0a1628', boxShadow: '0 8px 25px rgba(0, 194, 255, 0.3)'}}
             onClick={() => window.location.href = "/teklif"}
           >
-            Teklif Alın <ArrowRight className="ml-2 w-5 h-5" />
+            Belgem İçin Teklif Al <ArrowRight className="ml-2 w-5 h-5" />
           </Button>
           <a
             href="https://wa.me/905386295040?text=Merhaba,%20belgem%20için%20teklif%20almak%20istiyorum."
@@ -95,7 +95,7 @@ export default function Hero() {
             <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-green-400" /> Noter Yeminli Tercüman</span>
             <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-green-400" /> İngilizce-Türkçe</span>
             <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-green-400" /> Belgeyi Gönder, Teklif Al</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-green-400" /> Hızlı Teslimat</span>
+            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-green-400" /> Denizli ve Online</span>
           </div>
         </div>
       </div>
