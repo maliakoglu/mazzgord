@@ -68,7 +68,13 @@ interface DashboardData {
 }
 
 const ORDER_STATUSES = [
-  { value: "pending", label: "Bekliyor", color: "bg-yellow-100 text-yellow-800" },
+  { value: "pending", label: "Yeni Talep", color: "bg-yellow-100 text-yellow-800" },
+  { value: "contacted", label: "İletişime Geçildi", color: "bg-blue-100 text-blue-800" },
+  { value: "needs_info", label: "Bilgi/Belge Eksik", color: "bg-amber-100 text-amber-800" },
+  { value: "qualified", label: "Teklif için Hazır", color: "bg-cyan-100 text-cyan-800" },
+  { value: "quote_sent", label: "Teklif Gönderildi", color: "bg-sky-100 text-sky-800" },
+  { value: "follow_up", label: "Takip Gerekli", color: "bg-orange-100 text-orange-800" },
+  { value: "won", label: "İş Onaylandı", color: "bg-indigo-100 text-indigo-800" },
   { value: "payment_pending", label: "Ödeme Bekleniyor", color: "bg-orange-100 text-orange-800" },
   { value: "paid", label: "Ödeme Alındı", color: "bg-green-100 text-green-800" },
   { value: "reviewing", label: "İnceleniyor", color: "bg-blue-100 text-blue-800" },
@@ -76,6 +82,8 @@ const ORDER_STATUSES = [
   { value: "quality_control", label: "Kalite Kontrol", color: "bg-purple-100 text-purple-800" },
   { value: "completed", label: "Tamamlandı", color: "bg-teal-100 text-teal-800" },
   { value: "delivered", label: "Teslim Edildi", color: "bg-emerald-100 text-emerald-800" },
+  { value: "repeat_closed", label: "Tekrar İş/Kapandı", color: "bg-gray-100 text-gray-800" },
+  { value: "lost", label: "Kaybedildi", color: "bg-red-100 text-red-800" },
   { value: "cancelled", label: "İptal", color: "bg-red-100 text-red-800" },
 ];
 
