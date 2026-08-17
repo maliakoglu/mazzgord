@@ -1,1 +1,3 @@
+# ads.txt - Mazzgord
+
 google.com, pub-8661028263390679, DIRECT, f08c47fec0942fa0

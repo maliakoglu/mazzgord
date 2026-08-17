@@ -1,10 +1,68 @@
+import { Helmet } from "react-helmet";
 import { ArrowLeft, CheckCircle2, Plane, FileCheck, Stamp } from "lucide-react";
+import { useState } from "react";
 export default function VizeCeviri() {
+  const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Vize Başvurusu Çevirisi | Denizli - Mazzgord</title>
+        <meta name="description" content="Vize başvurusu için yeminli çeviri hizmeti. İngiltere, ABD, Schengen vize başvuruları için pasaport, banka dokümanı, çalışma belgesi çevirisi. Denizlide hızlı teslimat." />
+        <link rel="canonical" href="https://mazzgord.com/vize-ceviri" />
+        <meta property="og:title" content="Vize Başvurusu Çevirisi | Denizli - Mazzgord" />
+        <meta property="og:description" content="Vize başvurusu için yeminli çeviri hizmeti. İngiltere, ABD, Schengen vize başvuruları için pasaport, banka dokümanı, çalışma belgesi çevirisi. Denizlide hızlı teslimat." />
+        <meta property="og:url" content="https://mazzgord.com/vize-ceviri" />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="tr_TR" />
+        <script type="application/ld+json">{`
+          {
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "serviceType": "Vize Başvurusu Çevirisi",
+            "provider": {
+              "@type": "Organization",
+              "name": "Mazzgord Çeviri Hizmetleri",
+              "url": "https://mazzgord.com",
+              "areaServed": "Denizli, Türkiye"
+            },
+            "areaServed": "Denizli, Türkiye",
+            "url": "https://mazzgord.com/vize-ceviri"
+          }
+        `}</script>
+      </Helmet>
+
+
       <nav className="sticky top-0 z-50 bg-background border-b border-border">
-        <div className="container mx-auto px-4 py-4 flex items-center gap-4">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <a href="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition"><ArrowLeft className="w-5 h-5" /> Ana Sayfa</a>
+          <div className="hidden md:flex gap-8">
+            <a href="/fiyatlar" className="text-foreground hover:text-primary transition">Fiyatlar</a>
+            <a href="/blog" className="text-foreground hover:text-primary transition">Blog</a>
+            <a href="/hakkimizda" className="text-foreground hover:text-primary transition">Hakkımda</a>
+            <a href="/teklif" className="bg-primary text-primary-foreground px-5 py-2 rounded-lg font-medium hover:bg-primary/90 transition no-underline">Teklif Al</a>
+                      </div>
+          <button
+            className="md:hidden flex flex-col gap-1.5 p-2 cursor-pointer bg-transparent border-none z-60"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            <span className={`block w-6 h-0.5 bg-foreground rounded transition-all duration-300 ${mobileOpen ? "rotate-45 translate-y-[7px]" : ""}`}></span>
+            <span className={`block w-6 h-0.5 bg-foreground rounded transition-all duration-300 ${mobileOpen ? "opacity-0" : ""}`}></span>
+            <span className={`block w-6 h-0.5 bg-foreground rounded transition-all duration-300 ${mobileOpen ? "-rotate-45 -translate-y-[7px]" : ""}`}></span>
+          </button>
+          {mobileOpen && (
+            <>
+              <div
+                className="fixed inset-0 bg-black/50 z-40 md:hidden"
+                onClick={() => setMobileOpen(false)}
+              ></div>
+              <div className="fixed top-0 right-0 w-72 h-full bg-background z-50 shadow-2xl p-8 pt-24 flex flex-col gap-2 md:hidden">
+                <a href="/fiyatlar" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Fiyatlar</a>
+                <a href="/blog" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Blog</a>
+                <a href="/hakkimizda" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Hakkımda</a>
+                <a href="/teklif" className="block px-4 py-3 bg-primary text-primary-foreground font-medium hover:bg-primary/90 rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Teklif Al</a>
+                              </div>
+            </>
+          )}
         </div>
       </nav>
       <div className="container mx-auto px-4 py-12 max-w-4xl">
@@ -19,7 +77,7 @@ export default function VizeCeviri() {
           <h2 className="text-2xl font-bold text-primary mb-4">Vize Başvurusu İçin Çeviri</h2>
           <p className="text-muted-foreground leading-relaxed mb-4">Vize başvuruları, her ülkenin konsolosluğunun belirlediği kurallara göre yürütülen hassas işlemlerdir. Başvuru dosyasındaki belgelerin çevirisi, konsolosluğun istediği formata ve standartlara uygun olmalıdır. Aksi takdirde başvuru reddedilebilir.</p>
           <p className="text-muted-foreground leading-relaxed mb-4">İngiltere vize başvurularında tüm Türkçe belgelerin İngilizceye yeminli tercüme ile çevrilmesi gerekmektedir. İngiltere konsolosluğu yeminli tercüman imzası taşımayan çevirileri kabul etmez. Aynı şekilde ABD göçmenlik başvurularında da yeminli çeviri zorunludur.</p>
-          <p className="text-muted-foreground leading-relaxed">Mazzgord olarak İngiltere, ABD, Almanya, Fransa, Hollanda ve diğer ülkelerin konsolosluk şartlarına uygun çeviri hizmeti sunuyoruz.</p>
+          <p className="text-muted-foreground leading-relaxed">İngiltere, ABD, Almanya, Fransa, Hollanda ve diğer ülkelerin konsolosluk şartlarına uygun çeviri yapıyorum.</p>
         </div>
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-primary mb-6">Vize Başvurusu İçin Çevrilen Belgeler</h2>
@@ -32,13 +90,23 @@ export default function VizeCeviri() {
         <div className="bg-secondary/30 rounded-xl p-8 mb-8">
           <h2 className="text-2xl font-bold text-primary mb-4">İngiltere Vize Başvurusu Çevirisi</h2>
           <p className="text-muted-foreground leading-relaxed mb-4">İngiltere vize başvuruları en sık karşılaştığımız başvuru türlerinden biridir. İngiltere konsolosluğu çeviri konusunda çok katı kurallara sahiptir. Tüm Türkçe belgeler yeminli tercüman tarafından İngilizceye çevrilmeli ve her sayfa tercümanın imzasını ve kaşesini taşımalıdır.</p>
-          <p className="text-muted-foreground leading-relaxed">Denizli'den İngiltere'ye vize başvurusu yapacaklar için hızlı ve doğru çeviri hizmeti sunuyoruz.</p>
+          <p className="text-muted-foreground leading-relaxed">Denizli'den İngiltere'ye vize başvurusu yapacaklar için hızlı ve doğru çeviri yapıyorum.</p>
+        </div>
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-primary mb-6">Diğer Hizmetlerimiz</h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            <a href="/yeminli-tercume" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Yeminli Tercüme</a>
+            <a href="/ingilizce-turkce-ceviri" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">İngilizce-Türkçe Çeviri</a>
+            <a href="/teknik-ceviri" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Teknik Çeviri</a>
+            <a href="/akademik-ceviri" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Akademik Çeviri</a>
+          <a href="/fiyatlar" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Çeviri Fiyatları</a>
+          </div>
         </div>
         <div className="bg-primary text-primary-foreground rounded-xl p-8 text-center">
           <h2 className="text-2xl font-bold mb-4">Vize Başvurusu Çevirisi Teklifi Alın</h2>
-          <p className="mb-6 opacity-90">Belgelerinizi gönderin, ücretsiz teklif alın.</p>
+          <p className="mb-6 opacity-90">Belgelerinizi gönderin, net teklif alın.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/" className="px-8 py-3 bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg font-medium transition">Teklif Alın</a>
+            <a href="/teklif" className="px-8 py-3 bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg font-medium transition">Teklif Alın</a>
             <a href="https://wa.me/905386295040" target="_blank" className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition">WhatsApp</a>
           </div>
         </div>

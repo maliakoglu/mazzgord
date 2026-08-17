@@ -1,17 +1,15 @@
-import { ArrowLeft } from "lucide-react";
+import BlogLayout from "@/components/BlogLayout"
+
 export default function BlogTeknikCeviri() {
   return (
-    <div className="min-h-screen bg-background">
-      <nav className="sticky top-0 z-50 bg-background border-b border-border">
-        <div className="container mx-auto px-4 py-4 flex items-center gap-4">
-          <a href="/blog" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition"><ArrowLeft className="w-5 h-5" /> Blog</a>
-        </div>
-      </nav>
-      <div className="container mx-auto px-4 py-12 max-w-4xl">
-        <h1 className="text-4xl font-bold text-primary mb-4">Teknik Çeviride Dikkat Edilmesi Gereken 5 Önemli Nokta</h1>
-        <p className="text-muted-foreground mb-8">5 Mayıs 2026 · Mazzgord Çeviri Hizmetleri</p>
-        <div className="prose prose-lg max-w-none space-y-6">
-          <p className="text-muted-foreground leading-relaxed">Teknik çeviri, diğer çeviri türlerine göre çok daha fazla özen ve uzmanlık gerektirir. Bir kullanım kılavuzundaki yanlış çeviri, cihazın yanlış kullanılmasına ve güvenlik risklerine neden olabilir. İşte teknik çeviride dikkat edilmesi gereken 5 önemli nokta.</p>
+    <BlogLayout
+      title="Teknik Çeviride Dikkat Edilmesi Gereken 5 Önemli Nokta | Mazzgord"
+      description="Teknik çeviri, diğer çeviri türlerine göre çok daha fazla özen ve uzmanlık gerektirir."
+      canonical="https://mazzgord.com/blog/teknik-ceviri"
+      date="5 Mayıs 2026"
+      illustration="teknik"
+    >
+<p className="text-muted-foreground leading-relaxed">Teknik çeviri, diğer çeviri türlerine göre çok daha fazla özen ve uzmanlık gerektirir. Bir kullanım kılavuzundaki yanlış çeviri, cihazın yanlış kullanılmasına ve güvenlik risklerine neden olabilir. İşte teknik çeviride dikkat edilmesi gereken 5 önemli nokta.</p>
           <h2 className="text-2xl font-bold text-primary mt-8">1. Terminoloji Tutarlılığı</h2>
           <p className="text-muted-foreground leading-relaxed">Teknik belgelerde aynı terim her zaman aynı şekilde çevrilmelidir. Örneğin bir belgede "valve" kelimesi "vana" olarak çevrildiyse, belgenin tamamında aynı çeviri kullanılmalıdır. Terminoloji tutarsızlığı, okuyucunun kafasını karıştırır ve belgenin güvenilirliğini zedeler.</p>
           <h2 className="text-2xl font-bold text-primary mt-8">2. Sektör Bilgisi</h2>
@@ -22,8 +20,13 @@ export default function BlogTeknikCeviri() {
           <p className="text-muted-foreground leading-relaxed">Teknik belgeler genellikle belirli bir formata sahiptir. Çeviri de bu formata uygun olmalıdır. Tablolar, şekiller ve numaralandırma kaynak belgeyle uyumlu olmalıdır.</p>
           <h2 className="text-2xl font-bold text-primary mt-8">5. Kalite Kontrol</h2>
           <p className="text-muted-foreground leading-relaxed">Teknik çeviriler mutlaka ikinci bir uzman tarafından kontrol edilmelidir. Mazzgord olarak her teknik çeviriyi çift kontrol sürecinden geçiriyoruz.</p>
+        <div className="mt-8 p-6 bg-secondary/30 rounded-xl border border-border">
+          <h3 className="text-lg font-bold text-primary mb-4">İlgili Hizmetler</h3>
+          <div className="grid md:grid-cols-2 gap-4">
+            <a href="/teknik-ceviri" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Teknik Çeviri Hizmeti</a>
+            <a href="/ingilizce-turkce-ceviri" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">İngilizce-Türkçe Çeviri</a>
+          </div>
         </div>
-      </div>
-    </div>
-  );
+    </BlogLayout>
+  )
 }

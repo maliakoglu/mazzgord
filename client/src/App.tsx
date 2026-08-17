@@ -1,48 +1,76 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/NotFound";
-import Privacy from "@/pages/Privacy";
-import Terms from "@/pages/Terms";
-import About from "@/pages/About";
-import CookiePolicy from "@/pages/CookiePolicy";
-import YeminliTercume from "@/pages/YeminliTercume";
-import TeknikCeviri from "@/pages/TeknikCeviri";
-import AkademikCeviri from "@/pages/AkademikCeviri";
-import VizeCeviri from "@/pages/VizeCeviri";
-import IngilizceTurkceCeviri from "@/pages/IngilizceTurkceCeviri";
-import Blog from "@/pages/Blog";
-import BlogYeminliTercume from "@/pages/BlogYeminliTercume";
-import BlogVizeCeviri from "@/pages/BlogVizeCeviri";
-import BlogTeknikCeviri from "@/pages/BlogTeknikCeviri";
-import BlogCeviriIpuclari from "@/pages/BlogCeviriIpuclari";
-import BlogCeviriSektoru from "@/pages/BlogCeviriSektoru";
-import { Route, Switch } from "wouter";
+import { blogRegistry } from "@/data/blogRegistry";
+const NotFound = lazy(() => import("@/pages/NotFound"));
+const Admin = lazy(() => import("@/pages/Admin"));
+const TeklifFormu = lazy(() => import("@/pages/TeklifFormu"));
+const Odeme = lazy(() => import("@/pages/Odeme"));
+const Privacy = lazy(() => import("@/pages/Privacy"));
+const Terms = lazy(() => import("@/pages/Terms"));
+const About = lazy(() => import("@/pages/About"));
+const CookiePolicy = lazy(() => import("@/pages/CookiePolicy"));
+const SSS = lazy(() => import("@/pages/SSS"));
+const Fiyatlar = lazy(() => import("@/pages/Fiyatlar"));
+const Hizmetler = lazy(() => import("@/pages/Hizmetler"));
+const SiparisTakip = lazy(() => import("@/pages/SiparisTakip"));
+const Giris = lazy(() => import("@/pages/Giris"));
+const Hesabim = lazy(() => import("@/pages/Hesabim"));
+const YeminliTercume = lazy(() => import("@/pages/YeminliTercume"));
+const TeknikCeviri = lazy(() => import("@/pages/TeknikCeviri"));
+const AkademikCeviri = lazy(() => import("@/pages/AkademikCeviri"));
+const VizeCeviri = lazy(() => import("@/pages/VizeCeviri"));
+const IngilizceTurkceCeviri = lazy(() => import("@/pages/IngilizceTurkceCeviri"));
+const PasaportCeviri = lazy(() => import("@/pages/PasaportCeviri"));
+const DiplomaCeviri = lazy(() => import("@/pages/DiplomaCeviri"));
+const Blog = lazy(() => import("@/pages/Blog"));
+const ChatWidget = lazy(() => import("@/components/ChatWidget"));
+import { Route, Switch, useParams } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { CartProvider } from "./contexts/CartContext";
 import Home from "./pages/Home";
+
+// Dinamik blog route — registry'den slug'a göre component seç
+function BlogRoute() {
+  const { slug } = useParams();
+  const Component = blogRegistry[slug as keyof typeof blogRegistry];
+  if (!Component) return <NotFound />;
+  return <Component />;
+}
 
 function Router() {
   return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" /></div>}>
     <Switch>
+      <Route path={"/admin"} component={Admin} />
+      <Route path={"/odeme"} component={Odeme} />
+      <Route path={"/odeme/sonuc"} component={Odeme} />
+      <Route path={"/teklif"} component={TeklifFormu} />
       <Route path={"/"} component={Home} />
       <Route path={"/gizlilik"} component={Privacy} />
       <Route path={"/kullanim-kosullari"} component={Terms} />
       <Route path={"/hakkimizda"} component={About} />
       <Route path={"/cerez-politikasi"} component={CookiePolicy} />
+      <Route path={"/sss"} component={SSS} />
+      <Route path={"/fiyatlar"} component={Fiyatlar} />
+      <Route path={"/hizmetler"} component={Hizmetler} />
+      <Route path={"/siparis"} component={SiparisTakip} />
+      <Route path={"/giris"} component={Giris} />
+      <Route path={"/hesabim"} component={Hesabim} />
       <Route path={"/yeminli-tercume"} component={YeminliTercume} />
       <Route path={"/teknik-ceviri"} component={TeknikCeviri} />
       <Route path={"/akademik-ceviri"} component={AkademikCeviri} />
       <Route path={"/vize-ceviri"} component={VizeCeviri} />
       <Route path={"/ingilizce-turkce-ceviri"} component={IngilizceTurkceCeviri} />
+      <Route path={"/pasaport-ceviri"} component={PasaportCeviri} />
+      <Route path={"/diploma-ceviri"} component={DiplomaCeviri} />
       <Route path={"/blog"} component={Blog} />
-      <Route path={"/blog/yeminli-tercume"} component={BlogYeminliTercume} />
-      <Route path={"/blog/vize-ceviri"} component={BlogVizeCeviri} />
-      <Route path={"/blog/teknik-ceviri"} component={BlogTeknikCeviri} />
-      <Route path={"/blog/ceviri-ipuclari"} component={BlogCeviriIpuclari} />
-      <Route path={"/blog/ceviri-sektoru"} component={BlogCeviriSektoru} />
+      <Route path={"/blog/:slug"} component={BlogRoute} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
+    </Suspense>
   );
 }
 
@@ -50,10 +78,13 @@ function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light">
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
+        <CartProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Router />
+            <Suspense fallback={null}><ChatWidget /></Suspense>
+          </TooltipProvider>
+        </CartProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

@@ -1,7 +1,968 @@
+import { seoData } from "./lib/seoData.js";
+import { handleRedirects } from "./lib/redirects.js";
+import { corsHeaders, checkAdminAuth, unauthorizedResponse, checkCsrf, csrfFailedResponse } from "./lib/cors.js";
+import { checkRateLimit } from "./lib/rateLimit.js";
+import { handleContact } from "./routes/contact.js";
+import { handleQuote } from "./routes/quote.js";
+import { handleUpload } from "./routes/upload.js";
+import { handleAdminRoute } from "./routes/admin.js";
+import { handleCalculatePrice } from "./routes/calculatePrice.js";
+import { handleServicesRoute } from "./routes/services.js";
+import { handleXmlFeed } from "./routes/xmlFeed.js";
+import { handleOrdersRoute } from "./routes/orders.js";
+import { handleAuthRoute } from "./routes/auth.js";
+import { handleAccountRoute } from "./routes/account.js";
+import { processResponse } from "./lib/seoProcessor.js";
+import { escapeHtml } from "./lib/escapeHtml.js";
+
 export default {
   async fetch(request, env) {
+
     const url = new URL(request.url);
     const path = url.pathname;
+
+    // escapeHtml imported from lib/escapeHtml.js
+    // === REDIRECTS ===
+    const redirectResponse = handleRedirects(url);
+    if (redirectResponse) return redirectResponse;
+
+
+    // === API ENDPOINTS ===
+
+    // CORS headers imported from lib/cors.js
+    // Handle CORS preflight
+    if (request.method === "OPTIONS") {
+      return new Response(null, { headers: corsHeaders });
+    }
+
+    // === RATE LIMITING (imported from lib/rateLimit.js) ===
+    const rateLimitResponse = await checkRateLimit(request, env, path);
+    if (rateLimitResponse) return rateLimitResponse;
+
+    // === CSRF KORUMASI — POST isteklerinde Origin/Referer kontrolü ===
+    if (request.method === "POST" && !path.startsWith("/api/payment/")) {
+      if (!checkCsrf(request)) return csrfFailedResponse();
+    }
+
+    // POST /api/contact — imported from routes/contact.js
+    if (path === "/api/contact" && request.method === "POST") {
+      return handleContact(request, env);
+    }
+
+    // POST /api/quote — imported from routes/quote.js
+    // GET /api/quote/:orderNo — public quote status (müşteri takibi)
+    if ((path === "/api/quote" && request.method === "POST") || (path.startsWith("/api/quote/") && request.method === "GET") || (path === "/api/quote/send-code" && request.method === "POST") || (path === "/api/quote/verify-code" && request.method === "POST")) {
+      return handleQuote(request, env, path, request.method);
+    }
+
+    // POST /api/upload — imported from routes/upload.js
+    if (path === "/api/upload" && request.method === "POST") {
+      return handleUpload(request, env);
+    }
+
+    // === ADMIN ENDPOINTS (imported from routes/admin.js) ===
+    const adminResponse = await handleAdminRoute(path, request, env);
+    if (adminResponse) return adminResponse;
+
+    // POST /api/calculate-price — imported from routes/calculatePrice.js
+    if (path === "/api/calculate-price" && request.method === "POST") {
+      return handleCalculatePrice(request, env);
+    }
+
+    // /api/services & /api/admin/services — imported from routes/services.js
+    const servicesResponse = await handleServicesRoute(path, request, env);
+    if (servicesResponse) return servicesResponse;
+
+    // GET /api/iyzico/products.xml — iyzico XML feed (public)
+    if (path === "/api/iyzico/products.xml" && request.method === "GET") {
+      return handleXmlFeed(request, env);
+    }
+
+    // === MÜŞTERİ AUTH & HESAP ===
+    // /api/auth/register, /api/auth/login
+    const authResponse = await handleAuthRoute(path, request, env);
+    if (authResponse) return authResponse;
+
+    // /api/account/profile, /api/account/orders, /api/account/files/:key
+    const accountResponse = await handleAccountRoute(path, request, env);
+    if (accountResponse) return accountResponse;
+
+    // POST /api/orders — Sepetten sipariş oluştur (public)
+    const ordersResponse = await handleOrdersRoute(path, request, env);
+    if (ordersResponse) return ordersResponse;
+
+    // === IYZICO ÖDEME ENDPOINT'LERİ ===
+
+    // === E-POSTA GÖNDERME (Resend API) ===
+    async function sendPaymentEmails(env, payment, iyzicoPaymentId) {
+      const resendKey = env.RESEND_API_KEY;
+      if (!resendKey) {
+        console.log("RESEND_API_KEY eksik — e-posta gönderilemedi");
+        return;
+      }
+
+      const refNumber = payment.payment_link_id;
+      const amount = Number(payment.amount).toFixed(2);
+      const date = new Date().toLocaleString("tr-TR", { timeZone: "Europe/Istanbul" });
+
+      // 1. Müşteriye e-posta
+      const customerHtml = `
+<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333">
+  <div style="background:#f8f9fa;padding:30px;border-radius:10px">
+    <h1 style="color:#16a34a;text-align:center">✅ Ödemeniz Alındı!</h1>
+    <p>Sayın <strong>${escapeHtml(payment.customer_name)}</strong>,</p>
+    <p>Çeviri hizmeti ödemeniz başarıyla alınmıştır.</p>
+    <div style="background:#fff;padding:20px;border-radius:8px;margin:20px 0;border:1px solid #e5e7eb">
+      <table style="width:100%;border-collapse:collapse">
+        <tr><td style="padding:8px 0;color:#666">Hizmet:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${escapeHtml(payment.description || "Çeviri Hizmeti")}</td></tr>
+        <tr><td style="padding:8px 0;color:#666">Tutar:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${amount} ₺</td></tr>
+        <tr><td style="padding:8px 0;color:#666">Tarih:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${date}</td></tr>
+        <tr><td style="padding:8px 0;color:#666">Ödeme Referansı:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${refNumber}</td></tr>
+        <tr><td style="padding:8px 0;color:#666">İşlem No:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${iyzicoPaymentId}</td></tr>
+      </table>
+    </div>
+    <p>Lütfen ödeme referans numaranızı saklayın. Çeviri işleminiz en kısa sürede başlatılacaktır.</p>
+    <hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0">
+    <p style="font-size:13px;color:#666">Mazzgord Çeviri Hizmetleri<br>Denizli, Türkiye<br>info@mazzgord.com | +90 538 629 50 40</p>
+  </div>
+</body></html>`;
+
+      // 2. Admin'e e-posta
+      const adminHtml = `
+<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333">
+  <div style="background:#f8f9fa;padding:30px;border-radius:10px">
+    <h1 style="color:#2563eb;text-align:center">💰 Yeni Ödeme Alındı!</h1>
+    <div style="background:#fff;padding:20px;border-radius:8px;margin:20px 0;border:1px solid #e5e7eb">
+      <table style="width:100%;border-collapse:collapse">
+        <tr><td style="padding:8px 0;color:#666">Müşteri:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${escapeHtml(payment.customer_name)}</td></tr>
+        <tr><td style="padding:8px 0;color:#666">E-posta:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${escapeHtml(payment.customer_email)}</td></tr>
+        <tr><td style="padding:8px 0;color:#666">Telefon:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${escapeHtml(payment.customer_phone || "—")}</td></tr>
+        <tr><td style="padding:8px 0;color:#666">Hizmet:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${escapeHtml(payment.description || "Çeviri Hizmeti")}</td></tr>
+        <tr><td style="padding:8px 0;color:#666">Tutar:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${amount} ₺</td></tr>
+        <tr><td style="padding:8px 0;color:#666">Tarih:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${date}</td></tr>
+        <tr><td style="padding:8px 0;color:#666">Ödeme Referansı:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${refNumber}</td></tr>
+        <tr><td style="padding:8px 0;color:#666">İşlem No:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${iyzicoPaymentId}</td></tr>
+      </table>
+    </div>
+    <p style="text-align:center"><a href="https://mazzgord.com/admin" style="display:inline-block;padding:10px 24px;background:#2563eb;color:#fff;text-decoration:none;border-radius:6px;font-weight:bold">Admin Paneli</a></p>
+  </div>
+</body></html>`;
+
+      try {
+        // Müşteriye gönder
+        await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${resendKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: "Mazzgord <info@mazzgord.com>",
+            to: [payment.customer_email],
+            subject: "Ödemeniz Alındı — Mazzgord Çeviri Hizmetleri",
+            html: customerHtml,
+          }),
+        });
+
+        // Admin'e gönder
+        await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${resendKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: "Mazzgord <info@mazzgord.com>",
+            to: ["info@mazzgord.com"],
+            subject: `Yeni Ödeme: ${amount} ₺ — ${escapeHtml(payment.customer_name)}`,
+            html: adminHtml,
+          }),
+        });
+
+      } catch (err) {
+        console.log("E-posta gönderme hatası:", String(err));
+      }
+    }
+
+    // iyzico auth signature (V2) — SDK'ya birebir uygun
+    async function iyzicoAuth(apiKey, secretKey, uri, body) {
+      const random = String(Date.now()) + Math.random().toString(8).slice(2);
+      const encoder = new TextEncoder();
+      const dataToSign = random + uri + JSON.stringify(body);
+      const key = await crypto.subtle.importKey(
+        'raw', encoder.encode(secretKey),
+        { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
+      );
+      const sigBuffer = await crypto.subtle.sign('HMAC', key, encoder.encode(dataToSign));
+      const sigBytes = new Uint8Array(sigBuffer);
+      let hex = '';
+      for (let i = 0; i < sigBytes.length; i++) {
+        hex += sigBytes[i].toString(16).padStart(2, '0');
+      }
+      const authParams = `apiKey:${apiKey}&randomKey:${random}&signature:${hex}`;
+      const authHeader = `IYZWSv2 ` + btoa(authParams);
+      return { authHeader, random };
+    }
+
+    // POST /api/payment/create — Admin: ödeme linki oluştur
+    if (path === "/api/payment/create" && request.method === "POST") {
+      try {
+        if (!checkAdminAuth(request, env)) return unauthorizedResponse();
+        const body = await request.json();
+        const { quote_id, amount, description, customer_name, customer_email, customer_phone } = body;
+
+        if (!amount || !customer_name || !customer_email) {
+          return new Response(JSON.stringify({ success: false, error: "Eksik alan" }), {
+            status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+
+        const linkId = crypto.randomUUID().replace(/-/g, "").substring(0, 16);
+
+        await env.DB.prepare(
+          "INSERT INTO payments (quote_id, amount, description, customer_name, customer_email, customer_phone, payment_link_id, status) VALUES (?, ?, ?, ?, ?, ?, ?, 'pending')"
+        ).bind(
+          quote_id || null, amount, description || "Çeviri Hizmeti",
+          customer_name, customer_email, customer_phone || null, linkId
+        ).run();
+
+        return new Response(JSON.stringify({ success: true, payment_link_id: linkId, payment_url: `https://mazzgord.com/odeme?id=${linkId}` }), {
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      } catch (err) {
+        return new Response(JSON.stringify({ success: false, error: "Sunucu hatasi" }), {
+          status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+    }
+
+    // GET /api/payment/:id — Müşteri: ödeme bilgisi getir
+    if (path.startsWith("/api/payment/") && !path.startsWith("/api/payment/create") && !path.startsWith("/api/payment/verify") && !path.startsWith("/api/payment/callback") && request.method === "GET") {
+      try {
+        const linkId = path.replace("/api/payment/", "");
+        const result = await env.DB.prepare(
+          "SELECT * FROM payments WHERE payment_link_id = ?"
+        ).bind(linkId).first();
+
+        if (!result) {
+          return new Response(JSON.stringify({ success: false, error: "Ödeme bulunamadı" }), {
+            status: 404, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+
+        return new Response(JSON.stringify({ success: true, data: result }), {
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      } catch (err) {
+        return new Response(JSON.stringify({ success: false, error: "Sunucu hatasi" }), {
+          status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+    }
+
+    // POST /api/payment/initialize — Müşteri: iyzico 3D Secure başlat
+    if (path === "/api/payment/initialize" && request.method === "POST") {
+      try {
+        const body = await request.json();
+        const { payment_link_id } = body;
+
+        const payment = await env.DB.prepare(
+          "SELECT * FROM payments WHERE payment_link_id = ?"
+        ).bind(payment_link_id).first();
+
+        if (!payment) {
+          return new Response(JSON.stringify({ success: false, error: "Ödeme bulunamadı" }), {
+            status: 404, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+
+        if (payment.status === "paid") {
+          return new Response(JSON.stringify({ success: false, error: "Bu ödeme zaten tamamlanmış" }), {
+            status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+
+        const apiKey = env.IYZICO_API_KEY;
+        const secretKey = env.IYZICO_SECRET_KEY;
+        const baseUrl = "https://api.iyzipay.com";
+        const conversationId = `mazzgord-${payment.id}-${Date.now()}`;
+
+        const priceStr = Number(payment.amount).toFixed(2);
+        const buyerId = `BY${payment.id}`;
+        const basketId = `BS${payment.id}`;
+        const itemId = `IT${payment.id}`;
+
+        const requestBody = {
+          locale: "tr",
+          conversationId,
+          price: priceStr,
+          paidPrice: priceStr,
+          currency: "TRY",
+          basketId,
+          paymentChannel: "WEB",
+          paymentGroup: "PRODUCT",
+          enabledInstallments: [1, 2, 3, 6, 9],
+          callbackUrl: `https://mazzgord.com/odeme/sonuc?link=${payment_link_id}`,
+          buyer: {
+            id: buyerId,
+            name: payment.customer_name.split(" ")[0] || payment.customer_name,
+            surname: payment.customer_name.split(" ").slice(1).join(" ") || "Müşteri",
+            gsmNumber: (payment.customer_phone || "+905000000000").replace(/\s/g, "").replace(/^(\+?90)?0*/, "+90"),
+            email: payment.customer_email,
+            identityNumber: "11111111111",
+            lastLoginDate: new Date().toISOString().replace("T", " ").substring(0, 19),
+            registrationDate: new Date().toISOString().replace("T", " ").substring(0, 19),
+            registrationAddress: "Kınıklı Mah., Pamukkale, Denizli, 20160",
+            ip: request.headers.get("CF-Connecting-IP") || "85.34.78.112",
+            city: "Denizli",
+            country: "TR",
+            zipCode: "20160"
+          },
+          shippingAddress: {
+            contactName: payment.customer_name,
+            city: "Denizli",
+            country: "TR",
+            address: "Kınıklı Mah., Pamukkale, Denizli, 20160",
+            zipCode: "20160"
+          },
+          billingAddress: {
+            contactName: payment.customer_name,
+            city: "Denizli",
+            country: "TR",
+            address: "Kınıklı Mah., Pamukkale, Denizli, 20160",
+            zipCode: "20160"
+          },
+          basketItems: [{
+            id: itemId,
+            name: payment.description || "Çeviri Hizmeti",
+            category1: "Hizmet",
+            category2: "Çeviri",
+            itemType: "VIRTUAL",
+            price: priceStr
+          }]
+        };
+
+        if (!apiKey || !secretKey) {
+          return new Response(JSON.stringify({ success: false, error: "iyzico API key'leri eksik" }), {
+            status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+
+
+        const uri = "/payment/iyzipos/checkoutform/initialize/auth/ecom";
+        const { authHeader, random } = await iyzicoAuth(apiKey, secretKey, uri, requestBody);
+
+        const iyzicoResponse = await fetch(`${baseUrl}/payment/iyzipos/checkoutform/initialize/auth/ecom`, {
+          method: "POST",
+          headers: {
+            "Authorization": authHeader,
+            "x-iyzi-rnd": random,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify(requestBody)
+        });
+
+        const iyzicoData = await iyzicoResponse.json();
+
+        // Conversation ID'yi kaydet
+        await env.DB.prepare(
+          "UPDATE payments SET iyzico_conversation_id = ? WHERE payment_link_id = ?"
+        ).bind(conversationId, payment_link_id).run();
+
+        if (iyzicoData.status === "success" && iyzicoData.paymentPageUrl) {
+          return new Response(JSON.stringify({
+            success: true,
+            payment_page_url: iyzicoData.paymentPageUrl
+          }), {
+            headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        } else {
+          return new Response(JSON.stringify({
+            success: false,
+            error: iyzicoData.errorMessage || iyzicoData.errorGroup || "iyzico hatası",
+            raw: iyzicoData,
+
+          }), {
+            status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+      } catch (err) {
+        return new Response(JSON.stringify({ success: false, error: "Sunucu hatasi" }), {
+          status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+    }
+
+    // POST /api/payment/verify — 3D Secure dönüşünü doğrula
+    if (path === "/api/payment/verify" && request.method === "POST") {
+      try {
+        const body = await request.json();
+        const { token, conversation_id, link_id } = body;
+
+        const payment = await env.DB.prepare(
+          "SELECT * FROM payments WHERE payment_link_id = ?"
+        ).bind(link_id).first();
+
+        if (!payment) {
+          return new Response(JSON.stringify({ success: false, error: "Ödeme bulunamadı" }), {
+            status: 404, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+
+        const apiKey = env.IYZICO_API_KEY;
+        const secretKey = env.IYZICO_SECRET_KEY;
+        const baseUrl = "https://api.iyzipay.com";
+
+        const requestBody = {
+          locale: "tr",
+          conversationId: conversation_id || payment.iyzico_conversation_id,
+          token: token
+        };
+
+        const uri = "/payment/iyzipos/checkoutform/auth/ecom/detail";
+        const { authHeader, random } = await iyzicoAuth(apiKey, secretKey, uri, requestBody);
+
+        const iyzicoResponse = await fetch(`${baseUrl}/payment/iyzipos/checkoutform/auth/ecom/detail`, {
+          method: "POST",
+          headers: {
+            "Authorization": authHeader,
+            "x-iyzi-rnd": random,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify(requestBody)
+        });
+
+        const iyzicoData = await iyzicoResponse.json();
+
+        if (iyzicoData.status === "success") {
+          const iyzicoPaymentId = String(iyzicoData.paymentId || token);
+          await env.DB.prepare(
+            "UPDATE payments SET status = 'paid', iyzico_payment_id = ?, paid_at = datetime('now') WHERE payment_link_id = ?"
+          ).bind(iyzicoPaymentId, link_id).run();
+
+          // E-posta bildirimi gönder (müşteri + admin)
+          try {
+            await sendPaymentEmails(env, payment, iyzicoPaymentId);
+          } catch (err) {
+            console.log("E-posta bildirim hatası:", String(err));
+          }
+
+          return new Response(JSON.stringify({ success: true, status: "paid", data: iyzicoData }), {
+            headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        } else {
+          await env.DB.prepare(
+            "UPDATE payments SET status = 'failed', iyzico_payment_id = ? WHERE payment_link_id = ?"
+          ).bind(String(iyzicoData.paymentId || token), link_id).run();
+
+          return new Response(JSON.stringify({ success: false, status: "failed", error: iyzicoData.errorMessage || "Ödeme başarısız", raw: iyzicoData }), {
+            status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+      } catch (err) {
+        return new Response(JSON.stringify({ success: false, error: "Sunucu hatasi" }), {
+          status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+    }
+
+    // POST /api/payment/refund — Admin: iyzico üzerinden iade
+    if (path === "/api/payment/refund" && request.method === "POST") {
+      try {
+        if (!checkAdminAuth(request, env)) return unauthorizedResponse();
+        const body = await request.json();
+        const { payment_link_id } = body;
+
+        if (!payment_link_id) {
+          return new Response(JSON.stringify({ success: false, error: "Ödeme ID gerekli" }), {
+            status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+
+        const payment = await env.DB.prepare(
+          "SELECT * FROM payments WHERE payment_link_id = ?"
+        ).bind(payment_link_id).first();
+
+        if (!payment) {
+          return new Response(JSON.stringify({ success: false, error: "Ödeme bulunamadı" }), {
+            status: 404, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+
+        if (payment.status !== "paid") {
+          return new Response(JSON.stringify({ success: false, error: "Sadece ödenmiş işlemler iade edilebilir" }), {
+            status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+
+        if (!payment.iyzico_payment_id) {
+          return new Response(JSON.stringify({ success: false, error: "iyzico işlem ID'si bulunamadı" }), {
+            status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+
+        const apiKey = env.IYZICO_API_KEY;
+        const secretKey = env.IYZICO_SECRET_KEY;
+        const baseUrl = "https://api.iyzipay.com";
+
+        const requestBody = {
+          locale: "tr",
+          conversationId: `refund-${payment.id}-${Date.now()}`,
+          paymentTransactionId: payment.iyzico_payment_id,
+          price: Number(payment.amount).toFixed(2),
+          currency: "TRY",
+          ip: request.headers.get("CF-Connecting-IP") || "85.34.78.112"
+        };
+
+        const uri = "/payment/iyzipos/refund";
+        const { authHeader, random } = await iyzicoAuth(apiKey, secretKey, uri, requestBody);
+
+        const iyzicoResponse = await fetch(`${baseUrl}/payment/iyzipos/refund`, {
+          method: "POST",
+          headers: {
+            "Authorization": authHeader,
+            "x-iyzi-rnd": random,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify(requestBody)
+        });
+
+        const iyzicoData = await iyzicoResponse.json();
+
+        if (iyzicoData.status === "success") {
+          await env.DB.prepare(
+            "UPDATE payments SET status = 'refunded' WHERE payment_link_id = ?"
+          ).bind(payment_link_id).run();
+          return new Response(JSON.stringify({ success: true, status: "refunded", data: iyzicoData }), {
+            headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        } else {
+          return new Response(JSON.stringify({
+            success: false,
+            error: iyzicoData.errorMessage || iyzicoData.errorGroup || "İade işlemi başarısız",
+            raw: iyzicoData
+          }), {
+            status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+      } catch (err) {
+        return new Response(JSON.stringify({ success: false, error: "Sunucu hatasi" }), {
+          status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+    }
+
+    // GET /api/payments — Admin: tüm ödemeleri listele
+    if (path === "/api/payments" && request.method === "GET") {
+      try {
+        if (!checkAdminAuth(request, env)) return unauthorizedResponse();
+        const result = await env.DB.prepare(
+          "SELECT * FROM payments ORDER BY created_at DESC LIMIT 100"
+        ).all();
+        return new Response(JSON.stringify({ success: true, data: result.results }), {
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      } catch (err) {
+        return new Response(JSON.stringify({ success: false, error: "Sunucu hatasi" }), {
+          status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+    }
+
+    // POST /api/payment/webhook — iyzico ödeme bildirimleri (secret ile doğrulanmış)
+    if (path === "/api/payment/webhook" && request.method === "POST") {
+      try {
+        // Secret token doğrulaması
+        const webhookSecret = env.WEBHOOK_SECRET;
+        const providedSecret = url.searchParams.get("secret") || "";
+        if (!webhookSecret || providedSecret !== webhookSecret) {
+          return new Response(JSON.stringify({ error: "Yetkisiz" }), {
+            status: 401, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+
+        const body = await request.json();
+        console.log("iyzico webhook:", JSON.stringify(body));
+
+        if (body.status === "success" && body.paymentId) {
+          const payment = await env.DB.prepare(
+            "SELECT * FROM payments WHERE iyzico_conversation_id = ?"
+          ).bind(body.conversationId || "").first();
+
+          if (payment) {
+            await env.DB.prepare(
+              "UPDATE payments SET status = 'paid', iyzico_payment_id = ?, paid_at = datetime('now') WHERE id = ?"
+            ).bind(String(body.paymentId), payment.id).run();
+            // E-posta bildirimi gönder
+            try { await sendPaymentEmails(env, payment, String(body.paymentId)); } catch (e) { console.log("Webhook e-posta hatası:", String(e)); }
+          }
+        }
+        // Token ile de ara
+        if (body.status === "success" && body.token) {
+          const payment = await env.DB.prepare(
+            "SELECT * FROM payments WHERE payment_link_id = ?"
+          ).bind(body.token || "").first();
+          if (payment) {
+            await env.DB.prepare(
+              "UPDATE payments SET status = 'paid', paid_at = datetime('now') WHERE id = ?"
+            ).bind(payment.id).run();
+            // E-posta bildirimi gönder
+            try { await sendPaymentEmails(env, payment, String(body.paymentId || body.token)); } catch (e) { console.log("Webhook e-posta hatası:", String(e)); }
+          }
+        }
+        // Başarısız ödeme
+        if (body.status === "failure") {
+          const payment = await env.DB.prepare(
+            "SELECT * FROM payments WHERE iyzico_conversation_id = ?"
+          ).bind(body.conversationId || "").first();
+          if (payment) {
+            await env.DB.prepare(
+              "UPDATE payments SET status = 'failed' WHERE id = ?"
+            ).bind(payment.id).run();
+          }
+        }
+
+        return new Response(JSON.stringify({ status: "success" }), {
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      } catch (err) {
+        return new Response(JSON.stringify({ success: false, error: "Sunucu hatasi" }), {
+          status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+    }
+
+    // iyzico callback POST handler — token'ı URL'e taşı ve GET redirect
+    if (path === "/odeme/sonuc" && request.method === "POST") {
+      try {
+        const formData = await request.formData();
+        const token = formData.get("token") || "";
+        const conversationId = formData.get("conversationId") || formData.get("conversation_id") || "";
+        const status = formData.get("status") || "";
+        const linkId = formData.get("link") || "";
+
+        // GET redirect — SPA token'ı query param'dan okusun
+        const params = new URLSearchParams();
+        if (linkId) params.set("link", linkId);
+        if (token) params.set("token", token);
+        if (conversationId) params.set("conversationId", conversationId);
+        if (status) params.set("status", status);
+
+        return Response.redirect(`https://mazzgord.com/odeme/sonuc?${params.toString()}`, 302);
+      } catch (err) {
+        return Response.redirect("https://mazzgord.com/odeme/sonuc?status=error", 302);
+      }
+    }
+
+    // GET /api/pricing — Fiyat listesi (public)
+    if (path === "/api/pricing" && request.method === "GET") {
+      try {
+        const result = await env.DB.prepare(
+          "SELECT * FROM pricing ORDER BY category, document_name"
+        ).all();
+        return new Response(JSON.stringify({ success: true, data: result.results }), {
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      } catch (err) {
+        return new Response(JSON.stringify({ success: false, error: "Sunucu hatasi" }), {
+          status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+    }
+
+
+    // POST /api/chat — AI Çeviri Asistanı
+    if (path === "/api/chat" && request.method === "POST") {
+      try {
+        const body = await request.json();
+        const { messages, sessionId } = body;
+
+        if (!messages || !Array.isArray(messages) || messages.length === 0) {
+          return new Response(JSON.stringify({ success: false, error: "Mesaj yok" }), {
+            status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+
+        // --- KORUMA: Mesaj uzunluk ve adet limiti (token israfini onle) ---
+        const MAX_MSG_LEN = 2000;
+        const MAX_MSG_COUNT = 30;
+        if (messages.length > MAX_MSG_COUNT) {
+          return new Response(JSON.stringify({
+            success: false,
+            error: "Cok fazla mesaj. Lutfen yeni bir sohbet baslatin."
+          }), {
+            status: 429, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+        const lastMsg = messages[messages.length - 1];
+        if (lastMsg && lastMsg.content && lastMsg.content.length > MAX_MSG_LEN) {
+          return new Response(JSON.stringify({
+            success: false,
+            error: "Mesaj cok uzun. Lutfen daha kisa yazin veya info@mazzgord.com adresine e-posta gonderin."
+          }), {
+            status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+
+        // --- KORUMA: Ayni mesaj 3 kez tekrari -> insana yonlendir ---
+        const userMsgs = messages.filter(m => m.role === "user").map(m => m.content);
+        if (userMsgs.length >= 3) {
+          const last3 = userMsgs.slice(-3);
+          if (last3[0] === last3[1] && last3[1] === last3[2]) {
+            return new Response(JSON.stringify({
+              success: true,
+              reply: "Sanirim bu konuda netlesmedi. info@mazzgord.com adresine yazarsaniz detayli yanit verelim.",
+              sessionId: sessionId || Date.now().toString(),
+            }), {
+              headers: { "Content-Type": "application/json", ...corsHeaders },
+            });
+          }
+        }
+
+        // D1'den tum pricing data cek (context icin)
+        let pricingContext = "";
+        try {
+          const prices = await env.DB.prepare(
+            "SELECT document_name, yeminli_price, noter_price, apostil_price, category FROM pricing ORDER BY category, document_name"
+          ).all();
+          if (prices.results && prices.results.length > 0) {
+            pricingContext = "\n\nGUNCEL FIYAT LISTESI (sabit fiyatlar, sayfa başına degil):\n" +
+              prices.results.map(p => {
+                let line = `- ${p.document_name}: Yeminli ${p.yeminli_price} TL`;
+                if (p.noter_price) line += `, Noter onayli ${p.noter_price} TL`;
+                if (p.apostil_price) line += `, Apostil ${p.apostil_price} TL`;
+                return line;
+              }).join("\n");
+          }
+        } catch(e) { /* pricing tablosu yoksa devam et */ }
+
+        // D1'den satis teklifi bilgilerini cek (sartlar, kapsam, iletisim)
+        let proposalContext = "";
+        try {
+          const proposal = await env.DB.prepare(
+            "SELECT section, content FROM service_proposal"
+          ).all();
+          if (proposal.results && proposal.results.length > 0) {
+            proposalContext = "\n\nSATIS TEKLIFI BILGILERI (müşteriye teklif/email oluştururken bunları referans al):\n" +
+              proposal.results.map(p => `[${p.section}]: ${p.content}`).join("\n\n");
+          }
+        } catch(e) { /* service_proposal tablosu yoksa devam et */ }
+
+        const systemPrompt = `Sen Mazzgord Çeviri Hizmetleri'nin profesyonel AI satış danışmanısın. Denizli'de 15+ yıllık deneyimle çeviri hizmetleri sunan güvenilir bir firmayı temsil ediyorsun. Amacın müşteriye doğru bilgi vermek, güven oluşturmak ve teklif formuna yönlendirerek satışı kapatmak.
+
+HİZMETLER:
+- Yeminli tercüme (noter onaylı, resmi belgeler için)
+- Teknik çeviri (mühendislik, tıp, yazılım)
+- Akademik çeviri (tez, makale, bildiri)
+- Vize çevirisi (Schengen, ABD, İngiltere)
+- İngilizce-Türkçe çift yönlü çeviri
+
+BLOG BİLGİLERİN (bu konularda bilgi sahibisin):
+- Yeminli tercüme: Noter onaylı, resmi belgeler için gerekli. Pasaport, diploma, evlilik cüzdanı gibi belgeler.
+- Teknik çeviri: Mühendislik, tıp, yazılım, otomotiv sektörleri. Terminoloji yönetimi kritik.
+- Akademik çeviri: Tez, makale, bildiri. APA formatı, akademik üslup önemli.
+- Hukuki çeviri: Sözleşme, mahkeme kararı, vekaletname, patent. Tek kelime hayati önem taşıyabilir.
+- Vize çevirisi: Schengen, ABD, İngiltere, Kanada. Resmi belgeler yeminli tercüme gerektirir.
+- Tıbbi çeviri: Klinik araştırma, ilaç prospektüsü, tıbbi cihaz kılavuzu. Hassasiyet kritik.
+- Yerelleştirme: Web sitesi, yazılım, pazarlama. Kültürel adaptasyon.
+- Çeviri teknolojileri: CAT araçları, çeviri belleği, makine çevirisi. İnsan-teknoloji işbirliği.
+- Çeviri hataları: Mekanik çeviri, terminoloji tutarsızlığı, kültürel uygunsuzluk.
+- Google Translate vs profesyonel: Doğruluk, gizlilik, hukuki geçerlilik farkları.
+- Noter onaylı çeviri: Apostil, yeminli tercüme, noter onayı süreçleri.
+- İngilizce sözleşme çevirisi: Hukuki terminoloji, sorumluluk, gizlilik hükümleri.
+- İngilizce edebi metin: Deyimler, metaforlar, kültürel nüanslar.
+- İngilizce mektup/e-posta: Resmi ve gündelik yazışma formatları.
+- Çevirmenlik kariyeri: Uzmanlık alanları, CAT araçları, portfolyo yönetimi.
+- Kitap/edebi çeviri: Roman, hikaye, şiir çevirisi. Kültürel adaptasyon ve edebi üslup önemli. Süre içeriğe göre değişir, /teklif formundan teklif alınmalı.
+
+FİYATLANDIRMA:
+- Aşağıdaki GÜNCEL FİYAT LİSTESİ'ni kullan. Fiyatlar SABİT'tir, sayfa başına değildir.
+- Fiyat sorulduğunda listedeki fiyatı ver, örnek: "Pasaport çevirisi yeminli 1000 TL'dir."
+
+TESLİMAT:
+- Kısa belgeler (pasaport, diploma, vekaletname vb.): 3-5 iş günü
+- Hızlı: 1-2 gün (ek ücret)
+- Acil: 24 saat (ek ücret)
+- Uzun projeler (kitap, tez, teknik doküman, sözleşme paketi): Süre içeriğe göre değişir. Kitap çevirisi için haftalar/aylar sürebilir. Bu tür projelerde süre ve fiyat için /teklif formunu doldurmasını iste.
+- ASLA kitap, tez veya büyük projeler için "24 saat" veya "1-2 gün" gibi süreler söyleme. Bu tür projelerde "süre içeriğe ve uzunluğa göre değişir, /teklif formundan detaylı teklif alabilirsiniz" de.
+
+İLETİŞİM:
+- E-posta: info@mazzgord.com
+- Telefon/WhatsApp: +90 538 629 50 40
+- Konum: Denizli, Pamukkale
+- Ödeme: iyzipay güvenli ödeme
+
+SENİN KİŞİLİĞİN:
+- Profesyonel ama samimi bir danışmansın. Soğuk ve robotik değilsin.
+- Müşteriye "siz" diye hitap edersin, saygılı ve sıcaksın.
+- Girişimci ruhun var — müşteriyi anlamaya çalışır, ihtiyacını tespit edersin.
+- Çeviri uzmanısın — yukarıdaki blog konularında bilgi sahibisin ve bu bilgileri doğal şekilde paylaşırsın.
+- Satış odaklısın ama baskıcı değilsin. Doğal bir akışla müşteriyi teklif formuna yönlendirirsin.
+
+KONUŞMA TARZIN:
+- Düzgün, akıcı, profesyonel Türkçe konuş. Tüm Türkçe karakterleri doğru kullan: ç, ğ, ı, ö, ş, ü, İ.
+- Kısa ama anlamlı cümleler kur (max 4-5 cümle).
+- "Başka sorunuz var mı?" gibi robotik kapanışlar YAPMA. Bunun yerine sohbete doğal bir şekilde devam et.
+- Örnek kapanışlar: "Hangi belgeyi çevirtmek istiyorsunuz?", "Belgenizi /teklif formundan yükleyebilirsiniz, hemen bakalım.", "Acil mi yoksa standart teslimat mı işinizi görür?"
+- Müşteri bilgi aldığında, bir sonraki adımı öner. Bekleme yerine aktif ol.
+- Sorulara doğrudan cevap ver, sonra ilgili bir soru sorarak sohbeti devam ettir.
+
+SATIŞ TEKNİKLERİN:
+- Müşteri fiyat sorduğunda: Fiyatı ver, sonra hemen "Belgenizi /teklif formundan yükleyebilirsiniz, size özel teklif hazırlayalım" de.
+- Müşteri tereddütte olduğunda: Güven ver — "15 yıllık deneyimimizle, yeminli tercümanlarımız garantisiyle" gibi ifadeler kullan.
+- Müşteri belge türü belirtmediğinde: "Hangi belgeyi çevirtmek istiyorsunuz?" diye sor.
+- Müşteri acil ihtiyaç duyduğunda: "Acil teslimat seçeneğimizle 24 saat içinde teslim edebiliriz" de ve /teklif'e yönlendir.
+- Müşteri kitap, tez, katalog veya büyük proje sorduğunda: "Bu tür projelerde süre ve fiyat içeriğe göre belirlenir. /teklif formundan belgenizi yükleyin, size özel teklif hazırlayalım" de. Asla kısa süre veya sabit fiyat verme.
+- Müşteri hangi belgeyi çevirtmek istediğini söylemiyorsa: "Hangi belgeyi çevirtmek istiyorsunuz?" diye sor. Belge türüne göre süre ve fiyat değişir.
+- Müşteri fiyatın yanlış olduğunu söylerse: "Fiyatlarımız güncellenmiş olabilir, en güncel fiyat için /fiyatlar sayfamızı kontrol edebilirsiniz" de.
+- Müşteri çeviri hakkında genel bilgi istediğinde: Blog bilgilerini kullanarak açıkla, sonra "Bu konuda /blog sayfamızda detaylı bir yazımız var" de.
+
+BİLMEDİĞİN KONULAR VE UÇ NOKTALAR:
+- Çeviri dışı bir konu sorulursa ve satışa çeviremeyeceksen: Kibarca "Bu konuda bilgim sınırlı, ancak çeviri hizmetlerimizle ilgili size yardımcı olabilirim" de ve sohbeti çeviriye getir.
+- Çeviriyle ilgili ama bilmediğin bir detay sorulursa: "Bu konuyu teyit etmek için info@mazzgord.com adresine yazabilir veya /teklif formunu doldurabilirsiniz" de. Asla uydurma.
+- Müşteri ilgisi olmayan bir konuda ısrar ederse: Kibarca konuyu çeviri hizmetlerine getir.
+
+UÇ NOKTA SENARYOLARI (tuzaklara düşme, uyanık ol):
+- "Kitap çevirisi yapıyor musunuz?" → "Evet, kitap çevirisi yapıyoruz. Süre ve fiyat kitabın uzunluğuna göre değişir. /teklif formundan kitabınızı yükleyin, size özel teklif hazırlayalım." Kısa süre veya sabit fiyat VERME.
+- "Almanca/Fransızca/Arapça çeviri yapıyor musunuz?" → "Şu anda İngilizce-Türkçe çeviri hizmeti veriyoruz. Diğer diller için sizi ileride bilgilendirebiliriz." Asla "evet" deme.
+- "Google Translate kullanırsam daha ucuz olmaz mı?" → "Google Translate ücretsiz olabilir ancak resmi belgelerde geçerli değildir. Yeminli tercüme için profesyonel çeviri şarttır. /fiyatlar sayfamızdan fiyatlarımıza bakabilirsiniz."
+- "Başka firma daha ucuz verdi" → "Fiyatlarımız yeminli tercüman garantisi ve 15 yıllık deneyimle belirlenir. Kalite ve güven için /teklif formundan size özel teklif alabilirsiniz." Asla fiyat kırmaya gitme.
+- "Kaç sayfa çevirebilirsiniz?" → "Sınırlama yok, ancak uzun projelerde süre değişir. /teklif formundan belgenizi yükleyin."
+- "Noter onayı şart mı?" → "Resmi belgeler için evet. Hangi belge için olduğunu söylersen tam bilgi veririm."
+- "Belgeyi göndereyim mi?" → "Evet, /teklif formundan yükleyebilirsiniz. Hemen inceleyip teklif hazırlayalım."
+- "Siz gerçek bir insansınız?" → "Ben Mazzgord'un AI asistanıyım ancak size gerçek bir danışman gibi yardımcı oluyorum. Çeviri sürecinizle ilgili her adımda buradayım."
+- "Bana yeminli tercüman bağlayın" → "Yeminli tercümanlarımız size /teklif formunu doldurduktan sonra bağlanır. Formu doldurursanız hemen süreci başlatalım."
+- "Fiyat pazarlık yapar mısınız?" → "Fiyatlarımız belge türüne göre belirlenir. /teklif formundan özel teklif alabilirsiniz." Asla indirim vaat etme.
+- "Kaç yıldır yapıyorsunuz?" → "15+ yıllık deneyimimizle Denizli'de profesyonel çeviri hizmetleri sunuyoruz."
+- "Sabit telefonunuz var mı?" → "WhatsApp ve +90 538 629 50 40 numarasından bize ulaşabilirsiniz."
+- "Siz kimsiniz?" → "Ben Mazzgord Çeviri Hizmetleri'nin AI asistanıyım. Çeviri hizmetlerimiz hakkında size bilgi veriyor ve teklif sürecinizi hızlandırıyorum."
+- "Çeviri yapmadan önce ücret alıyor musunuz?" → "Ücretsiz teklif alabilirsiniz. Onayladıktan sonra iyzipay güvenli ödeme ile ödeme yaparsınız."
+- "Belgelerim gizli kalır mı?" → "Evet, tüm belgeleriniz gizli tutulur. Müşteri gizliliği önceliğimizdir."
+- Müşteri saçma veya provoke edici bir şey söylerse: Sükunetle "Anlıyorum, çeviri hizmetlerimizle ilgili size nasıl yardımcı olabilirim?" de. Asla tartışmaya girme.
+- Müşteri AI'ı test etmeye çalışırsa (tuzak sorular): Sadece çeviri hizmetleriyle ilgili yanıt ver. Çeviri dışı test sorularında "Ben çeviri hizmetleri danışmanıyım, bu konuda size yardımcı olabilirim" de.
+- Müşteri aynı soruyu tekrar tekrar sorarsa: "Sanırım bu konuda netleşmedi, info@mazzgord.com adresine yazarsanız detaylı yanıt verelim" de.
+
+ÖZEL VE BİLİNMEYEN PROJELER (çok önemli):
+- Eğer müşteri standart belge türleri dışında bir şey sorarsa (kitap, film senaryosu, dizi, oyun, reklam, pazarlama metni, şiir, manga, çizgi roman vb.): ASLA "uzmanız", "profesyoneliz", "bu konuda uzmanlaşmış bir şirketiz" gibi ifadeler kullanma.
+- Bunun yerine şöyle de: "Bu tür özel projeler için sizi doğrudan ekibimize bağlayabilirim. info@mazzgord.com adresine yazabilir veya WhatsApp +90 538 629 50 40 numarasından ulaşabilirsiniz. Size özel çözüm sunalım."
+- Asla bilmediğin bir proje türü için süre, fiyat veya detay uydurma. Sadece insana yönlendir.
+- Standart hizmetler (yeminli tercüme, teknik, akademik, vize, İngilizce-Türkçe) dışındaki her şey "özel proje" sayılır. Bu durumda kısa ve net ol: "Bu özel bir proje, sizi ekibimize bağlayayım" de ve iletişim bilgilerini ver.
+- Asla "3-5 iş günü" gibi standart süreler verme özel projeler için. "Süre projeye göre değişir, ekibimiz size detaylı bilgi verir" de.
+
+YASAKLAR:
+- Asla "sayfa başına" veya "50-150 TL" gibi tahmini fiyatlar verme.
+- Asla "yanıt veremiyorum" veya "üzgünüm" gibi ifadeler kullanma.
+- Asla "Başka sorunuz var mı?" gibi robotik kapanışlar yapma.
+- Asla Türkçe karakterleri atlama veya yanlış yazma.
+- Asla bilmediğin bir konuda bilgi uydurma. "Bilmiyorum" demek profesyoneldir.
+- Sadece İngilizce-Türkçe çeviri yaptığınızı belirt, başka dil sorduysa yönlendir.
+${pricingContext}${proposalContext}`;
+
+        // AI'ya gonder — once Llama-3.3-70B, basarisiz olursa Llama-3.1-8B'ye fallback
+        let reply = "";
+        let aiResponse;
+        try {
+          aiResponse = await env.AI.run("@cf/meta/llama-3.3-70b-instruct-fp8-fast", {
+            messages: [
+              { role: "system", content: systemPrompt },
+              ...messages.slice(-10)
+            ],
+            max_tokens: 500,
+            temperature: 0.3,
+          });
+          reply = aiResponse.response || aiResponse.result || aiResponse.text || "";
+        } catch(e1) {
+          console.log("Llama-3.3-70B hatasi:", String(e1));
+          try {
+            aiResponse = await env.AI.run("@cf/meta/llama-3.1-8b-instruct-fast", {
+              messages: [
+                { role: "system", content: systemPrompt },
+                ...messages.slice(-10)
+              ],
+              max_tokens: 300,
+            });
+            reply = aiResponse.response || "";
+          } catch(e2) {
+            console.log("Llama hatasi:", String(e2));
+          }
+        }
+
+        if (!reply) {
+          reply = "Su anda teknik bir sorun yasiyoruz. Lutfen info@mazzgord.com adresine e-posta gonderin veya +90 538 629 50 40 numarasindan bize ulasin.";
+        }
+
+        // --- TOKEN LOG: Maliyet takibi ---
+        const estInputTokens = Math.ceil((systemPrompt.length + messages.reduce((s, m) => s + (m.content || "").length, 0)) / 4);
+        const estOutputTokens = Math.ceil((reply || "").length / 4);
+
+        return new Response(JSON.stringify({
+          success: true,
+          reply: reply,
+          sessionId: sessionId || Date.now().toString(),
+        }), {
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      } catch (err) {
+        return new Response(JSON.stringify({ success: false, error: "AI hatasi" }), {
+          status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+    }
+
+    // /gtm/ ve /gtm isteklerini engelle
+    if (path === "/gtm" || path.startsWith("/gtm/")) {
+      return new Response("Not Found", { status: 404, headers: { "Content-Type": "text/plain" } });
+    }
+
+    // robots.txt
+    if (path === "/robots.txt") {
+      return new Response(
+        "User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /odeme\n\n# AI Botlari\nUser-agent: GPTBot\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /\n\nUser-agent: CCBot\nAllow: /\n\nUser-agent: Google-Extended\nAllow: /\n\nUser-agent: anthropic-ai\nAllow: /\n\nUser-agent: YandexBot\nAllow: /\n\nUser-agent: DuckDuckBot\nAllow: /\n\nUser-agent: Bingbot\nAllow: /\n\nUser-agent: Slurp\nAllow: /\n\nSitemap: https://mazzgord.com/sitemap.xml",
+        {
+          headers: {
+            "Content-Type": "text/plain; charset=utf-8",
+            "Cache-Control": "public, max-age=86400"
+          }
+        }
+      );
+    }
+
+    // sitemap.xml — sitemap index
+    if (path === "/sitemap.xml") {
+      const index = '<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <sitemap><loc>https://mazzgord.com/sitemap-pages.xml</loc></sitemap>\n  <sitemap><loc>https://mazzgord.com/sitemap-blog.xml</loc></sitemap>\n</sitemapindex>';
+      return new Response(index, {
+        headers: { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=86400" }
+      });
+    }
+
+    // sitemap-pages.xml — ana sayfalar
+    if (path === "/sitemap-pages.xml") {
+      const pages = ["/", "/hakkimizda", "/yeminli-tercume", "/teknik-ceviri", "/akademik-ceviri", "/vize-ceviri", "/ingilizce-turkce-ceviri", "/pasaport-ceviri", "/diploma-ceviri", "/fiyatlar", "/blog", "/gizlilik", "/kullanim-kosullari", "/cerez-politikasi", "/sss", "/teklif"];
+      const today = new Date().toISOString().split("T")[0];
+      const urls = pages.map(p =>
+        "  <url>\n    <loc>https://mazzgord.com" + p + "</loc>\n    <lastmod>" + today + "</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>" + (p === "/" ? "1.0" : "0.9") + "</priority>\n  </url>"
+      ).join("\n");
+      return new Response(
+        '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + "\n</urlset>",
+        { headers: { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=86400" } }
+      );
+    }
+
+    // sitemap-blog.xml — blog yazıları
+    if (path === "/sitemap-blog.xml") {
+      const blogPosts = Object.keys(seoData).filter(p => p.startsWith("/blog/"));
+      const today = new Date().toISOString().split("T")[0];
+      const urls = blogPosts.map(p =>
+        "  <url>\n    <loc>https://mazzgord.com" + p + "</loc>\n    <lastmod>" + today + "</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>"
+      ).join("\n");
+      return new Response(
+        '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + "\n</urlset>",
+        { headers: { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=86400" } }
+      );
+    }
 
     if (path === "/ads.txt") {
       return new Response(
@@ -15,197 +976,23 @@ export default {
       );
     }
 
-    let response = await env.ASSETS.fetch(request);
-    const contentType = response.headers.get("content-type") || "";
-
-    let headers = new Headers(response.headers);
-    if (!contentType.includes("text/html")) {
-      headers.set("X-Content-Type-Options", "nosniff");
-      headers.set("X-Frame-Options", "DENY");
-      headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
-      if (
-        contentType.includes("css") ||
-        contentType.includes("javascript") ||
-        contentType.includes("image/") ||
-        contentType.includes("font/")
-      ) {
-        headers.set("Cache-Control", "public, max-age=31536000, immutable");
-      }
-      return new Response(response.body, {
-        status: response.status,
-        statusText: response.statusText,
-        headers
-      });
+    let response;
+    try {
+      response = await env.ASSETS.fetch(request);
+    } catch (err) {
+      return new Response(
+        "<!doctype html><html><head><title>Sunucu Hatası | Mazzgord</title></head><body><h1>Sunucu Hatası</h1><p>Sayfa geçici olarak kullanılamıyor. Lütfen daha sonra tekrar deneyin.</p></body></html>",
+        {
+          status: 500,
+          headers: {
+            "Content-Type": "text/html; charset=utf-8",
+            "Cache-Control": "no-store"
+          }
+        }
+      );
     }
-
-    const seoData = {
-      "/": {
-        "title": "Profesyonel Çeviri Hizmetleri | Yeminli Tercüme | Mazzgord Denizli",
-        "description": "Denizli'de profesyonel çeviri hizmetleri, yeminli tercüme, teknik çeviri, akademik ve hukuki çeviri. Hızlı teslimat, resmi belge çevirileri ve uzmanlaşmış tercüman kadrosu."
-      },
-      "/hakkimizda": {
-        "title": "Hakkımızda | Mazzgord Çeviri Bürosu Denizli",
-        "description": "Mazzgord çeviri bürosu olarak Denizli'de 10+ yıllık deneyimimizle profesyonel tercüme hizmetleri sunuyoruz."
-      },
-      "/yeminli-tercume": {
-        "title": "Yeminli Tercüme Hizmetleri | Denizli | Mazzgord",
-        "description": "Denizli'de noter onaylı yeminli tercüme hizmetleri. Pasaport, diploma, evlilik cüzdanı ve resmi belge çevirileri."
-      },
-      "/teknik-ceviri": {
-        "title": "Teknik Çeviri ve Mühendislik Tercümesi | Mazzgord",
-        "description": "Teknik kılavuz, mühendislik raporu ve kullanım kılavuzu çevirileri. Alanında uzman teknik tercüman kadromuzla hizmetinizdeyiz."
-      },
-      "/akademik-ceviri": {
-        "title": "Akademik Çeviri ve Tez Tercümesi | Mazzgord",
-        "description": "Tez, makale, özet ve akademik yayın çevirileri. APA formatına uygun profesyonel akademik tercüme hizmetleri."
-      },
-      "/vize-ceviri": {
-        "title": "Vize Başvuru Çeviri Hizmetleri | Mazzgord",
-        "description": "Schengen, Amerika, İngiltere ve Kanada vize başvuruları için profesyonel belge çevirisi ve yeminli tercüme hizmetleri."
-      },
-      "/ingilizce-turkce-ceviri": {
-        "title": "İngilizce Türkçe Profesyonel Çeviri | Mazzgord",
-        "description": "İngilizce Türkçe çift yönlü profesyonel çeviri hizmetleri. Yeminli tercüme, teknik ve akademik İngilizce çeviri."
-      },
-      "/blog": {
-        "title": "Blog - Çeviri İpuçları ve Sektör Haberleri | Mazzgord",
-        "description": "Profesyonel çeviri sektöründen ipuçları, yeminli tercüme rehberleri ve dil haberleri. Mazzgord blogu."
-      },
-      "/blog/yeminli-tercume": {
-        "title": "Yeminli Tercüme Nedir? Rehber 2024 | Mazzgord Blog",
-        "description": "Yeminli tercüme nedir, nasıl yapılır ve hangi belgeler için gereklidir? Detaylı rehber ve ipuçları."
-      },
-      "/blog/vize-ceviri": {
-        "title": "Vize İçin Gerekli Çeviri Belgeleri | Mazzgord Blog",
-        "description": "Vize başvurularında gerekli çeviri belgeleri, yeminli tercüme şartları ve profesyonel çeviri hizmetleri."
-      },
-      "/blog/teknik-ceviri": {
-        "title": "Teknik Çeviri Nasıl Yapılır? | Mazzgord Blog",
-        "description": "Teknik çeviri süreçleri, terminoloji yönetimi ve profesyonel teknik tercüme standartları hakkında bilgi."
-      },
-      "/blog/ceviri-ipuclari": {
-        "title": "Profesyonel Çeviri İpuçları | Mazzgord Blog",
-        "description": "Profesyonel çevirmenlerden pratik ipuçları, kaliteli çeviri teknikleri ve yaygın hatalardan kaçınma yolları."
-      },
-      "/blog/ceviri-sektoru": {
-        "title": "Çeviri Sektörü Trendleri 2024 | Mazzgord Blog",
-        "description": "Çeviri sektöründeki son gelişmeler, teknoloji trendleri ve gelecek öngörüleri. Sektör haberleri ve analizler."
-      },
-      "/gizlilik": {
-        "title": "Gizlilik Politikası | Mazzgord",
-        "description": "Mazzgord çeviri hizmetleri gizlilik politikası. Kişisel verilerinizin korunması ve kullanım şartları."
-      },
-      "/kullanim-kosullari": {
-        "title": "Kullanım Koşulları | Mazzgord",
-        "description": "Mazzgord web sitesi kullanım koşulları ve hizmet şartları."
-      },
-      "/cerez-politikasi": {
-        "title": "Çerez Politikası | Mazzgord",
-        "description": "Mazzgord web sitesi çerez politikası. Çerez kullanımı ve gizlilik tercihleri hakkında bilgi."
-      }
-    };
-
-    let normalizedPath = path.replace(/\/$/, "") || "/";
-    let data = seoData[normalizedPath];
-    if (!data && normalizedPath !== "/") {
-      data = seoData[normalizedPath + "/"];
-    }
-    if (!data) {
-      data = seoData["/"];
-    }
-
-    let html = await response.text();
-
-    html = html.replace(/<title>.*?<\/title>/i, `<title>${data.title}</title>`);
-    html = html.replace(
-      /<meta\s+name=["']description["']\s+content=["'].*?["']\s*\/?>/i,
-      `<meta name="description" content="${data.description}" />`
-    );
-
-    const canonicalUrl = `https://mazzgord.com${normalizedPath === "/" ? "/" : normalizedPath}`;
-    if (!html.includes('rel="canonical"')) {
-      html = html.replace("</head>", `  <link rel="canonical" href="${canonicalUrl}" />\n</head>`);
-    }
-
-    if (!html.includes('property="og:title"')) {
-      const ogTags =
-        `  <meta property="og:title" content="${data.title}" />\n` +
-        `  <meta property="og:description" content="${data.description}" />\n` +
-        `  <meta property="og:url" content="${canonicalUrl}" />\n` +
-        `  <meta property="og:type" content="website" />\n` +
-        `  <meta property="og:locale" content="tr_TR" />\n`;
-      html = html.replace("</head>", `${ogTags}</head>`);
-    }
-
-    if (!html.includes('name="twitter:card"')) {
-      const twitterTags =
-        `  <meta name="twitter:card" content="summary_large_image" />\n` +
-        `  <meta name="twitter:title" content="${data.title}" />\n` +
-        `  <meta name="twitter:description" content="${data.description}" />\n`;
-      html = html.replace("</head>", `${twitterTags}</head>`);
-    }
-
-    if (!html.includes("application/ld+json")) {
-      const schema = {
-        "@context": "https://schema.org",
-        "@type": "ProfessionalService",
-        "name": "Mazzgord Çeviri Hizmetleri",
-        "description": data.description,
-        "url": "https://mazzgord.com",
-        "areaServed": { "@type": "City", "name": "Denizli", "addressCountry": "TR" },
-        "serviceType": "Çeviri ve Tercüme Hizmetleri",
-        "address": { "@type": "PostalAddress", "addressLocality": "Denizli", "addressCountry": "TR" }
-      };
-      const schemaScript = `  <script type="application/ld+json">${JSON.stringify(schema)}</script>\n`;
-      html = html.replace("</head>", `${schemaScript}</head>`);
-    }
-
-    const adsenseCode = `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8661028263390679" crossorigin="anonymous"></script>`;
-    if (!html.includes("adsbygoogle")) {
-      html = html.replace("</head>", `  ${adsenseCode}\n</head>`);
-    }
-    const adsenseMeta = `<meta name="google-adsense-account" content="ca-pub-8661028263390679">`;
-    if (!html.includes("google-adsense-account")) {
-      html = html.replace("</head>", `  ${adsenseMeta}\n</head>`);
-    }
-
-
-    const themeColor = `<meta name="theme-color" content="#0f172a">`;
-    if (!html.includes("theme-color")) {
-      html = html.replace("</head>", `  ${themeColor}\n</head>`);
-    }
-
-    const ogSiteName = `<meta property="og:site_name" content="Mazzgord">`;
-    if (!html.includes("og:site_name")) {
-      html = html.replace("</head>", `  ${ogSiteName}\n</head>`);
-    }
-
-    const twitterImage = `<meta name="twitter:image" content="https://mazzgord.com/logo.png">`;
-    if (!html.includes("twitter:image")) {
-      html = html.replace("</head>", `  ${twitterImage}\n</head>`);
-    }
-
-    const hreflang = `<link rel="alternate" hreflang="tr" href="${canonicalUrl}" />`;
-    if (!html.includes("hreflang")) {
-      html = html.replace("</head>", `  ${hreflang}\n</head>`);
-    }
-
-    const languageMeta = `<meta name="language" content="Turkish">`;
-    if (!html.includes('name="language"')) {
-      html = html.replace("</head>", `  ${languageMeta}\n</head>`);
-    }
-
-    let finalHeaders = new Headers(response.headers);
-    finalHeaders.set("X-Content-Type-Options", "nosniff");
-    finalHeaders.set("X-Frame-Options", "DENY");
-    finalHeaders.set("Referrer-Policy", "strict-origin-when-cross-origin");
-    finalHeaders.set("Cache-Control", "public, max-age=0, must-revalidate");
-
-    return new Response(html, {
-      status: response.status,
-      statusText: response.statusText,
-      headers: finalHeaders
-    });
+    // === SEO HTML PROCESSING (imported from lib/seoProcessor.js) ===
+    return processResponse(response, path);
   }
 };
 

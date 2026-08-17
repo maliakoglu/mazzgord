@@ -1,13 +1,34 @@
 name = "mazzgordwebsite"
-compatibility_date = "2026-05-21"
+compatibility_date = "2026-07-01"
 main = "worker.js"
 
 [assets]
 directory = "./dist/public"
-html_handling = "auto-trailing-slash"
+html_handling = "drop-trailing-slash"
 not_found_handling = "single-page-application"
 binding = "ASSETS"
+run_worker_first = true
 
 [[routes]]
 pattern = "mazzgord.com/*"
 zone_name = "mazzgord.com"
+
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mazzgord-db"
+database_id = "f4a36869-586e-4fe2-a887-8563b24a427f"
+
+[[r2_buckets]]
+binding = "DOCS"
+bucket_name = "mazzgord-docs"
+
+[ai]
+binding = "AI"
+
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "e7c4693b9f564f978a92898d96e25f1c"

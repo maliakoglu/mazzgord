@@ -108,5 +108,23 @@ temp/
 # Webdev artifacts (checkpoint zips, migrations, etc.)
 .webdev/
 
-# Manus version file (auto-generated, not part of source)
-client/public/__manus__/version.json
+
+# Archive — old scripts and backups
+archive/
+__pycache__/
+*.pyc
+
+# Archive — old scripts and backups
+archive/
+__pycache__/
+*.pyc
+
+# Wrangler local state
+.wrangler/
+
+# Backup files
+*.bak
+*.bak.*
+
+# Redacted screenshots
+Redacted Doc Images/
