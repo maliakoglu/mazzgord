@@ -113,9 +113,9 @@ export default function Home() {
         <Process />
         <Services />
         <QuickServices />
+        <WhyChooseUs />
         <PricingPreview />
         <Testimonials openGallery={openGallery} />
-        <WhyChooseUs />
         <FAQ />
         <Contact formData={formData} handleChange={handleChange} handleSubmit={handleSubmit} submitStatus={submitStatus} />
       </main>
