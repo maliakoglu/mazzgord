@@ -1,0 +1,45 @@
+# Mazzgord Ceviri Hizmetleri
+
+> Mazzgord, Denizli merkezli profesyonel ceviri ve tercume hizmetleri sunan bir ceviri burosudur. Turkce ve Ingilizce dil ciftinde yeminli tercume, teknik ceviri, akademik ceviri ve vize cevirisi hizmetleri vermektedir.
+
+## Hizmetler
+
+- [Yeminli Tercume](https://mazzgord.com/yeminli-tercume): Resmi belgeler icin yeminli tercuman onayli Turkce-Ingilizce ceviri hizmeti.
+- [Teknik Ceviri](https://mazzgord.com/teknik-ceviri): Muhendislik, yazilim ve otomotiv sektorlerinde Turkce-Ingilizce teknik ceviri.
+- [Akademik Ceviri](https://mazzgord.com/akademik-ceviri): Tez, makale, bildiri ve arastirma raporu cevirisi (Turkce-Ingilizce).
+- [Vize Cevirisi](https://mazzgord.com/vize-ceviri): Schengen, Ingiltere, ABD, Kanada vize basvurulari icin belge cevirisi.
+- [Ingilizce-Turkce Ceviri](https://mazzgord.com/ingilizce-turkce-ceviri): Ingilizce-Turkce dil ciftinde profesyonel ceviri ve tercume.
+
+## Blog
+
+- [Blog Ana Sayfa](https://mazzgord.com/blog): Ceviri sektoru hakkinda guncel makaleler ve uzman rehberler.
+- [Yeminli Tercume Blog](https://mazzgord.com/blog/yeminli-tercume): Yeminli tercume sureci ve bilinmesi gerekenler.
+- [Vize Ceviri Blog](https://mazzgord.com/blog/vize-ceviri): Vize basvurulari icin belge cevirisi rehberi.
+- [Teknik Ceviri Blog](https://mazzgord.com/blog/teknik-ceviri): Teknik ceviri sureci ve kalite standartlari.
+- [Akademik Ceviri Blog](https://mazzgord.com/blog/akademik-ceviri): Akademik ceviri ipuclari ve rehberler.
+- [Ingilizce-Turkce Deyim Cevirisi](https://mazzgord.com/blog/ingilizce-turkce-deyim-cevirisi): Deyim cevirisinde dikkat edilmesi gerekenler.
+- [Google Translate vs Profesyonel Ceviri](https://mazzgord.com/blog/google-translate-vs-profesyonel-ceviri): Makine cevirisi ile profesyonel ceviri karsilastirmasi.
+- [Ingilizce Sozlesme Cevirisi](https://mazzgord.com/blog/ingilizce-sozlesme-cevirisi): Sozlesme cevirisinde dikkat edilmesi gerekenler.
+- [Ingilizce Mektup/Email Cevirisi](https://mazzgord.com/blog/ingilizce-mektup-email-cevirisi): Resmi ve is mektup cevirisi.
+- [Ingilizce Edebi Metin Cevirisi](https://mazzgord.com/blog/ingilizce-edebi-metin-cevirisi): Edebi metin cevirisinde sanat ve teknik.
+- [Noter Onayli Ceviri](https://mazzgord.com/blog/noter-onayli-ceviri): Noter onayli ceviri sureci ve bilinmesi gerekenler.
+
+## Kurumsal
+
+- [Hakkimizda](https://mazzgord.com/hakkimizda): Mazzgord ceviri burosu hakkinda bilgi.
+- [Fiyatlar](https://mazzgord.com/fiyatlar): Ceviri hizmetleri fiyat listesi.
+- [Teklif Al](https://mazzgord.com/teklif): Online ceviri teklifi alin.
+- [Sikca Sorulan Sorular](https://mazzgord.com/sss): Ceviri hizmetleri hakkinda SSS.
+- [Gizlilik Politikasi](https://mazzgord.com/gizlilik): Gizlilik politikasi.
+- [Kullanim Kosullari](https://mazzgord.com/kullanim-kosullari): Kullanim kosullari.
+- [Cerez Politikasi](https://mazzgord.com/cerez-politikasi): Cerez politikasi.
+
+## Iletisim
+
+- WhatsApp: +90 538 629 5040
+- E-posta: info@mazzgord.com
+- Konum: Denizli, Turkiye
+
+## Tarama Izni
+
+Bu web sitesinin icerigi, buyuk dil modelleri (LLM'ler) tarafindan egitim ve bilgi amaclli kullanilabilir. Blog makaleleri ve hizmet sayfalari kamuya aciktir.
