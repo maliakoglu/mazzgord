@@ -32,3 +32,6 @@ binding = "AI"
 [[kv_namespaces]]
 binding = "RATE_LIMIT"
 id = "e7c4693b9f564f978a92898d96e25f1c"
+
+[triggers]
+crons = ["0 3 * * *"]

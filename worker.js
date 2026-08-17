@@ -993,6 +993,31 @@ ${pricingContext}${proposalContext}`;
     }
     // === SEO HTML PROCESSING (imported from lib/seoProcessor.js) ===
     return processResponse(response, path);
+  },
+
+  // === CRON: R2 retention temizlik — süresi dolmuş dosyaları sil ===
+  async scheduled(event, env) {
+    try {
+      const now = new Date();
+      const list = await env.DOCS.list({ prefix: "uploads/" });
+      let deleted = 0;
+
+      for (const item of list.objects) {
+        const meta = await env.DOCS.head(item.key);
+        if (!meta || !meta.customMetadata || !meta.customMetadata.retention_until) continue;
+
+        const retentionUntil = new Date(meta.customMetadata.retention_until);
+        if (now > retentionUntil) {
+          await env.DOCS.delete(item.key);
+          deleted++;
+          console.log(`Deleted expired file: ${item.key}`);
+        }
+      }
+
+      console.log(`R2 cleanup complete: ${deleted} files deleted`);
+    } catch (err) {
+      console.log("R2 cleanup error:", String(err));
+    }
   }
 };
 
