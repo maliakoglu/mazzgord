@@ -212,7 +212,7 @@ export default function Fiyatlar() {
         {/* CTA */}
         <div className="mt-8 text-center">
           <a href="/teklif" className="inline-block px-8 py-4 bg-primary text-primary-foreground rounded-lg font-bold text-lg hover:bg-primary/90 transition mr-4">
-            Teklif Al
+            Belgem İçin Teklif Al
           </a>
           <a
             href="https://wa.me/905386295040?text=Merhaba,%20belgem%20için%20fiyat%20teklifi%20almak%20istiyorum."
