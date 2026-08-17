@@ -25,7 +25,13 @@ export default function BlogYeminliTercume() {
           <h2 className="text-2xl font-bold text-primary mt-8">Yeminli Tercüme ile Normal Çeviri Arasındaki Fark</h2>
           <p className="text-muted-foreground leading-relaxed">Normal çeviri herhangi bir çevirmen tarafından yapılabilir ve resmi geçerliliği yoktur. Yeminli tercüme ise yeminli tercüman tarafından yapılır ve resmi kurumlarda geçerlidir. Yeminli tercümede tercümanın imzası ve kaşesi belgenin doğruluğunu teyit eder.</p>
           <h2 className="text-2xl font-bold text-primary mt-8">Denizli'de Yeminli Tercüme</h2>
-          <p className="text-muted-foreground leading-relaxed">Denizli merkezli yeminli tercüme hizmeti veriyorum. Resmi kurumlar tarafından kabul edilen yeminli tercümelerle işlemlerinizi sorunsuz tamamlayabilirsiniz. WhatsApp üzerinden ulaşabilirsiniz; mesai saatlerinde yanıt veririm.</p>
+          <p className="text-muted-foreground leading-relaxed">Denizli merkezli yeminli tercüme hizmeti veriyorum. Resmi kurumlar tarafından çoğu durumda kabul edilen yeminli tercümelerle işlemlerinizi tamamlayabilirsiniz. Başvuru yapacağınız kurumun güncel şartlarını kontrol etmeniz gerekir. WhatsApp üzerinden ulaşabilirsiniz; mesai saatlerinde yanıt veririm.</p>
+          <h2 className="text-2xl font-bold text-primary mt-8">Yeminli Tercüme Fiyatı Nasıl Belirlenir?</h2>
+          <p className="text-muted-foreground leading-relaxed">Yeminli tercüme fiyatı belge türüne, sayfa sayısına, metin yoğunluğuna ve teslim süresine göre değişir. Standart tek sayfalık belgelerde 950 TL'den başlayan fiyatlarla hizmet veriyorum. Diploma, transkript ve yoğun içerikli belgelerde fiyat farklılık gösterebilir. Kesin fiyat belge görüldükten sonra belirlenir.</p>
+          <h2 className="text-2xl font-bold text-primary mt-8">Yeminli Tercüme Süresi</h2>
+          <p className="text-muted-foreground leading-relaxed">Standart belgeler çoğunlukla 1-3 iş günü içinde teslim edilir. Acil taleplerde aynı gün teslim kapasiteye bağlı olarak değerlendirilir. Belgenizi WhatsApp veya teklif formu üzerinden göndererek teslim süresi ve fiyat için net teklif alabilirsiniz.</p>
+          <h2 className="text-2xl font-bold text-primary mt-8">Yeminli Tercüme ve Noter Onayı Farkı</h2>
+          <p className="text-muted-foreground leading-relaxed">Yeminli tercüme, tercümanın çeviriyi imzalayıp kaşelemesidir. Noter onayı ise çevirinin noter tarafından tasdik edilmesidir. Her belge için noter onayı gerekmez; bazı kurumlar yeminli tercümeyi yeterli görebilir. Başvuru yapacağınız kurumun güncel şartlarını işlem öncesinde kontrol etmeniz gerekir.</p>
         <div className="mt-8 p-6 bg-secondary/30 rounded-xl border border-border">
           <h3 className="text-lg font-bold text-primary mb-4">İlgili Hizmetler</h3>
           <div className="grid md:grid-cols-2 gap-4">

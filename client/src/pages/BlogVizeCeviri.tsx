@@ -9,7 +9,7 @@ export default function BlogVizeCeviri() {
       date="10 Mayıs 2026"
       illustration="vize"
     >
-<p className="text-muted-foreground leading-relaxed">İngiltere vize başvurusu, dikkat ve özen gerektiren bir süreçtir. Başvuru dosyanızdaki belgelerin çevirisi, konsolosluğun istediği formata ve standartlara uygun olmalıdır. Bu rehberde İngiltere vize başvurusu için çeviri sürecini adım adım açıklıyoruz.</p>
+<p className="text-muted-foreground leading-relaxed">İngiltere vize başvurusu, dikkat ve özen gerektiren bir süreçtir. Başvuru dosyanızdaki belgelerin çevirisi, konsolosluğun istediği formata ve standartlara uygun olmalıdır. Bu rehberde İngiltere vize başvurusu için çeviri sürecini adım adım açıklıyorum.</p>
           <h2 className="text-2xl font-bold text-primary mt-8">İngiltere Vize Başvurusunda Çeviri Gereksinimleri</h2>
           
           <div className="bg-primary/5 p-6 rounded-xl border border-primary/10 my-8">

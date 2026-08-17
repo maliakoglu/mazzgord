@@ -19,7 +19,12 @@ export default function BlogTeknikCeviri() {
           <h2 className="text-2xl font-bold text-primary mt-8">4. Biçimsel Uygunluk</h2>
           <p className="text-muted-foreground leading-relaxed">Teknik belgeler genellikle belirli bir formata sahiptir. Çeviri de bu formata uygun olmalıdır. Tablolar, şekiller ve numaralandırma kaynak belgeyle uyumlu olmalıdır.</p>
           <h2 className="text-2xl font-bold text-primary mt-8">5. Kalite Kontrol</h2>
-          <p className="text-muted-foreground leading-relaxed">Teknik çeviriler mutlaka ikinci bir uzman tarafından kontrol edilmelidir. Mazzgord olarak her teknik çeviriyi çift kontrol sürecinden geçiriyoruz.</p>
+          <p className="text-muted-foreground leading-relaxed">Teknik çeviriler teslim öncesinde kaynak metinle karşılaştırılarak kontrol edilmelidir. Her teknik çeviriyi teslim öncesinde kendim kontrol ederim.</p>
+          <h2 className="text-2xl font-bold text-primary mt-8">Teknik Çeviride Dikkat Edilmesi Gereken Diğer Noktalar</h2>
+          <p className="text-muted-foreground leading-relaxed">Teknik çeviride birim dönüşümleri de önemlidir. İngilizce belgelerde inch, foot, pound gibi birimler kullanılırken Türkçede metrik sistem tercih edilir. Bu dönüşümlerin doğru yapılması, özellikle kullanım kılavuzları ve güvenlik talimatlarında kritik önem taşır.</p>
+          <p className="text-muted-foreground leading-relaxed">Kısaltmalar da teknik çeviride dikkat gerektirir. Bazı kısaltmalar her dilde aynı kalırken bazıları dilin yapısına göre değişebilir. Kısaltmanın anlamı belgede ilk kullanıldığında açıkça belirtilmeli ve tutarlı kullanılmalıdır.</p>
+          <h2 className="text-2xl font-bold text-primary mt-8">Teknik Çeviri Süreci</h2>
+          <p className="text-muted-foreground leading-relaxed">Teknik çeviri süreci, belgenin incelenmesi ile başlar. Belgenin sektörü, hedef okuyucu ve kullanım amacı belirlenir. Terminoloji oluşturulduktan sonra çeviri yapılır. Çeviri tamamlandığında kaynak metinle karşılaştırma yapılır ve biçim kontrolü gerçekleştirilir. Belgenizi göndererek teknik çeviri için net teklif alabilirsiniz.</p>
         <div className="mt-8 p-6 bg-secondary/30 rounded-xl border border-border">
           <h3 className="text-lg font-bold text-primary mb-4">İlgili Hizmetler</h3>
           <div className="grid md:grid-cols-2 gap-4">
