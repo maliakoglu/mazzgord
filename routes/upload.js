@@ -46,8 +46,18 @@ export async function handleUpload(request, env) {
     const fileName = `${safeName}_${dateStr}_${timeStr}_${safeFileName}`;
     const fileKey = `uploads/${fileName}`;
 
+    // KVKK: retention süresi — 90 gün sonra otomatik silme için metadata
+    const retentionDays = 90;
+    const retentionUntil = new Date(Date.now() + retentionDays * 24 * 60 * 60 * 1000).toISOString();
+
     await env.DOCS.put(fileKey, file.stream(), {
       httpMetadata: { contentType: file.type },
+      customMetadata: {
+        uploaded_at: new Date().toISOString(),
+        retention_until: retentionUntil,
+        customer_name: customerName,
+        original_filename: file.name,
+      },
     });
 
     return new Response(JSON.stringify({ success: true, file_key: fileKey, file_name: file.name }), {
