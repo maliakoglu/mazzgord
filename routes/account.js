@@ -37,12 +37,12 @@ export async function handleAccountRoute(path, request, env) {
     try {
       // Quotes (teklifler)
       const quotes = await env.DB.prepare(
-        "SELECT id, name, email, source_language, target_language, document_type, page_count, word_count, urgency, delivery_method, order_status, estimated_price, delivery_date, created_at FROM quotes WHERE email = ? ORDER BY created_at DESC"
+        "SELECT id, name, email, source_language, target_language, document_type, page_count, word_count, urgency, delivery_method, order_status, estimated_price, delivery_date, delivered_file_key, created_at FROM quotes WHERE email = ? ORDER BY created_at DESC"
       ).bind(customer.email).all();
 
       // Orders (siparişler)
       const orders = await env.DB.prepare(
-        "SELECT payment_link_id, customer_name, items_json, total, status, delivery_method, shipping_tracking, created_at FROM orders WHERE customer_email = ? ORDER BY created_at DESC"
+        "SELECT payment_link_id, customer_name, items_json, total, status, delivery_method, shipping_tracking, delivered_file_key, created_at FROM orders WHERE customer_email = ? ORDER BY created_at DESC"
       ).bind(customer.email).all();
 
       // Payments (ödeme geçmişi)
@@ -76,6 +76,7 @@ export async function handleAccountRoute(path, request, env) {
       const fileKey = decodeURIComponent(path.replace("/api/account/files/", ""));
 
       // Bu dosya müşteriye ait mi? — quotes veya orders tablosundan kontrol
+      // 1) Kaynak dosya (file_key) kontrolü
       const quoteFile = await env.DB.prepare(
         "SELECT id FROM quotes WHERE email = ? AND file_key = ?"
       ).bind(customer.email, fileKey).first();
@@ -90,7 +91,18 @@ export async function handleAccountRoute(path, request, env) {
           try { const keys = JSON.parse(o.file_key); if (Array.isArray(keys)) allKeys.push(...keys); } catch {}
         }
         if (!allKeys.includes(fileKey)) {
-          return jsonResponse({ success: false, error: "Dosya bulunamadi veya yetkiniz yok" }, 403);
+          // 2) Teslim edilen dosya (delivered_file_key) kontrolü
+          const deliveredQuote = await env.DB.prepare(
+            "SELECT id FROM quotes WHERE email = ? AND delivered_file_key = ?"
+          ).bind(customer.email, fileKey).first();
+          if (!deliveredQuote) {
+            const deliveredOrder = await env.DB.prepare(
+              "SELECT payment_link_id FROM orders WHERE customer_email = ? AND delivered_file_key = ?"
+            ).bind(customer.email, fileKey).first();
+            if (!deliveredOrder) {
+              return jsonResponse({ success: false, error: "Dosya bulunamadi veya yetkiniz yok" }, 403);
+            }
+          }
         }
       }
 

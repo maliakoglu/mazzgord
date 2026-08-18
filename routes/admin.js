@@ -164,13 +164,52 @@ export async function handleAdminRoute(path, request, env) {
     }
   }
 
-  // PUT /api/quote/:id/deliver — Admin: teklif siparişini teslim et
+  // PUT /api/quote/:id/deliver — Admin: teklif siparişini teslim et (dosya yükleme + durum)
   if (path.startsWith("/api/quote/") && path.endsWith("/deliver") && request.method === "PUT") {
     try {
       if (!checkAdminAuth(request, env)) return unauthorizedResponse();
       const quoteId = path.replace("/api/quote/", "").replace("/deliver", "");
-      const body = await request.json();
-      const { tracking_number, delivery_note } = body;
+
+      // Hem multipart (dosya+yük) hem JSON (sadece durum) destekle
+      const contentType = request.headers.get("Content-Type") || "";
+      let tracking_number = null;
+      let delivery_note = null;
+      let deliveredFileKey = null;
+
+      if (contentType.includes("multipart/form-data")) {
+        const formData = await request.formData();
+        tracking_number = formData.get("tracking_number") || null;
+        delivery_note = formData.get("delivery_note") || null;
+        const file = formData.get("file");
+        if (file) {
+          const MAX_FILE_SIZE = 25 * 1024 * 1024;
+          if (file.size > MAX_FILE_SIZE) {
+            return new Response(JSON.stringify({ success: false, error: "Dosya boyutu 25MB'den buyuk" }), {
+              status: 413, headers: { "Content-Type": "application/json", ...corsHeaders },
+            });
+          }
+          const safeFileName = String(file.name)
+            .replace(/ğ/g, "g").replace(/ü/g, "u").replace(/ş/g, "s")
+            .replace(/ı/g, "i").replace(/ö/g, "o").replace(/ç/g, "c")
+            .replace(/[^a-zA-Z0-9._-]/g, "_");
+          const dateStr = new Date().toISOString().split("T")[0];
+          deliveredFileKey = `delivered/MZ-${String(quoteId).padStart(5, "0")}_${dateStr}_${safeFileName}`;
+          await env.DOCS.put(deliveredFileKey, file.stream(), {
+            httpMetadata: { contentType: file.type || "application/octet-stream" },
+            customMetadata: {
+              quote_id: quoteId,
+              uploaded_at: new Date().toISOString(),
+              original_filename: file.name,
+              type: "delivered",
+            },
+          });
+        }
+      } else {
+        const body = await request.json();
+        tracking_number = body.tracking_number || null;
+        delivery_note = body.delivery_note || null;
+        deliveredFileKey = body.delivered_file_key || null;
+      }
 
       const quote = await env.DB.prepare(
         "SELECT * FROM quotes WHERE id = ?"
@@ -183,8 +222,8 @@ export async function handleAdminRoute(path, request, env) {
       }
 
       await env.DB.prepare(
-        "UPDATE quotes SET order_status = 'delivered', shipping_tracking = ? WHERE id = ?"
-      ).bind(tracking_number || null, quoteId).run();
+        "UPDATE quotes SET order_status = 'delivered', shipping_tracking = ?, delivered_file_key = ? WHERE id = ?"
+      ).bind(tracking_number || null, deliveredFileKey, quoteId).run();
 
       // Müşteriye teslimat e-postası gönder
       try {
@@ -193,7 +232,7 @@ export async function handleAdminRoute(path, request, env) {
           const isDigital = quote.delivery_method !== "shipping";
           const orderNo = `MZ-${String(quote.id).padStart(5, "0")}`;
           const deliveryHtml = isDigital
-            ? `<p>Çeviri belgeleriniz hazırdır. Belgeler kısa süre içinde e-posta ve WhatsApp üzerinden size iletilecektir.</p>`
+            ? `<p>Çeviri belgeleriniz hazırdır. ${deliveredFileKey ? `Çevrilmiş belgenizi <a href="https://mazzgord.com/hesabim" style="color:#2563eb">Hesabım</a> sayfanızdan indirebilirsiniz.` : "Belgeler kısa süre içinde e-posta ve WhatsApp üzerinden size iletilecektir."}</p>`
             : `<p>Çeviri belgeleriniz hazırdır ve kargo ile gönderilmiştir.</p>${tracking_number ? `<p><strong>Kargo Takip No:</strong> ${tracking_number}</p>` : ""}`;
 
           const html = `

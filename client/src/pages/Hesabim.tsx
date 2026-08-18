@@ -4,8 +4,8 @@ import { useLocation } from "wouter";
 import { User, FileText, Download, LogOut, Loader2, AlertCircle, Package, CreditCard, Clock } from "lucide-react";
 
 interface Customer { id: number; name: string; email: string; phone: string; }
-interface Quote { id: number; source_language: string; target_language: string; document_type: string; order_status: string; estimated_price: number; created_at: string; }
-interface Order { payment_link_id: string; customer_name: string; items: any[]; total: number; status: string; created_at: string; }
+interface Quote { id: number; source_language: string; target_language: string; document_type: string; order_status: string; estimated_price: number; delivered_file_key: string | null; created_at: string; }
+interface Order { payment_link_id: string; customer_name: string; items: any[]; total: number; status: string; delivered_file_key: string | null; created_at: string; }
 interface Payment { amount: number; description: string; status: string; payment_link_id: string; created_at: string; }
 
 const STATUS_LABELS: Record<string, string> = {
@@ -58,9 +58,12 @@ export default function Hesabim() {
     navigate("/");
   };
 
+  const [downloading, setDownloading] = useState<string | null>(null);
+
   const handleDownload = async (fileKey: string) => {
     const token = localStorage.getItem("mazzgord_token");
     if (!token) return;
+    setDownloading(fileKey);
     try {
       const res = await fetch(`/api/account/files/${encodeURIComponent(fileKey)}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -73,10 +76,13 @@ export default function Hesabim() {
         a.download = fileKey.split("/").pop() || "dosya";
         a.click();
         URL.revokeObjectURL(url);
+      } else {
+        alert("Dosya bulunamadı veya henüz teslim edilmedi.");
       }
     } catch {
-      alert("Dosya indirilemedi");
+      alert("Dosya indirilemedi. Lütfen tekrar deneyin.");
     }
+    setDownloading(null);
   };
 
   if (loading) {
@@ -157,6 +163,14 @@ export default function Hesabim() {
                   {q.document_type && <p className="text-sm text-muted-foreground mb-1">Belge: {q.document_type}</p>}
                   {q.estimated_price && <p className="text-sm font-medium text-foreground">Tutar: {q.estimated_price} ₺</p>}
                   <p className="text-xs text-muted-foreground mt-2">{new Date(q.created_at).toLocaleDateString("tr-TR")}</p>
+                  {q.delivered_file_key && (q.order_status === "delivered" || q.order_status === "completed") && (
+                    <button
+                      onClick={() => handleDownload(q.delivered_file_key!)}
+                      className="mt-3 flex items-center gap-2 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition"
+                    >
+                      {downloading === q.delivered_file_key ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />} Çevrilmiş Belgeyi İndir
+                    </button>
+                  )}
                 </div>
               ))
             )}
@@ -182,6 +196,14 @@ export default function Hesabim() {
                   </div>
                   <p className="text-sm font-medium text-foreground">{o.total} ₺</p>
                   <p className="text-xs text-muted-foreground mt-2">{new Date(o.created_at).toLocaleDateString("tr-TR")}</p>
+                  {o.delivered_file_key && (o.status === "delivered" || o.status === "completed") && (
+                    <button
+                      onClick={() => handleDownload(o.delivered_file_key!)}
+                      className="mt-3 flex items-center gap-2 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition"
+                    >
+                      {downloading === o.delivered_file_key ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />} Çevrilmiş Belgeyi İndir
+                    </button>
+                  )}
                 </div>
               ))
             )}
