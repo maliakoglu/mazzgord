@@ -109,6 +109,13 @@ export default function IngilizceTurkceCeviri() {
           </div>
         </div>
         <div className="mb-8">
+          <h2 className="text-2xl font-bold text-primary mb-6">İlgili Blog Yazıları</h2>
+          <div className="grid md:grid-cols-2 gap-4 mb-8">
+            <a href="/blog/ingilizce-turkce-deyim-cevirisi" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">İngilizce-Türkçe Deyim Çevirisi</a>
+            <a href="/blog/google-translate-vs-profesyonel-ceviri" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Google Translate mi, Profesyonel Çeviri mi?</a>
+            <a href="/blog/ingilizce-edebi-metin-cevirisi" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">İngilizce Edebi Metin Çevirisi</a>
+          </div>
+
           <h2 className="text-2xl font-bold text-primary mb-6">Diğer Hizmetlerimiz</h2>
           <div className="grid md:grid-cols-2 gap-4">
             <a href="/yeminli-tercume" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Yeminli Tercüme</a>
