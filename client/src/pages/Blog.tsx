@@ -3,6 +3,7 @@ import { useState } from "react";
 export default function Blog() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const posts = [
+    { title: "Vize Labirentinde Kaybolmayın: Konsoloslukların Kabul Ettiği 6 Kritik Tercüme Formatı", date: "18 Ağustos 2026", slug: "/blog/vize-formatlari" },
     { title: "Yeminli Tercüme Fiyatları 2026", date: "12 Ağustos 2026", slug: "/blog/yeminli-tercume-fiyatlari-2026" },
     { title: "Pasaport Tercümesi Nasıl Yapılır? 2026 Adım Adım Rehber", date: "12 Ağustos 2026", slug: "/blog/pasaport-tercumesi-nasil-yapilir" },
     { title: "Noter Onaylı Çeviri Nasıl Yapılır? 2026 Adım Adım Rehber", date: "29 Temmuz 2026", slug: "/blog/noter-onayli-ceviri" },

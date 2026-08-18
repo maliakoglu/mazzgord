@@ -82,6 +82,7 @@ ROUTES = [
     "/blog/noter-onayli-ceviri",
     "/blog/pasaport-tercumesi-nasil-yapilir",
     "/blog/yeminli-tercume-fiyatlari-2026",
+    "/blog/vize-formatlari",
 ]
 
 print(f"📋 {len(ROUTES)} route render edilecek.")

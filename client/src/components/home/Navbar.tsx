@@ -36,10 +36,8 @@ export default function Navbar({ mobileOpen, setMobileOpen, servicesOpen, setSer
                 <a href="/diploma-ceviri" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition">Diploma ve Transkript</a>
               </div>
             </div>
-            <a href="/fiyatlar" className="text-foreground hover:text-primary transition">Fiyatlar</a>
             <a href="/blog" className="text-foreground hover:text-primary transition">Rehber</a>
             <a href="/hakkimizda" className="text-foreground hover:text-primary transition">Hakkımda</a>
-            <a href="/#portfolio" className="text-foreground hover:text-primary transition">Örnek Çalışmalar</a>
             <a href="#contact" className="text-foreground hover:text-primary transition">İletişim</a>
             <a href="/teklif" className="bg-primary text-primary-foreground px-5 py-2 rounded-lg font-medium hover:bg-primary/90 transition no-underline">Teklif Al</a>
             <a href="/hesabim" className="flex items-center gap-1 text-foreground hover:text-primary transition"><User className="w-4 h-4" /> Hesabım</a>
@@ -72,10 +70,8 @@ export default function Navbar({ mobileOpen, setMobileOpen, servicesOpen, setSer
                 <a href="/diploma-ceviri" className="block px-4 py-2 text-foreground hover:bg-accent rounded-lg text-base no-underline transition" onClick={() => setMobileOpen(false)}>Diploma ve Transkript</a>
               </div>
             )}
-            <a href="/fiyatlar" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Fiyatlar</a>
             <a href="/blog" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Rehber</a>
             <a href="/hakkimizda" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Hakkımda</a>
-            <a href="/#portfolio" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Örnek Çalışmalar</a>
             <a href="#contact" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>İletişim</a>
             <a href="/teklif" className="block px-4 py-3 bg-primary text-primary-foreground font-medium hover:bg-primary/90 rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Teklif Al</a>
             <a href="/hesabim" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Hesabım</a>
