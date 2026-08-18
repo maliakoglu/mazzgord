@@ -147,10 +147,10 @@ export default function Admin() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [deliveringOrderId, setDeliveringOrderId] = useState<string | null>(null);
-  const [deliverForm, setDeliverForm] = useState({ tracking_number: "", delivery_note: "" });
+  const [deliverForm, setDeliverForm] = useState<{ tracking_number: string; delivery_note: string; file: File | null }>({ tracking_number: "", delivery_note: "", file: null });
   const [deliverLoading, setDeliverLoading] = useState(false);
   const [deliveringQuoteId, setDeliveringQuoteId] = useState<number | null>(null);
-  const [quoteDeliverForm, setQuoteDeliverForm] = useState({ tracking_number: "", delivery_note: "" });
+  const [quoteDeliverForm, setQuoteDeliverForm] = useState<{ tracking_number: string; delivery_note: string; file: File | null }>({ tracking_number: "", delivery_note: "", file: null });
   const [quoteDeliverLoading, setQuoteDeliverLoading] = useState(false);
   const [editingQuoteId, setEditingQuoteId] = useState<number | null>(null);
   const [editForm, setEditForm] = useState({ order_status: "", estimated_price: "", translator: "", delivery_date: "" });
@@ -409,21 +409,19 @@ export default function Admin() {
   const deliverOrder = async (linkId: string) => {
     setDeliverLoading(true);
     try {
+      const formData = new FormData();
+      formData.append("tracking_number", deliverForm.tracking_number || "");
+      formData.append("delivery_note", deliverForm.delivery_note || "");
+      if (deliverForm.file) formData.append("file", deliverForm.file);
       const res = await fetch(`/api/orders/${linkId}/deliver`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${adminToken}`,
-        },
-        body: JSON.stringify({
-          tracking_number: deliverForm.tracking_number || null,
-          delivery_note: deliverForm.delivery_note || null,
-        }),
+        headers: { Authorization: `Bearer ${adminToken}` },
+        body: formData,
       });
       const data = await res.json();
       if (data.success) {
         setDeliveringOrderId(null);
-        setDeliverForm({ tracking_number: "", delivery_note: "" });
+        setDeliverForm({ tracking_number: "", delivery_note: "", file: null });
         fetchData();
       } else {
         alert("Hata: " + (data.error || "Teslim edilemedi"));
@@ -438,7 +436,8 @@ export default function Admin() {
     setDeliveringOrderId(linkId);
     setDeliverForm({
       tracking_number: "",
-      delivery_note: deliveryMethod === "digital"
+      delivery_note: deliveryMethod === "digital",
+      file: null
         ? "Çeviri belgeleri e-posta ve WhatsApp ile gönderilecektir."
         : "",
     });
@@ -447,21 +446,19 @@ export default function Admin() {
   const deliverQuote = async (quoteId: number) => {
     setQuoteDeliverLoading(true);
     try {
+      const formData = new FormData();
+      formData.append("tracking_number", quoteDeliverForm.tracking_number || "");
+      formData.append("delivery_note", quoteDeliverForm.delivery_note || "");
+      if (quoteDeliverForm.file) formData.append("file", quoteDeliverForm.file);
       const res = await fetch(`/api/quote/${quoteId}/deliver`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${adminToken}`,
-        },
-        body: JSON.stringify({
-          tracking_number: quoteDeliverForm.tracking_number || null,
-          delivery_note: quoteDeliverForm.delivery_note || null,
-        }),
+        headers: { Authorization: `Bearer ${adminToken}` },
+        body: formData,
       });
       const data = await res.json();
       if (data.success) {
         setDeliveringQuoteId(null);
-        setQuoteDeliverForm({ tracking_number: "", delivery_note: "" });
+        setQuoteDeliverForm({ tracking_number: "", delivery_note: "", file: null });
         fetchData();
       } else {
         alert("Hata: " + (data.error || "Teslim edilemedi"));
@@ -853,6 +850,12 @@ export default function Admin() {
                               </div>
                             )}
                             <div>
+                              <label className="block text-sm font-medium text-foreground mb-1">Çevrilmiş Dosya (PDF/DOCX)</label>
+                              <input type="file" accept=".pdf,.docx,.doc,.txt,.rtf"
+                                onChange={(e) => setDeliverForm({ ...deliverForm, file: e.target.files?.[0] || null })}
+                                className="w-full text-sm text-muted-foreground file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:bg-primary/90" />
+                            </div>
+                            <div>
                               <label className="block text-sm font-medium text-foreground mb-1">Teslimat Notu (opsiyonel)</label>
                               <textarea value={deliverForm.delivery_note}
                                 onChange={(e) => setDeliverForm({ ...deliverForm, delivery_note: e.target.value })}
@@ -865,7 +868,7 @@ export default function Admin() {
                                 className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg font-medium text-sm hover:bg-emerald-700 transition disabled:opacity-50">
                                 {deliverLoading ? <><RefreshCw className="w-4 h-4 animate-spin" /> Gönderiliyor...</> : <><CheckCircle2 className="w-4 h-4" /> Teslim Et ve E-posta Gönder</>}
                               </button>
-                              <button onClick={() => { setDeliveringOrderId(null); setDeliverForm({ tracking_number: "", delivery_note: "" }); }}
+                              <button onClick={() => { setDeliveringOrderId(null); setDeliverForm({ tracking_number: "", delivery_note: "", file: null }); }}
                                 className="px-4 py-2 bg-secondary text-foreground rounded-lg font-medium text-sm hover:bg-secondary/80 transition">
                                 İptal
                               </button>
@@ -1039,6 +1042,12 @@ export default function Admin() {
                             </div>
                           )}
                           <div>
+                            <label className="block text-sm font-medium text-foreground mb-1">Çevrilmiş Dosya (PDF/DOCX)</label>
+                            <input type="file" accept=".pdf,.docx,.doc,.txt,.rtf"
+                              onChange={(e) => setQuoteDeliverForm({ ...quoteDeliverForm, file: e.target.files?.[0] || null })}
+                              className="w-full text-sm text-muted-foreground file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:bg-primary/90" />
+                          </div>
+                          <div>
                             <label className="block text-sm font-medium text-foreground mb-1">Teslimat Notu (opsiyonel)</label>
                             <textarea value={quoteDeliverForm.delivery_note}
                               onChange={(e) => setQuoteDeliverForm({ ...quoteDeliverForm, delivery_note: e.target.value })}
@@ -1051,7 +1060,7 @@ export default function Admin() {
                               className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg font-medium text-sm hover:bg-emerald-700 transition disabled:opacity-50">
                               {quoteDeliverLoading ? <><RefreshCw className="w-4 h-4 animate-spin" /> Gönderiliyor...</> : <><CheckCircle2 className="w-4 h-4" /> Teslim Et ve E-posta Gönder</>}
                             </button>
-                            <button onClick={() => { setDeliveringQuoteId(null); setQuoteDeliverForm({ tracking_number: "", delivery_note: "" }); }}
+                            <button onClick={() => { setDeliveringQuoteId(null); setQuoteDeliverForm({ tracking_number: "", delivery_note: "", file: null }); }}
                               className="px-4 py-2 bg-secondary text-foreground rounded-lg font-medium text-sm hover:bg-secondary/80 transition">
                               İptal
                             </button>
