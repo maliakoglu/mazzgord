@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite --host",
-    "build": "vite build && python3 prerender.py && python3 add-meta-tags.py",
+    "build": "vite build && python3 prerender.py && python3 scripts/generate_sitemap.py && python3 add-meta-tags.py",
     "preview": "vite preview --host",
     "check": "tsc --noEmit",
     "test": "vitest run",

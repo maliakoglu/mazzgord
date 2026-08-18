@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /giris
+Disallow: /hesabim
+Disallow: /sepet
+Disallow: /odeme
+Disallow: /odeme/sonuc
+Disallow: /api/
+
+Sitemap: https://mazzgord.com/sitemap.xml
