@@ -56,7 +56,10 @@ export default defineConfig({
         manualChunks: {
           "vendor-react": ["react", "react-dom", "wouter"],
           "vendor-forms": ["react-hook-form", "@hookform/resolvers", "zod"],
-          "vendor-ui": ["sonner", "vaul", "cmdk", "embla-carousel-react", "input-otp", "react-resizable-panels", "react-day-picker", "next-themes", "lucide-react", "framer-motion", "recharts"],
+          "vendor-ui": ["sonner", "vaul", "cmdk", "embla-carousel-react", "input-otp", "react-resizable-panels", "react-day-picker", "next-themes"],
+          "vendor-icons": ["lucide-react"],
+          "vendor-motion": ["framer-motion"],
+          "vendor-charts": ["recharts"],
         },
       },
     },

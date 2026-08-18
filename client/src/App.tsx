@@ -29,7 +29,7 @@ import { Route, Switch, useParams } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { CartProvider } from "./contexts/CartContext";
-import Home from "./pages/Home";
+const Home = lazy(() => import("./pages/Home"));
 
 // Dinamik blog route — registry'den slug'a göre component seç
 function BlogRoute() {
