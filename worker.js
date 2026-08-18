@@ -12,6 +12,7 @@ import { handleXmlFeed } from "./routes/xmlFeed.js";
 import { handleOrdersRoute } from "./routes/orders.js";
 import { handleAuthRoute } from "./routes/auth.js";
 import { handleAccountRoute } from "./routes/account.js";
+import { handleMessagesRoute } from "./routes/messages.js";
 import { processResponse } from "./lib/seoProcessor.js";
 import { escapeHtml } from "./lib/escapeHtml.js";
 
@@ -86,6 +87,10 @@ export default {
     // /api/account/profile, /api/account/orders, /api/account/files/:key
     const accountResponse = await handleAccountRoute(path, request, env);
     if (accountResponse) return accountResponse;
+
+    // /api/messages/order/:quoteId — Sipariş bazlı mesajlaşma
+    const messagesResponse = await handleMessagesRoute(path, request, env);
+    if (messagesResponse) return messagesResponse;
 
     // POST /api/orders — Sepetten sipariş oluştur (public)
     const ordersResponse = await handleOrdersRoute(path, request, env);

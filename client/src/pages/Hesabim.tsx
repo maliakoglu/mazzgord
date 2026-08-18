@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useLocation } from "wouter";
-import { User, FileText, Download, LogOut, Loader2, AlertCircle, Package, CreditCard, Clock } from "lucide-react";
+import { User, FileText, Download, LogOut, Loader2, AlertCircle, Package, CreditCard, Clock, MessageCircle, Send, X } from "lucide-react";
 
 interface Customer { id: number; name: string; email: string; phone: string; }
 interface Quote { id: number; source_language: string; target_language: string; document_type: string; order_status: string; estimated_price: number; delivered_file_key: string | null; created_at: string; }
@@ -59,6 +59,11 @@ export default function Hesabim() {
   };
 
   const [downloading, setDownloading] = useState<string | null>(null);
+  const [chatQuoteId, setChatQuoteId] = useState<number | null>(null);
+  const [chatMessages, setChatMessages] = useState<any[]>([]);
+  const [chatInput, setChatInput] = useState("");
+  const [chatLoading, setChatLoading] = useState(false);
+  const [chatSending, setChatSending] = useState(false);
 
   const handleDownload = async (fileKey: string) => {
     const token = localStorage.getItem("mazzgord_token");
@@ -83,6 +88,51 @@ export default function Hesabim() {
       alert("Dosya indirilemedi. Lütfen tekrar deneyin.");
     }
     setDownloading(null);
+  };
+
+  const openChat = async (quoteId: number) => {
+    setChatQuoteId(quoteId);
+    setChatLoading(true);
+    const token = localStorage.getItem("mazzgord_token");
+    if (!token) return;
+    try {
+      const res = await fetch(`/api/messages/order/${quoteId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const result = await res.json();
+      if (result.success) setChatMessages(result.data);
+    } catch {
+      setChatMessages([]);
+    }
+    setChatLoading(false);
+  };
+
+  const closeChat = () => {
+    setChatQuoteId(null);
+    setChatMessages([]);
+    setChatInput("");
+  };
+
+  const sendMessage = async () => {
+    if (!chatInput.trim() || !chatQuoteId) return;
+    const token = localStorage.getItem("mazzgord_token");
+    if (!token) return;
+    setChatSending(true);
+    try {
+      const res = await fetch(`/api/messages/order/${chatQuoteId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ message: chatInput.trim() }),
+      });
+      const result = await res.json();
+      if (result.success) {
+        setChatMessages(prev => [...prev, { id: Date.now(), sender: "customer", message: chatInput.trim(), created_at: new Date().toISOString() }]);
+        setChatInput("");
+      }
+    } catch {
+      alert("Mesaj gönderilemedi");
+    }
+    setChatSending(false);
   };
 
   if (loading) {
@@ -163,14 +213,22 @@ export default function Hesabim() {
                   {q.document_type && <p className="text-sm text-muted-foreground mb-1">Belge: {q.document_type}</p>}
                   {q.estimated_price && <p className="text-sm font-medium text-foreground">Tutar: {q.estimated_price} ₺</p>}
                   <p className="text-xs text-muted-foreground mt-2">{new Date(q.created_at).toLocaleDateString("tr-TR")}</p>
-                  {q.delivered_file_key && (q.order_status === "delivered" || q.order_status === "completed") && (
+                  <div className="flex gap-2 mt-3">
                     <button
-                      onClick={() => handleDownload(q.delivered_file_key!)}
-                      className="mt-3 flex items-center gap-2 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition"
+                      onClick={() => openChat(q.id)}
+                      className="flex items-center gap-2 px-3 py-1.5 bg-secondary text-secondary-foreground rounded-lg text-sm font-medium hover:bg-secondary/80 transition"
                     >
-                      {downloading === q.delivered_file_key ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />} Çevrilmiş Belgeyi İndir
+                      <MessageCircle className="w-4 h-4" /> Mesaj
                     </button>
-                  )}
+                    {q.delivered_file_key && (q.order_status === "delivered" || q.order_status === "completed") && (
+                      <button
+                        onClick={() => handleDownload(q.delivered_file_key!)}
+                        className="flex items-center gap-2 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition"
+                      >
+                        {downloading === q.delivered_file_key ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />} İndir
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))
             )}
@@ -236,7 +294,63 @@ export default function Hesabim() {
             )}
           </div>
         )}
-      </div>
+        {/* Chat Modal */}
+      {chatQuoteId && (
+        <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center">
+          <div className="absolute inset-0 bg-black/50" onClick={closeChat}></div>
+          <div className="relative bg-background border border-border rounded-t-2xl md:rounded-2xl w-full md:max-w-lg h-[70vh] md:h-[60vh] flex flex-col shadow-2xl">
+            <div className="flex items-center justify-between p-4 border-b border-border">
+              <h3 className="font-bold text-foreground flex items-center gap-2">
+                <MessageCircle className="w-5 h-5 text-primary" />
+                Sipariş MZ-{String(chatQuoteId).padStart(5, "0")}
+              </h3>
+              <button onClick={closeChat} className="p-1 hover:bg-accent rounded-lg transition">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+              {chatLoading ? (
+                <div className="flex items-center justify-center h-full">
+                  <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                </div>
+              ) : chatMessages.length === 0 ? (
+                <p className="text-center text-muted-foreground py-8">Henüz mesaj yok. İlk mesajınızı gönderin.</p>
+              ) : (
+                chatMessages.map((m) => (
+                  <div key={m.id} className={"flex " + (m.sender === "customer" ? "justify-end" : "justify-start")}>
+                    <div className={"max-w-[80%] rounded-xl px-4 py-2.5 " + (m.sender === "customer" ? "bg-primary text-primary-foreground rounded-br-sm" : "bg-secondary text-secondary-foreground rounded-bl-sm")}>
+                      <p className="text-sm">{m.message}</p>
+                      <p className={"text-xs mt-1 " + (m.sender === "customer" ? "text-primary-foreground/70" : "text-muted-foreground")}>
+                        {new Date(m.created_at).toLocaleString("tr-TR")}
+                      </p>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+            <div className="border-t border-border p-4">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); } }}
+                  placeholder="Mesajınızı yazın..."
+                  className="flex-1 px-4 py-2.5 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                />
+                <button
+                  onClick={sendMessage}
+                  disabled={!chatInput.trim() || chatSending}
+                  className="px-4 py-2.5 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition disabled:opacity-50"
+                >
+                  {chatSending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
     </div>
   );
 }
