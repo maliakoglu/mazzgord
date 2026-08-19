@@ -1,4 +1,14 @@
 
+## [1.0.15] — 2026-08-19
+
+### Iyilestirmeler
+- **Preload optimizasyonu (Lighthouse 76 -> 99)**: Gereksiz modulepreload'lar kaldirildi, CSS preload eklendi.
+- Kritik preload'lar: vendor-react, index entry, Home. Digerleri lazy yukleniyor.
+
+### Degisen Dosyalar
+- lib/seoProcessor.js
+
+
 ## [1.0.14] — 2026-08-19
 
 ### Iyilestirmeler
