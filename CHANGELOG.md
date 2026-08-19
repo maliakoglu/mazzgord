@@ -1,4 +1,15 @@
 
+## [1.0.14] — 2026-08-19
+
+### Iyilestirmeler
+- **Bundle optimizasyonu (Lighthouse 69 -> 76)**: Vite manualChunks function API'ye gecildi. React artık vendor-react chunk'inda.
+- **index.js**: 222 KB -> 41 KB (sadece App + contexts + router).
+- **Toaster ve TooltipProvider**: App.tsx'te lazy yapildi, ayri chunk'lar olustu.
+
+### Degisen Dosyalar
+- vite.config.ts, client/src/App.tsx
+
+
 ## [1.0.13] — 2026-08-19
 
 ### İyileştirmeler
