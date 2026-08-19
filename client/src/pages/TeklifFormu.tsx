@@ -38,6 +38,8 @@ const URGENCY_OPTIONS = [
   { value: "acil", label: "Acil (24 saat içinde)", price: " +50%" },
 ];
 
+
+
 export default function TeklifFormu() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
@@ -324,7 +326,7 @@ mazzgord.com`;
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Kişisel Bilgiler */}
-          <div className={`${sectionClass} `}>
+          <div className={sectionClass}>
             <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
               <User className="w-5 h-5 text-primary" /> Kişisel Bilgiler
             </h2>
@@ -380,7 +382,7 @@ mazzgord.com`;
           </div>
 
           {/* Çeviri Detayları */}
-          <div className={`${sectionClass} `}>
+          <div className={sectionClass}>
             <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
               <Globe className="w-5 h-5 text-primary" /> Çeviri Detayları
             </h2>
@@ -451,7 +453,7 @@ mazzgord.com`;
           </div>
 
           {/* Aciliyet ve Teslimat */}
-          <div className={`${sectionClass} `}>
+          <div className={sectionClass}>
             <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
               <Clock className="w-5 h-5 text-primary" /> Aciliyet ve Teslimat
             </h2>
@@ -502,7 +504,7 @@ mazzgord.com`;
           </div>
 
           {/* Dosya Yükleme */}
-          <div className={`${sectionClass} `}>
+          <div className={sectionClass}>
             <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
               <Upload className="w-5 h-5 text-primary" /> Belge Yükleme <span className="text-red-500">*</span>
             </h2>
@@ -548,7 +550,7 @@ mazzgord.com`;
           </div>
 
           {/* Ek Notlar */}
-          <div className={`${sectionClass} `}>
+          <div className={sectionClass}>
             <h2 className="text-lg font-bold text-foreground mb-4">Ek Notlar</h2>
             <textarea
               name="notes"
@@ -560,7 +562,6 @@ mazzgord.com`;
             />
           </div>
 
-          <div className={step !== 3 ? "hidden" : ""}>
           {/* KVKK Onayi */}
           <div className="bg-card border border-border rounded-lg p-6">
             <label className="flex items-start gap-3 cursor-pointer">
@@ -576,18 +577,16 @@ mazzgord.com`;
               </div>
             </label>
           </div>
-          </div>
 
           {/* Submit */}
 
-        <div className={step !== 3 ? "hidden" : ""}>
         {/* Güven Badge'leri */}
         <div className="flex flex-wrap justify-center gap-4 mb-6 text-sm text-muted-foreground">
           <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-green-600" /> Gizlilik Esastır</span>
           <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-green-600" /> Belgeyi İnceleyip Net Teklif</span>
           <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-green-600" /> Mesai Saatlerinde Yanıt</span>
         </div>
-        </div>
+
 
           <div className="text-center">
             <button
