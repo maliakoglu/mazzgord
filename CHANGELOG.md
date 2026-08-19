@@ -1,3 +1,14 @@
+## [1.0.2] — 2026-08-19
+
+### Düzeltmeler
+- **Idempotency**: Teklif formunda çift kayıt önlendi — `crypto.randomUUID` ile benzersiz anahtar, KV'de 60sn TTL ile kontrol (#4)
+
+### Değişen Dosyalar
+- `lib/validation.js` — `idempotency_key` Zod şemasına eklendi
+- `routes/quote.js` — idempotency kontrolü eklendi
+- `client/src/pages/TeklifFormu.tsx` — `crypto.randomUUID` ile idempotency_key üretimi
+
+
 # Changelog
 
 ## [1.0.1] — 2026-08-19
