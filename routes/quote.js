@@ -204,7 +204,7 @@ export async function handleQuote(request, env, path = "", method = "POST") {
         });
       }
     } catch (err) {
-      console.log("Teklif e-posta hatası:", String(err));
+      console.error("Teklif e-posta hatası:", String(err));
     }
 
     return new Response(JSON.stringify({ success: true }), {

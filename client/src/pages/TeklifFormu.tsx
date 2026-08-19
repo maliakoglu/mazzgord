@@ -169,11 +169,14 @@ export default function TeklifFormu() {
         subject: "Yeni Teklif Talebi - Mazzgord",
       };
 
-      await fetch("https://api.web3forms.com/submit", {
+      const web3Res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(emailBody),
       });
+      if (!web3Res.ok) {
+        console.error("Web3Forms bildirim hatasi:", web3Res.status);
+      }
 
       if (response.ok) {
         // WhatsApp bildirimi — müşteriden işletmeye hazır mesaj
