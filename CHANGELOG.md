@@ -1,4 +1,14 @@
 
+## [1.0.12] — 2026-08-19
+
+### Düzeltmeler
+- **Uzun title'lar (Ahrefs long titles)**: 21 Helmet componentinden <title> kaldırıldı. Worker server-side yönetiyor.
+- **seoData.js**: 9 uzun title 60 karakterin altına kısaltıldı.
+
+### Degisen Dosyalar
+- lib/seoData.js, 21 client/src/pages/*.tsx, client/src/components/BlogLayout.tsx
+
+
 ## [1.0.11] — 2026-08-19
 
 ### Düzeltmeler
