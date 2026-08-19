@@ -126,6 +126,7 @@ export default function TeklifFormu() {
       return;
     }
     setSubmitStatus("sending");
+    const idempotencyKey = crypto.randomUUID();
     try {
       // Worker'a gönder (D1'e kaydolur)
       const response = await fetch("/api/quote", {
@@ -144,6 +145,7 @@ export default function TeklifFormu() {
           apostille_need: formData.apostille_need || null,
           target_country: formData.target_country || null,
           delivery_date: formData.delivery_date || null,
+          idempotency_key: idempotencyKey,
         }),
       });
 

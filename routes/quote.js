@@ -128,6 +128,18 @@ export async function handleQuote(request, env, path = "", method = "POST") {
     const delivery = delivery_method || 'digital';
     const address = delivery === 'shipping' ? (validation.data.shipping_address || null) : null;
 
+    // Idempotency kontrolü — aynı anahtarla 60sn içinde tekrar gönderim engelle
+    const idempotencyKey = validation.data.idempotency_key;
+    if (idempotencyKey) {
+      const existing = await env.RATE_LIMIT.get(`idemp:${idempotencyKey}`);
+      if (existing) {
+        return new Response(JSON.stringify({ success: true, idempotent: true }), {
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+      await env.RATE_LIMIT.put(`idemp:${idempotencyKey}`, "1", { expirationTtl: 60 });
+    }
+
     await env.DB.prepare(
       "INSERT INTO quotes (name, email, phone, source_language, target_language, document_type, page_count, notes, file_key, service_type, urgency, delivery_method, word_count, yeminli, noter_onay, order_status, shipping_address, notary_need, apostille_need, target_country, delivery_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?)"
     ).bind(
