@@ -53,13 +53,27 @@ export default defineConfig({
     cssMinify: true,
     rollupOptions: {
       output: {
-        manualChunks: {
-          "vendor-react": ["react", "react-dom", "wouter"],
-          "vendor-forms": ["react-hook-form", "@hookform/resolvers", "zod"],
-          "vendor-ui": ["sonner", "vaul", "cmdk", "embla-carousel-react", "input-otp", "react-resizable-panels", "react-day-picker", "next-themes"],
-          "vendor-icons": ["lucide-react"],
-          "vendor-motion": ["framer-motion"],
-          "vendor-charts": ["recharts"],
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (id.includes("react-dom") || id.includes("/react/") || id.includes("react/") || id.includes("wouter")) {
+              return "vendor-react";
+            }
+            if (id.includes("react-hook-form") || id.includes("@hookform") || id.includes("zod")) {
+              return "vendor-forms";
+            }
+            if (id.includes("sonner") || id.includes("vaul") || id.includes("cmdk") || id.includes("embla") || id.includes("input-otp") || id.includes("react-resizable") || id.includes("react-day-picker") || id.includes("next-themes")) {
+              return "vendor-ui";
+            }
+            if (id.includes("lucide-react")) {
+              return "vendor-icons";
+            }
+            if (id.includes("framer-motion")) {
+              return "vendor-motion";
+            }
+            if (id.includes("recharts") || id.includes("d3-")) {
+              return "vendor-charts";
+            }
+          }
         },
       },
     },
