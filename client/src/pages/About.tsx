@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet";
 import { ArrowLeft, CheckCircle2, Shield, Clock, FileText, MapPin } from "lucide-react";
 import { useState } from "react";
 
@@ -5,6 +6,38 @@ export default function About() {
   const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Hakkımda | Yeminli Tercüman Mehmet Akoğlu - Mazzgord</title>
+        <meta name="description" content="Denizli merkezli noter yeminli tercüman Mehmet Akoğlu. İngilizce-Türkçe resmi belge ve vize çevirisi. Pasaport, diploma, adli sicil ve vize evrakları için güvenilir çeviri hizmeti." />
+        <link rel="canonical" href="https://mazzgord.com/hakkimizda" />
+        <meta property="og:title" content="Hakkımda | Yeminli Tercüman Mehmet Akoğlu - Mazzgord" />
+        <meta property="og:description" content="Denizli merkezli noter yeminli tercüman Mehmet Akoğlu. İngilizce-Türkçe resmi belge ve vize çevirisi." />
+        <meta property="og:url" content="https://mazzgord.com/hakkimizda" />
+        <meta property="og:type" content="profile" />
+        <meta property="og:locale" content="tr_TR" />
+        <script type="application/ld+json">{`
+          {
+            "@context": "https://schema.org",
+            "@type": "ProfessionalService",
+            "name": "Mazzgord Çeviri Hizmetleri",
+            "description": "Denizli merkezli noter yeminli tercüman. İngilizce-Türkçe resmi belge ve vize çevirisi.",
+            "url": "https://mazzgord.com",
+            "telephone": "+905386295040",
+            "email": "info@mazzgord.com",
+            "areaServed": "Denizli, Türkiye",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Denizli",
+              "addressCountry": "TR"
+            },
+            "founder": {
+              "@type": "Person",
+              "name": "Mehmet Akoğlu",
+              "jobTitle": "Yeminli Tercüman"
+            }
+          }
+        `}</script>
+      </Helmet>
 
       <nav className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
