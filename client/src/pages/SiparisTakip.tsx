@@ -11,6 +11,7 @@ interface OrderItem {
 
 interface Order {
   payment_link_id: string;
+  order_token?: string;
   customer_name: string;
   customer_email: string;
   customer_phone: string | null;
@@ -48,8 +49,10 @@ export default function SiparisTakip() {
     setError("");
     setSearched(true);
     try {
-      const isQuote = id.toUpperCase().startsWith("MZ-");
-      const endpoint = isQuote ? `/api/quote/${id.toUpperCase()}` : `/api/orders/${id}`;
+      // UUID (order_token) veya MZ- formatı
+      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id.trim());
+      const isQuote = isUUID || id.toUpperCase().startsWith("MZ-");
+      const endpoint = isQuote ? `/api/quote/${id.trim()}` : `/api/orders/${id}`;
       const res = await fetch(endpoint);
       const data = await res.json();
       if (data.success) {
@@ -58,6 +61,7 @@ export default function SiparisTakip() {
           const q = data.data;
           setOrder({
             payment_link_id: q.order_no,
+            order_token: q.order_token,
             customer_name: "",
             customer_email: "",
             customer_phone: null,
@@ -135,7 +139,7 @@ export default function SiparisTakip() {
               value={searchId}
               onChange={(e) => setSearchId(e.target.value)}
               className="w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-              placeholder="Sipariş no (örn: a1b2c3d4... veya MZ-00001)"
+              placeholder="Sipariş no (örn: MZ-00001 veya e-posta'daki takip kodu)"
             />
           </div>
           <button type="submit" disabled={loading}

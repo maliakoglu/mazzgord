@@ -10,17 +10,26 @@ export async function handleQuote(request, env, path = "", method = "POST") {
   if (method === "GET" && path.startsWith("/api/quote/")) {
     try {
       const orderNo = decodeURIComponent(path.replace("/api/quote/", ""));
-      // MZ-00001 formatından ID çıkar
-      const idMatch = orderNo.match(/^MZ-(\d+)$/i);
-      if (!idMatch) {
-        return new Response(JSON.stringify({ success: false, error: "Geçersiz sipariş numarası" }), {
-          status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
-        });
+      let quote;
+      // UUID formatı mı? (order_token ile sorgula)
+      const uuidMatch = orderNo.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+      if (uuidMatch) {
+        quote = await env.DB.prepare(
+          "SELECT id, name, email, source_language, target_language, document_type, page_count, word_count, urgency, delivery_method, shipping_address, shipping_tracking, order_status, estimated_price, delivery_date, created_at FROM quotes WHERE order_token = ?"
+        ).bind(orderNo).first();
+      } else {
+        // MZ-00001 formatı — sadece id ile sorgula (geriye uyumluluk)
+        const idMatch = orderNo.match(/^MZ-(\d+)$/i);
+        if (!idMatch) {
+          return new Response(JSON.stringify({ success: false, error: "Geçersiz sipariş numarası" }), {
+            status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+        const quoteId = parseInt(idMatch[1]);
+        quote = await env.DB.prepare(
+          "SELECT id, name, email, source_language, target_language, document_type, page_count, word_count, urgency, delivery_method, shipping_address, shipping_tracking, order_status, estimated_price, delivery_date, created_at FROM quotes WHERE id = ?"
+        ).bind(quoteId).first();
       }
-      const quoteId = parseInt(idMatch[1]);
-      const quote = await env.DB.prepare(
-        "SELECT id, name, email, source_language, target_language, document_type, page_count, word_count, urgency, delivery_method, shipping_address, shipping_tracking, order_status, estimated_price, delivery_date, created_at FROM quotes WHERE id = ?"
-      ).bind(quoteId).first();
 
       if (!quote) {
         return new Response(JSON.stringify({ success: false, error: "Sipariş bulunamadı" }), {
@@ -33,6 +42,7 @@ export async function handleQuote(request, env, path = "", method = "POST") {
         success: true,
         data: {
           order_no: `MZ-${String(quote.id).padStart(5, "0")}`,
+          order_token: orderNo,
           source_language: quote.source_language,
           target_language: quote.target_language,
           document_type: quote.document_type,
@@ -140,15 +150,16 @@ export async function handleQuote(request, env, path = "", method = "POST") {
       await env.RATE_LIMIT.put(`idemp:${idempotencyKey}`, "1", { expirationTtl: 60 });
     }
 
+    const orderToken = crypto.randomUUID();
     await env.DB.prepare(
-      "INSERT INTO quotes (name, email, phone, source_language, target_language, document_type, page_count, notes, file_key, service_type, urgency, delivery_method, word_count, yeminli, noter_onay, order_status, shipping_address, notary_need, apostille_need, target_country, delivery_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?)"
+      "INSERT INTO quotes (name, email, phone, source_language, target_language, document_type, page_count, notes, file_key, service_type, urgency, delivery_method, word_count, yeminli, noter_onay, order_status, shipping_address, notary_need, apostille_need, target_country, delivery_date, order_token) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?)"
     ).bind(
       name, email, phone || null, source_language, target_language,
       document_type || null, page_count || null, notes || null, file_key || null,
       service_type || null, urgency, delivery,
       word_count || null, yeminli ? 1 : 0, noter_onay ? 1 : 0, address,
       validation.data.notary_need || null, validation.data.apostille_need || null, validation.data.target_country || null,
-      validation.data.delivery_date || null
+      validation.data.delivery_date || null, orderToken
     ).run();
 
     // Sipariş numarası oluştur
