@@ -436,10 +436,10 @@ export default function Admin() {
     setDeliveringOrderId(linkId);
     setDeliverForm({
       tracking_number: "",
-      delivery_note: deliveryMethod === "digital",
-      file: null
+      delivery_note: deliveryMethod === "digital"
         ? "Çeviri belgeleri e-posta ve WhatsApp ile gönderilecektir."
         : "",
+      file: null,
     });
   };
 
@@ -476,6 +476,7 @@ export default function Admin() {
       delivery_note: deliveryMethod !== "shipping"
         ? "Çeviri belgeleri e-posta ve WhatsApp ile gönderilecektir."
         : "",
+      file: null,
     });
   };
 
