@@ -1,3 +1,16 @@
+## [1.0.8] — 2026-08-19
+
+### Düzeltmeler
+- **Hakkımda sayfası**: SEO meta tag'leri (title, description, canonical, OG) ve ProfessionalService structured data eklendi
+- **Gizlilik politikası**: 90 gün saklama süresi netleştirildi, üçüncü taraf hizmetler (Web3Forms, Resend, WhatsApp, Cloudflare) eklendi, noter/apostil/kargo aktarımı belirtildi, AdSense bölümü Türkçe karakterleri düzeltildi
+- **ChatWidget**: 12 Türkçe karakter düzeltmesi
+
+### Değişen Dosyalar
+- `client/src/pages/About.tsx` — Helmet + ProfessionalService schema
+- `client/src/pages/Privacy.tsx` — 90 gün retention, üçüncü taraf hizmetler, Türkçe karakterler
+- `client/src/components/ChatWidget.tsx` — Türkçe karakterler
+
+
 ## [1.0.7] — 2026-08-19
 
 ### Düzeltmeler
