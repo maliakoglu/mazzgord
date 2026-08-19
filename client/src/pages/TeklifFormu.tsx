@@ -38,8 +38,6 @@ const URGENCY_OPTIONS = [
   { value: "acil", label: "Acil (24 saat içinde)", price: " +50%" },
 ];
 
-
-
 export default function TeklifFormu() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
@@ -51,7 +49,6 @@ export default function TeklifFormu() {
   const [fileName, setFileName] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [kvkkAccepted, setKvkkAccepted] = useState(false);
-  const [step, setStep] = useState(1);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -327,7 +324,7 @@ mazzgord.com`;
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Kişisel Bilgiler */}
-          <div className={`${sectionClass} ${step!==1?"hidden":""}`}>
+          <div className={`${sectionClass} `}>
             <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
               <User className="w-5 h-5 text-primary" /> Kişisel Bilgiler
             </h2>
@@ -383,7 +380,7 @@ mazzgord.com`;
           </div>
 
           {/* Çeviri Detayları */}
-          <div className={`${sectionClass} ${step!==1?"hidden":""}`}>
+          <div className={`${sectionClass} `}>
             <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
               <Globe className="w-5 h-5 text-primary" /> Çeviri Detayları
             </h2>
@@ -454,7 +451,7 @@ mazzgord.com`;
           </div>
 
           {/* Aciliyet ve Teslimat */}
-          <div className={`${sectionClass} ${step!==1?"hidden":""}`}>
+          <div className={`${sectionClass} `}>
             <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
               <Clock className="w-5 h-5 text-primary" /> Aciliyet ve Teslimat
             </h2>
@@ -505,7 +502,7 @@ mazzgord.com`;
           </div>
 
           {/* Dosya Yükleme */}
-          <div className={`${sectionClass} ${step!==1?"hidden":""}`}>
+          <div className={`${sectionClass} `}>
             <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
               <Upload className="w-5 h-5 text-primary" /> Belge Yükleme <span className="text-red-500">*</span>
             </h2>
@@ -551,7 +548,7 @@ mazzgord.com`;
           </div>
 
           {/* Ek Notlar */}
-          <div className={`${sectionClass} ${step!==2?"hidden":""}`}>
+          <div className={`${sectionClass} `}>
             <h2 className="text-lg font-bold text-foreground mb-4">Ek Notlar</h2>
             <textarea
               name="notes"
