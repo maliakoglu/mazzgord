@@ -1,3 +1,15 @@
+
+## [1.0.11] — 2026-08-19
+
+### Düzeltmeler
+- **Cift meta description (Ahrefs issue #c64d53a0)**: 21 Helmet componentinden meta description kaldırıldı. Worker server-side yönetiyor.
+- **Celiskili robots etiketi**: cerez-politikasi, kullanim-kosullari, gizlilik sayfalarinda index + noindex celiskisi giderildi. Worker artık noindex, follow ekliyor.
+- **noindex sayfalar sitemapten cıkarıldı**: sepet, giris, hesabim, odeme, cerez-politikasi, kullanim-kosullari, gizlilik, siparis-takip artık sitemapte yok.
+- **seoProcessor.js**: noIndexPaths ve noFollowPaths ayrıstırıldı.
+
+### Degisen Dosyalar
+- lib/seoProcessor.js, scripts/generate_sitemap.py, 21 client/src/pages/*.tsx, client/src/components/BlogLayout.tsx
+
 ## [1.0.10] — 2026-08-19
 
 ### Düzeltmeler
