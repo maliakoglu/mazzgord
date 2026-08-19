@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet";
 import { ArrowLeft } from "lucide-react"
 import { useState } from "react";
 
@@ -5,6 +6,12 @@ export default function CookiePolicy() {
   const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Çerez Politikası | Mazzgord Çeviri Hizmetleri</title>
+        <meta name="description" content="Mazzgord.com çerez politikası. Zorunlu, analitik ve reklam çerezlerinin kullanım amacı ve süreleri." />
+        <link rel="canonical" href="https://mazzgord.com/cerez-politikasi" />
+        <meta name="robots" content="noindex, follow" />
+      </Helmet>
 
       <nav className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">

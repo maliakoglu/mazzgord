@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet";
 import { ArrowLeft } from "lucide-react"
 import { useState } from "react";
 
@@ -5,6 +6,12 @@ export default function Terms() {
   const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Kullanım Koşulları | Mazzgord Çeviri Hizmetleri</title>
+        <meta name="description" content="Mazzgord.com kullanım koşulları. Çeviri hizmeti teklif, sözleşme, fiyatlandırma, teslimat, iptal ve iade şartları." />
+        <link rel="canonical" href="https://mazzgord.com/kullanim-kosullari" />
+        <meta name="robots" content="noindex, follow" />
+      </Helmet>
 
       <nav className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
