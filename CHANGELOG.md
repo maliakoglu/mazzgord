@@ -1,3 +1,12 @@
+## [1.0.5] — 2026-08-19
+
+### Bakım
+- **Legacy kolon temizliği**: `quotes` tablosundaki kullanılmayan `status` kolonu kaldırıldı (sadece `order_status` kullanılıyor). İlişkili index `idx_quotes_status` da temizlendi. (#7)
+
+### Değişen Dosyalar
+- D1 migration: `DROP INDEX idx_quotes_status`, `ALTER TABLE quotes DROP COLUMN status`
+
+
 ## [1.0.4] — 2026-08-19
 
 ### Düzeltmeler
