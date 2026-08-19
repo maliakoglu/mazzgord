@@ -1,4 +1,15 @@
 
+## [1.0.13] — 2026-08-19
+
+### İyileştirmeler
+- **Performans (Lighthouse 60 -> 69)**: react-helmet kaldırıldı (16 KB), AdSense ve GA4 lazy-load'a alındı.
+- **AdSense prerender temizliği**: Chrome prerender sırasında gömülen AdSense iframe'leri Worker tarafından temizleniyor.
+- **index.html temizliği**: AdSense ve GA4 direkt script'leri kaldırıldı, Worker lazy-load yönetiyor.
+
+### Degisen Dosyalar
+- lib/seoProcessor.js, client/index.html, package.json, 21 client/src/pages/*.tsx, client/src/components/BlogLayout.tsx
+
+
 ## [1.0.12] — 2026-08-19
 
 ### Düzeltmeler
