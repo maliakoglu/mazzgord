@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Helmet } from "react-helmet";
 import { ArrowLeft, Search, FileText, Clock, Truck, Stamp, Languages, ShieldCheck, CheckCircle2 } from "lucide-react";
 import { type ServiceProduct } from "@/contexts/CartContext";
 
@@ -102,9 +101,6 @@ export default function Hizmetler() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-      </Helmet>
-
       <nav className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <a href="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition">

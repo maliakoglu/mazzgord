@@ -1,5 +1,4 @@
 import { useState, useRef } from "react";
-import { Helmet } from "react-helmet";
 import { ArrowLeft, ShoppingCart, Trash2, Plus, Minus, Loader2, User, Mail, Phone, Upload, FileText, X, CheckCircle2 } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 
@@ -133,8 +132,6 @@ export default function Sepet() {
   if (items.length === 0 && !showCheckout) {
     return (
       <div className="min-h-screen bg-background">
-        <Helmet>
-        </Helmet>
         <nav className="sticky top-0 z-50 bg-background border-b border-border">
           <div className="container mx-auto px-4 py-4">
             <a href="/hizmetler" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition">
@@ -158,8 +155,6 @@ export default function Sepet() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-      </Helmet>
       <nav className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="container mx-auto px-4 py-4">
           <a href="/hizmetler" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition">

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Helmet } from "react-helmet";
 import { useLocation } from "wouter";
 import { User, FileText, Download, LogOut, Loader2, AlertCircle, Package, CreditCard, Clock, MessageCircle, Send, X } from "lucide-react";
 
@@ -145,9 +144,6 @@ export default function Hesabim() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-      </Helmet>
-
       <nav className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <a href="/" className="text-2xl font-bold text-primary">Mazzgord</a>

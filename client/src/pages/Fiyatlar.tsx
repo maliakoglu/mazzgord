@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Helmet } from "react-helmet";
 import { ArrowLeft, Search, FileText, CheckCircle2 } from "lucide-react";
 
 interface PriceItem {
@@ -48,9 +47,6 @@ export default function Fiyatlar() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-      </Helmet>
-
       <nav className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="container mx-auto px-4 py-4">
           <a href="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition">

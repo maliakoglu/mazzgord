@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Helmet } from "react-helmet";
 import { Search, Package, Mail, Truck, CheckCircle2, Clock, AlertCircle, Loader2, ArrowLeft } from "lucide-react";
 
 interface OrderItem {
@@ -110,9 +109,6 @@ export default function SiparisTakip() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-      </Helmet>
-
       <nav className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="container mx-auto px-4 py-4">
           <a href="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition">

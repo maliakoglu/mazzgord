@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Helmet } from "react-helmet";
 import { ArrowLeft, CreditCard, Shield, CheckCircle2, Loader2, AlertCircle, Download } from "lucide-react";
 
 export default function Odeme() {
@@ -209,8 +208,6 @@ export default function Odeme() {
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <Helmet>
-        </Helmet>
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="w-12 h-12 text-primary animate-spin" />
           <p className="text-muted-foreground">Ödeme bilgileri yükleniyor...</p>
@@ -222,8 +219,6 @@ export default function Odeme() {
   if (status === "success") {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <Helmet>
-        </Helmet>
         <div className="max-w-md w-full px-6 text-center">
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100 mb-6">
             <CheckCircle2 className="w-10 h-10 text-green-600" />
@@ -256,8 +251,6 @@ export default function Odeme() {
   if (error && status === "failed") {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <Helmet>
-        </Helmet>
         <div className="max-w-md w-full px-6 text-center">
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-100 mb-6">
             <AlertCircle className="w-10 h-10 text-red-600" />
@@ -283,8 +276,6 @@ export default function Odeme() {
   if (!paymentData) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <Helmet>
-        </Helmet>
         <div className="max-w-md w-full px-6 text-center">
           <AlertCircle className="w-12 h-12 text-red-600 mx-auto mb-4" />
           <p className="text-muted-foreground">{error || "Ödeme bulunamadı."}</p>
@@ -298,9 +289,6 @@ export default function Odeme() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-      </Helmet>
-
       <nav className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="container mx-auto px-4 py-4">
           <a href="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition">

@@ -1,67 +1,9 @@
-import { Helmet } from "react-helmet";
 import { ArrowLeft, CheckCircle2, Shield, Clock, Globe } from "lucide-react";
 import { useState } from "react";
 export default function PasaportCeviri() {
   const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-        <link rel="canonical" href="https://mazzgord.com/pasaport-ceviri" />
-        <meta property="og:title" content="Pasaport Çevirisi | İngilizce-Türkçe Yeminli Tercüme - Mazzgord" />
-        <meta property="og:description" content="Pasaport çevirisi için profesyonel yeminli tercüme hizmeti. İngilizce-Türkçe pasaport tercümesi, vize ve resmi başvurular için hızlı ve güvenilir çeviri." />
-        <meta property="og:url" content="https://mazzgord.com/pasaport-ceviri" />
-        <meta property="og:type" content="website" />
-        <meta property="og:locale" content="tr_TR" />
-        <script type="application/ld+json">{`
-          {
-            "@context": "https://schema.org",
-            "@graph": [
-              {
-                "@type": "Service",
-                "serviceType": "Pasaport Çevirisi",
-                "provider": {
-                  "@type": "Organization",
-                  "name": "Mazzgord Çeviri Hizmetleri",
-                  "url": "https://mazzgord.com",
-                  "areaServed": "Denizli, Türkiye"
-                },
-                "areaServed": "Denizli, Türkiye",
-                "url": "https://mazzgord.com/pasaport-ceviri"
-              },
-              {
-                "@type": "FAQPage",
-                "mainEntity": [
-                  {
-                    "@type": "Question",
-                    "name": "Pasaport çevirisi nedir ve ne için gerekir?",
-                    "acceptedAnswer": { "@type": "Answer", "text": "Pasaport çevirisi, pasaportunuzdaki kimlik bilgilerinin yeminli tercüman tarafından İngilizce'ye veya Türkçe'ye çevrilmesidir. Vize başvuruları, yurt dışı işlemler, göçmenlik dosyaları ve resmi kurum başvurularında istenir." }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "Pasaport çevirisi yeminli tercüman tarafından mı yapılmalıdır?",
-                    "acceptedAnswer": { "@type": "Answer", "text": "Evet, resmi kurumlar pasaport çevirisinin yeminli tercüman tarafından yapılmasını ve imzalanmasını ister. Yeminli tercüman imzası, çevirinin doğru ve eksiksiz olduğunu taahhüt eder." }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "Pasaport çevirisi ne kadar sürer?",
-                    "acceptedAnswer": { "@type": "Answer", "text": "Pasaport çevirisi genellikle aynı gün veya 1 iş günü içinde tamamlanır. Acil taleplerde birkaç saat içinde teslimat mümkündür." }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "Pasaport çevirisi için noter onayı gerekir mi?",
-                    "acceptedAnswer": { "@type": "Answer", "text": "Çoğu durumda yeminli tercüman imzası yeterlidir. Ancak bazı ülkeler ve konsolosluklar noter onayını şart koşabilir. Başvuru yapacağınız kuruma danışmanızı öneririz." }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "Pasaport çevirisi ücreti ne kadar?",
-                    "acceptedAnswer": { "@type": "Answer", "text": "Pasaport çevirisi ücreti belge görülerek belirlenir. Belgenizin fotoğrafını WhatsApp'tan gönderin; net teklif alırsınız." }
-                  }
-                ]
-              }
-            ]
-          }
-        `}</script>
-      </Helmet>
       <nav className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <a href="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition"><ArrowLeft className="w-5 h-5" /> Ana Sayfa</a>

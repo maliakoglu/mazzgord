@@ -1,5 +1,4 @@
 import { useState, useRef } from "react";
-import { Helmet } from "react-helmet";
 import { ArrowLeft, Upload, FileText, CheckCircle2, Loader2, X, Globe, Clock, FileType, Mail, Phone, User } from "lucide-react";
 
 const LANGUAGES = [
@@ -267,8 +266,6 @@ mazzgord.com`;
 
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-      </Helmet>
       {/* Nav */}
       <nav className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">

@@ -1,7 +1,5 @@
 import { ArrowLeft, MessageCircle, FileText } from "lucide-react"
 import { useState, ReactNode } from "react"
-import { Helmet } from "react-helmet"
-
 type IllustrationKey =
   | "akademik" | "hatalar" | "ipuclari" | "sektor" | "teknoloji"
   | "kariyer" | "deyim" | "edebi" | "google-vs" | "hukuki"
@@ -102,15 +100,6 @@ export default function BlogLayout({ title, description, canonical, date, illust
   const illust = illustrations[illustration]
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-        <link rel="canonical" href={canonical} />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:url" content={canonical} />
-        <meta property="og:type" content={ogType} />
-        <meta property="og:locale" content="tr_TR" />
-        {jsonLd && (<script type="application/ld+json">{jsonLd}</script>)}
-      </Helmet>
       <BlogNav />
       <div className={`bg-gradient-to-br ${illust.gradient} border-b border-border`}>
         <div className="container mx-auto px-4 max-w-4xl">

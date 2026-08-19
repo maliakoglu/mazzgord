@@ -1,35 +1,9 @@
-import { Helmet } from "react-helmet";
 import { ArrowLeft, CheckCircle2, Settings, Globe, FileCode } from "lucide-react";
 import { useState } from "react";
 export default function TeknikCeviri() {
   const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-        <link rel="canonical" href="https://mazzgord.com/teknik-ceviri" />
-        <meta property="og:title" content="Teknik Çeviri Hizmeti | Denizli - Mazzgord" />
-        <meta property="og:description" content="Teknik çeviri hizmeti. Kullanım kılavuzu, mühendislik belgeleri, teknik spesifikasyonlar için uzman çevirmenler. Denizlide profesyonel teknik çeviri." />
-        <meta property="og:url" content="https://mazzgord.com/teknik-ceviri" />
-        <meta property="og:type" content="website" />
-        <meta property="og:locale" content="tr_TR" />
-        <script type="application/ld+json">{`
-          {
-            "@context": "https://schema.org",
-            "@type": "Service",
-            "serviceType": "Teknik Çeviri Hizmeti",
-            "provider": {
-              "@type": "Organization",
-              "name": "Mazzgord Çeviri Hizmetleri",
-              "url": "https://mazzgord.com",
-              "areaServed": "Denizli, Türkiye"
-            },
-            "areaServed": "Denizli, Türkiye",
-            "url": "https://mazzgord.com/teknik-ceviri"
-          }
-        `}</script>
-      </Helmet>
-
-
       <nav className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <a href="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition"><ArrowLeft className="w-5 h-5" /> Ana Sayfa</a>

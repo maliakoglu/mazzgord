@@ -1,7 +1,5 @@
 import { ArrowLeft } from "lucide-react"
 import { useState } from "react";
-import { Helmet } from "react-helmet";
-
 export default function SSS() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openItems, setOpenItems] = useState<number[]>([]);
@@ -61,10 +59,6 @@ export default function SSS() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-        <link rel="canonical" href="https://mazzgord.com/sss" />
-      </Helmet>
-
       <nav className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <a href="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition"><ArrowLeft className="w-5 h-5" /> Ana Sayfa</a>

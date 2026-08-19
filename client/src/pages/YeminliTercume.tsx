@@ -1,69 +1,9 @@
-import { Helmet } from "react-helmet";
 import { ArrowLeft, CheckCircle2, Shield, Clock, FileText } from "lucide-react";
 import { useState } from "react";
 export default function YeminliTercume() {
   const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-        <link rel="canonical" href="https://mazzgord.com/yeminli-tercume" />
-        <meta property="og:title" content="Denizli Yeminli Tercüman | Noter Onaylı Tercüme - Mazzgord" />
-        <meta property="og:description" content="Denizli'de yeminli tercüme hizmeti. Pasaport, diploma, sabıka kaydı, evlilik cüzdanı ve tüm resmi belgeler için yeminli tercüman imzası. Hızlı teslimat." />
-        <meta property="og:url" content="https://mazzgord.com/yeminli-tercume" />
-        <meta property="og:type" content="website" />
-        <meta property="og:locale" content="tr_TR" />
-        <script type="application/ld+json">{`
-          {
-            "@context": "https://schema.org",
-            "@graph": [
-              {
-                "@type": "Service",
-                "serviceType": "Yeminli Tercüme Hizmeti",
-                "provider": {
-                  "@type": "Organization",
-                  "name": "Mazzgord Çeviri Hizmetleri",
-                  "url": "https://mazzgord.com",
-                  "areaServed": "Denizli, Türkiye"
-                },
-                "areaServed": "Denizli, Türkiye",
-                "url": "https://mazzgord.com/yeminli-tercume"
-              },
-              {
-                "@type": "FAQPage",
-                "mainEntity": [
-                  {
-                    "@type": "Question",
-                    "name": "Yeminli tercüme nedir?",
-                    "acceptedAnswer": { "@type": "Answer", "text": "Yeminli tercüme, yeminli tercümanlar tarafından yapılan ve resmi belge niteliği taşıyan çeviri işlemidir. Yeminli tercüman, çevirisinin doğru ve eksiksiz olduğunu taahhüt eder. Bu çeviriler mahkemeler, konsolosluklar, üniversiteler ve diğer resmi kurumlar tarafından kabul edilir." }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "Yeminli tercüme için noter onayı gerekir mi?",
-                    "acceptedAnswer": { "@type": "Answer", "text": "Çoğu durumda yeminli tercüman imzası yeterlidir, noter onayı gerekmez. Ancak bazı kurumlar ve ülkeler noter onayını şart koşabilir. Belgenizi sunacağınız kuruma danışmanızı öneririz." }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "Yeminli tercüme ne kadar sürer?",
-                    "acceptedAnswer": { "@type": "Answer", "text": "Standart belgeler için çeviri 1-3 iş günü içinde tamamlanır. Acil taleplerde aynı gün teslimat mümkündür." }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "Yeminli tercüme fiyatları nasıl belirlenir?",
-                    "acceptedAnswer": { "@type": "Answer", "text": "Fiyat belgenin diline, sayfa/karakter sayısına ve belge türüne göre belirlenir. Belgenizin fotoğrafını WhatsApp'tan gönderin; net teklif alırsınız." }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "Denizli'de yeminli tercüman nerede bulunur?",
-                    "acceptedAnswer": { "@type": "Answer", "text": "Denizli merkezli yeminli tercümanım. Belgenizi online veya WhatsApp üzerinden iletebilir, teslimatınızı dijital veya kargo ile alabilirsiniz." }
-                  }
-                ]
-              }
-            ]
-          }
-        `}</script>
-      </Helmet>
-
-
       <nav className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <a href="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition"><ArrowLeft className="w-5 h-5" /> Ana Sayfa</a>

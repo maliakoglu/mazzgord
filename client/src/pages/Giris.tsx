@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Helmet } from "react-helmet";
 import { useLocation } from "wouter";
 import { User, Mail, Lock, Phone, Loader2, AlertCircle } from "lucide-react";
 
@@ -37,8 +36,6 @@ export default function Giris() {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4 py-20">
-      <Helmet>
-      </Helmet>
       <div className="w-full max-w-md">
         <div className="bg-card border border-border rounded-2xl shadow-lg p-8">
           <h1 className="text-2xl font-bold text-center mb-2 text-foreground">

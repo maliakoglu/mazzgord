@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Helmet } from "react-helmet";
 import { Shield, Mail, FileText, Download, LogOut, RefreshCw, Inbox, ClipboardList, CreditCard, CheckCircle2, Eye, X, TrendingUp, Clock, AlertTriangle, DollarSign, Users, Languages, Package } from "lucide-react";
 import { toast } from "sonner";
 import AdminServices from "@/components/admin/AdminServices";
@@ -483,8 +482,6 @@ export default function Admin() {
   if (!authed) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <Helmet>
-        </Helmet>
         <div className="w-full max-w-md p-8">
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
@@ -524,9 +521,6 @@ export default function Admin() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-      </Helmet>
-
       <header className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-3">

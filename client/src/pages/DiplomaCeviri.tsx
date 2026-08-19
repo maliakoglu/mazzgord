@@ -1,67 +1,9 @@
-import { Helmet } from "react-helmet";
 import { ArrowLeft, CheckCircle2, Shield, Clock, Globe } from "lucide-react";
 import { useState } from "react";
 export default function DiplomaCeviri() {
   const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-        <link rel="canonical" href="https://mazzgord.com/diploma-ceviri" />
-        <meta property="og:title" content="Diploma ve Transkript Çevirisi | İngilizce-Türkçe Yeminli Tercüme - Mazzgord" />
-        <meta property="og:description" content="Diploma ve transkript çevirisi için profesyonel yeminli tercüme hizmeti. İngilizce-Türkçe diploma çevirisi, yurt dışı başvurular için hızlı ve güvenilir çeviri." />
-        <meta property="og:url" content="https://mazzgord.com/diploma-ceviri" />
-        <meta property="og:type" content="website" />
-        <meta property="og:locale" content="tr_TR" />
-        <script type="application/ld+json">{`
-          {
-            "@context": "https://schema.org",
-            "@graph": [
-              {
-                "@type": "Service",
-                "serviceType": "Diploma ve Transkript Çevirisi",
-                "provider": {
-                  "@type": "Organization",
-                  "name": "Mazzgord Çeviri Hizmetleri",
-                  "url": "https://mazzgord.com",
-                  "areaServed": "Denizli, Türkiye"
-                },
-                "areaServed": "Denizli, Türkiye",
-                "url": "https://mazzgord.com/diploma-ceviri"
-              },
-              {
-                "@type": "FAQPage",
-                "mainEntity": [
-                  {
-                    "@type": "Question",
-                    "name": "Diploma çevirisi nedir ve ne için gerekir?",
-                    "acceptedAnswer": { "@type": "Answer", "text": "Diploma çevirisi, diploma belgenizdeki bilgilerin yeminli tercüman tarafından İngilizce'ye veya Türkçe'ye çevrilmesidir. Yurt dışı üniversite başvuruları, denklik işlemleri, iş başvuruları ve göçmenlik dosyalarında istenir." }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "Transkript çevirisi ne kadar sürer?",
-                    "acceptedAnswer": { "@type": "Answer", "text": "Transkript çevirisi içeriğin uzunluğuna göre 1-3 iş günü içinde tamamlanır. Acil taleplerde aynı gün teslimat mümkündür." }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "Diploma çevirisi için noter onayı gerekir mi?",
-                    "acceptedAnswer": { "@type": "Answer", "text": "Çoğu durumda yeminli tercüman imzası yeterlidir. Ancak bazı ülkeler ve üniversiteler noter onayını veya apostil şart koşabilir. Başvuru yapacağınız kuruma danışmanızı öneririz." }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "Transkript çevirisinde ders adları nasıl çevrilir?",
-                    "acceptedAnswer": { "@type": "Answer", "text": "Transkriptteki ders adları, akademik karşılıkları gözetilerek çevrilir. Türk yükseköğretim sistemindeki ders adlarını İngilizce akademik karşılıklarına doğru şekilde aktarıyorum." }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "Diploma ve transkript çevirisi ücreti ne kadar?",
-                    "acceptedAnswer": { "@type": "Answer", "text": "Diploma çevirisi belge görülerek, transkript çevirisi sayfa sayısına göre fiyatlandırılır. Belgenizin fotoğrafını WhatsApp'tan gönderin; net teklif alırsınız." }
-                  }
-                ]
-              }
-            ]
-          }
-        `}</script>
-      </Helmet>
       <nav className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <a href="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition"><ArrowLeft className="w-5 h-5" /> Ana Sayfa</a>
