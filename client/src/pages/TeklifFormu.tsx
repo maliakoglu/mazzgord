@@ -325,7 +325,7 @@ mazzgord.com`;
           </div>
         )}
 
-        <div className="flex items-center gap-2 mb-6"><span className="text-sm font-medium text-muted-foreground">Adim {step}/3</span><div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden"><div className="h-full bg-primary rounded-full transition-all duration-300" style={{width: `${(step/3)*100}%`}}></div></div></div><form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Kişisel Bilgiler */}
           <div className={`${sectionClass} ${step!==1?"hidden":""}`}>
             <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
@@ -551,7 +551,7 @@ mazzgord.com`;
           </div>
 
           {/* Ek Notlar */}
-          <div className={`${sectionClass} ${step!==1?"hidden":""}`}>
+          <div className={`${sectionClass} ${step!==2?"hidden":""}`}>
             <h2 className="text-lg font-bold text-foreground mb-4">Ek Notlar</h2>
             <textarea
               name="notes"
@@ -563,6 +563,7 @@ mazzgord.com`;
             />
           </div>
 
+          <div className={step !== 3 ? "hidden" : ""}>
           {/* KVKK Onayi */}
           <div className="bg-card border border-border rounded-lg p-6">
             <label className="flex items-start gap-3 cursor-pointer">
@@ -578,16 +579,18 @@ mazzgord.com`;
               </div>
             </label>
           </div>
+          </div>
 
           {/* Submit */}
 
+        <div className={step !== 3 ? "hidden" : ""}>
         {/* Güven Badge'leri */}
         <div className="flex flex-wrap justify-center gap-4 mb-6 text-sm text-muted-foreground">
           <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-green-600" /> Gizlilik Esastır</span>
           <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-green-600" /> Belgeyi İnceleyip Net Teklif</span>
           <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-green-600" /> Mesai Saatlerinde Yanıt</span>
         </div>
-
+        </div>
 
           <div className="text-center">
             <button
