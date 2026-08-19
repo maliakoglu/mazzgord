@@ -9,7 +9,7 @@ interface Message {
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: "assistant", content: "Merhaba! Ben Mazzgord AI ceviri asistaniyim. Ceviri hizmetleri hakkinda sorularinizi yanitlayabilirim. Size nasil yardimci olabilirim?" }
+    { role: "assistant", content: "Merhaba! Ben Mazzgord AI çeviri asistanıyım. Çeviri hizmetleri hakkında sorularınızı yanıtlayabilirim. Size nasıl yardımcı olabilirim?" }
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -42,10 +42,10 @@ export default function ChatWidget() {
       if (data.success) {
         setMessages(prev => [...prev, { role: "assistant", content: data.reply }]);
       } else {
-        setMessages(prev => [...prev, { role: "assistant", content: "Uzgunum, su anda yanit veremiyorum. Lutfen info@mazzgord.com adresine yazin." }]);
+        setMessages(prev => [...prev, { role: "assistant", content: "Üzgünüm, şu anda yanıt veremiyorum. Lütfen info@mazzgord.com adresine yazın." }]);
       }
     } catch {
-      setMessages(prev => [...prev, { role: "assistant", content: "Baglanti hatasi. Lutfen tekrar deneyin." }]);
+      setMessages(prev => [...prev, { role: "assistant", content: "Bağlantı hatası. Lütfen tekrar deneyin." }]);
     } finally {
       setLoading(false);
     }
@@ -56,7 +56,7 @@ export default function ChatWidget() {
       <button
         onClick={() => setOpen(true)}
         className="fixed bottom-24 right-6 z-50 bg-primary text-primary-foreground rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
-        aria-label="AI Asistani Ac"
+        aria-label="AI Asistanını Aç"
       >
         <MessageCircle className="w-6 h-6" />
       </button>
@@ -73,7 +73,7 @@ export default function ChatWidget() {
           </div>
           <div>
             <p className="font-bold text-sm">Mazzgord AI Asistan</p>
-            <p className="text-xs opacity-80">Ceviri sorulariniz yanitlanir</p>
+            <p className="text-xs opacity-80">Çeviri sorularınız yanıtlanır</p>
           </div>
         </div>
         <button onClick={() => setOpen(false)} className="hover:bg-primary-foreground/10 rounded-lg p-1 transition">
@@ -97,7 +97,7 @@ export default function ChatWidget() {
           <div className="flex justify-start">
             <div className="bg-secondary text-foreground rounded-2xl rounded-bl-sm px-4 py-3 flex items-center gap-2">
               <Loader2 className="w-4 h-4 animate-spin" />
-              <span className="text-sm text-muted-foreground">Yaziyor...</span>
+              <span className="text-sm text-muted-foreground">Yazıyor...</span>
             </div>
           </div>
         )}
@@ -107,7 +107,7 @@ export default function ChatWidget() {
       {/* Quick Actions */}
       {messages.length <= 2 && (
         <div className="px-4 pb-2 flex flex-wrap gap-2">
-          {["Pasaport cevirisi ne kadar?", "Vize icin hangi belgeler?", "Teslimat suresi?", "Online odeme var mi?"].map(q => (
+          {["Pasaport çevirisi ne kadar?", "Vize için hangi belgeler?", "Teslimat süresi?", "Online ödeme var mı?"].map(q => (
             <button
               key={q}
               onClick={() => { setInput(q); }}
@@ -127,7 +127,7 @@ export default function ChatWidget() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-            placeholder="Sorunuzu yazin..."
+            placeholder="Sorunuzu yazın..."
             className="flex-1 px-3 py-2 border border-border rounded-lg bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             disabled={loading}
           />
@@ -140,7 +140,7 @@ export default function ChatWidget() {
           </button>
         </div>
         <p className="text-xs text-muted-foreground mt-1.5 text-center">
-          AI tarafindan yanitlanir · <a href="/teklif" className="text-primary hover:underline">Teklif Al</a>
+          AI tarafından yanıtlanır · <a href="/teklif" className="text-primary hover:underline">Teklif Al</a>
         </p>
       </div>
     </div>
