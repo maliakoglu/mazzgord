@@ -50,6 +50,7 @@ export default function TeklifFormu() {
   const [fileKey, setFileKey] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [kvkkAccepted, setKvkkAccepted] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -549,6 +550,22 @@ mazzgord.com`;
             />
           </div>
 
+          {/* KVKK Onayi */}
+          <div className="bg-card border border-border rounded-lg p-6">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={kvkkAccepted}
+                onChange={(e) => setKvkkAccepted(e.target.checked)}
+                className="mt-1 w-5 h-5 rounded border-border text-primary focus:ring-primary"
+                required
+              />
+              <div className="text-sm text-muted-foreground">
+                <span className="font-medium text-foreground">Kisisel verilerimin islenmesine iliskin aydinlatma metnini</span> okudum. Verilerimin teklif hazirlama, iletisim ve hizmet sunumu amaciyla islenmesine, gerektiginde ucuncu taraflarla (noter, kurye, resmi kurumlar) paylasilmasina ve 90 gun sureyle saklanmasina izin veriyorum. Onayimi istedigim zaman geri alabilirim.
+              </div>
+            </label>
+          </div>
+
           {/* Submit */}
 
         {/* Güven Badge'leri */}
@@ -562,7 +579,7 @@ mazzgord.com`;
           <div className="text-center">
             <button
               type="submit"
-              disabled={submitStatus === "sending" || uploadStatus === "uploading" || !emailVerified}
+              disabled={submitStatus === "sending" || uploadStatus === "uploading" || !emailVerified || !kvkkAccepted}
               className="px-8 py-4 bg-primary text-primary-foreground rounded-lg font-bold text-lg hover:bg-primary/90 transition disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2"
             >
               {submitStatus === "sending" ? (
