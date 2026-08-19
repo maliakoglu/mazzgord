@@ -104,7 +104,6 @@ export default function Hizmetler() {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Çeviri Hizmetleri | Yeminli Tercüme, Noter Onayı, Apostil | Mazzgord</title>
-        <meta name="description" content="Mazzgord çeviri hizmetleri kataloğu. Yeminli tercüme, İngilizce-Türkçe çeviri, noter onayı, apostil, acil çeviri ve kargo hizmetleri. Online sipariş ve ödeme." />
       </Helmet>
 
       <nav className="sticky top-0 z-50 bg-background border-b border-border">

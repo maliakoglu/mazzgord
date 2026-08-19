@@ -7,7 +7,6 @@ export default function YeminliTercume() {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Denizli Yeminli Tercüman | Noter Onaylı Tercüme - Mazzgord</title>
-        <meta name="description" content="Denizli'de yeminli tercüme hizmeti. Pasaport, diploma, sabıka kaydı, evlilik cüzdanı ve tüm resmi belgeler için yeminli tercüman imzası. Hızlı teslimat." />
         <link rel="canonical" href="https://mazzgord.com/yeminli-tercume" />
         <meta property="og:title" content="Denizli Yeminli Tercüman | Noter Onaylı Tercüme - Mazzgord" />
         <meta property="og:description" content="Denizli'de yeminli tercüme hizmeti. Pasaport, diploma, sabıka kaydı, evlilik cüzdanı ve tüm resmi belgeler için yeminli tercüman imzası. Hızlı teslimat." />

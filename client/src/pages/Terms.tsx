@@ -8,9 +8,7 @@ export default function Terms() {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Kullanım Koşulları | Mazzgord Çeviri Hizmetleri</title>
-        <meta name="description" content="Mazzgord.com kullanım koşulları. Çeviri hizmeti teklif, sözleşme, fiyatlandırma, teslimat, iptal ve iade şartları." />
         <link rel="canonical" href="https://mazzgord.com/kullanim-kosullari" />
-        <meta name="robots" content="noindex, follow" />
       </Helmet>
 
       <nav className="sticky top-0 z-50 bg-background border-b border-border">

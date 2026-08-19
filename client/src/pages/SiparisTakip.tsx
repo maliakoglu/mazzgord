@@ -112,8 +112,6 @@ export default function SiparisTakip() {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Sipariş Takibi | Mazzgord Çeviri Hizmetleri</title>
-        <meta name="description" content="Sipariş durumunuzu takip edin." />
-        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       <nav className="sticky top-0 z-50 bg-background border-b border-border">

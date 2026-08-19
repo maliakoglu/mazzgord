@@ -211,7 +211,6 @@ export default function Odeme() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Helmet>
           <title>Ödeme | Mazzgord</title>
-          <meta name="robots" content="noindex, nofollow" />
         </Helmet>
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="w-12 h-12 text-primary animate-spin" />
@@ -226,7 +225,6 @@ export default function Odeme() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Helmet>
           <title>Ödeme Başarılı | Mazzgord</title>
-          <meta name="robots" content="noindex, nofollow" />
         </Helmet>
         <div className="max-w-md w-full px-6 text-center">
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100 mb-6">
@@ -262,7 +260,6 @@ export default function Odeme() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Helmet>
           <title>Ödeme Hatası | Mazzgord</title>
-          <meta name="robots" content="noindex, nofollow" />
         </Helmet>
         <div className="max-w-md w-full px-6 text-center">
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-100 mb-6">
@@ -291,7 +288,6 @@ export default function Odeme() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Helmet>
           <title>Ödeme | Mazzgord</title>
-          <meta name="robots" content="noindex, nofollow" />
         </Helmet>
         <div className="max-w-md w-full px-6 text-center">
           <AlertCircle className="w-12 h-12 text-red-600 mx-auto mb-4" />
@@ -308,7 +304,6 @@ export default function Odeme() {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Güvenli Ödeme | Mazzgord</title>
-        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       <nav className="sticky top-0 z-50 bg-background border-b border-border">

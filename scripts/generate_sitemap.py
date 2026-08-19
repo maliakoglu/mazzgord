@@ -50,7 +50,7 @@ ROUTES = [
 ]
 
 # noindex sayfalar — sitemap'e eklenmez
-NOINDEX = {"/giris", "/hesabim", "/sepet", "/odeme", "/odeme/sonuc", "/admin"}
+NOINDEX = {"/giris", "/hesabim", "/sepet", "/odeme", "/odeme/sonuc", "/admin", "/cerez-politikasi", "/kullanim-kosullari", "/gizlilik", "/siparis-takip"}
 
 # Öncelikler
 PRIORITY = {

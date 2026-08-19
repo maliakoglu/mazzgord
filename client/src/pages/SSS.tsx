@@ -63,7 +63,6 @@ export default function SSS() {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Sıkça Sorulan Sorular (SSS) | Çeviri Hizmetleri | Mazzgord</title>
-        <meta name="description" content="Çeviri hizmetleri hakkında sıkça sorulan sorular: yeminli tercüme, ücretler, teslimat süresi, noter onayı, online çeviri ve daha fazlası. Mazzgord Çeviri SSS." />
         <link rel="canonical" href="https://mazzgord.com/sss" />
       </Helmet>
 

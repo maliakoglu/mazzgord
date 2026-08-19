@@ -8,9 +8,7 @@ export default function CookiePolicy() {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Çerez Politikası | Mazzgord Çeviri Hizmetleri</title>
-        <meta name="description" content="Mazzgord.com çerez politikası. Zorunlu, analitik ve reklam çerezlerinin kullanım amacı ve süreleri." />
         <link rel="canonical" href="https://mazzgord.com/cerez-politikasi" />
-        <meta name="robots" content="noindex, follow" />
       </Helmet>
 
       <nav className="sticky top-0 z-50 bg-background border-b border-border">

@@ -7,7 +7,6 @@ export default function PasaportCeviri() {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Pasaport Çevirisi | İngilizce-Türkçe Yeminli Tercüme - Mazzgord</title>
-        <meta name="description" content="Pasaport çevirisi için profesyonel yeminli tercüme hizmeti. İngilizce-Türkçe pasaport tercümesi, vize ve resmi başvurular için hızlı ve güvenilir çeviri. Denizli ve online hizmet." />
         <link rel="canonical" href="https://mazzgord.com/pasaport-ceviri" />
         <meta property="og:title" content="Pasaport Çevirisi | İngilizce-Türkçe Yeminli Tercüme - Mazzgord" />
         <meta property="og:description" content="Pasaport çevirisi için profesyonel yeminli tercüme hizmeti. İngilizce-Türkçe pasaport tercümesi, vize ve resmi başvurular için hızlı ve güvenilir çeviri." />

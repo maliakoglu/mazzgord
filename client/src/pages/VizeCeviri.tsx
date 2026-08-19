@@ -7,7 +7,6 @@ export default function VizeCeviri() {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Vize Başvurusu Çevirisi | Denizli - Mazzgord</title>
-        <meta name="description" content="Vize başvurusu için yeminli çeviri hizmeti. İngiltere, ABD, Schengen vize başvuruları için pasaport, banka dokümanı, çalışma belgesi çevirisi. Denizlide hızlı teslimat." />
         <link rel="canonical" href="https://mazzgord.com/vize-ceviri" />
         <meta property="og:title" content="Vize Başvurusu Çevirisi | Denizli - Mazzgord" />
         <meta property="og:description" content="Vize başvurusu için yeminli çeviri hizmeti. İngiltere, ABD, Schengen vize başvuruları için pasaport, banka dokümanı, çalışma belgesi çevirisi. Denizlide hızlı teslimat." />

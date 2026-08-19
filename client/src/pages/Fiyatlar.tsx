@@ -50,7 +50,6 @@ export default function Fiyatlar() {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Çeviri Fiyatları 2026 | Yeminli Tercüme Fiyat Listesi | Mazzgord</title>
-        <meta name="description" content="2026 yeminli tercüme fiyatları. Pasaport, diploma, vize ve resmi belge çevirisi için başlangıç fiyatları. Noter ve apostil işlem/takip bedelleri ayrı." />
       </Helmet>
 
       <nav className="sticky top-0 z-50 bg-background border-b border-border">

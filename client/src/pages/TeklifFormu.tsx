@@ -269,7 +269,6 @@ mazzgord.com`;
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Çeviri Teklif Formu | Net Teklif Al | Mazzgord</title>
-        <meta name="description" content="Yeminli tercüme teklif formu. Belge türü, dil yönü, noter ve apostil ihtiyacını belirtin; net teklif almak için belgenizi gönderin." />
       </Helmet>
       {/* Nav */}
       <nav className="sticky top-0 z-50 bg-background border-b border-border">

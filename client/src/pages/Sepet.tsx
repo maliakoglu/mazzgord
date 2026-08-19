@@ -135,7 +135,6 @@ export default function Sepet() {
       <div className="min-h-screen bg-background">
         <Helmet>
           <title>Sepetim | Mazzgord Çeviri Hizmetleri</title>
-          <meta name="description" content="Sepetinizdeki çeviri hizmetleri ve sipariş özeti." />
         </Helmet>
         <nav className="sticky top-0 z-50 bg-background border-b border-border">
           <div className="container mx-auto px-4 py-4">
@@ -162,7 +161,6 @@ export default function Sepet() {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Sepetim | Mazzgord Çeviri Hizmetleri</title>
-        <meta name="description" content="Sepetinizdeki çeviri hizmetleri ve sipariş özeti." />
       </Helmet>
       <nav className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="container mx-auto px-4 py-4">

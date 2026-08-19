@@ -39,7 +39,6 @@ export default function Giris() {
     <div className="min-h-screen bg-background flex items-center justify-center px-4 py-20">
       <Helmet>
         <title>Giriş Yap | Mazzgord Çeviri Hizmetleri</title>
-        <meta name="description" content="Mazzgord hesabınıza giriş yapın. Sipariş geçmişinizi ve tekliflerinizi takip edin." />
       </Helmet>
       <div className="w-full max-w-md">
         <div className="bg-card border border-border rounded-2xl shadow-lg p-8">

@@ -7,7 +7,6 @@ export default function AkademikCeviri() {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Akademik Çeviri Hizmeti | Denizli - Mazzgord</title>
-        <meta name="description" content="Akademik çeviri hizmeti. Tez, makale, bildiri ve araştırma raporu çevirisi. Bilimsel terminoloji ve akademik üslup. Denizlide profesyonel akademik çeviri." />
         <link rel="canonical" href="https://mazzgord.com/akademik-ceviri" />
         <meta property="og:title" content="Akademik Çeviri Hizmeti | Denizli - Mazzgord" />
         <meta property="og:description" content="Akademik çeviri hizmeti. Tez, makale, bildiri ve araştırma raporu çevirisi. Bilimsel terminoloji ve akademik üslup. Denizlide profesyonel akademik çeviri." />
