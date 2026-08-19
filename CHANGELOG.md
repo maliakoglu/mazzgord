@@ -1,3 +1,14 @@
+## [1.0.4] — 2026-08-19
+
+### Düzeltmeler
+- **Web3Forms bildirim kontrolü**: Frontend'de Web3Forms yanıtı kontrol ediliyor, başarısızsa console.error ile loglanıyor (#6)
+- **Resend hata loglama**: `console.log` yerine `console.error` kullanılıyor — gözlemlenebilirlik iyileştirildi (#6)
+
+### Değişen Dosyalar
+- `client/src/pages/TeklifFormu.tsx` — Web3Forms yanıt kontrolü
+- `routes/quote.js` — Resend hata loglama seviyesi yükseltildi
+
+
 ## [1.0.3] — 2026-08-19
 
 ### Güvenlik
