@@ -1,3 +1,14 @@
+## [1.0.9] — 2026-08-19
+
+### Düzeltmeler
+- **Çerez Politikası**: SEO meta tag'leri eklendi (title, description, canonical, noindex)
+- **Kullanım Koşulları**: SEO meta tag'leri eklendi (title, description, canonical, noindex)
+
+### Değişen Dosyalar
+- `client/src/pages/CookiePolicy.tsx` — Helmet eklendi
+- `client/src/pages/Terms.tsx` — Helmet eklendi
+
+
 ## [1.0.8] — 2026-08-19
 
 ### Düzeltmeler
