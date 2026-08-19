@@ -71,20 +71,28 @@ export default function Privacy() {
 
           <h2 className="text-2xl font-bold text-primary mt-8">4. Verilerin Paylaşılması</h2>
           <p>Kişisel verileriniz üçüncü kişilerle paylaşılmamaktadır. Yasal zorunluluklar dışında verileriniz hiçbir kurum veya kuruluşa aktarılmamaktadır. Belgeniz, çeviri üretimi dışında hiçbir yapay zekâ veya çevrim içi araca gönderilmez.</p>
+          <p>Hizmet sunumu için aşağıdaki üçüncü taraf hizmetleri kullanılmaktadır:</p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li><strong>Web3Forms</strong> — Teklif taleplerinin işletmeye e-posta olarak iletilmesi</li>
+            <li><strong>Resend</strong> — Müşteriye teklif onayı ve durum bildirimi e-postalarının gönderilmesi</li>
+            <li><strong>WhatsApp</strong> — İletişim ve teklif takip kanalı olarak kullanılır</li>
+            <li><strong>Cloudflare</strong> — Web sitesi barındırma, güvenlik ve dosya depolama (R2)</li>
+          </ul>
+          <p>Noter onayı, apostil ve kargo işlemleri için belgeniz ilgili kurumlara (noter, valilik/kaymakamlık, kargo firması) fiziksel veya dijital olarak iletilir. Bu aktarım yalnızca sizin onayınız ile ve hizmetin gereği olarak yapılır.</p>
 
           <h2 className="text-2xl font-bold text-primary mt-8">5. Verilerin Saklanması</h2>
-          <p>Kişisel verileriniz, işleme amacının gerekli kıldığı süre boyunca saklanmaktadır. Yüklenen belgeler iş tamamlandıktan sonra güvenli şekilde silinir. Belge saklama süresi talep üzerine uzatılabilir.</p>
+          <p>Kişisel verileriniz, işleme amacının gerekli kıldığı süre boyunca saklanmaktadır. Yüklenen belgeler güvenli bulut depolamada 90 gün saklanır ve bu sürenin sonunda otomatik olarak silinir. Belge saklama süresi talep üzerine uzatılabilir.</p>
 
           <h2 className="text-2xl font-bold text-primary mt-8">6. Çerezler</h2>
           
           <div className="bg-secondary/30 rounded-xl p-8">
             <h2 className="text-2xl font-bold text-primary mb-4">Reklam ve Google AdSense</h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Mazzgord.com, Google AdSense reklam hizmetini kullanmaktadir. Google AdSense,
-              size ilgi alanlariniza gore reklamlar gostermek icin cookies (cerezler) kullanir.
+              Mazzgord.com, Google AdSense reklam hizmetini kullanmaktadır. Google AdSense,
+              size ilgi alanlarınıza göre reklamlar göstermek için çerezler kullanır.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              Detayli bilgi: <a href="https://policies.google.com/technologies/ads" className="text-primary hover:underline" target="_blank">Google Reklam ve Gizlilik</a>
+              Detaylı bilgi: <a href="https://policies.google.com/technologies/ads" className="text-primary hover:underline" target="_blank">Google Reklam ve Gizlilik</a>
             </p>
           </div>
 
