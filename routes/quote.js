@@ -207,7 +207,7 @@ export async function handleQuote(request, env, path = "", method = "POST") {
       console.error("Teklif e-posta hatası:", String(err));
     }
 
-    return new Response(JSON.stringify({ success: true }), {
+    return new Response(JSON.stringify({ success: true, order_no: orderNo, order_token: orderToken }), {
       headers: { "Content-Type": "application/json", ...corsHeaders },
     });
   } catch (err) {
