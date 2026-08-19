@@ -1,3 +1,14 @@
+## [1.0.3] — 2026-08-19
+
+### Güvenlik
+- **Sipariş numarası enumerable hatası giderildi**: Her teklife `crypto.randomUUID` ile benzersiz `order_token` atanıyor. GET endpoint'i artık hem `MZ-` (geriye uyumlu) hem de UUID token ile sorgulanabiliyor. Token'ı bilmeyenler sipariş bilgilerine erişemez. (#5)
+
+### Değişen Dosyalar
+- `routes/quote.js` — INSERT'e `order_token` eklendi, GET'te UUID sorgulama desteği
+- `client/src/pages/SiparisTakip.tsx` — UUID formatı tanıma, order_token gösterimi
+- D1 migration: `ALTER TABLE quotes ADD COLUMN order_token TEXT`
+
+
 ## [1.0.2] — 2026-08-19
 
 ### Düzeltmeler
