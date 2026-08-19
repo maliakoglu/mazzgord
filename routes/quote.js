@@ -120,12 +120,13 @@ export async function handleQuote(request, env, path = "", method = "POST") {
     const address = delivery === 'shipping' ? (validation.data.shipping_address || null) : null;
 
     await env.DB.prepare(
-      "INSERT INTO quotes (name, email, phone, source_language, target_language, document_type, page_count, notes, file_key, service_type, urgency, delivery_method, word_count, yeminli, noter_onay, order_status, shipping_address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)"
+      "INSERT INTO quotes (name, email, phone, source_language, target_language, document_type, page_count, notes, file_key, service_type, urgency, delivery_method, word_count, yeminli, noter_onay, order_status, shipping_address, notary_need, apostille_need, target_country) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?)"
     ).bind(
       name, email, phone || null, source_language, target_language,
       document_type || null, page_count || null, notes || null, file_key || null,
       service_type || null, urgency, delivery,
-      word_count || null, yeminli ? 1 : 0, noter_onay ? 1 : 0, address
+      word_count || null, yeminli ? 1 : 0, noter_onay ? 1 : 0, address,
+      validation.data.notary_need || null, validation.data.apostille_need || null, validation.data.target_country || null
     ).run();
 
     // Sipariş numarası oluştur

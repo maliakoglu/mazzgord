@@ -27,3 +27,9 @@ ALTER TABLE quotes ADD COLUMN order_status TEXT DEFAULT 'pending';
 ALTER TABLE quotes ADD COLUMN estimated_price REAL;
 ALTER TABLE quotes ADD COLUMN translator TEXT;
 ALTER TABLE quotes ADD COLUMN delivery_date TEXT;
+
+-- Quotes tablosuna ek kolonlar (noter/apostil/ülke/adres)
+ALTER TABLE quotes ADD COLUMN notary_need TEXT;
+ALTER TABLE quotes ADD COLUMN apostille_need TEXT;
+ALTER TABLE quotes ADD COLUMN target_country TEXT;
+ALTER TABLE quotes ADD COLUMN shipping_address TEXT;
