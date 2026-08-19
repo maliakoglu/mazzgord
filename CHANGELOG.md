@@ -1,3 +1,15 @@
+## [1.0.7] — 2026-08-19
+
+### Düzeltmeler
+- **ChatWidget Türkçe karakterler**: 12 metin düzeltildi (çeviri, yanıtlanır, bağlantı, vb.)
+- **Teklif başarı ekranı**: Başvuru numarası, takip linki, WhatsApp butonu ve yanıt süresi eklendi
+
+### Değişen Dosyalar
+- `client/src/components/ChatWidget.tsx` — Türkçe karakter düzeltmeleri
+- `routes/quote.js` — response'a order_no + order_token eklendi
+- `client/src/pages/TeklifFormu.tsx` — success ekranı güncellendi
+
+
 ## [1.0.6] — 2026-08-19
 
 ### Yeni Özellikler
