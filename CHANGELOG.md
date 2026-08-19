@@ -1,3 +1,13 @@
+## [1.0.6] — 2026-08-19
+
+### Yeni Özellikler
+- **Teklif başarı ekranı**: Başvuru numarası (MZ-XXXXX), takip linki ve WhatsApp butonu eklendi. Beklenen yanıt süresi (2-4 saat) bilgisi gösteriliyor.
+
+### Değişen Dosyalar
+- `routes/quote.js` — response'a `order_no` + `order_token` eklendi
+- `client/src/pages/TeklifFormu.tsx` — success ekranı güncellendi, `orderToken`/`orderNo` state eklendi
+
+
 ## [1.0.5] — 2026-08-19
 
 ### Bakım
