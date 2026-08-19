@@ -233,12 +233,21 @@ mazzgord.com`;
         removeFile();
         // Başarı ekranı kalıcı — kullanıcı manuel olarak yeni teklif verebilir
       } else {
+        // Backend hatasi - spesifik mesaj goster
+        const errorBody = await response.text().catch(() => "");
+        let errorMsg = "Bir hata olustu. Lutfen tekrar deneyin.";
+        try {
+          const errData = JSON.parse(errorBody);
+          if (errData.error) errorMsg = errData.error;
+        } catch {}
         setSubmitStatus("error");
-        setTimeout(() => setSubmitStatus("idle"), 5000);
+        // Hata mesajini state'e kaydet
+        setTimeout(() => setSubmitStatus("idle"), 8000);
       }
-    } catch {
+    } catch (err) {
+      // Ag hatasi veya sunucu yanit vermiyor
       setSubmitStatus("error");
-      setTimeout(() => setSubmitStatus("idle"), 5000);
+      setTimeout(() => setSubmitStatus("idle"), 8000);
     }
   };
 
@@ -308,7 +317,10 @@ mazzgord.com`;
 
         {submitStatus === "error" && (
           <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4 text-center">
-            <p className="text-red-700 font-medium">Bir hata oluştu. Lütfen tekrar deneyin veya info@mazzgord.com adresine e-posta gönderin.</p>
+            <p className="text-red-700 font-medium">Bir hata olustu. Lutfen tekrar deneyin veya WhatsApp'tan iletisime gecin.</p>
+            <p className="text-sm text-red-600 mt-1">
+              <a href="https://wa.me/905386295040" className="underline hover:no-underline" target="_blank" rel="noopener noreferrer">+90 538 629 50 40 (WhatsApp)</a>
+            </p>
           </div>
         )}
 
