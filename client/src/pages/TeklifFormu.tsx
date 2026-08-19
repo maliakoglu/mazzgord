@@ -51,6 +51,7 @@ export default function TeklifFormu() {
   const [fileName, setFileName] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [kvkkAccepted, setKvkkAccepted] = useState(false);
+  const [step, setStep] = useState(1);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -324,9 +325,9 @@ mazzgord.com`;
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="flex items-center justify-center gap-2 mb-8">{[1,2,3].map(s => {const labels=["Belge Bilgileri","Kisisel Bilgiler","Dosya ve Onay"];return(<div key={s} className="flex items-center gap-2"><div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step===s?"bg-primary text-primary-foreground":step>s?"bg-green-500 text-white":"bg-muted text-muted-foreground"}`}>{step>s?"✓":s}</div><span className={`text-sm ${step===s?"text-foreground font-medium":"text-muted-foreground"}`}>{labels[s-1]}</span>{s<3&&<div className="w-8 h-0.5 bg-muted-foreground/30"/>}</div>)})}</div><form onSubmit={handleSubmit} className="space-y-6">
           {/* Kişisel Bilgiler */}
-          <div className={sectionClass}>
+          <div className={`${sectionClass} ${step!==1?"hidden":""}`}>
             <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
               <User className="w-5 h-5 text-primary" /> Kişisel Bilgiler
             </h2>
@@ -382,7 +383,7 @@ mazzgord.com`;
           </div>
 
           {/* Çeviri Detayları */}
-          <div className={sectionClass}>
+          <div className={`${sectionClass} ${step!==1?"hidden":""}`}>
             <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
               <Globe className="w-5 h-5 text-primary" /> Çeviri Detayları
             </h2>
@@ -453,7 +454,7 @@ mazzgord.com`;
           </div>
 
           {/* Aciliyet ve Teslimat */}
-          <div className={sectionClass}>
+          <div className={`${sectionClass} ${step!==1?"hidden":""}`}>
             <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
               <Clock className="w-5 h-5 text-primary" /> Aciliyet ve Teslimat
             </h2>
@@ -504,7 +505,7 @@ mazzgord.com`;
           </div>
 
           {/* Dosya Yükleme */}
-          <div className={sectionClass}>
+          <div className={`${sectionClass} ${step!==1?"hidden":""}`}>
             <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
               <Upload className="w-5 h-5 text-primary" /> Belge Yükleme <span className="text-red-500">*</span>
             </h2>
@@ -550,7 +551,7 @@ mazzgord.com`;
           </div>
 
           {/* Ek Notlar */}
-          <div className={sectionClass}>
+          <div className={`${sectionClass} ${step!==1?"hidden":""}`}>
             <h2 className="text-lg font-bold text-foreground mb-4">Ek Notlar</h2>
             <textarea
               name="notes"
