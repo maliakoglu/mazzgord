@@ -1,3 +1,12 @@
+## [1.0.10] — 2026-08-19
+
+### Düzeltmeler
+- **Admin.tsx typecheck hataları giderildi**: `startDeliverOrder` ve `startDeliverQuote` fonksiyonlarında tip uyumsuzlukları düzeltildi. TypeScript `tsc --noEmit` artık tamamen temiz.
+
+### Değişen Dosyalar
+- `client/src/pages/Admin.tsx` — `delivery_note` boolean→string, `file: null` eklendi
+
+
 ## [1.0.9] — 2026-08-19
 
 ### Düzeltmeler
