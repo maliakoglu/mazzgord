@@ -7,7 +7,6 @@ export default function Terms() {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Kullanım Koşulları | Mazzgord Çeviri Hizmetleri</title>
         <link rel="canonical" href="https://mazzgord.com/kullanim-kosullari" />
       </Helmet>
 

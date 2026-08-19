@@ -7,7 +7,6 @@ export default function About() {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Hakkımda | Yeminli Tercüman Mehmet Akoğlu - Mazzgord</title>
         <link rel="canonical" href="https://mazzgord.com/hakkimizda" />
         <meta property="og:title" content="Hakkımda | Yeminli Tercüman Mehmet Akoğlu - Mazzgord" />
         <meta property="og:description" content="Denizli merkezli noter yeminli tercüman Mehmet Akoğlu. İngilizce-Türkçe resmi belge ve vize çevirisi." />

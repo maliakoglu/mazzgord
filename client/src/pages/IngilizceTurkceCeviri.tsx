@@ -6,7 +6,6 @@ export default function IngilizceTurkceCeviri() {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>İngilizce-Türkçe Çeviri Hizmeti | Denizli - Mazzgord</title>
         <link rel="canonical" href="https://mazzgord.com/ingilizce-turkce-ceviri" />
         <meta property="og:title" content="İngilizce-Türkçe Çeviri Hizmeti | Denizli - Mazzgord" />
         <meta property="og:description" content="İngilizce-Türkçe çeviri hizmeti. Noter yeminli tercüman tarafından doğru çeviri. Denizlide yeminli tercüme ve genel çeviri çözümleri." />

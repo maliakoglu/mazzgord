@@ -146,7 +146,6 @@ export default function Hesabim() {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Hesabım | Mazzgord Çeviri Hizmetleri</title>
       </Helmet>
 
       <nav className="sticky top-0 z-50 bg-background border-b border-border">

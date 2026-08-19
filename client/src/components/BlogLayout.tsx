@@ -103,7 +103,6 @@ export default function BlogLayout({ title, description, canonical, date, illust
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>{title}</title>
         <link rel="canonical" href={canonical} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />

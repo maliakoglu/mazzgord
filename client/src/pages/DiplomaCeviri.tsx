@@ -6,7 +6,6 @@ export default function DiplomaCeviri() {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Diploma ve Transkript Çevirisi | İngilizce-Türkçe Yeminli Tercüme - Mazzgord</title>
         <link rel="canonical" href="https://mazzgord.com/diploma-ceviri" />
         <meta property="og:title" content="Diploma ve Transkript Çevirisi | İngilizce-Türkçe Yeminli Tercüme - Mazzgord" />
         <meta property="og:description" content="Diploma ve transkript çevirisi için profesyonel yeminli tercüme hizmeti. İngilizce-Türkçe diploma çevirisi, yurt dışı başvurular için hızlı ve güvenilir çeviri." />

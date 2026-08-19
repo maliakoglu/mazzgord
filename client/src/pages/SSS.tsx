@@ -62,7 +62,6 @@ export default function SSS() {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Sıkça Sorulan Sorular (SSS) | Çeviri Hizmetleri | Mazzgord</title>
         <link rel="canonical" href="https://mazzgord.com/sss" />
       </Helmet>
 

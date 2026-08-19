@@ -49,7 +49,6 @@ export default function Fiyatlar() {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Çeviri Fiyatları 2026 | Yeminli Tercüme Fiyat Listesi | Mazzgord</title>
       </Helmet>
 
       <nav className="sticky top-0 z-50 bg-background border-b border-border">

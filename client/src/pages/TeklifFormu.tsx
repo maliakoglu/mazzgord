@@ -268,7 +268,6 @@ mazzgord.com`;
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Çeviri Teklif Formu | Net Teklif Al | Mazzgord</title>
       </Helmet>
       {/* Nav */}
       <nav className="sticky top-0 z-50 bg-background border-b border-border">

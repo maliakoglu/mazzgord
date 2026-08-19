@@ -38,7 +38,6 @@ export default function Giris() {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4 py-20">
       <Helmet>
-        <title>Giriş Yap | Mazzgord Çeviri Hizmetleri</title>
       </Helmet>
       <div className="w-full max-w-md">
         <div className="bg-card border border-border rounded-2xl shadow-lg p-8">

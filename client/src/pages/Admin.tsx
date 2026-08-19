@@ -484,7 +484,6 @@ export default function Admin() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Helmet>
-          <title>Admin Panel | Mazzgord</title>
         </Helmet>
         <div className="w-full max-w-md p-8">
           <div className="text-center mb-8">
@@ -526,7 +525,6 @@ export default function Admin() {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Admin Panel | Mazzgord</title>
       </Helmet>
 
       <header className="sticky top-0 z-50 bg-background border-b border-border">

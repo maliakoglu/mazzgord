@@ -6,7 +6,6 @@ export default function TeknikCeviri() {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Teknik Çeviri Hizmeti | Denizli - Mazzgord</title>
         <link rel="canonical" href="https://mazzgord.com/teknik-ceviri" />
         <meta property="og:title" content="Teknik Çeviri Hizmeti | Denizli - Mazzgord" />
         <meta property="og:description" content="Teknik çeviri hizmeti. Kullanım kılavuzu, mühendislik belgeleri, teknik spesifikasyonlar için uzman çevirmenler. Denizlide profesyonel teknik çeviri." />
