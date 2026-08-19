@@ -3,7 +3,7 @@
 import { corsHeaders } from "../lib/cors.js";
 import { escapeHtml } from "../lib/escapeHtml.js";
 import { quoteSchema, validateBody } from "../lib/validation.js";
-import { generateCode, storeVerifyCode, checkVerifyCode, sendVerifyEmail } from "../lib/emailVerify.js";
+import { generateCode, storeVerifyCode, checkVerifyCode, sendVerifyEmail, markEmailVerified, isEmailVerified } from "../lib/emailVerify.js";
 
 export async function handleQuote(request, env, path = "", method = "POST") {
   // GET /api/quote/:orderNo — Public: teklif durumu sorgula (müşteri takibi)
@@ -98,6 +98,7 @@ export async function handleQuote(request, env, path = "", method = "POST") {
           status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
         });
       }
+      await markEmailVerified(env, email);
       return new Response(JSON.stringify({ success: true, verified: true }), {
         headers: { "Content-Type": "application/json", ...corsHeaders },
       });
@@ -116,17 +117,26 @@ export async function handleQuote(request, env, path = "", method = "POST") {
 
     const { name, email, phone, source_language, target_language, document_type, page_count, notes, file_key, service_type, urgency, delivery_method, word_count, yeminli, noter_onay } = validation.data;
 
+    // E-posta dogrulama zorunlu — KV'den kontrol et
+    const verified = await isEmailVerified(env, email);
+    if (!verified) {
+      return new Response(JSON.stringify({ success: false, error: "E-posta dogrulamasi gerekli" }), {
+        status: 403, headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
     const delivery = delivery_method || 'digital';
     const address = delivery === 'shipping' ? (validation.data.shipping_address || null) : null;
 
     await env.DB.prepare(
-      "INSERT INTO quotes (name, email, phone, source_language, target_language, document_type, page_count, notes, file_key, service_type, urgency, delivery_method, word_count, yeminli, noter_onay, order_status, shipping_address, notary_need, apostille_need, target_country) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?)"
+      "INSERT INTO quotes (name, email, phone, source_language, target_language, document_type, page_count, notes, file_key, service_type, urgency, delivery_method, word_count, yeminli, noter_onay, order_status, shipping_address, notary_need, apostille_need, target_country, delivery_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?)"
     ).bind(
       name, email, phone || null, source_language, target_language,
       document_type || null, page_count || null, notes || null, file_key || null,
       service_type || null, urgency, delivery,
       word_count || null, yeminli ? 1 : 0, noter_onay ? 1 : 0, address,
-      validation.data.notary_need || null, validation.data.apostille_need || null, validation.data.target_country || null
+      validation.data.notary_need || null, validation.data.apostille_need || null, validation.data.target_country || null,
+      validation.data.delivery_date || null
     ).run();
 
     // Sipariş numarası oluştur

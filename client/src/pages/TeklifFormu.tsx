@@ -445,10 +445,7 @@ mazzgord.com`;
                 <label className={labelClass}>Belge Hangi Ülke/Kurum İçin?</label>
                 <input type="text" name="target_country" value={formData.target_country} onChange={handleChange} className={inputClass} placeholder="Örn: İngiltere vizesi, ABD göçmenlik" />
               </div>
-              <div>
-                <label className={labelClass}>Teslim Tarihi</label>
-                <input type="date" name="delivery_date" value={formData.delivery_date} onChange={handleChange} className={inputClass} />
-              </div>
+
             </div>
           </div>
 
@@ -509,7 +506,7 @@ mazzgord.com`;
               <Upload className="w-5 h-5 text-primary" /> Belge Yükleme <span className="text-red-500">*</span>
             </h2>
             <p className="text-sm text-muted-foreground mb-4">
-              Çevrilmesini istediğiniz belgeyi yükleyin (PDF, DOC, DOCX, TXT — max 10MB). Belge yükleme zorunludur.
+              Çevrilmesini istediğiniz belgeyi yükleyin (PDF, DOC, DOCX, TXT — max 10MB). Belge yükleme isteğe bağlıdır (opsiyonel).
             </p>
             {uploadStatus === "done" && fileKey ? (
               <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg p-4">
@@ -573,7 +570,7 @@ mazzgord.com`;
                 required
               />
               <div className="text-sm text-muted-foreground">
-                <span className="font-medium text-foreground">Kisisel verilerimin islenmesine iliskin aydinlatma metnini</span> okudum. Verilerimin teklif hazirlama, iletisim ve hizmet sunumu amaciyla islenmesine, gerektiginde ucuncu taraflarla (noter, kurye, resmi kurumlar) paylasilmasina ve 90 gun sureyle saklanmasina izin veriyorum. Onayimi istedigim zaman geri alabilirim.
+                <span className="font-medium text-foreground">Kişisel verilerimin işlenmesine ilişkin aydınlatma metnini</span> okudum. Verilerimin teklif hazırlama, iletişim ve hizmet sunumu amacıyla işlenmesine, gerektiğinde üçüncü taraflarla (noter, kurye, resmi kurumlar) paylaşılmasına ve 90 gün süreyle saklanmasına izin veriyorum. Onayımı istediğim zaman geri alabilirim.
               </div>
             </label>
           </div>

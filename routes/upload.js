@@ -28,12 +28,12 @@ export async function handleUpload(request, env) {
     }
 
     // File type validation - extension + MIME type
-    const allowedExtensions = [".pdf", ".doc", ".docx", ".txt", ".rtf", ".jpg", ".jpeg", ".png"];
+    const allowedExtensions = [".pdf", ".doc", ".docx", ".txt", ".rtf", ".jpg", ".jpeg", ".png", ".webp"];
     const allowedMimeTypes = [
       "application/pdf", "application/msword",
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       "text/plain", "application/rtf",
-      "image/jpeg", "image/png",
+      "image/jpeg", "image/png", "image/webp",
     ];
     const fileExt = "." + (file.name.split(".").pop() || "").toLowerCase();
     if (!allowedExtensions.includes(fileExt)) {
