@@ -1,7 +1,12 @@
 // POST /api/upload — R2'ye dosya yükle (anlamlı isimlendirme)
 import { corsHeaders } from "../lib/cors.js";
+import { checkRateLimit } from "../lib/rateLimit.js";
 
 export async function handleUpload(request, env) {
+  // Rate limit - IP basina dakikada 10 yukleme
+  const rateLimitResponse = await checkRateLimit(request, env, "/api/upload");
+  if (rateLimitResponse) return rateLimitResponse;
+
   try {
     const formData = await request.formData();
     const file = formData.get("file");
@@ -22,11 +27,23 @@ export async function handleUpload(request, env) {
       });
     }
 
-    // File type validation
+    // File type validation - extension + MIME type
     const allowedExtensions = [".pdf", ".doc", ".docx", ".txt", ".rtf", ".jpg", ".jpeg", ".png"];
+    const allowedMimeTypes = [
+      "application/pdf", "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "text/plain", "application/rtf",
+      "image/jpeg", "image/png",
+    ];
     const fileExt = "." + (file.name.split(".").pop() || "").toLowerCase();
     if (!allowedExtensions.includes(fileExt)) {
       return new Response(JSON.stringify({ success: false, error: "Desteklenmeyen dosya turu" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+    if (file.type && !allowedMimeTypes.includes(file.type)) {
+      return new Response(JSON.stringify({ success: false, error: "Gecersiz dosya MIME turu" }), {
         status: 400,
         headers: { "Content-Type": "application/json", ...corsHeaders },
       });
