@@ -13,16 +13,11 @@ const STATUS_STEPS = [
   { key: "completed", title: "Teslim edildi", icon: "local-shipping" as const },
 ];
 
-const STATUS_LABELS: Record<string, string> = {
-  pending: "Beklemede",
-  reviewing: "İnceleniyor",
-  in_progress: "Hazırlanıyor",
-  completed: "Tamamlandı",
-  delivered: "Teslim Edildi",
-  cancelled: "İptal Edildi",
-};
+import { STATUS_LABELS } from "@/constants/const";
 
 function getStatusIndex(status: string): number {
+  if (status === "delivered") return STATUS_STEPS.length - 1;
+  if (status === "cancelled") return -1;
   const idx = STATUS_STEPS.findIndex((s) => s.key === status);
   return idx >= 0 ? idx : 0;
 }
@@ -72,7 +67,9 @@ export default function TrackScreen() {
 
     {error && <View style={{ marginTop: 24, backgroundColor: "#FEF2F2", borderRadius: 16, padding: 18, borderWidth: 1, borderColor: "#FECACA", alignItems: "center" }}><MaterialIcons name="error-outline" size={36} color="#EF4444" /><Text style={{ color: "#991B1B", fontSize: 15, fontWeight: "700", marginTop: 10 }}>{error}</Text></View>}
 
-    {data && <View style={{ marginTop: 24 }}>
+    {data && data.order_status === "cancelled" && <View style={{ marginTop: 24, backgroundColor: "#FEF2F2", borderRadius: 20, borderWidth: 1, borderColor: "#FECACA", padding: 24, alignItems: "center" }}><MaterialIcons name="cancel" size={44} color="#EF4444" /><Text style={{ color: "#991B1B", fontSize: 20, fontWeight: "900", marginTop: 14 }}>Sipariş iptal edildi</Text><Text style={{ color: "#991B1B", fontSize: 14, marginTop: 8, textAlign: "center" }}>Bu sipariş iptal edilmiştir. Detaylı bilgi için bizimle iletişime geçin.</Text></View>}
+
+    {data && data.order_status !== "cancelled" && <View style={{ marginTop: 24 }}>
       <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}><View><Text style={{ color: colors.muted, fontSize: 11, fontWeight: "800" }}>BAŞVURU</Text><Text style={{ color: colors.foreground, fontSize: 21, fontWeight: "900", marginTop: 3 }}>{data.order_no}</Text></View><Badge tone="orange">{STATUS_LABELS[data.order_status] || data.order_status}</Badge></View>
       <View style={{ backgroundColor: colors.surface, borderRadius: 20, borderWidth: 1, borderColor: colors.border, padding: 18 }}>
         <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 22 }}><View><Text style={{ color: colors.muted, fontSize: 11 }}>DİLLER</Text><Text style={{ color: colors.foreground, fontSize: 14, fontWeight: "800", marginTop: 4 }}>{data.source_language} → {data.target_language}</Text></View><View style={{ alignItems: "flex-end" }}><Text style={{ color: colors.muted, fontSize: 11 }}>TAHMİNİ TESLİM</Text><Text style={{ color: colors.foreground, fontSize: 14, fontWeight: "800", marginTop: 4 }}>{formatDate(data.delivery_date)}</Text></View></View>

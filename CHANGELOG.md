@@ -1,3 +1,46 @@
+## [1.2.0] — 2026-08-20
+
+### Mobil Uygulama Test Düzeltmeleri (16 madde)
+
+#### Kritik
+- **Odeme dogrulama**: payment.tsx — tarayici kapandiktan sonra API'den odeme durumu poll ediliyor, sahte "basarili" ekrani kaldirildi.
+- **Teklif sihirbazi geri butonu**: quote.tsx — mevcut "Geri don" butonu dogrulandi, floating buton kaldirildi.
+- **Gercek dosya yukleme**: quote.tsx — expo-document-picker ile R2'ye gercek dosya yukleme eklendi (PDF, DOC, JPG, PNG, max 10MB). Sahte toggle kaldirildi.
+- **Track delivered/cancelled**: track.tsx — "delivered" artik completed ile ayni asamada, "cancelled" icin ozel iptal UI'i eklendi.
+- **Durum etiketleri tek yerden**: constants/const.ts — STATUS_LABELS merkezi hale getirildi, track.tsx ve account.tsx arasindaki tutarsizlik giderildi.
+
+#### Onemli
+- **Auth hata mesajlari**: use-auth.ts — "Giris basarisiz" -> "Giris basarisiz", "Kayit basarisiz" -> "Kayit basarisiz".
+- **Order status cevirisi**: account.tsx — odeme siparislerinde ham Ingilizce status yerine Turkce etiket, badge tonu duruma gore degisiyor.
+- **Order baslik duzeltmesi**: account.tsx — payment_link_id (UUID) yerine tutar (₺) baslik olarak gosteriliyor.
+- **Support karti tiklanabilir**: account.tsx — "Bir sorunuz mu var?" karti mailto:info@mazzgord.com aciyor.
+- **Dil secimi dropdown**: quote.tsx — kaynak/hedef dil serbest metin yerine secilebilir chip listesi.
+- **Kaynak=hedef dil kontrolu**: quote.tsx — ayni dil secilirse hata mesaji.
+- **Anasayfa metin tutarliligi**: index.tsx — "24 saat icinde donus" -> "24 saat icinde teklif donusu".
+
+#### Orta
+- **Tab ikon stili**: _layout.tsx — account ikonu outline -> filled, digerleriyle tutarli.
+- **API timeout**: lib/api.ts — 15 saniyelik AbortController timeout, Turkce hata mesaji.
+- **Services retry**: services.tsx — retry butonu fetchServices'i cagiriyor, API yeniden cekiliyor.
+- **Accessibility label'lar**: index.tsx — butonlara accessibilityRole ve accessibilityLabel eklendi.
+
+### Degisen Dosyalar
+- mazzgord-mobile/app/payment.tsx
+- mazzgord-mobile/app/(tabs)/quote.tsx
+- mazzgord-mobile/app/(tabs)/track.tsx
+- mazzgord-mobile/app/(tabs)/account.tsx
+- mazzgord-mobile/app/(tabs)/index.tsx
+- mazzgord-mobile/app/(tabs)/services.tsx
+- mazzgord-mobile/app/(tabs)/_layout.tsx
+- mazzgord-mobile/constants/const.ts
+- mazzgord-mobile/hooks/use-auth.ts
+- mazzgord-mobile/lib/api.ts
+- mazzgord-mobile/package.json
+- mazzgord-mobile/pnpm-lock.yaml
+
+### Yeni Bagimlilik
+- expo-document-picker ~14.0.8
+
 ## [1.1.1] — 2026-08-20
 
 ### Yeni Özellikler

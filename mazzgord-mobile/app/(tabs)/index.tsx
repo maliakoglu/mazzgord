@@ -18,7 +18,7 @@ export default function HomeScreen() {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 20, paddingBottom: 34 }}>
         <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 25 }}>
           <LogoMark />
-          <Pressable onPress={() => router.push("/(tabs)/account")} style={{ width: 42, height: 42, borderRadius: 21, backgroundColor: colors.surface, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: colors.border }}>
+          <Pressable onPress={() => router.push("/(tabs)/account")} accessibilityRole="button" accessibilityLabel="Hesabım" style={{ width: 42, height: 42, borderRadius: 21, backgroundColor: colors.surface, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: colors.border }}>
             <MaterialIcons name="person-outline" size={22} color={colors.foreground} />
           </Pressable>
         </View>
@@ -29,7 +29,7 @@ export default function HomeScreen() {
           <Text style={{ color: "#fff", fontSize: 29, fontWeight: "900", lineHeight: 34, letterSpacing: -0.8, marginTop: 17, maxWidth: 280 }}>Belgeleriniz, doğru dilde geleceğe hazır.</Text>
           <Text style={{ color: "#DBEAFE", fontSize: 14, lineHeight: 21, marginTop: 10, maxWidth: 290 }}>Profesyonel, yeminli ve hızlı çeviri hizmeti. Teklifinizi birkaç adımda alın.</Text>
           <View style={{ marginTop: 20, width: "72%" }}><PrimaryButton title="Hemen teklif al" icon="arrow-forward" onPress={() => router.push("/quote")} /></View>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginTop: 15 }}><MaterialIcons name="schedule" size={15} color="#BFDBFE" /><Text style={{ color: "#BFDBFE", fontSize: 12, fontWeight: "600" }}>24 saat içinde dönüş</Text></View>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginTop: 15 }}><MaterialIcons name="schedule" size={15} color="#BFDBFE" /><Text style={{ color: "#BFDBFE", fontSize: 12, fontWeight: "600" }}>24 saat içinde teklif dönüşü</Text></View>
         </View>
 
         <View style={{ flexDirection: "row", gap: 10, marginBottom: 27 }}>
@@ -40,7 +40,7 @@ export default function HomeScreen() {
 
         <SectionTitle title="Nasıl yardımcı olalım?" action="Tümünü gör" onPress={() => router.push("/services")} />
         <View style={{ gap: 10, marginBottom: 26 }}>
-          {services.map((service) => <Pressable key={service.title} onPress={() => router.push("/services")} style={({ pressed }) => [{ backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1, borderRadius: 17, padding: 15, flexDirection: "row", alignItems: "center", gap: 13 }, pressed && { opacity: 0.76 }]}>
+          {services.map((service) => <Pressable key={service.title} onPress={() => router.push("/services")} accessibilityRole="button" accessibilityLabel={service.title} style={({ pressed }) => [{ backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1, borderRadius: 17, padding: 15, flexDirection: "row", alignItems: "center", gap: 13 }, pressed && { opacity: 0.76 }]}>
             <View style={{ width: 44, height: 44, borderRadius: 14, backgroundColor: "#FFF7ED", alignItems: "center", justifyContent: "center" }}><MaterialIcons name={service.icon} size={23} color={colors.primary} /></View>
             <View style={{ flex: 1 }}><Text style={{ color: colors.foreground, fontSize: 15, fontWeight: "800" }}>{service.title}</Text><Text style={{ color: colors.muted, fontSize: 12, marginTop: 3 }}>{service.subtitle}</Text></View>
             <MaterialIcons name="chevron-right" size={22} color={colors.muted} />

@@ -49,11 +49,25 @@ export async function apiCall<T>(endpoint: string, options: ApiOptions = {}): Pr
 
   const url = `${API_BASE_URL}${endpoint}`;
 
-  const response = await fetch(url, {
-    method,
-    headers,
-    body: body ? JSON.stringify(body) : undefined,
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : undefined,
+      signal: controller.signal,
+    });
+  } catch (err) {
+    clearTimeout(timeoutId);
+    if (err instanceof Error && err.name === "AbortError") {
+      throw new Error("İstek zaman aşımına uğradı. Lütfen tekrar deneyin.");
+    }
+    throw err;
+  }
+  clearTimeout(timeoutId);
 
   const contentType = response.headers.get("content-type");
 
@@ -269,6 +283,44 @@ export type ContactRequest = {
   email: string;
   phone?: string;
   message: string;
+};
+
+// === UPLOAD ===
+export const uploadApi = {
+  upload: async (fileAsset: { uri: string; name: string; type: string; file?: File }, customerName: string) => {
+    const token = await getToken();
+    const formData = new FormData();
+    // Web: File objesi kullan, Native: { uri, name, type } kullan
+    const fileObj = Platform.OS === "web" && fileAsset.file
+      ? fileAsset.file
+      : { uri: fileAsset.uri, name: fileAsset.name, type: fileAsset.type } as any;
+    formData.append("file", fileObj);
+    formData.append("customer_name", customerName);
+
+    const response = await fetch(`${API_BASE_URL}/api/upload`, {
+      method: "POST",
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: formData,
+    });
+
+    const contentType = response.headers.get("content-type");
+    if (!response.ok) {
+      let errorMessage = `Hata: ${response.status}`;
+      if (contentType && contentType.includes("application/json")) {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorData.message || errorMessage;
+      }
+      throw new Error(errorMessage);
+    }
+
+    if (contentType && contentType.includes("application/json")) {
+      return await response.json() as { success: boolean; file_key?: string; file_name?: string; error?: string };
+    }
+    const text = await response.text();
+    return (text ? JSON.parse(text) : {}) as { success: boolean; file_key?: string; file_name?: string; error?: string };
+  },
 };
 
 // === PAYMENT ===

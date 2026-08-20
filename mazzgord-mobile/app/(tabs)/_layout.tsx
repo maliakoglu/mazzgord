@@ -10,7 +10,7 @@ const ICONS: Record<string, keyof typeof MaterialIcons.glyphMap> = {
   services: "translate",
   quote: "add-circle",
   track: "timeline",
-  account: "person-outline",
+  account: "person",
 };
 
 export default function TabLayout() {

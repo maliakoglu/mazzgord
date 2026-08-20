@@ -29,8 +29,9 @@ export default function ServicesScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // API'den hizmetleri çek
-  useEffect(() => {
+  const fetchServices = () => {
+    setLoading(true);
+    setError(null);
     servicesApi.list()
       .then((res) => {
         if (res.success && res.data) setServices(res.data);
@@ -38,7 +39,9 @@ export default function ServicesScreen() {
       })
       .catch(() => setError("Hizmetler yüklenemedi"))
       .finally(() => setLoading(false));
-  }, []);
+  };
+
+  useEffect(() => { fetchServices(); }, []);
 
   const categories = useMemo(() => {
     const cats = new Set(services.map((s) => s.category));
@@ -62,7 +65,7 @@ export default function ServicesScreen() {
     <View style={{ flex: 1, padding: 20, alignItems: "center", justifyContent: "center" }}>
       <MaterialIcons name="cloud-off" size={40} color={colors.muted} />
       <Text style={{ color: colors.muted, marginTop: 12 }}>{error}</Text>
-      <Pressable onPress={() => { setError(null); setLoading(true); }} style={{ marginTop: 16, paddingHorizontal: 20, paddingVertical: 10, borderRadius: 12, backgroundColor: colors.primary }}>
+      <Pressable onPress={fetchServices} style={{ marginTop: 16, paddingHorizontal: 20, paddingVertical: 10, borderRadius: 12, backgroundColor: colors.primary }}>
         <Text style={{ color: "#fff", fontWeight: "700" }}>Tekrar dene</Text>
       </Pressable>
     </View>

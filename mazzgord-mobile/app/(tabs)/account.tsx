@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { Linking, Pressable, ScrollView, Text, View } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from "expo-router";
 import { ScreenContainer } from "@/components/screen-container";
@@ -8,14 +8,7 @@ import { useColors } from "@/hooks/use-colors";
 import { useAuth } from "@/hooks/use-auth";
 import { accountApi, type AccountOrders } from "@/lib/api";
 
-const STATUS_LABELS: Record<string, string> = {
-  pending: "Beklemede",
-  reviewing: "İnceleniyor",
-  in_progress: "Hazırlanıyor",
-  completed: "Tamamlandı",
-  delivered: "Teslim Edildi",
-  cancelled: "İptal",
-};
+import { STATUS_LABELS } from "@/constants/const";
 
 function formatDate(dateStr: string): string {
   try {
@@ -72,7 +65,7 @@ export default function AccountScreen() {
     {ordersLoading && <View style={{ alignItems: "center", paddingVertical: 20 }}><Text style={{ color: colors.muted }}>Yükleniyor...</Text></View>}
     {orders && (orders.quotes || []).length === 0 && (orders.orders || []).length === 0 && <View style={{ alignItems: "center", paddingVertical: 30 }}><MaterialIcons name="inbox" size={36} color={colors.muted} /><Text style={{ color: colors.muted, marginTop: 10 }}>Henüz siparişiniz yok.</Text></View>}
     {(orders?.quotes || []).slice(0, 5).map((q) => <Pressable key={q.id} onPress={() => router.navigate({ pathname: "/(tabs)/track" } as any)} style={{ backgroundColor: colors.surface, borderRadius: 18, borderWidth: 1, borderColor: colors.border, padding: 16, marginBottom: 11 }}><View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}><View><Text style={{ color: colors.foreground, fontSize: 15, fontWeight: "800" }}>MZ-{String(q.id).padStart(5, "0")}</Text><Text style={{ color: colors.muted, fontSize: 12, marginTop: 4 }}>{q.source_language} → {q.target_language} · {formatDate(q.created_at)}</Text></View><Badge>{STATUS_LABELS[q.order_status] || q.order_status}</Badge></View></Pressable>)}
-    {(orders?.orders || []).slice(0, 5).map((o) => <Pressable key={o.payment_link_id} onPress={() => router.navigate({ pathname: "/payment", params: { link: o.payment_link_id } } as any)} style={{ backgroundColor: colors.surface, borderRadius: 18, borderWidth: 1, borderColor: colors.border, padding: 16, marginBottom: 11 }}><View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}><View><Text style={{ color: colors.foreground, fontSize: 15, fontWeight: "800" }}>{o.payment_link_id}</Text><Text style={{ color: colors.muted, fontSize: 12, marginTop: 4 }}>{o.customer_name} · {formatDate(o.created_at)}</Text></View><Badge tone="green">{o.status}</Badge></View></Pressable>)}
-    <View style={{ marginTop: 28, backgroundColor: "#FFF7ED", padding: 16, borderRadius: 17, flexDirection: "row", gap: 11 }}><MaterialIcons name="support-agent" size={22} color={colors.primary} /><View style={{ flex: 1 }}><Text style={{ color: colors.foreground, fontWeight: "800" }}>Bir sorunuz mu var?</Text><Text style={{ color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 3 }}>Uzman ekibimiz size yardımcı olmaya hazır.</Text></View><MaterialIcons name="chevron-right" size={21} color={colors.primary} /></View>
+    {(orders?.orders || []).slice(0, 5).map((o) => <Pressable key={o.payment_link_id} onPress={() => router.navigate({ pathname: "/payment", params: { link: o.payment_link_id } } as any)} style={{ backgroundColor: colors.surface, borderRadius: 18, borderWidth: 1, borderColor: colors.border, padding: 16, marginBottom: 11 }}><View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}><View><Text style={{ color: colors.foreground, fontSize: 15, fontWeight: "800" }}>{Number(o.total).toLocaleString("tr-TR", { minimumFractionDigits: 2 })} ₺</Text><Text style={{ color: colors.muted, fontSize: 12, marginTop: 4 }}>{formatDate(o.created_at)}</Text></View><Badge tone={o.status === "paid" ? "green" : o.status === "refunded" ? "gray" : "orange"}>{STATUS_LABELS[o.status] || o.status}</Badge></View></Pressable>)}
+    <Pressable onPress={() => Linking.openURL("mailto:info@mazzgord.com")} style={{ marginTop: 28, backgroundColor: "#FFF7ED", padding: 16, borderRadius: 17, flexDirection: "row", gap: 11 }}><MaterialIcons name="support-agent" size={22} color={colors.primary} /><View style={{ flex: 1 }}><Text style={{ color: colors.foreground, fontWeight: "800" }}>Bir sorunuz mu var?</Text><Text style={{ color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 3 }}>Uzman ekibimiz size yardımcı olmaya hazır.</Text></View><MaterialIcons name="chevron-right" size={21} color={colors.primary} /></Pressable>
   </ScrollView></ScreenContainer>;
 }

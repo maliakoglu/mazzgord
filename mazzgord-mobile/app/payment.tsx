@@ -29,6 +29,20 @@ export default function PaymentScreen() {
       .finally(() => setLoading(false));
   }, [linkId]);
 
+  const [verifying, setVerifying] = useState(false);
+
+  const pollPaymentStatus = async (linkId: string, attempts = 0): Promise<boolean> => {
+    const MAX_ATTEMPTS = 6;
+    const INTERVAL_MS = 3000;
+    if (attempts >= MAX_ATTEMPTS) return false;
+    try {
+      const res = await paymentApi.get(linkId);
+      if (res.success && res.data && res.data.status === "paid") return true;
+    } catch {}
+    await new Promise((r) => setTimeout(r, INTERVAL_MS));
+    return pollPaymentStatus(linkId, attempts + 1);
+  };
+
   const handlePay = async () => {
     if (!payment) return;
     setLoading(true);
@@ -37,7 +51,16 @@ export default function PaymentScreen() {
       const res = await paymentApi.initialize(payment.payment_link_id);
       if (res.success && res.payment_page_url) {
         await WebBrowser.openBrowserAsync(res.payment_page_url);
-        setPaid(true);
+        // Tarayıcı kapandı — ödeme durumunu doğrula
+        setVerifying(true);
+        setLoading(false);
+        const paid = await pollPaymentStatus(payment.payment_link_id);
+        setVerifying(false);
+        if (paid) {
+          setPaid(true);
+        } else {
+          setError("Ödeme doğrulanamadı. Ödemenizi tamamladıysanız lütfen biraz bekleyip tekrar kontrol edin.");
+        }
       } else {
         setError(res.error || "Ödeme başlatılamadı");
       }
@@ -49,6 +72,8 @@ export default function PaymentScreen() {
   };
 
   if (paid) return <ScreenContainer edges={["top", "bottom", "left", "right"]}><View style={{ flex: 1, padding: 24, alignItems: "center", justifyContent: "center" }}><View style={{ width: 84, height: 84, borderRadius: 42, backgroundColor: "#DCFCE7", alignItems: "center", justifyContent: "center" }}><MaterialIcons name="verified" size={46} color="#16A34A" /></View><Text style={{ color: colors.foreground, fontSize: 28, fontWeight: "900", marginTop: 20, textAlign: "center" }}>Ödeme başarılı.</Text><Text style={{ color: colors.muted, fontSize: 14, lineHeight: 21, textAlign: "center", marginTop: 9 }}>Siparişiniz işleme alındı. Makbuzunuz e-posta adresinize gönderildi.</Text><View style={{ width: "100%", marginTop: 24 }}><PrimaryButton title="Siparişimi takip et" icon="timeline" onPress={() => router.push("/(tabs)/track")} /></View></View></ScreenContainer>;
+
+  if (verifying) return <ScreenContainer edges={["top", "bottom", "left", "right"]}><View style={{ flex: 1, padding: 24, alignItems: "center", justifyContent: "center" }}><MaterialIcons name="hourglass-top" size={40} color={colors.primary} /><Text style={{ color: colors.foreground, fontSize: 18, fontWeight: "800", marginTop: 16 }}>Ödeme doğrulanıyor...</Text><Text style={{ color: colors.muted, fontSize: 13, marginTop: 8, textAlign: "center" }}>Lütfen bekleyin, ödeme durumunuzu kontrol ediyoruz.</Text></View></ScreenContainer>;
 
   if (loading && !payment) return <ScreenContainer edges={["top", "bottom", "left", "right"]}><View style={{ flex: 1, padding: 24, alignItems: "center", justifyContent: "center" }}><MaterialIcons name="hourglass-top" size={40} color={colors.muted} /><Text style={{ color: colors.muted, marginTop: 12 }}>Ödeme bilgisi yükleniyor...</Text></View></ScreenContainer>;
 

@@ -49,10 +49,10 @@ export function useAuth(): AuthState {
         setUser(result.customer);
         return true;
       }
-      setError(result.error || "Giris basarisiz");
+      setError(result.error || "Giriş başarısız");
       return false;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Giris basarisiz");
+      setError(err instanceof Error ? err.message : "Giriş başarısız");
       return false;
     }
   }, []);
@@ -66,10 +66,10 @@ export function useAuth(): AuthState {
         setUser(result.customer);
         return true;
       }
-      setError(result.error || "Kayit basarisiz");
+      setError(result.error || "Kayıt başarısız");
       return false;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Kayit basarisiz");
+      setError(err instanceof Error ? err.message : "Kayıt başarısız");
       return false;
     }
   }, []);
