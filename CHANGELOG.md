@@ -1,3 +1,14 @@
+## [1.1.1] — 2026-08-20
+
+### Yeni Özellikler
+- **Android APK derleme**: EAS Build ile bulutta APK uretildi. preview profili ile internal dagitim APK'si olusturuldu.
+- **eas.json**: EAS Build yapilandirmasi eklendi (preview + production profilleri).
+- **app.config.ts**: EAS projectId eklendi (0d6f8bc4-3447-4990-ac0d-d9263a2527e7).
+
+### Degisen Dosyalar
+- mazzgord-mobile/pnpm-lock.yaml — gereksiz bağımlılıklar cikarildi, lock file yenilendi.
+
+
 ## [1.1.0] — 2026-08-20
 
 ### Yeni Özellikler
