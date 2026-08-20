@@ -1,5 +1,5 @@
 import { ArrowLeft, MessageCircle, FileText } from "lucide-react"
-import { useState, ReactNode } from "react"
+import { useState, useEffect, ReactNode } from "react"
 type IllustrationKey =
   | "akademik" | "hatalar" | "ipuclari" | "sektor" | "teknoloji"
   | "kariyer" | "deyim" | "edebi" | "google-vs" | "hukuki"
@@ -98,6 +98,27 @@ interface BlogLayoutProps {
 
 export default function BlogLayout({ title, description, canonical, date, illustration, ogType = "article", jsonLd, children }: BlogLayoutProps) {
   const illust = illustrations[illustration]
+
+  useEffect(() => {
+    document.title = title
+    let m = document.querySelector('meta[name="description"]')
+    if (!m) { m = document.createElement('meta'); m.setAttribute('name','description'); document.head.appendChild(m) }
+    m.setAttribute('content', description)
+    let l = document.querySelector('link[rel="canonical"]')
+    if (!l) { l = document.createElement('link'); l.setAttribute('rel','canonical'); document.head.appendChild(l) }
+    l.setAttribute('href', canonical)
+    for (const [prop, content] of [['og:title',title],['og:description',description],['og:url',canonical],['og:type',ogType],['og:locale','tr_TR']]) {
+      let e = document.querySelector('meta[property="'+prop+'"]')
+      if (!e) { e = document.createElement('meta'); e.setAttribute('property',prop); document.head.appendChild(e) }
+      e.setAttribute('content', content)
+    }
+    let j = document.querySelector('script[data-blog-jsonld]')
+    if (jsonLd) {
+      if (!j) { j = document.createElement('script'); j.type='application/ld+json'; j.setAttribute('data-blog-jsonld',''); document.head.appendChild(j) }
+      j.textContent = jsonLd
+    } else if (j) { j.remove() }
+  }, [title, description, canonical, ogType, jsonLd])
+
   return (
     <div className="min-h-screen bg-background">
       <BlogNav />
