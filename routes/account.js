@@ -35,9 +35,12 @@ export async function handleAccountRoute(path, request, env) {
   // GET /api/account/orders — Sipariş geçmişi (quotes + orders)
   if (path === "/api/account/orders" && request.method === "GET") {
     try {
-      // Quotes (teklifler)
+      // Quotes (teklifler) — payment_link_id + payment_status eklendi
       const quotes = await env.DB.prepare(
-        "SELECT id, name, email, source_language, target_language, document_type, page_count, word_count, urgency, delivery_method, order_status, offer_status, offer_note, estimated_price, delivery_date, delivered_file_key, file_key, document_uploaded_at, created_at FROM quotes WHERE email = ? ORDER BY created_at DESC"
+        `SELECT q.id, q.name, q.email, q.source_language, q.target_language, q.document_type, q.page_count, q.word_count, q.urgency, q.delivery_method, q.order_status, q.offer_status, q.offer_note, q.estimated_price, q.delivery_date, q.delivered_file_key, q.file_key, q.document_uploaded_at, q.created_at,
+         (SELECT p.payment_link_id FROM payments p WHERE p.quote_id = q.id AND p.status = 'pending' ORDER BY p.created_at DESC LIMIT 1) as payment_link_id,
+         (SELECT p.status FROM payments p WHERE p.quote_id = q.id AND p.status = 'paid' ORDER BY p.paid_at DESC LIMIT 1) as payment_status
+         FROM quotes q WHERE q.email = ? ORDER BY q.created_at DESC`
       ).bind(customer.email).all();
 
       // Orders (siparişler)

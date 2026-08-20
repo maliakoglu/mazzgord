@@ -177,7 +177,7 @@ export default function OfferDetailScreen() {
 
     {quote.offer_status === "accepted" && quote.order_status === "payment_pending" && <View style={{ marginTop: 20 }}>
       <View style={{ backgroundColor: "#EFF6FF", borderRadius: 14, padding: 16, marginBottom: 14 }}><Text style={{ color: "#1E40AF", fontSize: 13, lineHeight: 19 }}>Teklifiniz kabul edildi. İşlemin devam edebilmesi için ödemenizi tamamlamanız gerekiyor.</Text></View>
-      <PrimaryButton title="Ödemeye Geç" icon="payments" onPress={() => router.push({ pathname: "/payment", params: { link: String(quote.id) } })} />
+      <PrimaryButton title="Ödemeye Geç" icon="payments" onPress={() => router.push({ pathname: "/payment", params: { link: (quote as any).payment_link_id || String(quote.id) } })} />
     </View>}
 
     {quote.offer_status === "accepted" && (quote.order_status === "in_progress" || quote.order_status === "reviewing") && !quote.file_key && !quote.document_uploaded_at && <View style={{ marginTop: 20 }}>

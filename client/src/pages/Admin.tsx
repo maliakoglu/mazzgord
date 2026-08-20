@@ -40,6 +40,9 @@ interface Quote {
   delivery_date?: string | null;
   shipping_address?: string | null;
   shipping_tracking?: string | null;
+  offer_status?: string | null;
+  offer_note?: string | null;
+  delivered_file_key?: string | null;
 }
 
 interface Customer {
@@ -76,6 +79,7 @@ const ORDER_STATUSES = [
   { value: "won", label: "İş Onaylandı", color: "bg-indigo-100 text-indigo-800" },
   { value: "payment_pending", label: "Ödeme Bekleniyor", color: "bg-orange-100 text-orange-800" },
   { value: "paid", label: "Ödeme Alındı", color: "bg-green-100 text-green-800" },
+  { value: "in_progress", label: "Çeviri Yapılıyor", color: "bg-indigo-100 text-indigo-800" },
   { value: "reviewing", label: "İnceleniyor", color: "bg-blue-100 text-blue-800" },
   { value: "translating", label: "Çeviriye Başlandı", color: "bg-indigo-100 text-indigo-800" },
   { value: "quality_control", label: "Kalite Kontrol", color: "bg-purple-100 text-purple-800" },
@@ -84,6 +88,7 @@ const ORDER_STATUSES = [
   { value: "repeat_closed", label: "Tekrar İş/Kapandı", color: "bg-gray-100 text-gray-800" },
   { value: "lost", label: "Kaybedildi", color: "bg-red-100 text-red-800" },
   { value: "cancelled", label: "İptal", color: "bg-red-100 text-red-800" },
+  { value: "rejected", label: "Reddedildi", color: "bg-gray-200 text-gray-700" },
 ];
 
 interface Payment {
@@ -153,6 +158,8 @@ export default function Admin() {
   const [quoteDeliverLoading, setQuoteDeliverLoading] = useState(false);
   const [editingQuoteId, setEditingQuoteId] = useState<number | null>(null);
   const [editForm, setEditForm] = useState({ order_status: "", estimated_price: "", translator: "", delivery_date: "" });
+  const [offerForm, setOfferForm] = useState<{ quoteId: number | null; price: string; deliveryDays: string; note: string }>({ quoteId: null, price: "", deliveryDays: "", note: "" });
+  const [offerLoading, setOfferLoading] = useState(false);
 
   useEffect(() => {
     const saved = sessionStorage.getItem("mazzgord_admin");
@@ -334,6 +341,42 @@ export default function Admin() {
     } catch (err) {
       console.error("Durum güncelleme hatası:", err);
     }
+  };
+
+  const sendOffer = async () => {
+    if (!offerForm.quoteId || !offerForm.price) return;
+    setOfferLoading(true);
+    try {
+      const today = new Date();
+      const deliveryDate = new Date(today);
+      deliveryDate.setDate(today.getDate() + (parseInt(offerForm.deliveryDays) || 3));
+      const res = await fetch(`/api/quote/${offerForm.quoteId}/status`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${adminToken}`,
+        },
+        body: JSON.stringify({
+          offer_status: "offered",
+          offer_note: offerForm.note || null,
+          estimated_price: parseFloat(offerForm.price),
+          delivery_date: deliveryDate.toISOString().split("T")[0],
+        }),
+      });
+      if (res.ok) {
+        setOfferForm({ quoteId: null, price: "", deliveryDays: "", note: "" });
+        fetchData();
+      } else {
+        alert("Teklif gönderilemedi");
+      }
+    } catch {
+      alert("Bağlantı hatası");
+    }
+    setOfferLoading(false);
+  };
+
+  const startSendOffer = (q: Quote) => {
+    setOfferForm({ quoteId: q.id, price: q.estimated_price?.toString() || "", deliveryDays: "", note: q.offer_note || "" });
   };
 
   const startEditQuote = (q: Quote) => {
@@ -932,9 +975,14 @@ export default function Admin() {
                       <p className="text-sm text-muted-foreground">{q.email}</p>
                       {q.phone && <p className="text-sm text-muted-foreground">📞 {q.phone}</p>}
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className={`text-xs px-2 py-1 rounded-full ${q.status === "pending" ? "bg-yellow-100 text-yellow-800" : q.status === "completed" ? "bg-green-100 text-green-800" : "bg-blue-100 text-blue-800"}`}>
-                        {q.status === "pending" ? "Bekliyor" : q.status === "completed" ? "Tamamlandı" : q.status}
+                    <div className="flex items-center gap-2 flex-wrap justify-end">
+                      {q.offer_status && q.offer_status !== "pending" && (
+                        <span className={`text-xs px-2 py-1 rounded-full font-medium ${q.offer_status === "offered" ? "bg-sky-100 text-sky-800" : q.offer_status === "accepted" ? "bg-green-100 text-green-800" : q.offer_status === "rejected" ? "bg-gray-200 text-gray-700" : "bg-blue-100 text-blue-800"}`}>
+                          {q.offer_status === "offered" ? "Teklif Hazır" : q.offer_status === "accepted" ? "Kabul Edildi" : q.offer_status === "rejected" ? "Reddedildi" : q.offer_status}
+                        </span>
+                      )}
+                      <span className={`text-xs px-2 py-1 rounded-full font-medium ${getStatusColor(q.order_status || q.status || "pending")}`}>
+                        {getStatusLabel(q.order_status || q.status || "pending")}
                       </span>
                       <span className="text-xs text-muted-foreground whitespace-nowrap">
                         {new Date(q.created_at + "Z").toLocaleString("tr-TR")}
@@ -1010,13 +1058,71 @@ export default function Admin() {
                     </div>
                   )}
 
-                  <button
-                    onClick={() => createPaymentFromQuote(q)}
-                    className="flex items-center gap-2 mt-3 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition"
-                  >
-                    <CreditCard className="w-4 h-4" />
-                    Ödeme Linki Oluştur
-                  </button>
+                  {/* Teklif Gönder / Ödeme Linki — offer_status'e göre */}
+                  {(!q.offer_status || q.offer_status === "pending") && (
+                    <button
+                      onClick={() => startSendOffer(q)}
+                      className="flex items-center gap-2 mt-3 px-4 py-2 bg-sky-600 text-white rounded-lg text-sm font-medium hover:bg-sky-700 transition"
+                    >
+                      <ClipboardList className="w-4 h-4" />
+                      Teklif Gönder
+                    </button>
+                  )}
+                  {q.offer_status === "offered" && (
+                    <div className="mt-3 p-3 bg-sky-50 rounded-lg border border-sky-200">
+                      <p className="text-sm text-sky-800 font-medium mb-1">✓ Teklif gönderildi — Müşteri yanıtı bekleniyor</p>
+                      {q.estimated_price && <p className="text-xs text-sky-600">Tutar: {q.estimated_price} ₺</p>}
+                    </div>
+                  )}
+                  {q.offer_status === "accepted" && (
+                    <div className="mt-3 p-3 bg-green-50 rounded-lg border border-green-200">
+                      <p className="text-sm text-green-800 font-medium mb-1">✓ Müşteri kabul etti</p>
+                      <p className="text-xs text-green-600">Ödeme durumu: {q.order_status === "payment_pending" ? "Bekleniyor" : q.order_status === "in_progress" || q.order_status === "paid" ? "Ödendi" : (q.order_status || "—")}</p>
+                    </div>
+                  )}
+                  {q.offer_status === "rejected" && (
+                    <div className="mt-3 p-3 bg-gray-100 rounded-lg border border-gray-200">
+                      <p className="text-sm text-gray-700 font-medium">✗ Müşteri teklifi reddetti</p>
+                      {q.offer_note && <p className="text-xs text-gray-500 mt-1">{q.offer_note}</p>}
+                    </div>
+                  )}
+                  {/* Offer form */}
+                  {offerForm.quoteId === q.id && (
+                    <div className="mt-3 p-4 bg-secondary/20 rounded-lg space-y-3">
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-sm font-medium text-foreground mb-1">Fiyat (₺)</label>
+                          <input type="number" step="0.01" value={offerForm.price}
+                            onChange={(e) => setOfferForm({ ...offerForm, price: e.target.value })}
+                            className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                            placeholder="2500" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-foreground mb-1">Teslim (gün)</label>
+                          <input type="number" value={offerForm.deliveryDays}
+                            onChange={(e) => setOfferForm({ ...offerForm, deliveryDays: e.target.value })}
+                            className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                            placeholder="3" />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-foreground mb-1">Teklif Notu (opsiyonel)</label>
+                        <textarea value={offerForm.note}
+                          onChange={(e) => setOfferForm({ ...offerForm, note: e.target.value })}
+                          rows={2}
+                          className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                          placeholder="Müşteriye iletilecek not" />
+                      </div>
+                      <div className="flex gap-2">
+                        <button onClick={sendOffer} disabled={offerLoading || !offerForm.price}
+                          className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-sky-600 text-white rounded-lg font-medium text-sm hover:bg-sky-700 transition disabled:opacity-50">
+                          {offerLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />} Teklif Gönder
+                        </button>
+                        <button onClick={() => setOfferForm({ quoteId: null, price: "", deliveryDays: "", note: "" })}
+                          className="px-4 py-2 bg-secondary text-foreground rounded-lg font-medium text-sm hover:bg-secondary/80 transition">İptal</button>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Teslim Et */}
                   {(q.order_status || q.status) !== "delivered" && (

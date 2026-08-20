@@ -321,6 +321,8 @@ export type QuoteRecord = {
   delivered_file_key: string | null;
   file_key: string | null;
   document_uploaded_at: string | null;
+  payment_link_id: string | null;
+  payment_status: string | null;
   created_at: string;
 };
 
