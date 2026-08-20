@@ -1,3 +1,33 @@
+## [1.1.0] — 2026-08-20
+
+### Yeni Özellikler
+- **Mobil uygulama entegrasyonu**: mazzgord-mobile/ Expo React Native projesi mazzgord.com Workers API'ye baglandi.
+- **Mobil API katmani**: lib/api.ts — mazzgord.com Workers API'ye fetch yapan tam API client (auth, services, quote, account, contact, payment).
+- **Mobil login/register ekrani**: app/(auth)/login.tsx — email/sifre ile giris ve kayit.
+- **Mobil odeme ekrani**: app/payment.tsx — gercek iyzico 3D Secure odeme akisi (expo-web-browser ile).
+- **Mobil teklif sihirbazi**: app/(tabs)/quote.tsx — 5 adimli teklif alma (e-posta dogrulama dahil).
+- **Mobil siparis takibi**: app/(tabs)/track.tsx — gercek API'den siparis durumu.
+- **Mobil hesap ekrani**: app/(tabs)/account.tsx — gercek profil + siparis gecmisi.
+- **Mobil hizmetler ekrani**: app/(tabs)/services.tsx — gercek API'den hizmet katalogu.
+
+### Degisen Dosyalar
+- lib/cors.js — CORS * olarak guncellendi, GET metodu ve Authorization header eklendi, CSRF'de Bearer token istisnasi.
+- wrangler.toml — production ve preview ortam ayarlari eklendi.
+
+### Silinen Dosyalar
+- mazzgord-mobile/server/ — Manus Express backend (tRPC, MySQL, Drizzle) kaldirildi.
+- mazzgord-mobile/drizzle/ — MySQL schema kaldirildi.
+- mazzgord-mobile/lib/trpc.ts, lib/_core/auth.ts, lib/_core/api.ts, lib/_core/manus-runtime.ts — Manus OAuth/tRPC kaldirildi.
+- mazzgord-mobile/app/oauth/callback.tsx — Manus OAuth callback kaldirildi.
+
+### Teknik Detaylar
+- Mobil uygulama artik tek backend (mazzgord.com Workers API) kullaniyor.
+- Manus OAuth -> email/sifre auth'a gecildi.
+- tRPC, Express, Drizzle, MySQL, jose, cookie, superjson baimliliklari kaldirildi.
+- TypeScript temiz (theme-lab.tsx dev dosyasi haric).
+- pnpm 9.12.0 ile baimliliklar kuruldu, Expo web'de calisiyor.
+
+
 ## [1.0.16] — 2026-08-20
 
 ### Düzeltmeler

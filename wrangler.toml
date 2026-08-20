@@ -9,9 +9,6 @@ not_found_handling = "single-page-application"
 binding = "ASSETS"
 run_worker_first = true
 
-[[routes]]
-pattern = "mazzgord.com/*"
-zone_name = "mazzgord.com"
 
 [observability]
 enabled = true
@@ -35,3 +32,55 @@ id = "e7c4693b9f564f978a92898d96e25f1c"
 
 [triggers]
 crons = ["0 3 * * *"]
+
+# Production ortamı
+[env.production]
+name = "mazzgordwebsite"
+
+[env.production.observability]
+enabled = true
+head_sampling_rate = 1
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "mazzgord-db"
+database_id = "f4a36869-586e-4fe2-a887-8563b24a427f"
+
+[[env.production.r2_buckets]]
+binding = "DOCS"
+bucket_name = "mazzgord-docs"
+
+[env.production.ai]
+binding = "AI"
+
+[[env.production.kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "e7c4693b9f564f978a92898d96e25f1c"
+
+[[env.production.routes]]
+pattern = "mazzgord.com/*"
+zone_name = "mazzgord.com"
+
+# Preview / Sandbox ortamı — production'a dokunmadan test için
+[env.preview]
+name = "mazzgordwebsite-preview"
+
+[env.preview.observability]
+enabled = true
+head_sampling_rate = 1
+
+[[env.preview.d1_databases]]
+binding = "DB"
+database_name = "mazzgord-db"
+database_id = "f4a36869-586e-4fe2-a887-8563b24a427f"
+
+[[env.preview.r2_buckets]]
+binding = "DOCS"
+bucket_name = "mazzgord-docs"
+
+[env.preview.ai]
+binding = "AI"
+
+[[env.preview.kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "e7c4693b9f564f978a92898d96e25f1c"
