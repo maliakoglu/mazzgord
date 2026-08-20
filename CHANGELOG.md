@@ -1,3 +1,14 @@
+## [1.0.16] — 2026-08-20
+
+### Düzeltmeler
+- **Blog OG meta etiketleri dinamik hale getirildi**: Tüm blog sayfaları artık kendine özel og:title, og:description, og:url ile prerender ediliyor. Önceden tüm sayfalarda anasayfa etiketleri gösteriliyordu.
+- **Facebook paylaşım önizleme fix**: Blog linki Facebook'a yapıştırıldığında doğru başlık, açıklama ve URL önizlemesi çıkıyor.
+- **react-helmet kaldırıldı**: React 19 ile uyumsuz olduğu için çalışmıyordu. Yerine BlogLayout'ta useEffect ile doğrudan DOM manipülasyonu kullanıldı.
+- **Prerender uyumu**: useEffect Chrome prerender sırasında çalışıyor, meta etiketler statik HTML'e yazılıyor.
+
+### Degisen Dosyalar
+- client/src/components/BlogLayout.tsx
+
 
 ## [1.0.15] — 2026-08-19
 
