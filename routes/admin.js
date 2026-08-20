@@ -134,7 +134,14 @@ export async function handleAdminRoute(path, request, env) {
       if (!checkAdminAuth(request, env)) return unauthorizedResponse();
       const quoteId = path.replace("/api/quote/", "").replace("/status", "");
       const body = await request.json();
-      const { status, estimated_price, translator, delivery_date } = body;
+      const { status, estimated_price, translator, delivery_date, offer_status, offer_note } = body;
+
+      // offer_status güncelleniyorsa ayrı update yap
+      if (offer_status) {
+        await env.DB.prepare(
+          "UPDATE quotes SET offer_status = ?, offer_note = ? WHERE id = ?"
+        ).bind(offer_status, offer_note || null, quoteId).run();
+      }
 
       await env.DB.prepare(
         "UPDATE quotes SET order_status = ?, estimated_price = ?, translator = ?, delivery_date = ? WHERE id = ?"
@@ -147,7 +154,7 @@ export async function handleAdminRoute(path, request, env) {
       ).run();
 
       // Müşteriye durum bildirimi gönder
-      if (status) {
+      if (status || offer_status) {
         const quote = await env.DB.prepare(
           "SELECT id, name, email, source_language, target_language, order_status, estimated_price, delivery_date, translator FROM quotes WHERE id = ?"
         ).bind(quoteId).first();

@@ -37,7 +37,7 @@ export async function handleAccountRoute(path, request, env) {
     try {
       // Quotes (teklifler)
       const quotes = await env.DB.prepare(
-        "SELECT id, name, email, source_language, target_language, document_type, page_count, word_count, urgency, delivery_method, order_status, estimated_price, delivery_date, delivered_file_key, created_at FROM quotes WHERE email = ? ORDER BY created_at DESC"
+        "SELECT id, name, email, source_language, target_language, document_type, page_count, word_count, urgency, delivery_method, order_status, offer_status, offer_note, estimated_price, delivery_date, delivered_file_key, file_key, document_uploaded_at, created_at FROM quotes WHERE email = ? ORDER BY created_at DESC"
       ).bind(customer.email).all();
 
       // Orders (siparişler)
