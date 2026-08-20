@@ -128,6 +128,40 @@ export async function handleAdminRoute(path, request, env) {
     }
   }
 
+  // GET /api/quote/:id/detail — Admin: teklif detayı + ödeme durumu
+  const detailMatch = path.match(/^\/api\/quote\/(\d+)\/detail$/);
+  if (detailMatch && request.method === "GET") {
+    try {
+      if (!checkAdminAuth(request, env)) return unauthorizedResponse();
+      const quoteId = detailMatch[1];
+      const quote = await env.DB.prepare(
+        "SELECT * FROM quotes WHERE id = ?"
+      ).bind(quoteId).first();
+      if (!quote) {
+        return new Response(JSON.stringify({ success: false, error: "Teklif bulunamadi" }), {
+          status: 404, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+      const payments = await env.DB.prepare(
+        "SELECT id, amount, description, payment_link_id, status, iyzico_payment_id, created_at, paid_at FROM payments WHERE quote_id = ? ORDER BY created_at DESC"
+      ).bind(quoteId).all();
+      return new Response(JSON.stringify({
+        success: true,
+        data: {
+          quote,
+          payments: payments.results || [],
+          payment_status: (payments.results || []).find(p => p.status === "paid") ? "paid" : ((payments.results || []).find(p => p.status === "pending") ? "pending" : "none"),
+        }
+      }), {
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    } catch (err) {
+      return new Response(JSON.stringify({ success: false, error: "Sunucu hatasi" }), {
+        status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+  }
+
   // PUT /api/quote/:id/status — Admin: sipariş durumu güncelle
   if (path.startsWith("/api/quote/") && path.endsWith("/status") && request.method === "PUT") {
     try {

@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { User, FileText, Download, LogOut, Loader2, AlertCircle, Package, CreditCard, Clock, MessageCircle, Send, X } from "lucide-react";
+import { User, FileText, Download, LogOut, Loader2, AlertCircle, Package, CreditCard, Clock, MessageCircle, Send, X, CheckCircle, XCircle } from "lucide-react";
 
 interface Customer { id: number; name: string; email: string; phone: string; }
-interface Quote { id: number; source_language: string; target_language: string; document_type: string; order_status: string; estimated_price: number; delivered_file_key: string | null; created_at: string; }
+interface Quote { id: number; source_language: string; target_language: string; document_type: string; order_status: string; offer_status: string; offer_note: string | null; estimated_price: number; delivery_date: string | null; delivered_file_key: string | null; file_key: string | null; document_uploaded_at: string | null; created_at: string; }
 interface Order { payment_link_id: string; customer_name: string; items: any[]; total: number; status: string; delivered_file_key: string | null; created_at: string; }
 interface Payment { amount: number; description: string; status: string; payment_link_id: string; created_at: string; }
 
 const STATUS_LABELS: Record<string, string> = {
-  pending: "Beklemede", processing: "İşleniyor", completed: "Tamamlandı", delivered: "Teslim Edildi", cancelled: "İptal", paid: "Ödendi",
+  pending: "Beklemede", processing: "İşleniyor", reviewing: "İnceleniyor", in_progress: "Hazırlanıyor", payment_pending: "Ödeme Bekleniyor", completed: "Tamamlandı", delivered: "Teslim Edildi", cancelled: "İptal", rejected: "Reddedildi", paid: "Ödendi",
 };
 
 const STATUS_COLORS: Record<string, string> = {
-  pending: "bg-yellow-100 text-yellow-800", processing: "bg-blue-100 text-blue-800", completed: "bg-green-100 text-green-800", delivered: "bg-green-100 text-green-800", cancelled: "bg-red-100 text-red-800", paid: "bg-green-100 text-green-800",
+  pending: "bg-yellow-100 text-yellow-800", processing: "bg-blue-100 text-blue-800", reviewing: "bg-blue-100 text-blue-800", in_progress: "bg-blue-100 text-blue-800", payment_pending: "bg-orange-100 text-orange-800", completed: "bg-green-100 text-green-800", delivered: "bg-green-100 text-green-800", cancelled: "bg-red-100 text-red-800", rejected: "bg-gray-200 text-gray-600", paid: "bg-green-100 text-green-800",
 };
 
 export default function Hesabim() {
@@ -80,6 +80,9 @@ export default function Hesabim() {
         a.download = fileKey.split("/").pop() || "dosya";
         a.click();
         URL.revokeObjectURL(url);
+      } else if (res.status === 402) {
+        const result = await res.json().catch(() => ({}));
+        alert(result.error || "Bu belgeye erişmek için ödemenizi tamamlamanız gerekiyor.");
       } else {
         alert("Dosya bulunamadı veya henüz teslim edilmedi.");
       }
@@ -87,6 +90,56 @@ export default function Hesabim() {
       alert("Dosya indirilemedi. Lütfen tekrar deneyin.");
     }
     setDownloading(null);
+  };
+
+  const [actionLoading, setActionLoading] = useState<number | null>(null);
+
+  const handleAccept = async (quoteId: number) => {
+    const token = localStorage.getItem("mazzgord_token");
+    if (!token) return;
+    setActionLoading(quoteId);
+    try {
+      const res = await fetch(`/api/quote/${quoteId}/accept`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      });
+      const result = await res.json();
+      if (result.success) {
+        if (result.payment_link_id) {
+          window.location.href = `/odeme?id=${result.payment_link_id}`;
+        } else {
+          fetchData(token);
+        }
+      } else {
+        alert(result.error || "Teklif kabul edilemedi");
+      }
+    } catch {
+      alert("Sunucu hatası");
+    }
+    setActionLoading(null);
+  };
+
+  const handleReject = async (quoteId: number) => {
+    const token = localStorage.getItem("mazzgord_token");
+    if (!token) return;
+    if (!confirm("Bu teklifi reddetmek istediğinize emin misiniz? Bu işlem sonlandırılacaktır.")) return;
+    setActionLoading(quoteId);
+    try {
+      const res = await fetch(`/api/quote/${quoteId}/reject`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({}),
+      });
+      const result = await res.json();
+      if (result.success) {
+        fetchData(token);
+      } else {
+        alert(result.error || "Teklif reddedilemedi");
+      }
+    } catch {
+      alert("Sunucu hatası");
+    }
+    setActionLoading(null);
   };
 
   const openChat = async (quoteId: number) => {
@@ -207,13 +260,40 @@ export default function Hesabim() {
                   {q.document_type && <p className="text-sm text-muted-foreground mb-1">Belge: {q.document_type}</p>}
                   {q.estimated_price && <p className="text-sm font-medium text-foreground">Tutar: {q.estimated_price} ₺</p>}
                   <p className="text-xs text-muted-foreground mt-2">{new Date(q.created_at).toLocaleDateString("tr-TR")}</p>
-                  <div className="flex gap-2 mt-3">
+                  <div className="flex gap-2 mt-3 flex-wrap">
                     <button
                       onClick={() => openChat(q.id)}
                       className="flex items-center gap-2 px-3 py-1.5 bg-secondary text-secondary-foreground rounded-lg text-sm font-medium hover:bg-secondary/80 transition"
                     >
                       <MessageCircle className="w-4 h-4" /> Mesaj
                     </button>
+                    {q.offer_status === "offered" && (
+                      <>
+                        <button
+                          onClick={() => handleAccept(q.id)}
+                          disabled={actionLoading === q.id}
+                          className="flex items-center gap-2 px-3 py-1.5 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition disabled:opacity-50"
+                        >
+                          {actionLoading === q.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />} Kabul Et
+                        </button>
+                        <button
+                          onClick={() => handleReject(q.id)}
+                          disabled={actionLoading === q.id}
+                          className="flex items-center gap-2 px-3 py-1.5 bg-red-100 text-red-700 rounded-lg text-sm font-medium hover:bg-red-200 transition disabled:opacity-50"
+                        >
+                          <XCircle className="w-4 h-4" /> Reddet
+                        </button>
+                      </>
+                    )}
+                    {q.offer_status === "accepted" && q.order_status === "payment_pending" && (
+                      <button
+                        onClick={() => handleAccept(q.id)}
+                        disabled={actionLoading === q.id}
+                        className="flex items-center gap-2 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition disabled:opacity-50"
+                      >
+                        {actionLoading === q.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <CreditCard className="w-4 h-4" />} Ödemeye Geç
+                      </button>
+                    )}
                     {q.delivered_file_key && (q.order_status === "delivered" || q.order_status === "completed") && (
                       <button
                         onClick={() => handleDownload(q.delivered_file_key!)}

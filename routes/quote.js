@@ -146,15 +146,56 @@ export async function handleQuote(request, env, path = "", method = "POST") {
           status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
         });
       }
+      // Teklif kabul edildi — order_status = 'payment_pending', ödeme kaydı oluştur
       await env.DB.prepare(
-        "UPDATE quotes SET offer_status = 'accepted', offer_accepted_at = datetime('now') WHERE id = ?"
+        "UPDATE quotes SET offer_status = 'accepted', offer_accepted_at = datetime('now'), order_status = 'payment_pending' WHERE id = ?"
       ).bind(quoteId).run();
+
+      // Ödeme kaydı zaten var mı kontrol et (admin manuel oluşturmuş olabilir)
+      let payment = await env.DB.prepare(
+        "SELECT payment_link_id FROM payments WHERE quote_id = ? ORDER BY created_at DESC LIMIT 1"
+      ).bind(quoteId).first();
+
+      let paymentLinkId = null;
+      if (payment) {
+        // Mevcut kaydı güncelle — pending'e çek
+        paymentLinkId = payment.payment_link_id;
+        await env.DB.prepare(
+          "UPDATE payments SET status = 'pending' WHERE payment_link_id = ? AND status NOT IN ('paid', 'refunded')"
+        ).bind(paymentLinkId).run();
+      } else {
+        // Yeni ödeme kaydı oluştur — amount = estimated_price
+        const amount = quote.estimated_price;
+        if (!amount || Number(amount) <= 0) {
+          // Fiyat tanımlı değil — ödeme kaydı olmadan kabul et, admin fiyat belirlemeli
+          // (nadiren olur, admin teklif gönderirken estimated_price set etmeli)
+        } else {
+          paymentLinkId = crypto.randomUUID().replace(/-/g, "").substring(0, 16);
+          await env.DB.prepare(
+            "INSERT INTO payments (quote_id, amount, description, customer_name, customer_email, customer_phone, payment_link_id, status) VALUES (?, ?, ?, ?, ?, ?, ?, 'pending')"
+          ).bind(
+            quoteId,
+            amount,
+            quote.source_language + " → " + quote.target_language + " çeviri",
+            quote.name,
+            quote.email,
+            quote.phone || null,
+            paymentLinkId
+          ).run();
+        }
+      }
+
       // Bildirim gönder
       try {
-        const updatedQuote = { ...quote, order_status: quote.order_status };
+        const updatedQuote = { ...quote, order_status: "payment_pending" };
         await sendStatusNotification(env, updatedQuote);
       } catch {}
-      return new Response(JSON.stringify({ success: true, message: "Teklif kabul edildi" }), {
+      return new Response(JSON.stringify({
+        success: true,
+        message: "Teklif kabul edildi. Ödemenizi tamamlayabilirsiniz.",
+        payment_link_id: paymentLinkId,
+        order_status: "payment_pending"
+      }), {
         headers: { "Content-Type": "application/json", ...corsHeaders },
       });
     } catch (err) {
@@ -191,9 +232,13 @@ export async function handleQuote(request, env, path = "", method = "POST") {
       const body = await request.json().catch(() => ({}));
       const rejectReason = body.reason || null;
       await env.DB.prepare(
-        "UPDATE quotes SET offer_status = 'rejected', offer_rejected_at = datetime('now'), offer_note = ? WHERE id = ?"
+        "UPDATE quotes SET offer_status = 'rejected', offer_rejected_at = datetime('now'), offer_note = ?, order_status = 'rejected' WHERE id = ?"
       ).bind(rejectReason, quoteId).run();
-      return new Response(JSON.stringify({ success: true, message: "Teklif reddedildi" }), {
+      // İlgili pending ödeme kaydını iptal et (varsa)
+      await env.DB.prepare(
+        "UPDATE payments SET status = 'cancelled' WHERE quote_id = ? AND status = 'pending'"
+      ).bind(quoteId).run();
+      return new Response(JSON.stringify({ success: true, message: "Teklif reddedildi. İşlem sonlandırıldı." }), {
         headers: { "Content-Type": "application/json", ...corsHeaders },
       });
     } catch (err) {

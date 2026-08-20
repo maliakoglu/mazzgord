@@ -138,6 +138,66 @@ export const quoteApi = {
 
   track: async (orderNo: string) =>
     apiCall<{ success: boolean; data?: QuoteStatus; error?: string }>(`/api/quote/${orderNo}`),
+
+  accept: async (quoteId: number) =>
+    apiCall<{ success: boolean; error?: string; payment_link_id?: string; order_status?: string }>(`/api/quote/${quoteId}/accept`, {
+      method: "POST",
+      auth: true,
+    }),
+
+  reject: async (quoteId: number, reason?: string) =>
+    apiCall<{ success: boolean; error?: string }>(`/api/quote/${quoteId}/reject`, {
+      method: "POST",
+      body: { reason },
+      auth: true,
+    }),
+
+  uploadDocument: async (quoteId: number, fileAsset: { uri: string; name: string; type: string; file?: File }) => {
+    const token = await getToken();
+    const formData = new FormData();
+    const fileObj = Platform.OS === "web" && fileAsset.file
+      ? fileAsset.file
+      : { uri: fileAsset.uri, name: fileAsset.name, type: fileAsset.type } as any;
+    formData.append("file", fileObj);
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+    let response: Response;
+    try {
+      response = await fetch(`${API_BASE_URL}/api/quote/${quoteId}/upload-document`, {
+        method: "POST",
+        headers: {
+          "X-Mazzgord-Mobile": "1",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: formData,
+        signal: controller.signal,
+      });
+    } catch (err) {
+      clearTimeout(timeoutId);
+      if (err instanceof Error && err.name === "AbortError") {
+        throw new Error("İstek zaman aşımına uğradı. Lütfen tekrar deneyin.");
+      }
+      throw err;
+    }
+    clearTimeout(timeoutId);
+
+    const contentType = response.headers.get("content-type");
+    if (!response.ok) {
+      let errorMessage = `Hata: ${response.status}`;
+      if (contentType && contentType.includes("application/json")) {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorData.message || errorMessage;
+      }
+      throw new Error(errorMessage);
+    }
+    if (contentType && contentType.includes("application/json")) {
+      return await response.json() as { success: boolean; file_key?: string; error?: string };
+    }
+    const text = await response.text();
+    return (text ? JSON.parse(text) : {}) as { success: boolean; file_key?: string; error?: string };
+  },
 };
 
 // === ACCOUNT ===
@@ -230,6 +290,7 @@ export type QuoteStatus = {
   delivery_method: string;
   shipping_tracking: string | null;
   order_status: string;
+  offer_status: string | null;
   estimated_price: number | null;
   delivery_date: string | null;
   created_at: string;
@@ -253,9 +314,13 @@ export type QuoteRecord = {
   urgency: string;
   delivery_method: string;
   order_status: string;
+  offer_status: string | null;
+  offer_note: string | null;
   estimated_price: number | null;
   delivery_date: string | null;
   delivered_file_key: string | null;
+  file_key: string | null;
+  document_uploaded_at: string | null;
   created_at: string;
 };
 

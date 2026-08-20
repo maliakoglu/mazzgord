@@ -70,42 +70,84 @@ export async function handleAccountRoute(path, request, env) {
     }
   }
 
-  // GET /api/account/files/:key — Dosya indirme (R2)
+  // GET /api/account/files/:key — Dosya indirme (R2) — ÖDEME KONTROLÜ YAPILIR
   if (path.startsWith("/api/account/files/") && request.method === "GET") {
     try {
       const fileKey = decodeURIComponent(path.replace("/api/account/files/", ""));
 
-      // Bu dosya müşteriye ait mi? — quotes veya orders tablosundan kontrol
-      // 1) Kaynak dosya (file_key) kontrolü
+      // 1) Dosya hangi quote'a veya order'a ait? — sahiplik kontrolü
+      let ownerQuoteId = null;
+      let ownerOrderLinkId = null;
+
+      // a) Quote file_key (müşteri yüklediği kaynak belge)
       const quoteFile = await env.DB.prepare(
         "SELECT id FROM quotes WHERE email = ? AND file_key = ?"
       ).bind(customer.email, fileKey).first();
+      if (quoteFile) ownerQuoteId = quoteFile.id;
 
-      if (!quoteFile) {
-        // Orders file_key kontrol (JSON array)
+      // b) Quote delivered_file_key (admin teslim ettiği belge)
+      if (!ownerQuoteId) {
+        const deliveredQuote = await env.DB.prepare(
+          "SELECT id FROM quotes WHERE email = ? AND delivered_file_key = ?"
+        ).bind(customer.email, fileKey).first();
+        if (deliveredQuote) ownerQuoteId = deliveredQuote.id;
+      }
+
+      // c) Orders file_key (JSON array)
+      if (!ownerQuoteId && !ownerOrderLinkId) {
         const orderFiles = await env.DB.prepare(
-          "SELECT file_key FROM orders WHERE customer_email = ?"
+          "SELECT payment_link_id, file_key FROM orders WHERE customer_email = ?"
         ).bind(customer.email).all();
-        const allKeys = [];
         for (const o of (orderFiles.results || [])) {
-          try { const keys = JSON.parse(o.file_key); if (Array.isArray(keys)) allKeys.push(...keys); } catch {}
-        }
-        if (!allKeys.includes(fileKey)) {
-          // 2) Teslim edilen dosya (delivered_file_key) kontrolü
-          const deliveredQuote = await env.DB.prepare(
-            "SELECT id FROM quotes WHERE email = ? AND delivered_file_key = ?"
-          ).bind(customer.email, fileKey).first();
-          if (!deliveredQuote) {
-            const deliveredOrder = await env.DB.prepare(
-              "SELECT payment_link_id FROM orders WHERE customer_email = ? AND delivered_file_key = ?"
-            ).bind(customer.email, fileKey).first();
-            if (!deliveredOrder) {
-              return jsonResponse({ success: false, error: "Dosya bulunamadi veya yetkiniz yok" }, 403);
+          try {
+            const keys = JSON.parse(o.file_key);
+            if (Array.isArray(keys) && keys.includes(fileKey)) {
+              ownerOrderLinkId = o.payment_link_id;
+              break;
             }
-          }
+          } catch {}
         }
       }
 
+      // d) Orders delivered_file_key
+      if (!ownerQuoteId && !ownerOrderLinkId) {
+        const deliveredOrder = await env.DB.prepare(
+          "SELECT payment_link_id FROM orders WHERE customer_email = ? AND delivered_file_key = ?"
+        ).bind(customer.email, fileKey).first();
+        if (deliveredOrder) ownerOrderLinkId = deliveredOrder.payment_link_id;
+      }
+
+      // Sahiplik yok → erişim reddedildi
+      if (!ownerQuoteId && !ownerOrderLinkId) {
+        return jsonResponse({ success: false, error: "Dosya bulunamadi veya yetkiniz yok" }, 403);
+      }
+
+      // 2) ÖDEME KONTROLÜ — ödeme yapılmadan belge erişimi yok
+      let isPaid = false;
+
+      if (ownerQuoteId) {
+        // Quote bazlı: payments tablosunda bu quote_id için paid kaydı var mı?
+        const payment = await env.DB.prepare(
+          "SELECT status FROM payments WHERE quote_id = ? AND status = 'paid' LIMIT 1"
+        ).bind(ownerQuoteId).first();
+        isPaid = !!payment;
+      } else if (ownerOrderLinkId) {
+        // Order bazlı: payment_link_id ile ödeme kontrolü
+        const payment = await env.DB.prepare(
+          "SELECT status FROM payments WHERE payment_link_id = ? AND status = 'paid' LIMIT 1"
+        ).bind(ownerOrderLinkId).first();
+        isPaid = !!payment;
+      }
+
+      if (!isPaid) {
+        return jsonResponse({
+          success: false,
+          error: "Bu belgeye erişmek için ödemenizi tamamlamanız gerekiyor.",
+          code: "PAYMENT_REQUIRED"
+        }, 402);
+      }
+
+      // 3) Ödeme yapılmış — R2'den dosyayı serve et
       const object = await env.DOCS.get(fileKey);
       if (!object) return jsonResponse({ success: false, error: "Dosya bulunamadi" }, 404);
 

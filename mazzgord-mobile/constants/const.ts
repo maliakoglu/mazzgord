@@ -13,6 +13,28 @@ export const STATUS_LABELS: Record<string, string> = {
   delivered: "Teslim Edildi",
   cancelled: "İptal Edildi",
   paid: "Ödendi",
+  payment_pending: "Ödeme Bekleniyor",
   awaiting_payment: "Ödeme Bekleniyor",
   refunded: "İade Edildi",
+};
+
+
+export const OFFER_STATUS_LABELS: Record<string, string> = {
+  pending: "Beklemede",
+  offered: "Teklif Hazır",
+  accepted: "Kabul Edildi",
+  rejected: "Reddedildi",
+  expired: "Süresi Doldu",
+};
+
+export const ORDER_STATUS_LABELS: Record<string, string> = {
+  pending: "Beklemede",
+  reviewing: "İnceleniyor",
+  in_progress: "Hazırlanıyor",
+  payment_pending: "Ödeme Bekleniyor",
+  document_pending: "Belge Bekleniyor",
+  completed: "Tamamlandı",
+  delivered: "Teslim Edildi",
+  cancelled: "İptal Edildi",
+  rejected: "Reddedildi",
 };

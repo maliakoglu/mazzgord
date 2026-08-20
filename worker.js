@@ -52,7 +52,7 @@ export default {
 
     // POST /api/quote — imported from routes/quote.js
     // GET /api/quote/:orderNo — public quote status (müşteri takibi)
-    if ((path === "/api/quote" && request.method === "POST") || (path.startsWith("/api/quote/") && request.method === "GET") || (path === "/api/quote/send-code" && request.method === "POST") || (path === "/api/quote/verify-code" && request.method === "POST") || (path.match(/^\/api\/quote\/\d+\/(?:accept|reject|upload-document)$/) && request.method === "POST")) {
+    if ((path === "/api/quote" && request.method === "POST") || (path.startsWith("/api/quote/") && request.method === "GET" && !path.endsWith("/detail")) || (path === "/api/quote/send-code" && request.method === "POST") || (path === "/api/quote/verify-code" && request.method === "POST") || (path.match(/^\/api\/quote\/\d+\/(?:accept|reject|upload-document)$/) && request.method === "POST")) {
       return handleQuote(request, env, path, request.method);
     }
 
@@ -447,10 +447,11 @@ export default {
             "UPDATE payments SET status = 'paid', iyzico_payment_id = ?, paid_at = datetime('now') WHERE payment_link_id = ?"
           ).bind(iyzicoPaymentId, link_id).run();
 
-          // Ödeme başarılı — quote durumunu document_pending yap
+          // Ödeme başarılı — quote durumunu in_progress yap (DOCUMENT_ACCESS_GRANTED + IN_PROGRESS)
+          // Belge erişimi payments.status='paid' ile otomatik açılır (account.js kontrolü)
           if (payment.quote_id) {
             await env.DB.prepare(
-              "UPDATE quotes SET order_status = 'document_pending' WHERE id = ? AND order_status NOT IN ('completed', 'delivered')"
+              "UPDATE quotes SET order_status = 'in_progress' WHERE id = ? AND order_status NOT IN ('completed', 'delivered')"
             ).bind(payment.quote_id).run();
           }
 
