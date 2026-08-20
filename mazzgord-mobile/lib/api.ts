@@ -38,6 +38,7 @@ export async function apiCall<T>(endpoint: string, options: ApiOptions = {}): Pr
 
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
+    "X-Mazzgord-Mobile": "1",
   };
 
   if (auth) {
@@ -300,6 +301,7 @@ export const uploadApi = {
     const response = await fetch(`${API_BASE_URL}/api/upload`, {
       method: "POST",
       headers: {
+        "X-Mazzgord-Mobile": "1",
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
       body: formData,
