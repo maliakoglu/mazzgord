@@ -44,6 +44,7 @@ export default function TabLayout() {
       <Tabs.Screen name="track" options={{ title: "Takip" }} />
       <Tabs.Screen name="account" options={{ title: "Hesabım" }} />
     <Tabs.Screen name="offer-detail" options={{ href: null, title: "Teklif Detayı" }} />
+    <Tabs.Screen name="fiyatlar" options={{ href: null, title: "Fiyatlar" }} />
     </Tabs>
   );
 }

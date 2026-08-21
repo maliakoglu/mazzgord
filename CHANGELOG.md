@@ -288,3 +288,42 @@
 
 ### Test
 - Uçtan uca test tamamlandı: kayıt → teklif → admin fiyat → kabul → ödeme → çeviri → teslim → değerlendirme
+
+## 2026-08-21 — Mobil Ana Sayfa Yenileme + Hero Kart 3D
+
+### Ana Sayfa
+- "Nasıl yardımcı olalım?" + service cards bölümü kaldırıldı
+- "Nasıl Çalışıyorum?" 5 adımlı süreç bölümü eklendi (belge gönderiminden teslimata)
+- "Sürecimiz basit" bölümü kaldırıldı
+- "Başlangıç Fiyatları" bölümü eklendi (4 fiyat kartı: Yeminli, Noter, Apostil, Acil)
+- "Tüm fiyatları gör" butonu kaldırıldı
+
+### Fiyatlar Sayfası (yeni)
+- `app/(tabs)/fiyatlar.tsx` oluşturuldu — web'deki /fiyatlar ile uyumlu
+- `/api/pricing` endpoint'inden D1 veritabanı fiyatları çekiliyor
+- 3 katmanlı sistem kartları (Yeminli, Noter, Apostil)
+- Belge bazlı fiyat kartları (mobil uyumlu, tablo yerine kart)
+- Arama ve kategori filtresi
+- "Önemli Bilgiler" bölümü
+- `lib/api.ts`'ye `pricingApi` ve `PriceItem` tipi eklendi
+- `_layout.tsx`'e fiyatlar route'u eklendi (hidden tab)
+
+### Tema
+- `theme.ts` güncellendi: primary turuncu (#F97316), accent mavi (#1D4ED8)
+- `accent` ve `surfaceAlt` alanları tip'e eklendi
+- Dark mode paleti güncellendi
+
+### Hero Kart (3D + Parallax + Glow)
+- `components/hero-card.tsx` oluşturuldu — Behance tarzı tasarım
+- Gradient arka plan (turuncu → koyu turuncu)
+- 5 animasyonlu balon (turuncu, camgöbeği, altın, beyaz, glow halkası)
+- Glassmorphism cam katmanı
+- Kayan ışık parlaması
+- Parallax scroll efekti (balonlar farklı hızlarda hareket)
+- 3D gölge ve derinlik
+- Glass buton (camgöbeği, yarı saydam, beyaz kenarlık)
+- Buton glow animasyonu (nabız gibi parlayan gölge)
+- Buton kayan ışık parlaması + köşe ışıldaması
+- Gölgeli okunaklı yazılar
+- Press efekti (scale + renk değişimi)
+- `index.tsx` Animated.ScrollView'e çevrildi, scrollY HeroCard'a geçirildi

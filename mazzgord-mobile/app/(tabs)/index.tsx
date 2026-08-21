@@ -1,21 +1,33 @@
-import { ScrollView, Pressable, Text, View } from "react-native";
+import { Animated, ScrollView, Pressable, Text, View } from "react-native";
+import { useRef } from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from "expo-router";
 import { ScreenContainer } from "@/components/screen-container";
 import { Badge, LogoMark, PrimaryButton, SectionTitle, StatCard, styles } from "@/components/mazzgord-ui";
+import { HeroCard } from "@/components/hero-card";
 import { useColors } from "@/hooks/use-colors";
 
-const services = [
-  { title: "Yeminli Tercüme", subtitle: "Resmi belgeleriniz için", icon: "verified" as const },
-  { title: "Teknik Çeviri", subtitle: "Uzmanlık gerektiren metinler", icon: "engineering" as const },
-  { title: "Akademik Çeviri", subtitle: "Tez, makale ve araştırma", icon: "school" as const },
+const steps = [
+  { n: "1", title: "Belgenizi Gönderin", desc: "Belgenizin net fotoğrafını veya taranmış halini WhatsApp veya teklif formu üzerinden iletin.", icon: "upload-file" as const },
+  { n: "2", title: "İnceleme ve Teklif", desc: "Belge türünü, dil yönünü, noter ve apostil ihtiyacını inceleyip net fiyat ve teslim süresi veriyorum.", icon: "price-check" as const },
+  { n: "3", title: "Onay ve Ödeme", desc: "Teklifi onayladığınızda ödeme bilgileri gönderilir. Online ödeme veya havale seçeneği mevcut.", icon: "payments" as const },
+  { n: "4", title: "Çeviri ve Kontrol", desc: "Çeviriyi hazırlayıp isim, tarih, sayı ve kurum adlarını ikinci kez kontrol ediyorum.", icon: "fact-check" as const },
+  { n: "5", title: "Teslim", desc: "Çeviri dijital olarak e-posta/WhatsApp ile veya kargo ile adresinize teslim edilir.", icon: "task-alt" as const },
+];
+
+const pricing = [
+  { title: "Yeminli Tercüme", price: "1.000 TL'den başlayan", note: "Belge türü ve yoğunluğa göre", icon: "verified" as const },
+  { title: "Noter Onaylı Tercüme", price: "Tercüme + gerçek noter bedeli", note: "Noter bedeli işlem öncesi teyit edilir", icon: "gavel" as const },
+  { title: "Apostil Süreci", price: "350 TL'den başlayan işlem/takip", note: "Devlet apostil bedeli ayrı alınmaz", icon: "public" as const },
+  { title: "Acil Teslim", price: "+%30-%50", note: "Aynı gün, kapasiteye bağlı", icon: "bolt" as const },
 ];
 
 export default function HomeScreen() {
   const colors = useColors();
+  const scrollY = useRef(new Animated.Value(0)).current;
   return (
     <ScreenContainer edges={["top", "left", "right"]}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 20, paddingBottom: 34 }}>
+      <Animated.ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 20, paddingBottom: 34 }} onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true })} scrollEventThrottle={16}>
         <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 25 }}>
           <LogoMark />
           <Pressable onPress={() => router.push("/(tabs)/account")} accessibilityRole="button" accessibilityLabel="Hesabım" style={{ width: 42, height: 42, borderRadius: 21, backgroundColor: colors.surface, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: colors.border }}>
@@ -23,14 +35,7 @@ export default function HomeScreen() {
           </Pressable>
         </View>
 
-        <View style={{ backgroundColor: colors.primary, borderRadius: 25, padding: 22, overflow: "hidden", marginBottom: 22 }}>
-          <View style={{ position: "absolute", width: 170, height: 170, borderRadius: 85, backgroundColor: "rgba(255,255,255,0.08)", right: -45, top: -58 }} />
-          <Badge tone="orange">GÜVENİLİR ÇEVİRİ DENEYİMİ</Badge>
-          <Text style={{ color: "#fff", fontSize: 29, fontWeight: "900", lineHeight: 34, letterSpacing: -0.8, marginTop: 17, maxWidth: 280 }}>Belgeleriniz, doğru dilde geleceğe hazır.</Text>
-          <Text style={{ color: "#DBEAFE", fontSize: 14, lineHeight: 21, marginTop: 10, maxWidth: 290 }}>Profesyonel, yeminli ve hızlı çeviri hizmeti. Teklifinizi birkaç adımda alın.</Text>
-          <View style={{ marginTop: 20, width: "72%" }}><PrimaryButton title="Hemen teklif al" icon="arrow-forward" onPress={() => router.push("/quote")} /></View>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginTop: 15 }}><MaterialIcons name="schedule" size={15} color="#BFDBFE" /><Text style={{ color: "#BFDBFE", fontSize: 12, fontWeight: "600" }}>24 saat içinde teklif dönüşü</Text></View>
-        </View>
+        <HeroCard scrollY={scrollY} />
 
         <View style={{ flexDirection: "row", gap: 10, marginBottom: 27 }}>
           <StatCard value="10+" label="Yıl deneyim" icon="workspace-premium" />
@@ -38,21 +43,34 @@ export default function HomeScreen() {
           <StatCard value="24h" label="Hızlı dönüş" icon="bolt" />
         </View>
 
-        <SectionTitle title="Nasıl yardımcı olalım?" action="Tümünü gör" onPress={() => router.push("/services")} />
-        <View style={{ gap: 10, marginBottom: 26 }}>
-          {services.map((service) => <Pressable key={service.title} onPress={() => router.push("/services")} accessibilityRole="button" accessibilityLabel={service.title} style={({ pressed }) => [{ backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1, borderRadius: 17, padding: 15, flexDirection: "row", alignItems: "center", gap: 13 }, pressed && { opacity: 0.76 }]}>
-            <View style={{ width: 44, height: 44, borderRadius: 14, backgroundColor: "#FFF7ED", alignItems: "center", justifyContent: "center" }}><MaterialIcons name={service.icon} size={23} color={colors.primary} /></View>
-            <View style={{ flex: 1 }}><Text style={{ color: colors.foreground, fontSize: 15, fontWeight: "800" }}>{service.title}</Text><Text style={{ color: colors.muted, fontSize: 12, marginTop: 3 }}>{service.subtitle}</Text></View>
-            <MaterialIcons name="chevron-right" size={22} color={colors.muted} />
-          </Pressable>)}
+        <SectionTitle title="Nasıl Çalışıyorum?" />
+        <Text style={{ color: colors.muted, fontSize: 13, lineHeight: 19, marginBottom: 16 }}>Belgenizi göndermekten teslim almaya kadar beş adımda tamamlanır.</Text>
+        <View style={{ gap: 9, marginBottom: 28 }}>
+          {steps.map((step) => <View key={step.n} style={{ backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1, borderRadius: 16, padding: 14, flexDirection: "row", gap: 12 }}>
+            <View style={{ width: 38, height: 38, borderRadius: 12, backgroundColor: colors.primary, alignItems: "center", justifyContent: "center" }}><MaterialIcons name={step.icon} size={20} color="#fff" /></View>
+            <View style={{ flex: 1 }}>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 7 }}>
+                <Text style={{ color: colors.muted, fontSize: 10, fontWeight: "800" }}>ADIM {step.n}</Text>
+              </View>
+              <Text style={{ color: colors.foreground, fontSize: 14, fontWeight: "800", marginTop: 2 }}>{step.title}</Text>
+              <Text style={{ color: colors.muted, fontSize: 12, lineHeight: 17, marginTop: 4 }}>{step.desc}</Text>
+            </View>
+          </View>)}
         </View>
 
-        <View style={{ backgroundColor: colors.surface, borderRadius: 20, padding: 18, borderWidth: 1, borderColor: colors.border }}>
-          <Text style={{ color: colors.foreground, fontSize: 17, fontWeight: "800" }}>Sürecimiz basit.</Text>
-          <Text style={{ color: colors.muted, fontSize: 13, marginTop: 4, marginBottom: 16 }}>Siz belgenizi paylaşın, gerisini biz halledelim.</Text>
-          {[{ n: "01", title: "Belgenizi gönderin", icon: "upload-file" as const }, { n: "02", title: "Net teklif alın", icon: "price-check" as const }, { n: "03", title: "Çevirinizi teslim alın", icon: "task-alt" as const }].map((item, index) => <View key={item.n} style={{ flexDirection: "row", alignItems: "center", marginTop: index ? 14 : 0 }}><View style={{ width: 36, height: 36, borderRadius: 12, backgroundColor: colors.primary, alignItems: "center", justifyContent: "center" }}><MaterialIcons name={item.icon} size={19} color="#fff" /></View><View style={{ marginLeft: 12, flex: 1 }}><Text style={{ color: colors.muted, fontSize: 10, fontWeight: "800" }}>ADIM {item.n}</Text><Text style={{ color: colors.foreground, fontSize: 14, fontWeight: "700", marginTop: 2 }}>{item.title}</Text></View>{index < 2 && <MaterialIcons name="arrow-downward" size={16} color={colors.border} />}</View>)}
+        <SectionTitle title="Başlangıç Fiyatları" />
+        <Text style={{ color: colors.muted, fontSize: 12, lineHeight: 18, marginBottom: 14 }}>Belge görülmeden kesin fiyat verilmez. Aşağıdaki başlangıç aralıkları referans amaçlıdır.</Text>
+        <View style={{ gap: 9, marginBottom: 18 }}>
+          {pricing.map((item) => <View key={item.title} style={{ backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1, borderRadius: 16, padding: 14, flexDirection: "row", alignItems: "center", gap: 12 }}>
+            <View style={{ width: 38, height: 38, borderRadius: 12, backgroundColor: "#FFF7ED", alignItems: "center", justifyContent: "center" }}><MaterialIcons name={item.icon} size={20} color={colors.primary} /></View>
+            <View style={{ flex: 1 }}>
+              <Text style={{ color: colors.foreground, fontSize: 14, fontWeight: "800" }}>{item.title}</Text>
+              <Text style={{ color: colors.primary, fontSize: 13, fontWeight: "700", marginTop: 2 }}>{item.price}</Text>
+              <Text style={{ color: colors.muted, fontSize: 11, marginTop: 2 }}>{item.note}</Text>
+            </View>
+          </View>)}
         </View>
-      </ScrollView>
+      </Animated.ScrollView>
     </ScreenContainer>
   );
 }

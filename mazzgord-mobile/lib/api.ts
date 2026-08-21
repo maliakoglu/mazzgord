@@ -425,6 +425,22 @@ export type PaymentInfo = {
   iyzico_conversation_id?: string | null;
 };
 
+// === PRICING ===
+export const pricingApi = {
+  list: async () =>
+    apiCall<{ success: boolean; data?: PriceItem[] }>("/api/pricing"),
+};
+
+export type PriceItem = {
+  id: number;
+  document_name: string;
+  yeminli_price: number;
+  noter_price: number;
+  apostil_price: number;
+  has_apostil_variant: number;
+  category: string;
+};
+
 // === REVIEW ===
 export const reviewApi = {
   get: async (quoteId: number) =>

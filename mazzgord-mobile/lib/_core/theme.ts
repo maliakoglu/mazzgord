@@ -2,8 +2,10 @@ export type ColorScheme = "light" | "dark";
 
 export type ThemeColorPalette = {
   primary: string;
+  accent: string;
   background: string;
   surface: string;
+  surfaceAlt: string;
   foreground: string;
   muted: string;
   border: string;
@@ -13,9 +15,11 @@ export type ThemeColorPalette = {
 };
 
 const lightPalette: ThemeColorPalette = {
-  primary: "#1E3A8A",
+  primary: "#F97316",
+  accent: "#1D4ED8",
   background: "#FFFFFF",
-  surface: "#F8FAFC",
+  surface: "#F1F5F9",
+  surfaceAlt: "#FFF7ED",
   foreground: "#0F172A",
   muted: "#64748B",
   border: "#E2E8F0",
@@ -25,10 +29,12 @@ const lightPalette: ThemeColorPalette = {
 };
 
 const darkPalette: ThemeColorPalette = {
-  primary: "#3B82F6",
-  background: "#0F172A",
+  primary: "#FB923C",
+  accent: "#60A5FA",
+  background: "#0B1120",
   surface: "#1E293B",
-  foreground: "#F1F5F9",
+  surfaceAlt: "#292524",
+  foreground: "#F8FAFC",
   muted: "#94A3B8",
   border: "#334155",
   success: "#22C55E",
