@@ -368,6 +368,28 @@ export async function handleAdminRoute(path, request, env) {
   }
 
 
+  // GET /api/admin/reviews — Tum degerlendirmeler
+  if (path === "/api/admin/reviews" && request.method === "GET") {
+    try {
+      if (!checkAdminAuth(request, env)) return unauthorizedResponse();
+      const result = await env.DB.prepare(
+        `SELECT r.id, r.quote_id, r.rating, r.comment, r.created_at,
+         q.name as customer_name, q.email as customer_email,
+         q.source_language, q.target_language
+         FROM reviews r
+         LEFT JOIN quotes q ON q.id = r.quote_id
+         ORDER BY r.created_at DESC LIMIT 200`
+      ).all();
+      return new Response(JSON.stringify({ success: true, data: result.results }), {
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    } catch (err) {
+      return new Response(JSON.stringify({ success: false, error: "Sunucu hatasi" }), {
+        status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+  }
+
   // POST /api/admin/login — Admin login (şifre doğrulama, token döndür)
   if (path === "/api/admin/login" && request.method === "POST") {
     try {

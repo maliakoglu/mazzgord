@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Shield, Mail, FileText, Download, LogOut, RefreshCw, Inbox, ClipboardList, CreditCard, CheckCircle2, Eye, X, TrendingUp, Clock, AlertTriangle, DollarSign, Users, Languages, Package } from "lucide-react";
+import { Shield, Mail, FileText, Download, LogOut, RefreshCw, Inbox, ClipboardList, CreditCard, CheckCircle2, Eye, X, TrendingUp, Clock, AlertTriangle, DollarSign, Users, Languages, Package, Star } from "lucide-react";
 import { toast } from "sonner";
 import AdminServices from "@/components/admin/AdminServices";
 
@@ -125,12 +125,24 @@ interface Order {
   items?: any[];
 }
 
+interface Review {
+  id: number;
+  quote_id: number;
+  rating: number;
+  comment: string | null;
+  created_at: string;
+  customer_name: string | null;
+  customer_email: string | null;
+  source_language: string | null;
+  target_language: string | null;
+}
+
 export default function Admin() {
   const [authed, setAuthed] = useState(false);
   const [adminToken, setAdminToken] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [tab, setTab] = useState<"dashboard" | "messages" | "quotes" | "payments" | "customers" | "services" | "orders">("dashboard");
+  const [tab, setTab] = useState<"dashboard" | "messages" | "quotes" | "payments" | "customers" | "services" | "orders" | "reviews">("dashboard");
   const [messages, setMessages] = useState<Message[]>([]);
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [payments, setPayments] = useState<Payment[]>([]);
@@ -150,6 +162,7 @@ export default function Admin() {
   const [dashboard, setDashboard] = useState<DashboardData | null>(null);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [deliveringOrderId, setDeliveringOrderId] = useState<string | null>(null);
   const [deliverForm, setDeliverForm] = useState<{ tracking_number: string; delivery_note: string; file: File | null }>({ tracking_number: "", delivery_note: "", file: null });
   const [deliverLoading, setDeliverLoading] = useState(false);
@@ -281,13 +294,14 @@ export default function Admin() {
     setLoading(true);
     try {
       const headers = { Authorization: `Bearer ${adminToken}` };
-      const [msgRes, quoteRes, payRes, dashRes, custRes, ordRes] = await Promise.all([
+      const [msgRes, quoteRes, payRes, dashRes, custRes, ordRes, revRes] = await Promise.all([
         fetch("/api/messages", { headers }),
         fetch("/api/quotes", { headers }),
         fetch("/api/payments", { headers }),
         fetch("/api/dashboard", { headers }),
         fetch("/api/customers", { headers }),
         fetch("/api/orders", { headers }),
+        fetch("/api/admin/reviews", { headers }),
       ]);
       if (msgRes.ok) {
         const msgData = await msgRes.json();
@@ -312,6 +326,10 @@ export default function Admin() {
       if (ordRes.ok) {
         const ordData = await ordRes.json();
         setOrders(ordData.data || []);
+      }
+      if (revRes.ok) {
+        const revData = await revRes.json();
+        setReviews(revData.data || []);
       }
     } catch (err) {
       console.error("Veri çekme hatası:", err);
@@ -627,6 +645,13 @@ export default function Admin() {
           >
             <FileText className="w-4 h-4" />
             Siparişler ({orders.length})
+          </button>
+          <button
+            onClick={() => setTab("reviews")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition whitespace-nowrap ${tab === "reviews" ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground hover:bg-secondary/80"}`}
+          >
+            <Star className="w-4 h-4" />
+            Değerlendirmeler ({reviews.length})
           </button>
         </div>
 
@@ -1482,6 +1507,43 @@ export default function Admin() {
                   </div>
                 </div>
               ))
+            )}
+          </div>
+        )}
+        {tab === "reviews" && (
+          <div className="space-y-4">
+            {reviews.length === 0 ? (
+              <div className="text-center py-20 text-muted-foreground">
+                <Star className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                <p>Henüz değerlendirme yok</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {reviews.map((r) => (
+                  <div key={r.id} className="bg-card border border-border rounded-lg p-5">
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <h3 className="font-bold text-foreground">{r.customer_name || "Anonim"}</h3>
+                        <p className="text-xs text-muted-foreground">{r.customer_email}</p>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        {[1, 2, 3, 4, 5].map((s) => (
+                          <Star key={s} className={`w-4 h-4 ${s <= r.rating ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground/30"}`} />
+                        ))}
+                      </div>
+                    </div>
+                    <div className="text-sm text-muted-foreground mb-2">
+                      {r.source_language} → {r.target_language}
+                    </div>
+                    {r.comment && (
+                      <p className="text-sm text-foreground bg-secondary/30 rounded-lg p-3 mt-2">{r.comment}</p>
+                    )}
+                    <div className="text-xs text-muted-foreground mt-3">
+                      {new Date(r.created_at + "Z").toLocaleDateString("tr-TR")}
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
         )}

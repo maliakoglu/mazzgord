@@ -43,6 +43,7 @@ export default function TabLayout() {
       <Tabs.Screen name="quote" options={{ title: "Teklif Al" }} />
       <Tabs.Screen name="track" options={{ title: "Takip" }} />
       <Tabs.Screen name="account" options={{ title: "Hesabım" }} />
+    <Tabs.Screen name="offer-detail" options={{ href: null, title: "Teklif Detayı" }} />
     </Tabs>
   );
 }

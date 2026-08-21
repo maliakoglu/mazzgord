@@ -22,19 +22,20 @@ function formatDate(dateStr: string | null): string {
 
 const TIMELINE_STEPS = [
   { key: "offered", title: "Teklif", icon: "request-quote" as const },
+  { key: "document", title: "Belge", icon: "upload-file" as const },
   { key: "accepted", title: "Kabul", icon: "check-circle" as const },
   { key: "paid", title: "Ödeme", icon: "payments" as const },
-  { key: "document", title: "Belge", icon: "upload-file" as const },
-  { key: "completed", title: "İşlem", icon: "edit" as const },
+  { key: "completed", title: "Çeviri", icon: "edit" as const },
   { key: "delivered", title: "Teslim", icon: "local-shipping" as const },
 ];
 
 function getTimelineIndex(quote: QuoteRecord): number {
   if (quote.order_status === "delivered") return 5;
   if (quote.order_status === "completed" || quote.order_status === "in_progress") return 4;
-  if (quote.order_status === "reviewing" || quote.file_key || quote.document_uploaded_at) return 3;
-  if (quote.order_status === "payment_pending") return 1;
-  if (quote.offer_status === "accepted") return 1;
+  if (quote.order_status === "paid") return 4;
+  if (quote.order_status === "payment_pending") return 3;
+  if (quote.offer_status === "accepted") return 2;
+  if (quote.file_key || quote.document_uploaded_at) return 1;
   if (quote.offer_status === "offered") return 0;
   return 0;
 }

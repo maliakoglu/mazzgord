@@ -266,3 +266,25 @@
 - `routes/upload.js` — `.webp` desteği eklendi
 - `client/src/pages/TeklifFormu.tsx` — KVKK metni düzeltildi, Teslim Tarihi kaldırıldı
 
+
+## [2026-08-21] — Mobil Teklif & Takip Akışı + Reviews + iyzico Mobil Ödeme
+
+### Backend (Worker API)
+- `POST /api/quote/:id/review` ve `GET /api/quote/:id/review` — Müşteri değerlendirme endpoint'leri eklendi
+- `GET /api/admin/reviews` — Admin değerlendirme listesi endpoint'i eklendi
+- `POST /api/quote` — Auth token varsa e-posta doğrulama atlanır, `customer_id` ilişkilendirilir
+- `/odeme/sonuc` callback — Mobil isteklerde `mazzgord://` scheme'ine redirect eklendi
+
+### Mobil Uygulama
+- `quote.tsx` — 5 adımdan 4 adıma düşürüldü, e-posta doğrulama kaldırıldı, auth bariyer modal'ı eklendi
+- `track.tsx` — 6 aşamalı canlı takip (Teklif → Belge → Kabul → Ödeme → Çeviri → Teslim) + kabul/red, ödeme, indirme, değerlendirme
+- `offer-detail.tsx` — 6 adımlı timeline güncellendi (Teklif → Belge → Kabul → Ödeme → Çeviri → Teslim)
+- `payment.tsx` — iyzico ödeme `openAuthSessionAsync` ile güncellendi, `mazzgord://` scheme ile otomatik dönüş
+- `lib/api.ts` — `reviewApi` (get/submit), `PaymentInfo` tipine `iyzico_conversation_id` eklendi
+- `app.config.ts` — Deep link scheme `mazzgord` olarak sabitlendi
+
+### Web Admin Panel
+- `Admin.tsx` — Reviews tab'ı eklendi (yıldız puanları + yorumlar, responsive grid)
+
+### Test
+- Uçtan uca test tamamlandı: kayıt → teklif → admin fiyat → kabul → ödeme → çeviri → teslim → değerlendirme

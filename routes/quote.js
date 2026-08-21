@@ -8,6 +8,77 @@ import { getCustomerFromRequest } from "../lib/customerAuth.js";
 import { sendStatusNotification } from "../lib/notifications.js";
 
 export async function handleQuote(request, env, path = "", method = "POST") {
+  // GET /api/quote/:id/review — Değerlendirme getir
+  const getReviewMatch = path.match(/^\/api\/quote\/(\d+)\/review$/);
+  if (getReviewMatch && method === "GET") {
+    try {
+      const quoteId = parseInt(getReviewMatch[1]);
+      const review = await env.DB.prepare(
+        "SELECT id, quote_id, rating, comment, created_at FROM reviews WHERE quote_id = ?"
+      ).bind(quoteId).first();
+      return new Response(JSON.stringify({ success: true, data: review || null }), {
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    } catch (err) {
+      return new Response(JSON.stringify({ success: false, error: "Sunucu hatasi" }), {
+        status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+  }
+
+  // POST /api/quote/:id/review — Müşteri değerlendirme gönder
+  const reviewMatch = path.match(/^\/api\/quote\/(\d+)\/review$/);
+  if (reviewMatch && method === "POST") {
+    try {
+      const customer = await getCustomerFromRequest(request, env);
+      if (!customer) {
+        return new Response(JSON.stringify({ success: false, error: "Giris yapmalisiniz" }), {
+          status: 401, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+      const quoteId = parseInt(reviewMatch[1]);
+      const quote = await env.DB.prepare(
+        "SELECT * FROM quotes WHERE id = ? AND email = ?"
+      ).bind(quoteId, customer.email).first();
+      if (!quote) {
+        return new Response(JSON.stringify({ success: false, error: "Teklif bulunamadi" }), {
+          status: 404, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+      if (quote.order_status !== "delivered" && quote.order_status !== "completed") {
+        return new Response(JSON.stringify({ success: false, error: "Sadece tamamlanan siparisler degerlendirilebilir" }), {
+          status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+      const existing = await env.DB.prepare(
+        "SELECT id FROM reviews WHERE quote_id = ?"
+      ).bind(quoteId).first();
+      if (existing) {
+        return new Response(JSON.stringify({ success: false, error: "Bu siparis zaten degerlendirilmis" }), {
+          status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+      const body = await request.json();
+      const rating = parseInt(body.rating);
+      const comment = (body.comment || "").trim();
+      if (!rating || rating < 1 || rating > 5) {
+        return new Response(JSON.stringify({ success: false, error: "Puan 1-5 arasi olmali" }), {
+          status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+      await env.DB.prepare(
+        "INSERT INTO reviews (quote_id, rating, comment) VALUES (?, ?, ?)"
+      ).bind(quoteId, rating, comment || null).run();
+      return new Response(JSON.stringify({ success: true, message: "Degerlendirmeniz alindi" }), {
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    } catch (err) {
+      return new Response(JSON.stringify({ success: false, error: "Sunucu hatasi" }), {
+        status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+  }
+
   // GET /api/quote/:orderNo — Public: teklif durumu sorgula (müşteri takibi)
   if (method === "GET" && path.startsWith("/api/quote/")) {
     try {
@@ -337,12 +408,15 @@ export async function handleQuote(request, env, path = "", method = "POST") {
 
     const { name, email, phone, source_language, target_language, document_type, page_count, notes, file_key, service_type, urgency, delivery_method, word_count, yeminli, noter_onay } = validation.data;
 
-    // E-posta dogrulama zorunlu — KV'den kontrol et
-    const verified = await isEmailVerified(env, email);
-    if (!verified) {
-      return new Response(JSON.stringify({ success: false, error: "E-posta dogrulamasi gerekli" }), {
-        status: 403, headers: { "Content-Type": "application/json", ...corsHeaders },
-      });
+    // Auth token varsa e-posta dogrulamayi atla (mobil giris yapmis kullanici)
+    const authCustomer = await getCustomerFromRequest(request, env);
+    if (!authCustomer) {
+      const verified = await isEmailVerified(env, email);
+      if (!verified) {
+        return new Response(JSON.stringify({ success: false, error: "E-posta dogrulamasi gerekli" }), {
+          status: 403, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
     }
 
     const delivery = delivery_method || 'digital';
@@ -362,14 +436,14 @@ export async function handleQuote(request, env, path = "", method = "POST") {
 
     const orderToken = crypto.randomUUID();
     await env.DB.prepare(
-      "INSERT INTO quotes (name, email, phone, source_language, target_language, document_type, page_count, notes, file_key, service_type, urgency, delivery_method, word_count, yeminli, noter_onay, order_status, shipping_address, notary_need, apostille_need, target_country, delivery_date, order_token) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?)"
+      "INSERT INTO quotes (name, email, phone, source_language, target_language, document_type, page_count, notes, file_key, service_type, urgency, delivery_method, word_count, yeminli, noter_onay, order_status, shipping_address, notary_need, apostille_need, target_country, delivery_date, order_token, customer_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?)"
     ).bind(
       name, email, phone || null, source_language, target_language,
       document_type || null, page_count || null, notes || null, file_key || null,
       service_type || null, urgency, delivery,
       word_count || null, yeminli ? 1 : 0, noter_onay ? 1 : 0, address,
       validation.data.notary_need || null, validation.data.apostille_need || null, validation.data.target_country || null,
-      validation.data.delivery_date || null, orderToken
+      validation.data.delivery_date || null, orderToken, authCustomer ? authCustomer.customerId : null
     ).run();
 
     // Sipariş numarası oluştur

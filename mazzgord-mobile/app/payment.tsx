@@ -50,16 +50,46 @@ export default function PaymentScreen() {
     try {
       const res = await paymentApi.initialize(payment.payment_link_id);
       if (res.success && res.payment_page_url) {
-        await WebBrowser.openBrowserAsync(res.payment_page_url);
-        // Tarayıcı kapandı — ödeme durumunu doğrula
-        setVerifying(true);
-        setLoading(false);
-        const paid = await pollPaymentStatus(payment.payment_link_id);
-        setVerifying(false);
-        if (paid) {
-          setPaid(true);
+        const result = await WebBrowser.openAuthSessionAsync(
+          res.payment_page_url,
+          "mazzgord://payment-result"
+        );
+        if (result.type === "success" && result.url) {
+          const url = new URL(result.url);
+          const token = url.searchParams.get("token");
+          const status = url.searchParams.get("status");
+          if (token) {
+            setVerifying(true);
+            setLoading(false);
+            const verifyRes = await paymentApi.verify(token, payment.iyzico_conversation_id || "", payment.payment_link_id);
+            setVerifying(false);
+            if (verifyRes.success) {
+              setPaid(true);
+            } else {
+              const paid = await pollPaymentStatus(payment.payment_link_id);
+              if (paid) {
+                setPaid(true);
+              } else {
+                setError("Ödeme doğrulanamadı. Lütfen tekrar deneyin.");
+              }
+            }
+          } else if (status === "error") {
+            setError("Ödeme başarısız. Lütfen tekrar deneyin.");
+          } else {
+            const paid = await pollPaymentStatus(payment.payment_link_id);
+            if (paid) {
+              setPaid(true);
+            } else {
+              setError("Ödeme doğrulanamadı. Ödemenizi tamamladıysanız lütfen biraz bekleyip tekrar kontrol edin.");
+            }
+          }
         } else {
-          setError("Ödeme doğrulanamadı. Ödemenizi tamamladıysanız lütfen biraz bekleyip tekrar kontrol edin.");
+          const paid = await pollPaymentStatus(payment.payment_link_id);
+          if (paid) {
+            setPaid(true);
+          } else {
+            setError("Ödeme doğrulanamadı. Ödemenizi tamamladıysanız lütfen biraz bekleyip tekrar kontrol edin.");
+          }
         }
       } else {
         setError(res.error || "Ödeme başlatılamadı");

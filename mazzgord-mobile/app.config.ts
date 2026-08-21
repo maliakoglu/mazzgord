@@ -33,7 +33,7 @@ const env = {
   // S3 URL of the app logo - set this to the URL returned by generate_image when creating custom logo
   // Leave empty to use the default icon from assets/images/icon.png
   logoUrl: "/manus-storage/mazzgord-app-icon_48f695e9.png",
-  scheme: schemeFromBundleId,
+  scheme: "mazzgord",
   iosBundleId: bundleId,
   androidPackage: bundleId,
 };

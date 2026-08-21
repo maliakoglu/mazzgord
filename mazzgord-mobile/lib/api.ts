@@ -134,6 +134,7 @@ export const quoteApi = {
     apiCall<{ success: boolean; order_no?: string; order_token?: string; error?: string }>("/api/quote", {
       method: "POST",
       body: data,
+      auth: true,
     }),
 
   track: async (orderNo: string) =>
@@ -421,4 +422,26 @@ export type PaymentInfo = {
   customer_phone: string;
   payment_link_id: string;
   status: string;
+  iyzico_conversation_id?: string | null;
+};
+
+// === REVIEW ===
+export const reviewApi = {
+  get: async (quoteId: number) =>
+    apiCall<{ success: boolean; data?: { id: number; quote_id: number; rating: number; comment: string | null; created_at: string } | null; error?: string }>(`/api/quote/${quoteId}/review`, { auth: true }),
+
+  submit: async (quoteId: number, rating: number, comment?: string) =>
+    apiCall<{ success: boolean; error?: string; message?: string }>(`/api/quote/${quoteId}/review`, {
+      method: "POST",
+      body: { rating, comment },
+      auth: true,
+    }),
+};
+
+export type Review = {
+  id: number;
+  quote_id: number;
+  rating: number;
+  comment: string | null;
+  created_at: string;
 };

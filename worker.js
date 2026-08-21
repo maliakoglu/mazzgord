@@ -52,7 +52,7 @@ export default {
 
     // POST /api/quote — imported from routes/quote.js
     // GET /api/quote/:orderNo — public quote status (müşteri takibi)
-    if ((path === "/api/quote" && request.method === "POST") || (path.startsWith("/api/quote/") && request.method === "GET" && !path.endsWith("/detail")) || (path === "/api/quote/send-code" && request.method === "POST") || (path === "/api/quote/verify-code" && request.method === "POST") || (path.match(/^\/api\/quote\/\d+\/(?:accept|reject|upload-document)$/) && request.method === "POST")) {
+    if ((path === "/api/quote" && request.method === "POST") || (path.startsWith("/api/quote/") && request.method === "GET" && !path.endsWith("/detail")) || (path === "/api/quote/send-code" && request.method === "POST") || (path === "/api/quote/verify-code" && request.method === "POST") || (path.match(/^\/api\/quote\/\d+\/(?:accept|reject|upload-document|review)$/) && request.method === "POST")) {
       return handleQuote(request, env, path, request.method);
     }
 
@@ -663,6 +663,16 @@ export default {
         if (token) params.set("token", token);
         if (conversationId) params.set("conversationId", conversationId);
         if (status) params.set("status", status);
+
+        // Mobil redirect — iyzico callback'inde mobil app scheme'e yonlendir
+        const isMobile = request.headers.get("X-Mazzgord-Mobile") === "1";
+        if (isMobile) {
+          const mobileParams = new URLSearchParams();
+          if (linkId) mobileParams.set("link", linkId);
+          if (token) mobileParams.set("token", token);
+          if (status) mobileParams.set("status", status);
+          return Response.redirect(`mazzgord://payment-result?${mobileParams.toString()}`, 302);
+        }
 
         return Response.redirect(`https://mazzgord.com/odeme/sonuc?${params.toString()}`, 302);
       } catch (err) {
