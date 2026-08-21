@@ -41,8 +41,18 @@ export default {
     if (rateLimitResponse) return rateLimitResponse;
 
     // === CSRF KORUMASI — POST isteklerinde Origin/Referer kontrolü ===
-    if (request.method === "POST" && !path.startsWith("/api/payment/")) {
-      if (!checkCsrf(request)) return csrfFailedResponse();
+    if (request.method === "POST" && !path.startsWith("/api/payment/") && !path.startsWith("/odeme/sonuc")) {
+      const csrfOk = checkCsrf(request);
+      if (!csrfOk) {
+        console.log("CSRF FAILED:", {
+          path,
+          method: request.method,
+          auth: request.headers.get("Authorization") || "NONE",
+          mobile: request.headers.get("X-Mazzgord-Mobile") || "NONE",
+          origin: request.headers.get("Origin") || "NONE",
+        });
+        return csrfFailedResponse();
+      }
     }
 
     // POST /api/contact — imported from routes/contact.js
@@ -307,7 +317,9 @@ export default {
           paymentChannel: "WEB",
           paymentGroup: "PRODUCT",
           enabledInstallments: [1, 2, 3, 6, 9],
-          callbackUrl: `https://mazzgord.com/odeme/sonuc?link=${payment_link_id}`,
+          callbackUrl: request.headers.get("X-Mazzgord-Mobile") === "1"
+            ? `https://mazzgord.com/odeme/sonuc/mobil?link=${payment_link_id}`
+            : `https://mazzgord.com/odeme/sonuc?link=${payment_link_id}`,
           buyer: {
             id: buyerId,
             name: payment.customer_name.split(" ")[0] || payment.customer_name,
@@ -649,13 +661,76 @@ export default {
     }
 
     // iyzico callback POST handler — token'ı URL'e taşı ve GET redirect
-    if (path === "/odeme/sonuc" && request.method === "POST") {
+    if ((path === "/odeme/sonuc" || path === "/odeme/sonuc/mobil") && request.method === "POST") {
       try {
         const formData = await request.formData();
-        const token = formData.get("token") || "";
-        const conversationId = formData.get("conversationId") || formData.get("conversation_id") || "";
-        const status = formData.get("status") || "";
-        const linkId = formData.get("link") || "";
+        const callbackUrl = new URL(request.url);
+        const token = formData.get("token") || callbackUrl.searchParams.get("token") || "";
+        const conversationId = formData.get("conversationId") || formData.get("conversation_id") || callbackUrl.searchParams.get("conversationId") || "";
+        const status = formData.get("status") || callbackUrl.searchParams.get("status") || "";
+        const linkId = formData.get("link") || callbackUrl.searchParams.get("link") || "";
+
+        // Mobil redirect — iyzico callback'inde mobil app scheme'e yonlendir
+        const isMobile = path === "/odeme/sonuc/mobil" || callbackUrl.searchParams.get("mobile") === "1" || request.headers.get("X-Mazzgord-Mobile") === "1" || formData.get("mobile") === "1";
+        if (isMobile) {
+          // Mobilde once backend'de verify yap, sonra scheme'e redirect
+          let verifyStatus = status;
+          if (token && linkId) {
+            try {
+              const payment = await env.DB.prepare(
+                "SELECT * FROM payments WHERE payment_link_id = ?"
+              ).bind(linkId).first();
+              if (payment) {
+                const apiKey = env.IYZICO_API_KEY;
+                const secretKey = env.IYZICO_SECRET_KEY;
+                const baseUrl = "https://api.iyzipay.com";
+                const verifyBody = {
+                  locale: "tr",
+                  conversationId: conversationId || payment.iyzico_conversation_id,
+                  token: token
+                };
+                const uri = "/payment/iyzipos/checkoutform/auth/ecom/detail";
+                const { authHeader, random } = await iyzicoAuth(apiKey, secretKey, uri, verifyBody);
+                const iyzicoResponse = await fetch(`${baseUrl}/payment/iyzipos/checkoutform/auth/ecom/detail`, {
+                  method: "POST",
+                  headers: {
+                    "Authorization": authHeader,
+                    "x-iyzi-rnd": random,
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                  },
+                  body: JSON.stringify(verifyBody)
+                });
+                const iyzicoData = await iyzicoResponse.json();
+                if (iyzicoData.status === "success") {
+                  const iyzicoPaymentId = String(iyzicoData.paymentId || token);
+                  await env.DB.prepare(
+                    "UPDATE payments SET status = 'paid', iyzico_payment_id = ?, paid_at = datetime('now') WHERE payment_link_id = ?"
+                  ).bind(iyzicoPaymentId, linkId).run();
+                  if (payment.quote_id) {
+                    await env.DB.prepare(
+                      "UPDATE quotes SET order_status = 'in_progress' WHERE id = ? AND order_status NOT IN ('completed', 'delivered')"
+                    ).bind(payment.quote_id).run();
+                  }
+                  try { await sendPaymentEmails(env, payment, iyzicoPaymentId); } catch {}
+                  verifyStatus = "success";
+                } else {
+                  await env.DB.prepare(
+                    "UPDATE payments SET status = 'failed', iyzico_payment_id = ? WHERE payment_link_id = ?"
+                  ).bind(String(iyzicoData.paymentId || token), linkId).run();
+                  verifyStatus = "failed";
+                }
+              }
+            } catch (e) {
+              console.log("Mobil verify hatasi:", String(e));
+            }
+          }
+          const mobileParams = new URLSearchParams();
+          if (linkId) mobileParams.set("link", linkId);
+          if (token) mobileParams.set("token", token);
+          if (verifyStatus) mobileParams.set("status", verifyStatus);
+          return Response.redirect(`mazzgord://payment-result?${mobileParams.toString()}`, 302);
+        }
 
         // GET redirect — SPA token'ı query param'dan okusun
         const params = new URLSearchParams();
@@ -663,16 +738,6 @@ export default {
         if (token) params.set("token", token);
         if (conversationId) params.set("conversationId", conversationId);
         if (status) params.set("status", status);
-
-        // Mobil redirect — iyzico callback'inde mobil app scheme'e yonlendir
-        const isMobile = request.headers.get("X-Mazzgord-Mobile") === "1";
-        if (isMobile) {
-          const mobileParams = new URLSearchParams();
-          if (linkId) mobileParams.set("link", linkId);
-          if (token) mobileParams.set("token", token);
-          if (status) mobileParams.set("status", status);
-          return Response.redirect(`mazzgord://payment-result?${mobileParams.toString()}`, 302);
-        }
 
         return Response.redirect(`https://mazzgord.com/odeme/sonuc?${params.toString()}`, 302);
       } catch (err) {

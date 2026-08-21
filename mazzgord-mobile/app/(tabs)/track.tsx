@@ -26,7 +26,7 @@ function getStage(quote: QuoteRecord): number {
   if (os === "payment_pending") return 3;
   if (ofs === "accepted") return 2;
   if (quote.file_key || quote.document_uploaded_at) return 1;
-  if (ofs === "offered") return 0;
+  if (ofs === "offered") return 1;
   return 0;
 }
 
@@ -190,7 +190,7 @@ export default function TrackScreen() {
             <Text style={{ color: colors.muted, fontSize: 11, fontWeight: "800" }}>MZ-{String(quote.id).padStart(5, "0")}</Text>
             <Text style={{ color: colors.foreground, fontSize: 15, fontWeight: "800", marginTop: 3 }}>{quote.source_language} → {quote.target_language}</Text>
           </View>
-          {isCancelled ? <Badge tone="gray">IPTAL</Badge> : <Badge tone={stage === 3 ? "green" : stage === 2 ? "orange" : "blue"}>{STAGES[stage].title}</Badge>}
+          {isCancelled ? <Badge tone="gray">IPTAL</Badge> : <Badge tone={stage === 5 ? "green" : stage === 4 ? "orange" : "blue"}>{STAGES[stage].title}</Badge>}
         </View>
 
         {isCancelled ? <View style={{ paddingVertical: 12, alignItems: "center" }}><MaterialIcons name="cancel" size={32} color="#EF4444" /><Text style={{ color: "#991B1B", fontSize: 13, marginTop: 6 }}>Bu siparis iptal edilmistir.</Text></View> : <>
@@ -220,11 +220,11 @@ export default function TrackScreen() {
             <Pressable onPress={() => handleReject(quote.id)} disabled={actionLoading === quote.id} style={{ flex: 1, height: 52, borderRadius: 14, borderWidth: 1, borderColor: "#FECACA", backgroundColor: "#FEF2F2", alignItems: "center", justifyContent: "center", flexDirection: "row", gap: 6 }}><MaterialIcons name="close" size={18} color="#EF4444" /><Text style={{ color: "#991B1B", fontWeight: "700" }}>Reddet</Text></Pressable>
           </View>}
 
-          {/* Stage 1: Payment after accept */}
-          {stage === 1 && quote.order_status === "payment_pending" && quote.payment_link_id && <View style={{ marginTop: 14 }}><PrimaryButton title="Odemeyi tamamla" icon="payments" onPress={() => handlePay(quote)} /></View>}
+          {/* Stage 3: Payment after accept */}
+          {stage === 3 && quote.order_status === "payment_pending" && quote.payment_link_id && <View style={{ marginTop: 14 }}><PrimaryButton title="Odemeyi tamamla" icon="payments" onPress={() => handlePay(quote)} /></View>}
 
           {/* Stage 3: Download + Review */}
-          {stage === 3 && <View style={{ marginTop: 14, gap: 10 }}>
+          {stage === 5 && <View style={{ marginTop: 14, gap: 10 }}>
             {quote.delivered_file_key && <PrimaryButton title="Dosyayi indir" icon="download" onPress={() => handleDownload(quote)} />}
             <Pressable onPress={() => { setReviewModal(quote); setReviewRating(0); setReviewComment(""); setReviewError(null); }} style={{ height: 48, borderRadius: 14, borderWidth: 1, borderColor: colors.border, alignItems: "center", justifyContent: "center", flexDirection: "row", gap: 6 }}><MaterialIcons name="star" size={18} color="#F59E0B" /><Text style={{ color: colors.foreground, fontWeight: "700" }}>Degerlendirme yap</Text></Pressable>
           </View>}

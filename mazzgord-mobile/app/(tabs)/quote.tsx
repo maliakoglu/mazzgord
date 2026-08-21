@@ -5,7 +5,7 @@ import { router } from "expo-router";
 import { ScreenContainer } from "@/components/screen-container";
 import { Badge, LogoMark, PrimaryButton } from "@/components/mazzgord-ui";
 import { useColors } from "@/hooks/use-colors";
-import { quoteApi, uploadApi } from "@/lib/api";
+import { quoteApi, uploadApi, authApi } from "@/lib/api";
 import { useAuth } from "@/hooks/use-auth";
 import * as DocumentPicker from "expo-document-picker";
 
@@ -20,7 +20,7 @@ const LANGUAGES = ["Türkçe", "İngilizce", "Almanca", "Fransızca", "İspanyol
 
 export default function QuoteScreen() {
   const colors = useColors();
-  const { user, isAuthenticated, login, register } = useAuth();
+  const { user, isAuthenticated, login, register, error: authErrorFromHook } = useAuth();
   const [step, setStep] = useState(1);
   const [doc, setDoc] = useState("");
   const [service, setService] = useState("");
@@ -108,17 +108,25 @@ export default function QuoteScreen() {
     if (!authEmail.trim() || !authPassword.trim()) { setAuthError("E-posta ve sifre zorunlu"); return; }
     if (authMode === "register" && !authName.trim()) { setAuthError("Ad soyad zorunlu"); return; }
     setAuthLoading(true);
-    let success = false;
-    if (authMode === "login") {
-      success = await login(authEmail.trim(), authPassword);
-    } else {
-      success = await register({ name: authName.trim(), email: authEmail.trim(), password: authPassword, phone: authPhone.trim() || undefined });
-    }
-    setAuthLoading(false);
-    if (success) {
-      await handleAuthSuccess();
-    } else {
-      setAuthError("Giris basarisiz. Bilgileri kontrol edin.");
+    try {
+      let result;
+      if (authMode === "login") {
+        result = await authApi.login({ email: authEmail.trim(), password: authPassword });
+      } else {
+        result = await authApi.register({ name: authName.trim(), email: authEmail.trim(), password: authPassword, phone: authPhone.trim() || undefined });
+      }
+      if (result.success && result.token && result.customer) {
+        const { setToken } = await import("@/lib/api");
+        await setToken(result.token);
+        setAuthLoading(false);
+        await handleAuthSuccess();
+      } else {
+        setAuthLoading(false);
+        setAuthError(result.error || "Islem basarisiz");
+      }
+    } catch (err) {
+      setAuthLoading(false);
+      setAuthError(err instanceof Error ? err.message : "Baglanti hatasi");
     }
   };
 
