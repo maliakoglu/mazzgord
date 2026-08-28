@@ -1,4 +1,5 @@
 import { ArrowLeft, CheckCircle2, Shield, Clock, FileText } from "lucide-react";
+import Breadcrumb from "@/components/Breadcrumb";
 import { useState } from "react";
 export default function YeminliTercume() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -38,6 +39,7 @@ export default function YeminliTercume() {
         </div>
       </nav>
       <div className="container mx-auto px-4 py-12 max-w-4xl">
+        <Breadcrumb items={[{label: "Hizmetler", href: "/hizmetler"}, {label: "Yeminli Tercüme"}]} />
         <h1 className="text-4xl font-bold text-primary mb-4">Denizli Yeminli Tercüman | Noter Onaylı Tercüme</h1>
         <p className="text-xl text-muted-foreground mb-8">Denizli'de profesyonel yeminli tercüme hizmetleri. Resmi belgeleriniz için güvenilir ve doğru çeviri çözümleri.</p>
         <div className="grid md:grid-cols-3 gap-6 mb-12">
@@ -62,7 +64,34 @@ export default function YeminliTercume() {
         <div className="bg-secondary/30 rounded-xl p-8 mb-8">
           <h2 className="text-2xl font-bold text-primary mb-4">Denizli'de Yeminli Tercüme</h2>
           <p className="text-muted-foreground leading-relaxed mb-4">Denizli merkezli yeminli tercüme hizmeti veriyorum. Denizli Adliyesi, Denizli Valiliği, Pamukkale Üniversitesi ve diğer kurumlar tarafından kabul edilen yeminli tercümelerle resmi işlemlerinizi sorunsuz tamamlayabilirsiniz.</p>
+          <p className="text-muted-foreground leading-relaxed mb-4">Ancak online hizmet verdiğim için Denizli dışından da müşterilerim var. İstanbul, Ankara, İzmir ve hatta yurt dışından belge gönderen müşterilerim var. Tüm süreci online yürütebilirsiniz — belgenizi WhatsApp ile gönderir, çeviriyi dijital olarak teslim alırsınız.</p>
           <p className="text-muted-foreground leading-relaxed">WhatsApp üzerinden ulaşabilir, belgenizin fotoğrafını göndererek net teklif alabilirsiniz. Mesai saatlerinde yanıt veririm.</p>
+        </div>
+
+        <div className="bg-primary/5 p-6 rounded-xl border border-primary/10 mb-8">
+          <h3 className="text-lg font-bold text-primary mb-3">Gerçek Müşteri Deneyimleri</h3>
+          <p className="text-muted-foreground leading-relaxed mb-4">Yeminli tercüme hizmetinde karşılaştığım gerçek durumları blog yazılarımda paylaşıyorum. İşte bazı örnekler:</p>
+          <div className="space-y-3">
+            <a href="/blog/arac-ruhsati-cevirisi" className="block p-4 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline">
+              <p className="text-foreground font-medium">📄 Araç Ruhsatı Çevirisi</p>
+              <p className="text-muted-foreground text-sm mt-1">Taranmış belgede okunmayan alanlar nasıl çözüldü? Certification of Translation beyanı nasıl eklendi? 6 saatte teslim.</p>
+            </a>
+            <a href="/blog/ingiltere-vize-cevirisi-gercek-vaka" className="block p-4 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline">
+              <p className="text-foreground font-medium">📄 İngiltere Vize Başvurusu</p>
+              <p className="text-muted-foreground text-sm mt-1">9 belge 3 günde tamamlandı. Belgelerde hata tespiti, certified translation, orijinal belge ve barkod ekleme.</p>
+            </a>
+            <a href="/blog/dogalgaz-faturasi-cevirisi" className="block p-4 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline">
+              <p className="text-foreground font-medium">📄 Doğalgaz Faturası Çevirisi</p>
+              <p className="text-muted-foreground text-sm mt-1">sam.gov kaydı için adres kanıtı. Amerikan letter formatına uyarlama, çevirmen sertifikası beyanı.</p>
+            </a>
+          </div>
+        </div>
+
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-primary mb-6">Certified Translation Nedir?</h2>
+          <p className="text-muted-foreground leading-relaxed mb-4">Yurt dışındaki kurumlar — özellikle Amerika ve İngiltere — genellikle <strong>certified translation</strong> ister. Bu, tercümanın çevirinin doğru olduğunu beyan ettiği, imzası ve iletişim bilgilerini içeren resmi bir taahhüt metnidir. Ek ücret olmadan eklenir.</p>
+          <p className="text-muted-foreground leading-relaxed mb-4">İngiltere göçmenlik idaresi genellikle certified translation yeterli görür ve apostil istemez. Amerika'daki sam.gov gibi kurumlar da çevirmen sertifikası beyanı ister. Bu tür beyanlar, yeminli tercüme hizmetinin bir parçasıdır.</p>
+          <p className="text-muted-foreground leading-relaxed">Başvuru yapacağınız kurumun güncel şartlarını kontrol etmeniz önemlidir — her kurum farklı gereksinimler isteyebilir.</p>
         </div>
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-primary mb-6">Yeminli Tercüme Süreci: Adım Adım</h2>
@@ -98,9 +127,36 @@ export default function YeminliTercume() {
           </div>
         </div>
 
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-primary mb-6">Yeminli Tercüme Online Yapılır mı?</h2>
+          <p className="text-muted-foreground leading-relaxed mb-4">Evet, tamamen online yapılır. Belgelerinizi PDF veya fotoğraf olarak WhatsApp veya <a href="/teklif" className="text-primary font-semibold hover:underline">teklif formu</a> üzerinden göndermeniz yeterli. Çeviri tamamlandığında, imzalı ve kaşeli PDF olarak teslim edilir.</p>
+          <p className="text-muted-foreground leading-relaxed mb-4">Fiziksel kopya gerektiğinde kargo ile adresinize gönderilir. Yurt dışında yaşıyorsanız, dijital teslimat en hızlı seçenektir.</p>
+          <p className="text-muted-foreground leading-relaxed">Müşterilerim İstanbul, Ankara, İzmir ve yurt dışından belge gönderiyor. Tüm süreci WhatsApp üzerinden yürütüyoruz — belge gönderimi, teklif, çeviri, teslim.</p>
+        </div>
+
         <div className="bg-secondary/30 rounded-xl p-8 mb-8">
-          <h2 className="text-2xl font-bold text-primary mb-4">Yeminli Tercüme Fiyatları</h2>
-          <p className="text-muted-foreground leading-relaxed mb-4">Yeminli tercüme fiyatları; belgenin diline, sayfa veya karakter sayısına ve konusuna göre belirlenir. Standart belgeler için sayfa başına ücret uygulanır. Özel içerikli belgelerde (hukuki, teknik, tıbbi) fiyat değişebilir.</p>
+          <h2 className="text-2xl font-bold text-primary mb-4">Yeminli Tercüme Fiyatları 2026</h2>
+          <p className="text-muted-foreground leading-relaxed mb-4">Yeminli tercüme fiyatı <strong>sayfa başı 350 TL'den</strong> başlar. Fiyat; belgenin diline, sayfa veya karakter sayısına ve konusuna göre belirlenir. Özel içerikli belgelerde (hukuki, teknik, tıbbi) fiyat değişebilir.</p>
+          <div className="grid md:grid-cols-2 gap-4 mb-4">
+            <div className="p-4 bg-card rounded-lg border border-border">
+              <h3 className="font-bold text-primary mb-2">Fiyatı Etkileyen Faktörler</h3>
+              <ul className="text-muted-foreground text-sm space-y-1 list-disc pl-4">
+                <li>Sayfa sayısı ve metin yoğunluğu</li>
+                <li>Belge türü (pasaport, diploma, vukuatlı)</li>
+                <li>Teslim süresi (acil = ek ücret)</li>
+                <li>Noter onayı gereksinimi</li>
+              </ul>
+            </div>
+            <div className="p-4 bg-card rounded-lg border border-border">
+              <h3 className="font-bold text-primary mb-2">Dahil Olan Hizmetler</h3>
+              <ul className="text-muted-foreground text-sm space-y-1 list-disc pl-4">
+                <li>Yeminli tercüman imzası ve kaşesi</li>
+                <li>Certification of Translation beyanı</li>
+                <li>PDF formatında teslim</li>
+                <li>Orijinal belge eki (istek üzerine)</li>
+              </ul>
+            </div>
+          </div>
           <p className="text-muted-foreground leading-relaxed mb-4">Noter onayı gerektiren belgelerde, gerçek noter bedeli makbuzla teyit edilir ve çeviri ücretine dahil değildir. Noter işlem/takip bedeli ayrı kalemdir.</p>
           <p className="text-muted-foreground leading-relaxed">Net teklif için belgenizin fotoğrafını WhatsApp'tan gönderin. Belge türünü, noter ve apostil ihtiyacını inceleyip dönüş yapıyorum.</p>
         </div>

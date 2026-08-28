@@ -18,29 +18,29 @@ export default function Navbar({ mobileOpen, setMobileOpen, servicesOpen, setSer
 
   return (
     <header className="sticky top-0 z-50">
-      <nav className="bg-background border-b border-border">
+      <nav className="bg-background/95 backdrop-blur-sm border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="text-2xl font-bold text-primary cursor-pointer" onClick={goHome}>Mazzgord</div>
+          <div className="text-2xl font-bold text-foreground cursor-pointer no-underline hover:no-underline" style={{ fontFamily: '"Playfair Display", serif', letterSpacing: '-0.02em' }} onClick={goHome}>Mazzgord</div>
           <div className="hidden md:flex gap-8 items-center">
             <div className="relative group">
-              <span className="text-foreground hover:text-primary transition cursor-pointer flex items-center gap-1">Hizmetler <ChevronDown className="w-4 h-4" /></span>
-              <div className="absolute top-full left-0 mt-2 w-56 bg-background border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 py-2">
-                <a href="/hizmetler" className="block px-4 py-2 text-sm font-medium text-primary hover:bg-accent transition">Tüm Hizmetler</a>
+              <span className="text-foreground hover:underline underline-offset-2 transition cursor-pointer flex items-center gap-1 no-underline hover:no-underline" style={{ fontWeight: 400 }}>Hizmetler <ChevronDown className="w-4 h-4" /></span>
+              <div className="absolute top-full left-0 mt-2 w-56 bg-card border border-border rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 py-2" style={{ boxShadow: 'rgba(213, 208, 184, 0.4) 0px 4px 12px 0px' }}>
+                <a href="/hizmetler" className="block px-4 py-2 text-sm font-medium text-foreground hover:bg-secondary transition no-underline hover:no-underline">Tüm Hizmetler</a>
                 <div className="border-t border-border my-1"></div>
-                <a href="/yeminli-tercume" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition">Yeminli Tercüme</a>
-                <a href="/ingilizce-turkce-ceviri" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition">İngilizce-Türkçe Çeviri</a>
-                <a href="/teknik-ceviri" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition">Teknik Çeviri</a>
-                <a href="/akademik-ceviri" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition">Akademik Çeviri</a>
-                <a href="/vize-ceviri" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition">Vize Çevirisi</a>
-                <a href="/pasaport-ceviri" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition">Pasaport Çevirisi</a>
-                <a href="/diploma-ceviri" className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-primary transition">Diploma ve Transkript</a>
+                <a href="/yeminli-tercume" className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition no-underline hover:no-underline">Yeminli Tercüme</a>
+                <a href="/ingilizce-turkce-ceviri" className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition no-underline hover:no-underline">İngilizce-Türkçe Çeviri</a>
+                <a href="/teknik-ceviri" className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition no-underline hover:no-underline">Teknik Çeviri</a>
+                <a href="/akademik-ceviri" className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition no-underline hover:no-underline">Akademik Çeviri</a>
+                <a href="/vize-ceviri" className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition no-underline hover:no-underline">Vize Çevirisi</a>
+                <a href="/pasaport-ceviri" className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition no-underline hover:no-underline">Pasaport Çevirisi</a>
+                <a href="/diploma-ceviri" className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition no-underline hover:no-underline">Diploma ve Transkript</a>
               </div>
             </div>
-            <a href="/blog" className="text-foreground hover:text-primary transition">Rehber</a>
-            <a href="/hakkimizda" className="text-foreground hover:text-primary transition">Hakkımda</a>
-            <a href="#contact" className="text-foreground hover:text-primary transition">İletişim</a>
-            <a href="/teklif" className="bg-primary text-primary-foreground px-5 py-2 rounded-lg font-medium hover:bg-primary/90 transition no-underline">Teklif Al</a>
-            <a href="/hesabim" className="flex items-center gap-1 text-foreground hover:text-primary transition"><User className="w-4 h-4" /> Hesabım</a>
+            <a href="/blog" className="text-foreground hover:underline underline-offset-2 transition no-underline hover:no-underline">Rehber</a>
+            <a href="/hakkimizda" className="text-foreground hover:underline underline-offset-2 transition no-underline hover:no-underline">Hakkımda</a>
+            <a href="/iletisim" className="text-foreground hover:underline underline-offset-2 transition no-underline hover:no-underline">İletişim</a>
+            <a href="/teklif" className="btn-nav no-underline hover:no-underline">Teklif Al</a>
+            <a href="/hesabim" className="flex items-center gap-1 text-foreground hover:underline underline-offset-2 transition no-underline hover:no-underline"><User className="w-4 h-4" /> Hesabım</a>
           </div>
           <button
             className="md:hidden flex flex-col gap-1.5 p-2 cursor-pointer bg-transparent border-none z-60"
@@ -56,25 +56,25 @@ export default function Navbar({ mobileOpen, setMobileOpen, servicesOpen, setSer
       {mobileOpen && (
         <>
           <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setMobileOpen(false)}></div>
-          <div className="fixed top-0 right-0 w-72 h-full bg-background z-50 shadow-2xl p-8 pt-24 flex flex-col gap-2 md:hidden">
-            <button className="block w-full text-left px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setServicesOpen(!servicesOpen)}>Hizmetler <ChevronDown className={`w-4 h-4 inline transition-transform ${servicesOpen ? "rotate-180" : ""}`} /></button>
+          <div className="fixed top-0 right-0 w-72 h-full bg-card z-50 p-8 pt-24 flex flex-col gap-2 md:hidden" style={{ boxShadow: 'rgba(213, 208, 184, 0.4) 0px 4px 12px 0px' }}>
+            <button className="block w-full text-left px-4 py-3 text-foreground hover:bg-secondary rounded-lg text-lg no-underline hover:no-underline transition" onClick={() => setServicesOpen(!servicesOpen)}>Hizmetler <ChevronDown className={`w-4 h-4 inline transition-transform ${servicesOpen ? "rotate-180" : ""}`} /></button>
             {servicesOpen && (
               <div className="pl-4">
-                <a href="/hizmetler" className="block px-4 py-2 text-primary font-medium hover:bg-accent rounded-lg text-base no-underline transition" onClick={() => setMobileOpen(false)}>Tüm Hizmetler</a>
-                <a href="/yeminli-tercume" className="block px-4 py-2 text-foreground hover:bg-accent rounded-lg text-base no-underline transition" onClick={() => setMobileOpen(false)}>Yeminli Tercüme</a>
-                <a href="/ingilizce-turkce-ceviri" className="block px-4 py-2 text-foreground hover:bg-accent rounded-lg text-base no-underline transition" onClick={() => setMobileOpen(false)}>İngilizce-Türkçe Çeviri</a>
-                <a href="/teknik-ceviri" className="block px-4 py-2 text-foreground hover:bg-accent rounded-lg text-base no-underline transition" onClick={() => setMobileOpen(false)}>Teknik Çeviri</a>
-                <a href="/akademik-ceviri" className="block px-4 py-2 text-foreground hover:bg-accent rounded-lg text-base no-underline transition" onClick={() => setMobileOpen(false)}>Akademik Çeviri</a>
-                <a href="/vize-ceviri" className="block px-4 py-2 text-foreground hover:bg-accent rounded-lg text-base no-underline transition" onClick={() => setMobileOpen(false)}>Vize Çevirisi</a>
-                <a href="/pasaport-ceviri" className="block px-4 py-2 text-foreground hover:bg-accent rounded-lg text-base no-underline transition" onClick={() => setMobileOpen(false)}>Pasaport Çevirisi</a>
-                <a href="/diploma-ceviri" className="block px-4 py-2 text-foreground hover:bg-accent rounded-lg text-base no-underline transition" onClick={() => setMobileOpen(false)}>Diploma ve Transkript</a>
+                <a href="/hizmetler" className="block px-4 py-2 text-foreground font-medium hover:bg-secondary rounded-lg text-base no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Tüm Hizmetler</a>
+                <a href="/yeminli-tercume" className="block px-4 py-2 text-foreground hover:bg-secondary rounded-lg text-base no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Yeminli Tercüme</a>
+                <a href="/ingilizce-turkce-ceviri" className="block px-4 py-2 text-foreground hover:bg-secondary rounded-lg text-base no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>İngilizce-Türkçe Çeviri</a>
+                <a href="/teknik-ceviri" className="block px-4 py-2 text-foreground hover:bg-secondary rounded-lg text-base no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Teknik Çeviri</a>
+                <a href="/akademik-ceviri" className="block px-4 py-2 text-foreground hover:bg-secondary rounded-lg text-base no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Akademik Çeviri</a>
+                <a href="/vize-ceviri" className="block px-4 py-2 text-foreground hover:bg-secondary rounded-lg text-base no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Vize Çevirisi</a>
+                <a href="/pasaport-ceviri" className="block px-4 py-2 text-foreground hover:bg-secondary rounded-lg text-base no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Pasaport Çevirisi</a>
+                <a href="/diploma-ceviri" className="block px-4 py-2 text-foreground hover:bg-secondary rounded-lg text-base no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Diploma ve Transkript</a>
               </div>
             )}
-            <a href="/blog" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Rehber</a>
-            <a href="/hakkimizda" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Hakkımda</a>
-            <a href="#contact" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>İletişim</a>
-            <a href="/teklif" className="block px-4 py-3 bg-primary text-primary-foreground font-medium hover:bg-primary/90 rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Teklif Al</a>
-            <a href="/hesabim" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Hesabım</a>
+            <a href="/blog" className="block px-4 py-3 text-foreground hover:bg-secondary rounded-lg text-lg no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Rehber</a>
+            <a href="/hakkimizda" className="block px-4 py-3 text-foreground hover:bg-secondary rounded-lg text-lg no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Hakkımda</a>
+            <a href="/iletisim" className="block px-4 py-3 text-foreground hover:bg-secondary rounded-lg text-lg no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>İletişim</a>
+            <a href="/teklif" className="btn-nav no-underline hover:no-underline" style={{ display: 'block', textAlign: 'center', marginTop: 8 }} onClick={() => setMobileOpen(false)}>Teklif Al</a>
+            <a href="/hesabim" className="block px-4 py-3 text-foreground hover:bg-secondary rounded-lg text-lg no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Hesabım</a>
           </div>
         </>
       )}
@@ -83,7 +83,8 @@ export default function Navbar({ mobileOpen, setMobileOpen, servicesOpen, setSer
         href="https://wa.me/905386295040?text=Merhaba,%20belgem%20i%C3%A7in%20teklif%20almak%20istiyorum."
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-green-500 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 hover:scale-110 transition-all duration-300"
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 hover:scale-110 transition-all duration-300"
+        style={{ boxShadow: 'rgba(213, 208, 184, 0.6) 0px 4px 12px 0px' }}
         aria-label="WhatsApp'tan mesaj gonder"
       >
         <svg className="w-7 h-7 text-white" viewBox="0 0 24 24" fill="currentColor">

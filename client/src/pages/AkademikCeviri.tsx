@@ -1,4 +1,5 @@
 import { ArrowLeft, CheckCircle2, GraduationCap, BookOpen, FileText } from "lucide-react";
+import Breadcrumb from "@/components/Breadcrumb";
 import { useState } from "react";
 export default function AkademikCeviri() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -38,6 +39,7 @@ export default function AkademikCeviri() {
         </div>
       </nav>
       <div className="container mx-auto px-4 py-12 max-w-4xl">
+        <Breadcrumb items={[{label: "Hizmetler", href: "/hizmetler"}, {label: "Akademik Çeviri"}]} />
         <h1 className="text-4xl font-bold text-primary mb-4">Akademik Çeviri Hizmeti | Denizli</h1>
         <p className="text-xl text-muted-foreground mb-8">İngilizce-Türkçe akademik makale, tez ve bilimsel yayın çevirisi. Üniversite başvuruları için profesyonel çeviri.</p>
         <div className="grid md:grid-cols-3 gap-6 mb-12">

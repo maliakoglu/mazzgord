@@ -1,4 +1,5 @@
 import { ArrowLeft, CheckCircle2, Shield, Clock, FileText, MapPin } from "lucide-react";
+import Breadcrumb from "@/components/Breadcrumb";
 import { useState } from "react";
 
 export default function About() {
@@ -37,6 +38,7 @@ export default function About() {
         </div>
       </nav>
       <div className="container mx-auto px-4 py-12 max-w-4xl">
+        <Breadcrumb items={[{label: "Hakkımda"}]} />
         <h1 className="text-4xl font-bold text-primary mb-8">Hakkımda</h1>
         <div className="space-y-8">
           <div className="bg-secondary/30 rounded-xl p-8">

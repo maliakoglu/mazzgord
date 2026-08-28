@@ -1,4 +1,5 @@
 import { ArrowLeft, CheckCircle2, Plane, FileCheck, Stamp } from "lucide-react";
+import Breadcrumb from "@/components/Breadcrumb";
 import { useState } from "react";
 export default function VizeCeviri() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -38,6 +39,7 @@ export default function VizeCeviri() {
         </div>
       </nav>
       <div className="container mx-auto px-4 py-12 max-w-4xl">
+        <Breadcrumb items={[{label: "Hizmetler", href: "/hizmetler"}, {label: "Vize Çevirisi"}]} />
         <h1 className="text-4xl font-bold text-primary mb-4">Vize Başvurusu Çevirisi | Denizli</h1>
         <p className="text-xl text-muted-foreground mb-8">İngiltere, ABD, Almanya ve diğer ülke vize başvuruları için yeminli tercüme hizmeti. Konsolosluk kabul şartlarına uygun çeviri.</p>
         <div className="grid md:grid-cols-3 gap-6 mb-12">
@@ -51,6 +53,31 @@ export default function VizeCeviri() {
           <p className="text-muted-foreground leading-relaxed mb-4">İngiltere vize başvurularında tüm Türkçe belgelerin İngilizceye yeminli tercüme ile çevrilmesi gerekmektedir. İngiltere konsolosluğu genellikle yeminli tercüman imzası taşıyan çevirileri ister. ABD göçmenlik başvurularında da çoğu durumda yeminli çeviri istenir. Başvuru yapacağınız kurumun güncel şartlarını işlem öncesinde kontrol etmeniz gerekir.</p>
           <p className="text-muted-foreground leading-relaxed">İngiltere, ABD, Almanya, Fransa, Hollanda ve diğer ülkelerin konsolosluk şartlarına uygun çeviri yapıyorum.</p>
         </div>
+
+        <div className="bg-primary/5 p-6 rounded-xl border border-primary/10 mb-8">
+          <h3 className="text-lg font-bold text-primary mb-3">Gerçek Müşteri Deneyimi</h3>
+          <p className="text-muted-foreground leading-relaxed mb-4">Mart ayında bir müşteri, İngiltere standart visitor vizesi için 9 belge çevirisi istedi. Süreç şöyle ilerledi:</p>
+          <ul className="space-y-2 text-muted-foreground text-sm list-disc pl-6">
+            <li>25 Mart randevusu vardı — 3 günde tüm belgeler teslim edildi</li>
+            <li>Belgelerde hata tespit edildi — vukuatlı nüfus kayıtları yanlış çıkarılmıştı, müşteriye bildirdim</li>
+            <li>Certified translation yeterliydi — apostil gerekmedi</li>
+            <li>Orijinal belge ve QR/barkodlar çeviriye eklendi</li>
+            <li>Müşteri tüm belgeleri onayladı ve 4 ay sonra tekrar geldi</li>
+          </ul>
+          <a href="/blog/ingiltere-vize-cevirisi-gercek-vaka" className="inline-block mt-3 text-primary font-semibold hover:underline">Detaylı vaka hikayesini oku →</a>
+        </div>
+
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-primary mb-6">Certified Translation Nedir?</h2>
+          <p className="text-muted-foreground leading-relaxed mb-4">Yurt dışındaki konsolosluklar — özellikle İngiltere ve ABD — genellikle <strong>certified translation</strong> ister. Bu, tercümanın çevirinin doğru olduğunu beyan ettiği, imzası ve iletişim bilgilerini içeren resmi bir taahhüt metnidir. Ek ücret olmadan eklenir.</p>
+          <p className="text-muted-foreground leading-relaxed mb-4">İngiltere göçmenlik idaresi genellikle certified translation yeterli görür ve apostil istemez. Ancak her vize türü farklı şartlar isteyebilir — başvuru yapacağınız kurumun güncel gereksinimlerini kontrol etmeniz önemlidir.</p>
+        </div>
+
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-primary mb-6">Vize Çevirisi Online Yapılır mı?</h2>
+          <p className="text-muted-foreground leading-relaxed mb-4">Evet, tamamen online yapılır. Belgelerinizi PDF veya fotoğraf olarak WhatsApp veya <a href="/teklif" className="text-primary font-semibold hover:underline">teklif formu</a> üzerinden göndermeniz yeterli. Çeviri tamamlandığında, imzalı ve kaşeli PDF olarak teslim edilir. Sisteme yüklemeniz için dijital format yeterlidir.</p>
+          <p className="text-muted-foreground leading-relaxed">Müşterilerim İstanbul, Ankara, İzmir ve yurt dışından belge gönderiyor. Tüm süreci WhatsApp üzerinden yürütüyoruz.</p>
+        </div>
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-primary mb-6">Vize Başvurusu İçin Çevrilen Belgeler</h2>
           <div className="grid md:grid-cols-2 gap-4">
@@ -61,8 +88,22 @@ export default function VizeCeviri() {
         </div>
         <div className="bg-secondary/30 rounded-xl p-8 mb-8">
           <h2 className="text-2xl font-bold text-primary mb-4">İngiltere Vize Başvurusu Çevirisi</h2>
-          <p className="text-muted-foreground leading-relaxed mb-4">İngiltere vize başvuruları en sık karşılaştığımız başvuru türlerinden biridir. İngiltere konsolosluğu çeviri konusunda çok katı kurallara sahiptir. Tüm Türkçe belgeler yeminli tercüman tarafından İngilizceye çevrilmeli ve her sayfa tercümanın imzasını ve kaşesini taşımalıdır.</p>
-          <p className="text-muted-foreground leading-relaxed">Denizli'den İngiltere'ye vize başvurusu yapacaklar için hızlı ve doğru çeviri yapıyorum.</p>
+          <p className="text-muted-foreground leading-relaxed mb-4">İngiltere vize başvuruları en sık karşılaştığım başvuru türlerinden biri. İngiltere konsolosluğu çeviri konusunda katı kurallara sahiptir. Tüm Türkçe belgeler yeminli tercüman tarafından İngilizceye çevrilmeli ve her sayfa tercümanın imzasını ve kaşesini taşımalıdır.</p>
+          <p className="text-muted-foreground leading-relaxed mb-4">İngiltere göçmenlik idaresi genellikle certified translation yeterli görür — apostil istemez. Bu, süreci hızlandıran bir avantaj. Ancak vize türünüze göre şartlar değişebilir.</p>
+          <p className="text-muted-foreground leading-relaxed mb-4">İpucu: İkametgah ve adli sicil kaydı gibi bazı belgeler e-devlet üzerinden İngilizce alınabiliyor. Bu, çeviri maliyetinizi düşürür.</p>
+          <p className="text-muted-foreground leading-relaxed">Daha fazla bilgi için <a href="/blog/vize-ceviri" className="text-primary font-semibold hover:underline">İngiltere vize çevirisi rehberini</a> inceleyebilirsiniz.</p>
+        </div>
+
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-primary mb-6">Vize Çevirisi Fiyatı 2026</h2>
+          <p className="text-muted-foreground leading-relaxed mb-4">Vize başvurusu için belge çevirisi fiyatı <strong>sayfa başı 350 TL'den</strong> başlar. Fiyatı etkileyen faktörler:</p>
+          <ul className="space-y-2 my-4 pl-6 list-disc text-muted-foreground">
+            <li><strong>Sayfa sayısı:</strong> Belge ne kadar çoksa, toplam maliyet o kadar artar.</li>
+            <li><strong>Belge türü:</strong> Vukuatlı nüfus kayıt örneği gibi karmaşık belgeler daha fazla dikkat gerektirir.</li>
+            <li><strong>Teslim süresi:</strong> Acil teslimat (aynı gün) için ek ücret uygulanabilir.</li>
+            <li><strong>Certified translation beyanı:</strong> Ek ücret yok — çeviri ücretine dahildir.</li>
+          </ul>
+          <p className="text-muted-foreground leading-relaxed">Net fiyat teklifi için belgelerinizin fotoğrafını WhatsApp üzerinden gönderin.</p>
         </div>
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-primary mb-6">Sıkça Sorulan Sorular</h2>

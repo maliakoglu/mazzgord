@@ -1,4 +1,5 @@
 import { ArrowLeft, MessageCircle, FileText } from "lucide-react"
+import Breadcrumb from "@/components/Breadcrumb";
 import { useState, useEffect, ReactNode } from "react"
 type IllustrationKey =
   | "akademik" | "hatalar" | "ipuclari" | "sektor" | "teknoloji"
@@ -132,6 +133,7 @@ export default function BlogLayout({ title, description, canonical, date, illust
         </div>
       </div>
       <article className="container mx-auto px-4 py-12 max-w-4xl">
+        <Breadcrumb items={[{label: "Rehber", href: "/blog"}, {label: title.split(" | ")[0]}]} />
         <div className="prose prose-lg max-w-none space-y-6 text-muted-foreground leading-relaxed">{children}</div>
         <BlogCTA />
       </article>

@@ -23,6 +23,7 @@ ROUTES = [
     "/giris",
     "/hesabim",
     "/sss",
+    "/iletisim",
     "/blog",
     "/blog/yeminli-tercume",
     "/blog/vize-ceviri",
@@ -47,6 +48,9 @@ ROUTES = [
     "/blog/pasaport-tercumesi-nasil-yapilir",
     "/blog/yeminli-tercume-fiyatlari-2026",
     "/blog/vize-formatlari",
+    "/blog/arac-ruhsati-cevirisi",
+    "/blog/ingiltere-vize-cevirisi-gercek-vaka",
+    "/blog/dogalgaz-faturasi-cevirisi",
 ]
 
 # noindex sayfalar — sitemap'e eklenmez

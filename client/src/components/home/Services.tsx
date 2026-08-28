@@ -1,16 +1,15 @@
-import { Card } from "@/components/ui/card";
 import { FileText, Globe, Users } from "lucide-react";
 
 export default function Services() {
   return (
     <section id="services" className="py-20 md:py-32 bg-background">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-primary">Hizmetlerimiz</h2>
-        <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto text-lg">
+      <div className="container mx-auto px-4" style={{ maxWidth: '1200px' }}>
+        <h2 className="text-center mb-4" style={{ fontFamily: '"Playfair Display", serif', fontSize: '36px', fontWeight: 700, color: 'var(--color-ink-black)', letterSpacing: '-0.02em' }}>Hizmetlerimiz</h2>
+        <p className="text-center mb-16 mx-auto" style={{ color: 'var(--color-mid-stone)', fontSize: '16px', lineHeight: 1.63, maxWidth: '600px' }}>
           İngilizce-Türkçe yeminli tercüme. Resmi belgeler ve vize evrakları için belgenizi gönderin, net teklif alın.
         </p>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
             {
               icon: FileText,
@@ -49,12 +48,12 @@ export default function Services() {
               link: "/teknik-ceviri",
             },
           ].map((service, idx) => (
-            <a key={idx} href={service.link} className="no-underline">
-              <Card className="p-8 hover:shadow-lg hover:scale-105 transition-all duration-300 border-border cursor-pointer h-full">
-                <service.icon className="w-12 h-12 text-accent mb-4" />
-                <h3 className="text-2xl font-bold mb-3 text-foreground">{service.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{service.description}</p>
-              </Card>
+            <a key={idx} href={service.link} className="card-feature block no-underline hover:no-underline transition" style={{ transition: 'box-shadow 0.3s, transform 0.3s' }}
+               onMouseEnter={e => { e.currentTarget.style.boxShadow = 'rgba(213, 208, 184, 0.4) 0px 8px 24px 0px'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+               onMouseLeave={e => { e.currentTarget.style.boxShadow = 'rgba(213, 208, 184, 0.4) 0px 2px 6px 0px'; e.currentTarget.style.transform = 'translateY(0)'; }}>
+              <service.icon className="mb-4" style={{ width: '28px', height: '28px', color: 'var(--color-editorial-teal)' }} />
+              <h3 style={{ fontFamily: '"Playfair Display", serif', fontSize: '20px', fontWeight: 500, marginBottom: '10px', color: 'var(--color-ink-black)' }}>{service.title}</h3>
+              <p style={{ color: 'var(--color-mid-stone)', fontSize: '14px', lineHeight: 1.63 }}>{service.description}</p>
             </a>
           ))}
         </div>

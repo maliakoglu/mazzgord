@@ -26,6 +26,9 @@ export const blogRegistry = {
   "pasaport-tercumesi-nasil-yapilir": lazy(() => import("@/pages/BlogPasaportTercumesi")),
   "yeminli-tercume-fiyatlari-2026": lazy(() => import("@/pages/BlogYeminliTercumeFiyatlari2026")),
   "vize-formatlari": lazy(() => import("@/pages/BlogVizeFormatlari")),
+  "arac-ruhsati-cevirisi": lazy(() => import("@/pages/BlogAracRuhsatiCevirisi")),
+  "ingiltere-vize-cevirisi-gercek-vaka": lazy(() => import("@/pages/BlogIngiltereVizeCeviri")),
+  "dogalgaz-faturasi-cevirisi": lazy(() => import("@/pages/BlogDogalgazFaturasiCevirisi")),
 } as const;
 
 export const blogSlugs = Object.keys(blogRegistry);

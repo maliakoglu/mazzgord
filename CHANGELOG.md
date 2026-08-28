@@ -1,3 +1,70 @@
+## [2026-08-28] SEO, AdSense Hazırlığı ve İçerik Güçlendirme
+
+### SEO İyileştirmeleri
+- 404 sayfası Türkçeleştirildi (İngilizce → Türkçe)
+- SSS sayfasına FAQPage schema eklendi (duplicate temizlendi)
+- Google Harita embed URL'i düzeltildi (placeholder → gerçek koordinat)
+- Breadcrumb navigation eklendi: 9 service sayfası + tüm bloglar
+- BreadcrumbList schema duplicate sorunu çözüldü (worker-side tek schema)
+- FAQPage schema duplicate sorunu çözüldü (worker-side tek schema)
+- Meta başlıklar ve açıklamalar CTR odaklı güncellendi (5 sayfa)
+  - /hakkimizda: "Çeviri Bürosu" → "Yeminli Tercüman Mehmet Akoğlu"
+  - /fiyatlar: "Sayfa Başı 350 TL" eklendi
+  - /teknik-ceviri: "kadromuzla" kaldırıldı, dürüst konumlandırma
+  - /ingilizce-turkce-ceviri: "Hızlı Teklif" eklendi
+  - /akademik-ceviri: "Denizli" kaldırıldı, "Online teklif" eklendi
+
+### Yeni İçerik
+- 3 yeni gerçek vaka blog yazısı eklendi:
+  - /blog/arac-ruhsati-cevirisi (1504 kelime) — araç ruhsatı çevirisi, Certification of Translation
+  - /blog/ingiltere-vize-cevirisi-gercek-vaka (1484 kelime) — İngiltere vize çevirisi, certified translation
+  - /blog/dogalgaz-faturasi-cevirisi (1425 kelime) — sam.gov kaydı, çevirmen sertifikası beyanı
+- 5 mevcut blog yazısı gerçek deneyim parçalarıyla güçlendirildi:
+  - BlogVizeCeviri: 247 → 1172 kelime
+  - BlogCeviriIpuclari: 390 → 710 kelime
+  - BlogCeviriSektoru: 400 → 808 kelime
+  - BlogTeknikCeviri: 415 → 719 kelime
+  - BlogYeminliTercume: 430 → 1164 kelime
+- Blog listesi kategorilere ayrıldı (Gerçek Vakalar, Rehberler, İpuçları & Sektör)
+- Tüm blog yazıları blog listesinde görünüyor
+
+### Service Sayfaları Güçlendirildi
+- /yeminli-tercume: 1249 → 1687 kelime (gerçek vaka kartları, certified translation, online süreç, fiyat detayı)
+- /teknik-ceviri: 714 → 1503 kelime (süreç, dikkat edilecekler, FAQ, fiyat, online süreç)
+- /vize-ceviri: gerçek müşteri deneyimi, certified translation, online süreç, fiyat detayı eklendi
+
+### Yeni Sayfa
+- /iletisim sayfası oluşturuldu (AdSense inceleyicileri için)
+- Footer ve Navbar'a İletişim linki eklendi
+- /iletisim → /teklif redirect'i kaldırıldı
+
+### UX İyileştirmeleri
+- Sticky telefon CTA eklendi (mobilde telefon arama butonu)
+- Hero animasyonu hızlandırıldı (1.9s → 0.7s)
+- Blog sayfasında kategori filtreleme eklendi
+
+### AdSense Hazırlığı
+- ads.txt doğrulandı (pub-8661028263390679)
+- Gizlilik politikasında AdSense mention doğrulandı
+- Çerez politikasında AdSense mention doğrulandı
+- AdSense script lazy load doğrulandı
+- google-adsense-account meta tag doğrulandı
+
+### Sitemap
+- Sitemap 32 → 36 URL'e çıktı
+- 3 yeni blog yazısı + iletişim sayfası eklendi
+- generate_sitemap.py route listesi güncellendi
+
+### Altyapı
+- Breadcrumb component oluşturuldu (görsel + JSON-LD)
+- Iletisim.tsx sayfası oluşturuldu
+- blogRegistry.ts 3 yeni blog yazısı eklendi
+- seoData.js 3 yeni blog + iletişim sayfası SEO verisi eklendi
+- seoProcessor.js blogDates, blogRelated, blogTitles güncellendi
+- prerender.py route listesi güncellendi
+- redirects.js /iletisim redirect kaldırıldı
+
+
 ## [1.2.0] — 2026-08-20
 
 ### Mobil Uygulama Test Düzeltmeleri (16 madde)

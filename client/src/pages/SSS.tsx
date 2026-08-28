@@ -1,4 +1,5 @@
 import { ArrowLeft } from "lucide-react"
+import Breadcrumb from "@/components/Breadcrumb";
 import { useState } from "react";
 export default function SSS() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -91,6 +92,7 @@ export default function SSS() {
       </nav>
 
       <div className="container mx-auto px-4 py-12 max-w-4xl">
+        <Breadcrumb items={[{label: "Sıkça Sorulan Sorular"}]} />
         <header className="mb-10 text-center">
           <h1 className="text-4xl font-bold text-primary mb-4">Sıkça Sorulan Sorular</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

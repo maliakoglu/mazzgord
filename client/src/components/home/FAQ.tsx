@@ -24,25 +24,26 @@ export default function FAQ() {
   ];
 
   return (
-    <section className="py-20 md:py-32 bg-secondary/30">
-      <div className="container mx-auto px-4 max-w-3xl">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-primary">Sıkça Sorulan Sorular</h2>
-        <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto text-lg">
+    <section className="py-20 md:py-32" style={{ backgroundColor: "var(--color-soft-sand)" }}>
+      <div className="container mx-auto px-4" style={{ maxWidth: "800px" }}>
+        <h2 className="text-center mb-4" style={{ fontFamily: "\"Playfair Display\", serif", fontSize: "36px", fontWeight: 700, color: "var(--color-ink-black)", letterSpacing: "-0.02em" }}>Sıkça Sorulan Sorular</h2>
+        <p className="text-center mb-12 mx-auto" style={{ color: "var(--color-mid-stone)", fontSize: "16px", lineHeight: 1.63, maxWidth: "600px" }}>
           Aklınıza takılan sorular için buraya bakabilirsiniz.
         </p>
         <div className="space-y-4">
           {faqs.map((faq, idx) => (
-            <div key={idx} className="bg-card rounded-xl border border-border overflow-hidden">
+            <div key={idx} style={{ backgroundColor: "var(--color-paper-white)", borderRadius: "16px", overflow: "hidden", boxShadow: "rgba(213, 208, 184, 0.3) 0px 1px 2px 0px" }}>
               <button
                 className="w-full flex justify-between items-center p-6 text-left cursor-pointer"
+                style={{ border: "none", background: "transparent" }}
                 onClick={() => setOpen(open === idx ? null : idx)}
               >
-                <span className="font-bold text-foreground text-lg">{faq.q}</span>
-                <ChevronDown className={`w-5 h-5 text-muted-foreground flex-shrink-0 ml-4 transition-transform ${open === idx ? "rotate-180" : ""}`} />
+                <span style={{ fontFamily: "\"Inter\", sans-serif", fontWeight: 700, fontSize: "16px", color: "var(--color-ink-black)" }}>{faq.q}</span>
+                <ChevronDown className="w-5 h-5 flex-shrink-0 ml-4 transition-transform" style={{ color: "var(--color-warm-gray)", transform: open === idx ? "rotate(180deg)" : "rotate(0deg)" }} />
               </button>
               {open === idx && (
-                <div className="px-6 pb-6 text-muted-foreground leading-relaxed">
-                  {faq.a}
+                <div className="px-6 pb-6">
+                  <p style={{ color: "var(--color-mid-stone)", fontSize: "15px", lineHeight: 1.63 }}>{faq.a}</p>
                 </div>
               )}
             </div>

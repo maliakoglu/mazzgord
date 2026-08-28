@@ -14,6 +14,7 @@ const SSS = lazy(() => import("@/pages/SSS"));
 const Fiyatlar = lazy(() => import("@/pages/Fiyatlar"));
 const Hizmetler = lazy(() => import("@/pages/Hizmetler"));
 const SiparisTakip = lazy(() => import("@/pages/SiparisTakip"));
+const Iletisim = lazy(() => import("@/pages/Iletisim"));
 const Giris = lazy(() => import("@/pages/Giris"));
 const Hesabim = lazy(() => import("@/pages/Hesabim"));
 const YeminliTercume = lazy(() => import("@/pages/YeminliTercume"));
@@ -56,6 +57,7 @@ function Router() {
       <Route path={"/fiyatlar"} component={Fiyatlar} />
       <Route path={"/hizmetler"} component={Hizmetler} />
       <Route path={"/siparis"} component={SiparisTakip} />
+      <Route path={"/iletisim"} component={Iletisim} />
       <Route path={"/giris"} component={Giris} />
       <Route path={"/hesabim"} component={Hesabim} />
       <Route path={"/yeminli-tercume"} component={YeminliTercume} />
