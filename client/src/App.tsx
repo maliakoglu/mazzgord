@@ -28,7 +28,6 @@ const Blog = lazy(() => import("@/pages/Blog"));
 const ChatWidget = lazy(() => import("@/components/ChatWidget"));
 import { Route, Switch, useParams, useLocation } from "wouter";
 import MobileStickyCTA from "@/components/home/MobileStickyCTA";
-import ScrollProgress from "@/components/home/ScrollProgress";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { CartProvider } from "./contexts/CartContext";
@@ -45,7 +44,6 @@ function BlogRoute() {
 function Router() {
   return (
     <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" /></div>}>
-    <div className="page-transition">
     <Switch>
       <Route path={"/admin"} component={Admin} />
       <Route path={"/odeme"} component={Odeme} />
@@ -75,7 +73,6 @@ function Router() {
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
-    </div>
     </Suspense>
   );
 }
@@ -87,7 +84,6 @@ function App() {
         <CartProvider>
           <TooltipProvider>
             <Toaster />
-            <ScrollProgress />
             <Router />
             <Suspense fallback={null}><ChatWidget /></Suspense>
             <MobileStickyCTA />
