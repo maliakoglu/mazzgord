@@ -12,7 +12,6 @@ import GalleryModal from "@/components/home/GalleryModal";
 import Process from "@/components/home/Process";
 import PricingPreview from "@/components/home/PricingPreview";
 import FAQ from "@/components/home/FAQ";
-import MobileStickyCTA from "@/components/home/MobileStickyCTA";
 
 export default function Home() {
   const [mobileOpen, setMobileOpen] = useState(false);

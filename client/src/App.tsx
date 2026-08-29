@@ -27,6 +27,7 @@ const DiplomaCeviri = lazy(() => import("@/pages/DiplomaCeviri"));
 const Blog = lazy(() => import("@/pages/Blog"));
 const ChatWidget = lazy(() => import("@/components/ChatWidget"));
 import { Route, Switch, useParams } from "wouter";
+import MobileStickyCTA from "@/components/home/MobileStickyCTA";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { CartProvider } from "./contexts/CartContext";
@@ -85,6 +86,7 @@ function App() {
             <Toaster />
             <Router />
             <Suspense fallback={null}><ChatWidget /></Suspense>
+            <MobileStickyCTA />
           </TooltipProvider>
         </CartProvider>
       </ThemeProvider>
