@@ -41,14 +41,27 @@ export default function Testimonials({ openGallery }: { openGallery: (images: st
             <motion.div
               key={idx}
               variants={item}
-              whileHover={{ y: -4 }}
+              whileHover={{ y: -6, scale: 1.02 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="bg-card p-6 rounded-xl border border-border hover:shadow-lg transition-shadow"
+              className="relative bg-card p-8 rounded-2xl border border-border overflow-hidden"
+              style={{
+                background: "rgba(253, 252, 245, 0.6)",
+                backdropFilter: "blur(8px)",
+              }}
             >
-              <p className="text-foreground mb-4 leading-relaxed">"{review.text}"</p>
+              <div
+                className="absolute top-0 left-0 right-0 h-1"
+                style={{
+                  background: "linear-gradient(90deg, var(--color-editorial-teal), var(--color-sandstone))",
+                }}
+              />
+              <svg className="w-8 h-8 mb-4 opacity-20" viewBox="0 0 24 24" fill="currentColor" style={{ color: "var(--color-editorial-teal)" }}>
+                <path d="M14.017 21v-7.391c0-2.877.01-4.32.747-5.592.726-1.27 1.574-1.733 3.236-2.017v3.391c-1.002.312-1.387.75-1.387 1.826v3.783h2.391v4h-2.391v7h-2.596zm-9.017 0v-7.391c0-2.877.01-4.32.747-5.592.726-1.27 1.574-1.733 3.236-2.017v3.391c-1.002.312-1.387.75-1.387 1.826v3.783h2.391v4h-2.391v7h-2.596z" />
+              </svg>
+              <p className="text-foreground mb-6 leading-relaxed" style={{ fontSize: "15px", lineHeight: 1.7 }}>{review.text}</p>
               <div className="flex items-center justify-between flex-wrap gap-2">
-                <p className="font-bold text-primary">— {review.name}</p>
-                <span className="text-xs text-muted-foreground bg-secondary px-3 py-1 rounded-full">{review.service}</span>
+                <p className="font-bold text-primary" style={{ fontFamily: '"Playfair Display", serif', fontSize: "16px" }}>— {review.name}</p>
+                <span className="text-xs text-muted-foreground px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(45,122,128,0.08)" }}>{review.service}</span>
               </div>
               <p className="text-xs text-muted-foreground mt-3">{review.source} üzerinden alınan müşteri geri bildirimi</p>
             </motion.div>

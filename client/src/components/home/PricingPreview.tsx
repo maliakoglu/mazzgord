@@ -42,12 +42,24 @@ export default function PricingPreview() {
             <motion.div
               key={idx}
               variants={card}
-              whileHover={{ y: -4 }}
+              whileHover={{ y: -6, scale: 1.02 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="bg-card p-6 rounded-xl border border-border"
+              className="relative bg-card p-8 rounded-2xl border border-border overflow-hidden"
+              style={{
+                background: "rgba(253, 252, 245, 0.6)",
+                backdropFilter: "blur(8px)",
+              }}
             >
-              <h3 className="text-lg font-bold text-foreground mb-2">{item.service}</h3>
-              <p className="text-2xl font-bold text-primary mb-1">{item.price}</p>
+              <div
+                className="absolute top-0 left-0 right-0 h-1"
+                style={{
+                  background: idx % 2 === 0
+                    ? "linear-gradient(90deg, var(--color-editorial-teal), var(--color-sandstone))"
+                    : "linear-gradient(90deg, var(--color-sandstone), var(--color-editorial-teal))",
+                }}
+              />
+              <h3 className="text-lg font-bold text-foreground mb-3" style={{ fontFamily: '"Playfair Display", serif' }}>{item.service}</h3>
+              <p className="text-2xl font-bold text-primary mb-2">{item.price}</p>
               <p className="text-sm text-muted-foreground">{item.note}</p>
             </motion.div>
           ))}

@@ -29,6 +29,7 @@ const ChatWidget = lazy(() => import("@/components/ChatWidget"));
 import { Route, Switch, useParams, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import MobileStickyCTA from "@/components/home/MobileStickyCTA";
+import ScrollProgress from "@/components/home/ScrollProgress";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { CartProvider } from "./contexts/CartContext";
@@ -96,6 +97,7 @@ function App() {
         <CartProvider>
           <TooltipProvider>
             <Toaster />
+            <ScrollProgress />
             <Router />
             <Suspense fallback={null}><ChatWidget /></Suspense>
             <MobileStickyCTA />
