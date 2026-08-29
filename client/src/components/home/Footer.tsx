@@ -1,7 +1,11 @@
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "@/contexts/ThemeContext";
+
 export default function Footer() {
+  const { theme, toggleTheme } = useTheme();
   return (
     <>
-    <footer className="py-12" style={{ backgroundColor: 'var(--color-ink-black)', color: 'var(--color-paper-white)' }}>
+    <footer className="py-12" style={{ backgroundColor: '#1a1a18', color: '#f0efe8' }}>
       <div className="container mx-auto px-4" style={{ maxWidth: '1200px' }}>
         <div className="grid md:grid-cols-5 gap-8 mb-8">
           <div>
@@ -57,7 +61,25 @@ export default function Footer() {
           </div>
         </div>
         <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4" style={{ borderTop: '1px solid rgba(255,255,255,0.15)' }}>
-          <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)' }}>&copy; 2026 Mazzgord. Tüm hakları saklıdır.</p>
+          <div className="flex items-center gap-4">
+            <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)' }}>&copy; 2026 Mazzgord. Tüm hakları saklıdır.</p>
+            <button
+              onClick={toggleTheme}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 cursor-pointer border-none"
+              style={{
+                backgroundColor: 'rgba(255,255,255,0.08)',
+                color: 'rgba(255,255,255,0.8)',
+                fontSize: '13px',
+                fontWeight: 500,
+              }}
+              aria-label="Temayı değiştir"
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.15)'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)'}
+            >
+              {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+              {theme === 'light' ? 'Gece Modu' : 'Gündüz Modu'}
+            </button>
+          </div>
           <a href="https://www.iyzico.com" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', opacity: 0.7 }} aria-label="iyzico ile Öde">
             <img src="/images/iyzico-logo.svg" alt="iyzico ile Öde" style={{ height: '32px', width: 'auto' }} />
           </a>

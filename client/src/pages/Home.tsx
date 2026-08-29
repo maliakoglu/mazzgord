@@ -3,7 +3,6 @@ import Navbar from "@/components/home/Navbar";
 import Hero from "@/components/home/Hero";
 import About from "@/components/home/About";
 import Services from "@/components/home/Services";
-import QuickServices from "@/components/home/QuickServices";
 import Portfolio from "@/components/home/Portfolio";
 import Testimonials from "@/components/home/Testimonials";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
@@ -113,7 +112,6 @@ export default function Home() {
         <Hero />
         <Process />
         <Services />
-        <QuickServices />
         <WhyChooseUs />
         <PricingPreview />
         <Testimonials openGallery={openGallery} />
