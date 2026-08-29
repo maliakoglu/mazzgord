@@ -1028,7 +1028,7 @@ ${pricingContext}${proposalContext}`;
 
     // sitemap-pages.xml — ana sayfalar
     if (path === "/sitemap-pages.xml") {
-      const pages = ["/", "/hakkimizda", "/yeminli-tercume", "/teknik-ceviri", "/akademik-ceviri", "/vize-ceviri", "/ingilizce-turkce-ceviri", "/pasaport-ceviri", "/diploma-ceviri", "/fiyatlar", "/hizmetler", "/blog", "/gizlilik", "/kullanim-kosullari", "/cerez-politikasi", "/sss", "/teklif"];
+      const pages = ["/", "/hakkimizda", "/yeminli-tercume", "/teknik-ceviri", "/akademik-ceviri", "/vize-ceviri", "/ingilizce-turkce-ceviri", "/pasaport-ceviri", "/diploma-ceviri", "/fiyatlar", "/hizmetler", "/blog", "/gizlilik", "/kullanim-kosullari", "/cerez-politikasi", "/sss", "/teklif", "/iletisim"];
       const today = new Date().toISOString().split("T")[0];
       const urls = pages.map(p =>
         "  <url>\n    <loc>https://mazzgord.com" + p + "</loc>\n    <lastmod>" + today + "</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>" + (p === "/" ? "1.0" : "0.9") + "</priority>\n  </url>"
