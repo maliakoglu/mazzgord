@@ -1,23 +1,5 @@
-import { motion } from "framer-motion";
 import MagneticButton from "./MagneticButton";
 import { CheckCircle2 } from "lucide-react";
-
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.12, delayChildren: 0.1 },
-  },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 24 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
-  },
-};
 
 const features = [
   "Noter Yeminli Tercüman",
@@ -29,64 +11,38 @@ const features = [
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
-      {/* Animated gradient mesh background */}
+      {/* Animated gradient mesh background — CSS only, 0KB JS */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <motion.div
-          className="absolute -top-1/3 -left-1/3 w-[800px] h-[800px] rounded-full"
-          style={{
-            background: "radial-gradient(circle, rgba(45,122,128,0.10) 0%, transparent 70%)",
-            filter: "blur(80px)",
-          }}
-          animate={{ x: [0, 60, 0], y: [0, 40, 0] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute top-1/4 -right-1/4 w-[600px] h-[600px] rounded-full"
-          style={{
-            background: "radial-gradient(circle, rgba(213,208,184,0.15) 0%, transparent 70%)",
-            filter: "blur(80px)",
-          }}
-          animate={{ x: [0, -50, 0], y: [0, 50, 0] }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute bottom-0 left-1/4 w-[500px] h-[500px] rounded-full"
-          style={{
-            background: "radial-gradient(circle, rgba(45,122,128,0.08) 0%, transparent 70%)",
-            filter: "blur(70px)",
-          }}
-          animate={{ x: [0, 30, 0], y: [0, -40, 0] }}
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full"
-          style={{
-            background: "radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)",
-            filter: "blur(90px)",
-          }}
-          animate={{ scale: [1, 1.1, 1] }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute -bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full"
-          style={{
-            background: "radial-gradient(circle, rgba(213,208,184,0.10) 0%, transparent 70%)",
-            filter: "blur(60px)",
-          }}
-          animate={{ x: [0, -40, 0], y: [0, 30, 0] }}
-          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-        />
+        <style>{`
+          @keyframes float1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(60px,40px); } }
+          @keyframes float2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-50px,50px); } }
+          @keyframes float3 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(30px,-40px); } }
+          @keyframes pulse4 { 0%,100% { transform: translate(-50%,-50%) scale(1); } 50% { transform: translate(-50%,-50%) scale(1.1); } }
+          @keyframes float5 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-40px,30px); } }
+          @media (prefers-reduced-motion: reduce) {
+            .hero-blob { animation: none !important; }
+          }
+        `}</style>
+        <div className="hero-blob absolute -top-1/3 -left-1/3 w-[800px] h-[800px] rounded-full" style={{ background: "radial-gradient(circle, rgba(45,122,128,0.10) 0%, transparent 70%)", filter: "blur(80px)", animation: "float1 20s ease-in-out infinite" }} />
+        <div className="hero-blob absolute top-1/4 -right-1/4 w-[600px] h-[600px] rounded-full" style={{ background: "radial-gradient(circle, rgba(213,208,184,0.15) 0%, transparent 70%)", filter: "blur(80px)", animation: "float2 25s ease-in-out infinite" }} />
+        <div className="hero-blob absolute bottom-0 left-1/4 w-[500px] h-[500px] rounded-full" style={{ background: "radial-gradient(circle, rgba(45,122,128,0.08) 0%, transparent 70%)", filter: "blur(70px)", animation: "float3 18s ease-in-out infinite" }} />
+        <div className="hero-blob absolute top-1/2 left-1/2 w-[700px] h-[700px] rounded-full" style={{ background: "radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)", filter: "blur(90px)", animation: "pulse4 15s ease-in-out infinite" }} />
+        <div className="hero-blob absolute -bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full" style={{ background: "radial-gradient(circle, rgba(213,208,184,0.10) 0%, transparent 70%)", filter: "blur(60px)", animation: "float5 22s ease-in-out infinite" }} />
       </div>
 
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
-        className="container mx-auto px-4 relative z-10 text-center"
-        style={{ maxWidth: "900px" }}
-      >
+      <div className="container mx-auto px-4 relative z-10 text-center" style={{ maxWidth: "900px" }}>
+        <style>{`
+          @keyframes heroFadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+          .hero-item { opacity: 0; animation: heroFadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+          .hero-item:nth-child(1) { animation-delay: 0.1s; }
+          .hero-item:nth-child(2) { animation-delay: 0.2s; }
+          .hero-item:nth-child(3) { animation-delay: 0.3s; }
+          .hero-item:nth-child(4) { animation-delay: 0.4s; }
+          .hero-item:nth-child(5) { animation-delay: 0.5s; }
+          @media (prefers-reduced-motion: reduce) { .hero-item { opacity: 1; animation: none; } }
+        `}</style>
         {/* Badge */}
-        <motion.div variants={item}>
+        <div className="hero-item block">
           <span
             className="inline-block mb-5"
             style={{
@@ -105,11 +61,11 @@ export default function Hero() {
           >
             Noter Yeminli Tercüme
           </span>
-        </motion.div>
+        </div>
 
         {/* H1 */}
-        <motion.h1
-          variants={item}
+        <h1
+          className="hero-item block"
           style={{
             fontFamily: '"Playfair Display", serif',
             fontSize: "clamp(2.5rem, 8vw, 4rem)",
@@ -121,12 +77,11 @@ export default function Hero() {
           }}
         >
           Noter Yeminli İngilizce–Türkçe Tercüme
-        </motion.h1>
+        </h1>
 
         {/* Subtitle */}
-        <motion.span
-          variants={item}
-          className="block"
+        <span
+          className="hero-item block"
           style={{
             fontFamily: '"Playfair Display", serif',
             fontSize: "clamp(1.1rem, 4vw, 1.5rem)",
@@ -136,11 +91,11 @@ export default function Hero() {
           }}
         >
           İngilizce-Türkçe Resmi Belge ve Vize Çevirisi
-        </motion.span>
+        </span>
 
         {/* Description */}
-        <motion.p
-          variants={item}
+        <p
+          className="hero-item block"
           style={{
             fontSize: "clamp(0.95rem, 3.5vw, 1.1rem)",
             color: "var(--color-mid-stone)",
@@ -150,12 +105,11 @@ export default function Hero() {
           }}
         >
           Denizli'den tüm Türkiye'ye İngilizce-Türkçe yeminli belge ve vize çevirisi. Pasaport, diploma, adli sicil ve vize evraklarınızı WhatsApp'tan gönderin; belge türü, noter ve apostil ihtiyacı ile teslim süresini inceleyip size net teklif vereyim.
-        </motion.p>
+        </p>
 
         {/* CTAs */}
-        <motion.div
-          variants={item}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+        <div
+          className="hero-item flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
           <MagneticButton
             href="/teklif"
@@ -181,34 +135,28 @@ export default function Hero() {
             </svg>
             WhatsApp'tan Gönder
           </MagneticButton>
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
       {/* Bottom features */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute bottom-8 left-0 right-0 z-10"
-        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+      <div
+        className="absolute bottom-8 left-0 right-0 z-10 hero-item"
+        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)", animationDelay: "0.7s" }}
       >
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap justify-center gap-6 text-sm" style={{ color: "var(--color-warm-gray)" }}>
             {features.map((f, i) => (
-              <motion.span
+              <span
                 key={i}
                 className="flex items-center gap-1.5"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.9 + i * 0.1, duration: 0.4 }}
               >
                 <CheckCircle2 className="w-4 h-4" style={{ color: "var(--color-editorial-teal)" }} />
                 {f}
-              </motion.span>
+              </span>
             ))}
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

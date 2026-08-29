@@ -1,5 +1,3 @@
-import { motion } from "framer-motion";
-
 const steps = [
   { num: "1", title: "Belgenizi Gönderin", desc: "Belgenizin net fotoğrafını veya taranmış halini WhatsApp veya teklif formu üzerinden iletin." },
   { num: "2", title: "İnceleme ve Teklif", desc: "Belge türünü, dil yönünü, noter ve apostil ihtiyacını inceleyip net fiyat ve teslim süresi veriyorum." },
@@ -8,39 +6,26 @@ const steps = [
   { num: "5", title: "Teslim", desc: "Çeviri dijital olarak e-posta/WhatsApp ile veya kargo ile adresinize teslim edilir." },
 ];
 
-const container = { hidden: {}, show: { transition: { staggerChildren: 0.1 } } };
-const item = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
-};
+import { useReveal } from "@/hooks/useReveal";
 
 export default function Process() {
+  const { ref: titleRef } = useReveal();
+  const { ref: gridRef } = useReveal();
   return (
     <section className="py-20 md:py-32" style={{ backgroundColor: "var(--color-soft-sand)" }}>
       <div className="container mx-auto px-4" style={{ maxWidth: "1200px" }}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        >
+        <div className="reveal" ref={titleRef} style={{ transitionDelay: "0s" }}>
           <h2 className="text-center mb-4" style={{ fontFamily: '"Playfair Display", serif', fontSize: "36px", fontWeight: 700, color: "var(--color-ink-black)", letterSpacing: "-0.02em" }}>
             Nasıl Çalışıyorum?
           </h2>
           <p className="text-center mb-16 mx-auto" style={{ color: "var(--color-mid-stone)", fontSize: "16px", lineHeight: 1.63, maxWidth: "600px" }}>
             Belgenizi göndermekten teslim almaya kadar beş adımda tamamlanır.
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-80px" }}
-          className="grid md:grid-cols-3 lg:grid-cols-5 gap-8"
-        >
+        <div className="reveal-stagger grid md:grid-cols-3 lg:grid-cols-5 gap-8" ref={gridRef}>
           {steps.map((step, idx) => (
-            <motion.div key={idx} variants={item} className="text-center">
+            <div key={idx} className="text-center">
               <div
                 className="mx-auto mb-4 flex items-center justify-center"
                 style={{
@@ -60,9 +45,9 @@ export default function Process() {
                 {step.title}
               </h3>
               <p style={{ color: "var(--color-mid-stone)", fontSize: "14px", lineHeight: 1.63 }}>{step.desc}</p>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

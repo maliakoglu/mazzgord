@@ -27,7 +27,6 @@ const DiplomaCeviri = lazy(() => import("@/pages/DiplomaCeviri"));
 const Blog = lazy(() => import("@/pages/Blog"));
 const ChatWidget = lazy(() => import("@/components/ChatWidget"));
 import { Route, Switch, useParams, useLocation } from "wouter";
-import { motion, AnimatePresence } from "framer-motion";
 import MobileStickyCTA from "@/components/home/MobileStickyCTA";
 import ScrollProgress from "@/components/home/ScrollProgress";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -44,17 +43,9 @@ function BlogRoute() {
 }
 
 function Router() {
-  const [location] = useLocation();
   return (
     <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" /></div>}>
-    <AnimatePresence mode="wait">
-    <motion.div
-      key={location}
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8 }}
-      transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-    >
+    <div className="page-transition">
     <Switch>
       <Route path={"/admin"} component={Admin} />
       <Route path={"/odeme"} component={Odeme} />
@@ -84,8 +75,7 @@ function Router() {
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
-    </motion.div>
-    </AnimatePresence>
+    </div>
     </Suspense>
   );
 }
