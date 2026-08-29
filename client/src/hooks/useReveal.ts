@@ -11,6 +11,7 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>(options?: { th
       ([entry]) => {
         if (entry.isIntersecting) {
           setVisible(true);
+          el.classList.add("reveal-visible");
           observer.unobserve(el);
         }
       },

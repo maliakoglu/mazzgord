@@ -46,7 +46,7 @@ export default function Hero() {
           <span
             className="inline-block mb-5"
             style={{
-              fontFamily: '"JetBrains Mono", monospace',
+              fontFamily: '"Inter", sans-serif',
               fontSize: "12px",
               fontWeight: 600,
               letterSpacing: "3px",
