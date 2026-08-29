@@ -1,49 +1,42 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { AlertCircle, Home } from "lucide-react";
+import { Home, MessageCircle } from "lucide-react";
 import { useLocation } from "wouter";
 
 export default function NotFound() {
   const [, setLocation] = useLocation();
 
-  const handleGoHome = () => {
-    setLocation("/");
-  };
-
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
-      <Card className="w-full max-w-lg mx-4 shadow-lg border-0 bg-white/80 backdrop-blur-sm">
-        <CardContent className="pt-8 pb-8 text-center">
-          <div className="flex justify-center mb-6">
-            <div className="relative">
-              <div className="absolute inset-0 bg-red-100 rounded-full animate-pulse" />
-              <AlertCircle className="relative h-16 w-16 text-red-500" />
-            </div>
-          </div>
-
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">404</h1>
-
-          <h2 className="text-xl font-semibold text-slate-700 mb-4">
-            Sayfa Bulunamadı
-          </h2>
-
-          <p className="text-slate-600 mb-8 leading-relaxed">
-            Aradığınız sayfa bulunamadı.
-            <br />
-            Taşınmış veya silinmiş olabilir.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button
-              onClick={handleGoHome}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
-            >
-              <Home className="w-4 h-4 mr-2" />
-              Ana Sayfaya Dön
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+    <div className="min-h-screen w-full flex items-center justify-center bg-background">
+      <div className="w-full max-w-lg mx-4 text-center" style={{ padding: '40px 24px' }}>
+        <div style={{ fontFamily: '"Playfair Display", serif', fontSize: 'clamp(3rem, 10vw, 5rem)', fontWeight: 700, color: 'var(--color-editorial-teal)', marginBottom: '8px', lineHeight: 1 }}>
+          404
+        </div>
+        <h1 style={{ fontFamily: '"Playfair Display", serif', fontSize: 'clamp(1.5rem, 5vw, 2rem)', fontWeight: 500, color: 'var(--color-ink-black)', marginBottom: '16px' }}>
+          Sayfa Bulunamadı
+        </h1>
+        <p style={{ color: 'var(--color-mid-stone)', fontSize: '16px', lineHeight: 1.63, marginBottom: '32px', maxWidth: '420px', margin: '0 auto 32px' }}>
+          Aradığınız sayfa taşınmış veya silinmiş olabilir. Çeviri hizmetlerimiz için ana sayfaya dönebilir veya WhatsApp'tan ulaşabilirsiniz.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <button
+            onClick={() => setLocation("/")}
+            className="btn-primary inline-flex items-center gap-2"
+            style={{ padding: '12px 28px', fontSize: '16px' }}
+          >
+            <Home className="w-4 h-4" />
+            Ana Sayfaya Dön
+          </button>
+          <a
+            href="https://wa.me/905386295040?text=Merhaba,%20belgem%20için%20teklif%20almak%20istiyorum."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 font-semibold transition no-underline hover:no-underline"
+            style={{ padding: '12px 28px', fontSize: '16px', borderRadius: '10000px', border: '1px solid var(--color-lavender-mist)', color: 'var(--color-ink-black)', background: 'var(--color-paper-white)' }}
+          >
+            <MessageCircle className="w-5 h-5" style={{ color: 'var(--color-editorial-teal)' }} />
+            WhatsApp'tan Yazın
+          </a>
+        </div>
+      </div>
     </div>
   );
 }
