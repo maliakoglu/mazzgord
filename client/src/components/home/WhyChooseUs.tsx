@@ -12,16 +12,16 @@ const benefits = [
 export default function WhyChooseUs() {
   const { ref: leftRef } = useReveal();
   const { ref: rightRef } = useReveal();
+  const { ref: benefitsRef } = useReveal();
   return (
     <section className="py-20 md:py-32 bg-background parallax-section">
       <div className="container mx-auto px-4" style={{ maxWidth: "1200px" }}>
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div
-          >
+          <div className="reveal" ref={leftRef}>
             <h2 style={{ fontFamily: '"Playfair Display", serif', fontSize: "36px", fontWeight: 700, marginBottom: "32px", color: "var(--color-ink-black)", letterSpacing: "-0.02em", lineHeight: 1.31 }}>
               Neden Benimle Çalışmalısınız?
             </h2>
-            <div className="reveal-stagger space-y-6">
+            <div className="reveal-stagger space-y-6" ref={benefitsRef}>
               {benefits.map((benefit, idx) => (
                 <div key={idx} className="flex gap-4">
                   <CheckCircle2 className="w-6 h-6 flex-shrink-0 mt-1" style={{ color: "var(--color-editorial-teal)" }} />
@@ -31,11 +31,7 @@ export default function WhyChooseUs() {
             </div>
           </div>
 
-          <div
-            className="reveal rounded-lg h-96 flex items-center justify-center"
-            ref={rightRef}
-            style={{ backgroundColor: "var(--color-soft-sand)", borderRadius: "24px" }}
-          >
+          <div className="reveal rounded-lg h-96 flex items-center justify-center" ref={rightRef} style={{ backgroundColor: "var(--color-soft-sand)", borderRadius: "24px" }}>
             <div className="text-center">
               <div style={{ animation: "float1 4s ease-in-out infinite" }}>
                 <Globe className="w-24 h-24 mx-auto mb-4" style={{ color: "var(--color-sandstone)" }} />

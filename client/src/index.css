@@ -314,21 +314,17 @@
 
 /* Scroll reveal — CSS only, 0KB JS */
 .reveal {
-  opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .reveal.reveal-visible {
-  opacity: 1;
   transform: translateY(0);
 }
 .reveal-stagger > * {
-  opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .reveal-stagger.reveal-visible > * {
-  opacity: 1;
   transform: translateY(0);
 }
 .reveal-stagger.reveal-visible > *:nth-child(1) { transition-delay: 0s; }
@@ -356,7 +352,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal, .reveal-stagger > * { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .reveal, .reveal-stagger > * { transform: none !important; transition: none !important; }
   .hover-lift:hover { transform: none !important; }
   .page-transition { animation: none !important; }
 }

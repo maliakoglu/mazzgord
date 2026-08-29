@@ -1,3 +1,4 @@
+import { useReveal } from "@/hooks/useReveal";
 
 const reviews = [
   { name: "Yağız Can K.", service: "Resmi Belge Çevirisi", source: "Bionluk", text: "Hızlı ve güvenilir bir hizmet aldım, teşekkürler." },
@@ -7,18 +8,11 @@ const reviews = [
 
 const images = ["/images/proje-1.webp", "/images/proje-2.webp", "/images/proje-3.webp", "/images/proje-4.webp", "/images/proje-5.webp", "/images/proje-6.webp"];
 
-const container = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } };
-const item = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
-};
-
-import { useReveal } from "@/hooks/useReveal";
-
 export default function Testimonials({ openGallery }: { openGallery: (images: string[], startIndex: number) => void }) {
   const { ref: titleRef } = useReveal();
   const { ref: reviewsRef } = useReveal();
   const { ref: galleryRef } = useReveal();
+  const { ref: projectsRef } = useReveal();
   return (
     <section id="testimonials" className="py-20 md:py-32 bg-secondary/30 parallax-yorumlar">
       <div className="container mx-auto px-4">
@@ -29,25 +23,14 @@ export default function Testimonials({ openGallery }: { openGallery: (images: st
           </p>
         </div>
 
-        <div
-          className="reveal-stagger grid md:grid-cols-2 gap-8 mb-12 max-w-4xl mx-auto"
-          ref={reviewsRef}
-        >
+        <div className="reveal-stagger grid md:grid-cols-2 gap-8 mb-12 max-w-4xl mx-auto" ref={reviewsRef}>
           {reviews.map((review, idx) => (
             <div
               key={idx}
               className="relative bg-card p-8 rounded-2xl border border-border overflow-hidden hover-lift"
-              style={{
-                background: "rgba(253, 252, 245, 0.6)",
-                backdropFilter: "blur(8px)",
-              }}
+              style={{ background: "rgba(253, 252, 245, 0.6)", backdropFilter: "blur(8px)" }}
             >
-              <div
-                className="absolute top-0 left-0 right-0 h-1"
-                style={{
-                  background: "linear-gradient(90deg, var(--color-editorial-teal), var(--color-sandstone))",
-                }}
-              />
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: "linear-gradient(90deg, var(--color-editorial-teal), var(--color-sandstone))" }} />
               <svg className="w-8 h-8 mb-4 opacity-20" viewBox="0 0 24 24" fill="currentColor" style={{ color: "var(--color-editorial-teal)" }}>
                 <path d="M14.017 21v-7.391c0-2.877.01-4.32.747-5.592.726-1.27 1.574-1.733 3.236-2.017v3.391c-1.002.312-1.387.75-1.387 1.826v3.783h2.391v4h-2.391v7h-2.596zm-9.017 0v-7.391c0-2.877.01-4.32.747-5.592.726-1.27 1.574-1.733 3.236-2.017v3.391c-1.002.312-1.387.75-1.387 1.826v3.783h2.391v4h-2.391v7h-2.596z" />
               </svg>
@@ -61,11 +44,9 @@ export default function Testimonials({ openGallery }: { openGallery: (images: st
           ))}
         </div>
 
-        <div
-          className="text-center"
-        >
+        <div className="reveal text-center" ref={projectsRef}>
           <h3 className="text-2xl font-bold text-primary mb-6">Tamamlanan Projelerden Örnekler</h3>
-          <div className="reveal-stagger grid grid-cols-2 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
+          <div className="reveal-stagger grid grid-cols-2 md:grid-cols-3 gap-4 max-w-3xl mx-auto" ref={galleryRef}>
             {images.map((img, idx) => (
               <div
                 key={idx}
