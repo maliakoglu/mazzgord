@@ -73,7 +73,7 @@ ROUTES = [
     "/blog/ceviri-hatalari",
     "/blog/teknik-ceviri-nedir",
     "/blog/hukuki-ceviri",
-    "/blog/teknik-hukuk-vize-ceviri-rehberi",
+    "/blog/uc-dunya-ceviri",
     "/blog/cevirmenlik-kariyer-rehberi",
     "/blog/ingilizce-turkce-deyim-cevirisi",
     "/blog/google-translate-vs-profesyonel-ceviri",

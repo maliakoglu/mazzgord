@@ -21,7 +21,7 @@ export default function Blog() {
     { title: "Google Translate mi, Profesyonel Çeviri mi? Doğru Seçim Rehberi", date: "10 Temmuz 2026", slug: "/blog/google-translate-vs-profesyonel-ceviri", category: "İpuçları & Sektör" },
     { title: "İngilizce-Türkçe Çeviride Deyimlerin Aktarımı: Zorluklar ve Çözümler", date: "10 Temmuz 2026", slug: "/blog/ingilizce-turkce-deyim-cevirisi", category: "İpuçları & Sektör" },
     { title: "Çevirmenlik Kariyer Rehberi: İki Dil Bilmek Yetmez", date: "30 Haziran 2026", slug: "/blog/cevirmenlik-kariyer-rehberi", category: "İpuçları & Sektör" },
-    { title: "Hata Kabul Etmeyen Üç Dünya: Teknik, Hukuk ve Vize Çevirilerinde Hayat Kurtaran Rehber", date: "30 Haziran 2026", slug: "/blog/teknik-hukuk-vize-ceviri-rehberi", category: "Rehberler" },
+    { title: "Hata Kabul Etmeyen Üç Dünya: Teknik, Hukuk ve Vize Çevirilerinde Hayat Kurtaran Rehber", date: "30 Haziran 2026", slug: "/blog/uc-dunya-ceviri", category: "Rehberler" },
     { title: "Hukuki Çeviri: Tek Bir Kelimeyle Hayat Kurtaran (Ya Da Karartan!) O Dünya", date: "30 Haziran 2026", slug: "/blog/hukuki-ceviri", category: "Rehberler" },
     { title: "Teknik Çeviri Nedir, Neden Hayat Kurtarır?", date: "30 Haziran 2026", slug: "/blog/teknik-ceviri-nedir", category: "Rehberler" },
     { title: "Çeviri Yaptırırken Can Yakacak Hatalar (Ve Bunlardan Kurtulma Yolları)", date: "30 Haziran 2026", slug: "/blog/ceviri-hatalari", category: "İpuçları & Sektör" },

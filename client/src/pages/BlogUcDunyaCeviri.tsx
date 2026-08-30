@@ -5,7 +5,7 @@ export default function BlogUcDunyaCeviri() {
     <BlogLayout
       title="Hata Kabul Etmeyen Üç Dünya: Teknik, Hukuk ve Vize Çevirilerinde Rehber | Mazzgord"
       description="Teknik, hukuk ve vize çevirilerinde dikkat edilmesi gerekenler. Terminoloji yönetimi, yeminli tercüme şartları ve hayati önem taşıyan detaylar. Uzman çeviri rehberi."
-      canonical="https://mazzgord.com/blog/teknik-hukuk-vize-ceviri-rehberi"
+      canonical="https://mazzgord.com/blog/uc-dunya-ceviri"
       date="30 Haziran 2026"
       illustration="uc-dunya"
       jsonLd={`{
