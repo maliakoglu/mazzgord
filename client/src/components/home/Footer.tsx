@@ -18,6 +18,8 @@ export default function Footer() {
               <li><a href="/yeminli-tercume" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }} className="hover:opacity-100 transition">Yeminli Tercüme</a></li>
               <li><a href="/pasaport-ceviri" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }} className="hover:opacity-100 transition">Pasaport Çevirisi</a></li>
               <li><a href="/diploma-ceviri" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }} className="hover:opacity-100 transition">Diploma Çevirisi</a></li>
+              <li><a href="/noter-onayli-tercume" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }} className="hover:opacity-100 transition">Noter Onaylı Tercüme</a></li>
+              <li><a href="/apostil-tercume" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }} className="hover:opacity-100 transition">Apostil Tercüme</a></li>
               <li><a href="/vize-ceviri" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }} className="hover:opacity-100 transition">Vize Çevirisi</a></li>
               <li><a href="/ingilizce-turkce-ceviri" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }} className="hover:opacity-100 transition">İngilizce-Türkçe Çeviri</a></li>
               <li><a href="/fiyatlar" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }} className="hover:opacity-100 transition">Fiyatlar</a></li>

@@ -1,4 +1,4 @@
-import { FileText, Globe, Users } from "lucide-react";
+import { FileText, Globe, Users, Stamp } from "lucide-react";
 
 export default function Services() {
   return (
@@ -46,6 +46,18 @@ export default function Services() {
               title: "Teknik ve Akademik Çeviri",
               description: "Teknik doküman, tez, makale ve hukuki metin çevirisi. Belge görülerek teklif.",
               link: "/teknik-ceviri",
+            },
+            {
+              icon: Stamp,
+              title: "Noter Onaylı Tercüme",
+              description: "Yeminli tercüman tarafından çevrilmiş, noter tasdikli resmi belgeler. Pasaport, diploma, evlilik cüzdanı çevirisi.",
+              link: "/noter-onayli-tercume",
+            },
+            {
+              icon: Globe,
+              title: "Apostil Tercüme",
+              description: "Yurt dışı işlemler için apostil tasdikli çeviri. Lahey Sözleşmesi kapsamında tüm ülkelerde geçerli.",
+              link: "/apostil-tercume",
             },
           ].map((service, idx) => (
             <a key={idx} href={service.link} className="card-feature block no-underline hover:no-underline transition" style={{ transition: 'box-shadow 0.3s, transform 0.3s' }}

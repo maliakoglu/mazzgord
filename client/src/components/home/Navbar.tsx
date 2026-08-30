@@ -36,6 +36,8 @@ export default function Navbar({ mobileOpen, setMobileOpen, servicesOpen, setSer
                 <a href="/vize-ceviri" className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition no-underline hover:no-underline">Vize Çevirisi</a>
                 <a href="/pasaport-ceviri" className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition no-underline hover:no-underline">Pasaport Çevirisi</a>
                 <a href="/diploma-ceviri" className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition no-underline hover:no-underline">Diploma ve Transkript</a>
+                <a href="/noter-onayli-tercume" className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition no-underline hover:no-underline">Noter Onaylı Tercüme</a>
+                <a href="/apostil-tercume" className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition no-underline hover:no-underline">Apostil Tercüme</a>
               </div>
             </div>
             <a href="/blog" className="text-foreground hover:underline underline-offset-2 transition no-underline hover:no-underline">Rehber</a>
@@ -71,6 +73,8 @@ export default function Navbar({ mobileOpen, setMobileOpen, servicesOpen, setSer
                 <a href="/vize-ceviri" className="block px-4 py-2 text-foreground hover:bg-secondary rounded-lg text-base no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Vize Çevirisi</a>
                 <a href="/pasaport-ceviri" className="block px-4 py-2 text-foreground hover:bg-secondary rounded-lg text-base no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Pasaport Çevirisi</a>
                 <a href="/diploma-ceviri" className="block px-4 py-2 text-foreground hover:bg-secondary rounded-lg text-base no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Diploma ve Transkript</a>
+                <a href="/noter-onayli-tercume" className="block px-4 py-2 text-foreground hover:bg-secondary rounded-lg text-base no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Noter Onaylı Tercüme</a>
+                <a href="/apostil-tercume" className="block px-4 py-2 text-foreground hover:bg-secondary rounded-lg text-base no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Apostil Tercüme</a>
               </div>
             )}
             <a href="/blog" className="block px-4 py-3 text-foreground hover:bg-secondary rounded-lg text-lg no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Rehber</a>
