@@ -58,7 +58,7 @@ export default function Testimonials({ openGallery }: { openGallery: (images: st
                 className="rounded-lg overflow-hidden border border-border hover:shadow-lg transition-shadow cursor-pointer hover:scale-105 duration-300"
                 onClick={() => openGallery(["/images/proje-1.webp", "/images/proje-2.webp", "/images/proje-3.webp", "/images/proje-4.webp", "/images/proje-5.webp", "/images/proje-6.webp"], idx)}
               >
-                <img src={img} alt={"Proje örneği " + (idx + 1)} width={400} height={128} className="w-full h-32 object-cover" loading="lazy" />
+                <img src={img} alt={"Mazzgord tamamlanan çeviri projesi örneği " + (idx + 1) + " - yeminli tercüme Denizli"} width={400} height={128} className="w-full h-32 object-cover" loading="lazy" />
               </div>
             ))}
           </div>
