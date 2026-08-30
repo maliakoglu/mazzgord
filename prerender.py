@@ -50,6 +50,8 @@ ROUTES = [
     "/vize-ceviri",
     "/pasaport-ceviri",
     "/diploma-ceviri",
+    "/noter-onayli-tercume",
+    "/apostil-tercume",
     "/fiyatlar",
     "/hizmetler",
     "/sepet",

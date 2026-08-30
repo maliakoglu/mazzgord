@@ -24,6 +24,8 @@ const VizeCeviri = lazy(() => import("@/pages/VizeCeviri"));
 const IngilizceTurkceCeviri = lazy(() => import("@/pages/IngilizceTurkceCeviri"));
 const PasaportCeviri = lazy(() => import("@/pages/PasaportCeviri"));
 const DiplomaCeviri = lazy(() => import("@/pages/DiplomaCeviri"));
+const NoterOnayliTercume = lazy(() => import("@/pages/NoterOnayliTercume"));
+const ApostilTercume = lazy(() => import("@/pages/ApostilTercume"));
 const Blog = lazy(() => import("@/pages/Blog"));
 const ChatWidget = lazy(() => import("@/components/ChatWidget"));
 import { Route, Switch, useParams, useLocation } from "wouter";
@@ -68,6 +70,8 @@ function Router() {
       <Route path={"/ingilizce-turkce-ceviri"} component={IngilizceTurkceCeviri} />
       <Route path={"/pasaport-ceviri"} component={PasaportCeviri} />
       <Route path={"/diploma-ceviri"} component={DiplomaCeviri} />
+      <Route path={"/noter-onayli-tercume"} component={NoterOnayliTercume} />
+      <Route path={"/apostil-tercume"} component={ApostilTercume} />
       <Route path={"/blog"} component={Blog} />
       <Route path={"/blog/:slug"} component={BlogRoute} />
       <Route path={"/404"} component={NotFound} />
