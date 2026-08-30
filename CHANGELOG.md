@@ -1,27 +1,35 @@
-# Changelog
+# MAZZGORD Change Log
 
-## [2026-08-29] — Performans Optimizasyonu (Mobil PageSpeed 70→88)
+### 2026-08-30 — Deployment, Performance ve Cloudflare Yapılandırması
 
-### Kaldırılan
-- Hero gradient blob animasyonları (5 adet `blur(60-90px)` efekti)
-- `MagneticButton.tsx` componenti (kullanılmayan wrapper)
-- `ScrollProgress.tsx` componenti (scroll dinleyici)
-- `useReveal` hook'u (14 IntersectionObserver) — 5 home component'i `e0e0aed` sürümüne döndürüldü
-- `page-transition` CSS animasyonu ve App.tsx wrapper div
-- `backdropFilter: blur(8px)` — PricingPreview ve Testimonials kartlarından
+**Değişiklik**
 
-### Eklenen
-- WAF custom rule: `/gtm/` Zaraz endpoint bloklandı (365KB JS kalktı)
-- Self-hosted font dosyaları (deneme amaçlı, sonra Google Fonts'a geri dönüldü)
+* `prerender.py` timeout düzeltmesi: 30s → 60s, `TimeoutExpired` yakalama eklendi
+* `@builder.io/vite-plugin-jsx-loc` paketi ve `vite.config.ts` referansları kaldırıldı
+* Google Fonts CDN linkleri kaldırıldı, self-hosted `/fonts/fonts.css`'e geçildi
+* Clarity script `index.html`'den kaldırıldı, `lib/seoProcessor.js`'e `requestIdleCallback` ile lazy-load eklendi
+* `prerender.py` Clarity script temizleme regex'i eklendi
+* CSP'den Google Fonts domain izinleri kaldırıldı (`fonts.googleapis.com`, `fonts.gstatic.com`)
+* `wrangler.toml`'a `[observability.traces]` eklendi (enabled, %5 sampling)
+* Orphaned Worker route `api.mazzgord.com/iyzico/*` silindi
+* Preview Worker'a 5 secret eklendi (ADMIN_TOKEN, IYZICO_API_KEY, IYZICO_SECRET_KEY, RESEND_API_KEY, WEBHOOK_SECRET)
+* Wrangler 4.121.0 → 4.127.1 güncellendi
 
-### Değiştirilen
-- Hero.tsx: 162 satır → 66 satır (sade CSS fade-up animasyonu)
-- Font CSP: Google Fonts referansları korundu (preconnect + display=swap)
-- 5 home component'i (Services, Process, WhyChooseUs, PricingPreview, Testimonials) `e0e0aed` sürümüne döndürüldü
+**Cloudflare**
 
-### Sonuç
-- Mobil: 70 → 88 (+18 puan)
-- Masaüstü: 90 → 93 (+3 puan)
-- TBT: 290ms → 130ms
-- CLS: 0 (değişmedi)
-- LCP: 5.7s → 3.0s
+* `mazzgordwebsite` (production) — deploy edildi
+* `mazzgordwebsite-preview` (preview) — deploy edildi
+* `api.mazzgord.com/iyzico/*` route silindi (orphaned)
+* Observability traces açıldı (production + preview)
+
+**Test**
+
+* Vite build: 1685 modül, 1.67s
+* Prerender: 46/46 sayfa render edildi
+* Sitemap: 36 URL
+* Meta tags: 0 duplicate
+
+**Deployment**
+
+* Production deployment başarılı.
+* Preview deployment başarılı.

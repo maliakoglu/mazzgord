@@ -84,3 +84,7 @@ binding = "AI"
 [[env.preview.kv_namespaces]]
 binding = "RATE_LIMIT"
 id = "e7c4693b9f564f978a92898d96e25f1c"
+
+[observability.traces]
+enabled = true
+head_sampling_rate = 0.05

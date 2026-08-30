@@ -42,7 +42,6 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@builder.io/vite-plugin-jsx-loc": "^0.1.1",
     "@tailwindcss/typography": "^0.5.15",
     "@tailwindcss/vite": "^4.1.3",
     "@testing-library/jest-dom": "^7.0.1",
@@ -67,7 +66,7 @@
     "typescript": "5.6.3",
     "vite": "^7.1.7",
     "vitest": "^2.1.4",
-    "wrangler": "4.121.0"
+    "wrangler": "^4.127.1"
   },
   "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af",
   "pnpm": {
@@ -80,5 +79,21 @@
     "onlyBuiltDependencies": [
       "puppeteer"
     ]
-  }
+  },
+  "main": "iyzico_test.js",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maliakoglu/mazzgord.git"
+  },
+  "keywords": [],
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/maliakoglu/mazzgord/issues"
+  },
+  "homepage": "https://github.com/maliakoglu/mazzgord#readme",
+  "description": ""
 }

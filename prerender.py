@@ -97,24 +97,28 @@ for route in ROUTES:
 
     print(f"📄 Render: {route}")
 
-    result = subprocess.run(
-        [
-            CHROME,
-            "--headless=new",
-            "--disable-gpu",
-            "--no-sandbox",
-            "--disable-setuid-sandbox",
-            "--disable-dev-shm-usage",
-            "--no-first-run",
-            "--no-default-browser-check",
-            "--virtual-time-budget=3000",
-            "--dump-dom",
-            url,
-        ],
-        capture_output=True,
-        text=True,
-        timeout=30,
-    )
+    try:
+        result = subprocess.run(
+            [
+                CHROME,
+                "--headless=new",
+                "--disable-gpu",
+                "--no-sandbox",
+                "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage",
+                "--no-first-run",
+                "--no-default-browser-check",
+                "--virtual-time-budget=5000",
+                "--dump-dom",
+                url,
+            ],
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+    except subprocess.TimeoutExpired:
+        print(f"⚠️ Timeout (60s): {route} - atlanıyor")
+        continue
 
     if result.returncode != 0:
         print(f"⚠️ Chrome hata verdi: {route}")
@@ -122,6 +126,13 @@ for route in ROUTES:
         continue
 
     html = result.stdout
+
+    # Clarity ve ucuncu taraf script'lerini prerender edilmis HTML'den temizle
+    import re
+    html = re.sub(r'<script[^>]*clarity\.js[^>]*></script>', '', html)
+    html = re.sub(r'<script[^>]*www\.clarity\.ms[^>]*></script>', '', html)
+    html = re.sub(r'<script[^>]*clarity\.ms/tag[^>]*></script>', '', html)
+    html = re.sub(r'window\.clarity=window\.clarity\|\|function[\s\S]*?</script>', '', html)
 
     if not html.strip():
         print(f"⚠️ Boş HTML: {route}")
