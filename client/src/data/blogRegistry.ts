@@ -29,6 +29,8 @@ export const blogRegistry = {
   "arac-ruhsati-cevirisi": lazy(() => import("@/pages/BlogAracRuhsatiCevirisi")),
   "ingiltere-vize-cevirisi-gercek-vaka": lazy(() => import("@/pages/BlogIngiltereVizeCeviri")),
   "dogalgaz-faturasi-cevirisi": lazy(() => import("@/pages/BlogDogalgazFaturasiCevirisi")),
+  "apostil-vs-noter-onayli-ceviri": lazy(() => import("@/pages/BlogApostilVsNoterOnayli")),
+  "vize-basvurusu-hangi-belgeler": lazy(() => import("@/pages/BlogVizeBasvurusuBelgeler")),
 } as const;
 
 export const blogSlugs = Object.keys(blogRegistry);

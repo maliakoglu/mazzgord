@@ -89,6 +89,8 @@ ROUTES = [
     "/blog/arac-ruhsati-cevirisi",
     "/blog/ingiltere-vize-cevirisi-gercek-vaka",
     "/blog/dogalgaz-faturasi-cevirisi",
+    "/blog/apostil-vs-noter-onayli-ceviri",
+    "/blog/vize-basvurusu-hangi-belgeler",
 ]
 
 print(f"📋 {len(ROUTES)} route render edilecek.")

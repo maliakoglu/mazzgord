@@ -11,6 +11,8 @@ export default function Blog() {
     { title: "Araç Ruhsatı Çevirisi Nasıl Yapılır? Gerçek Vaka Örneğiyle", date: "28 Ağustos 2026", slug: "/blog/arac-ruhsati-cevirisi", category: "Gerçek Vakalar" },
     { title: "İngiltere Vize Başvurusu İçin Belge Çevirisi: Gerçek Müşteri Deneyimi", date: "28 Ağustos 2026", slug: "/blog/ingiltere-vize-cevirisi-gercek-vaka", category: "Gerçek Vakalar" },
     { title: "Doğalgaz Faturası Çevirisi: sam.gov Kaydı İçin Gerçek Vaka", date: "28 Ağustos 2026", slug: "/blog/dogalgaz-faturasi-cevirisi", category: "Gerçek Vakalar" },
+    { title: "Apostil Onaylı Çeviri ile Noter Onaylı Çeviri Arasındaki Fark", date: "1 Eylül 2026", slug: "/blog/apostil-vs-noter-onayli-ceviri", category: "Rehberler" },
+    { title: "Vize Başvurusu İçin Hangi Belgeler Çevrilmelidir? 2026 Rehber", date: "1 Eylül 2026", slug: "/blog/vize-basvurusu-hangi-belgeler", category: "Rehberler" },
     { title: "Vize Labirentinde Kaybolmayın: Konsoloslukların Kabul Ettiği 6 Kritik Tercüme Formatı", date: "18 Ağustos 2026", slug: "/blog/vize-formatlari", category: "Rehberler" },
     { title: "Yeminli Tercüme Fiyatları 2026", date: "12 Ağustos 2026", slug: "/blog/yeminli-tercume-fiyatlari-2026", category: "Rehberler" },
     { title: "Pasaport Tercümesi Nasıl Yapılır? 2026 Adım Adım Rehber", date: "12 Ağustos 2026", slug: "/blog/pasaport-tercumesi-nasil-yapilir", category: "Rehberler" },

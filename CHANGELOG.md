@@ -1,4 +1,34 @@
 # MAZZGORD Change Log
+### 2026-09-01 — Yeni Blog Yazıları ve Duplicate Title Düzeltmesi
+
+**Değişiklik**
+
+* `client/src/pages/BlogApostilVsNoterOnayli.tsx` — yeni blog yazısı: "Apostil Onaylı Çeviri ile Noter Onaylı Çeviri Arasındaki Fark" (185 satır, JSON-LD Article + FAQPage schema, karşılaştırma tablosu)
+* `client/src/pages/BlogVizeBasvurusuBelgeler.tsx` — yeni blog yazısı: "Vize Başvurusu İçin Hangi Belgeler Çevrilmelidir? 2026 Rehber" (262 satır, ülke bazlı vize çeviri rehberi, JSON-LD Article + FAQPage schema)
+* `client/src/data/blogRegistry.ts` — 2 yeni lazy import eklendi (28 → 30)
+* `client/src/pages/Blog.tsx` — posts array'ine 2 yeni kayıt eklendi (28 → 30)
+* `client/src/components/BlogLayout.tsx` — "apostil" illustration key + SVG eklendi
+* `lib/seoData.js` — 2 yeni blog SEO entry eklendi (26 → 28 blog slug)
+* `prerender.py` — 2 yeni route eklendi (48 → 50)
+* `add-meta-tags.py` — seoData.js'den title/description okuyup prerender edilmiş HTML'lere yazma mantığı eklendi; 18 hizmet sayfasının title ve meta description'ı düzeltildi
+
+**Düzeltilen Hata**
+
+* 6 sayfa 3 ayrı başlığı paylaşıyordu (duplicate title SEO sorunu): `/yeminli-tercume`, `/teknik-ceviri`, `/akademik-ceviri` hizmet sayfaları ile blog sayfaları aynı `<title>` etiketine sahipti. Hizmet sayfaları React component'lerinde `<title>` set etmiyordu; prerender sonrası `client/index.html`'deki varsayılan title ile kalıyordu. `add-meta-tags.py` güncellenerek `seoData.js`'deki benzersiz title'lar HTML dosyalarına yazıldı.
+
+**Cloudflare**
+
+* `mazzgordwebsite` (production) — deploy edildi
+* 83 new/modified asset yüklendi
+* 50 route prerender edildi
+
+**Test**
+
+* Vite build: 1689 modül, 1.68s
+* Prerender: 50/50 sayfa render edildi
+* Meta tags: 18 title + 18 description düzeltildi
+* Duplicate title: 0 (tüm sayfalarda benzersiz title)
+
 
 ### 2026-08-30 — Deployment, Performance ve Cloudflare Yapılandırması
 
