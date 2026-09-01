@@ -51,7 +51,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="fade-up fade-up-delay-3 absolute bottom-8 left-0 right-0 z-10">
+      <div className="fade-up fade-up-delay-3 relative mt-12 z-10 md:absolute md:bottom-8 md:left-0 md:right-0">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap justify-center gap-6 text-sm" style={{ color: 'var(--color-warm-gray)' }}>
             <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" style={{ color: 'var(--color-editorial-teal)' }} /> Noter Yeminli Tercüman</span>
