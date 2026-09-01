@@ -1,4 +1,23 @@
 # MAZZGORD Change Log
+### 2026-09-01 — Hero SEO Optimizasyonu ve Hedef Kitle Güncellemesi
+
+**Değişiklik**
+
+* `client/src/components/home/Hero.tsx` — Hero metni SEO odaklı yeniden yazıldı; "yeminli tercüman", "belge çevirisi", "noter onaylı çeviri" ve "apostil çeviri" anahtar kelimeleri doğal akışta eklendi (8.100 + 720 + 70 + 20 aylık arama hacmi)
+* `client/src/pages/AkademikCeviri.tsx` — "denklik sürecindeki öğrenciler" ifadesi eklendi (denklik araması hedef kitleye eklendi)
+
+**Cloudflare**
+
+* `mazzgordwebsite` (production) — deploy edildi
+* 55 new/modified asset yüklendi
+* 50 route prerender edildi
+
+**Test**
+
+* Vite build: 1689 modül, 1.67s
+* Prerender: 50/50 sayfa render edildi
+* Meta tags: 19 title + 19 description düzeltildi
+
 ### 2026-09-01 — Yeni Blog Yazıları ve Duplicate Title Düzeltmesi
 
 **Değişiklik**

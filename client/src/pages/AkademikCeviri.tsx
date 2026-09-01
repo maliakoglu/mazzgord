@@ -50,7 +50,7 @@ export default function AkademikCeviri() {
         <div className="bg-secondary/30 rounded-xl p-8 mb-8">
           <h2 className="text-2xl font-bold text-primary mb-4">Akademik Çeviri Nedir?</h2>
           <p className="text-muted-foreground leading-relaxed mb-4">Akademik çeviri, bilimsel makalelerin, tezlerin, bildirilerin ve diğer akademik belgelerin bir dilden başka bir dile çevrilmesidir. Akademik terminolojiye tam hakimiyet ve alan uzmanlığı gerektirir. APA ve MLA gibi atıf stilleri ve bilimsel yazım normlarına uygunluk esastır.</p>
-          <p className="text-muted-foreground leading-relaxed mb-4">Akademik çeviriler, uluslararası dergilerde yayın yapmak isteyen araştırmacılar, yurt dışı üniversite başvurusu yapacak öğrenciler ve uluslararası konferanslara katılacak akademisyenler için kritik öneme sahiptir.</p>
+          <p className="text-muted-foreground leading-relaxed mb-4">Akademik çeviriler, uluslararası dergilerde yayın yapmak isteyen araştırmacılar, yurt dışı üniversite başvurusu ve denklik sürecindeki öğrenciler ve uluslararası konferanslara katılacak akademisyenler için kritik öneme sahiptir.</p>
           <p className="text-muted-foreground leading-relaxed">Denizli Pamukkale Üniversitesi başta olmak üzere tüm akademik kurumlara yönelik çeviri yapıyorum.</p>
         </div>
         <div className="mb-8">

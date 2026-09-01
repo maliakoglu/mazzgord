@@ -28,7 +28,7 @@ export default function Hero() {
           İngilizce-Türkçe Resmi Belge ve Vize Çevirisi
         </span>
         <p className="fade-up fade-up-delay-2" style={{ fontSize: 'clamp(0.95rem, 3.5vw, 1.1rem)', color: 'var(--color-mid-stone)', maxWidth: '680px', margin: '0 auto 40px', lineHeight: 1.63 }}>
-          Denizli'den tüm Türkiye'ye İngilizce-Türkçe yeminli belge ve vize çevirisi. Pasaport, diploma, adli sicil ve vize evraklarınızı WhatsApp'tan gönderin; belge türü, noter ve apostil ihtiyacı ile teslim süresini inceleyip size net teklif vereyim.
+          Yeminli tercüman güvencesiyle pasaport, diploma, transkript, vize evrakı ve adli sicil belgelerinizi hızla çeviriyorum. Noter onaylı çeviri ve apostil çeviri takibini sizin yerinize tamamlıyorum. Zaman kaybetmeyin; belgenizi WhatsApp'tan gönderin, net teklifinizi hemen alın.
         </p>
         <div className="fade-up fade-up-delay-3 flex flex-col sm:flex-row gap-4 justify-center items-center">
           <a
