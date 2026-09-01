@@ -49,11 +49,8 @@ export default function Hero() {
             WhatsApp'tan Gönder
           </a>
         </div>
-      </div>
-
-      <div className="fade-up fade-up-delay-3 relative mt-12 z-10 md:absolute md:bottom-8 md:left-0 md:right-0">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center gap-6 text-sm" style={{ color: 'var(--color-warm-gray)' }}>
+        <div className="fade-up fade-up-delay-3 mt-10">
+          <div className="flex flex-col items-center gap-3 md:flex-row md:justify-center md:gap-6 text-sm" style={{ color: 'var(--color-warm-gray)' }}>
             <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" style={{ color: 'var(--color-editorial-teal)' }} /> Noter Yeminli Tercüman</span>
             <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" style={{ color: 'var(--color-editorial-teal)' }} /> İngilizce-Türkçe</span>
             <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" style={{ color: 'var(--color-editorial-teal)' }} /> Belgeyi Gönder, Teklif Al</span>
