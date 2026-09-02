@@ -33,7 +33,7 @@ export default function PasaportCeviri() {
         </div>
       </nav>
       <div className="container mx-auto px-4 py-12 max-w-4xl">
-        <Breadcrumb items={[{label: "Hizmetler", href: "/hizmetler"}, {label: "Pasaport Çevirisi"}]} />
+        <Breadcrumb items={[{label: "Hizmetler", href: "/"}, {label: "Pasaport Çevirisi"}]} />
         <h1 className="text-4xl font-bold text-primary mb-4">Pasaport Çevirisi | İngilizce-Türkçe Yeminli Tercüme</h1>
         <p className="text-xl text-muted-foreground mb-8">Pasaportunuzun yeminli tercüman tarafından İngilizce veya Türkçe'ye çevirisi. Vize başvuruları ve resmi işlemler için hızlı, güvenilir ve doğru çeviri hizmeti.</p>
         <div className="grid md:grid-cols-3 gap-6 mb-12">

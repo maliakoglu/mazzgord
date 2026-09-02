@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { ArrowLeft, Upload, FileText, CheckCircle2, Loader2, X, Globe, Clock, FileType, Mail, Phone, User } from "lucide-react";
+import { track } from "@/lib/analytics";
 
 const LANGUAGES = [
   "Türkçe", "İngilizce"
@@ -57,8 +58,8 @@ export default function TeklifFormu() {
     name: "",
     email: "",
     phone: "",
-    source_language: "",
-    target_language: "",
+    source_language: "İngilizce",
+    target_language: "Türkçe",
     document_type: "",
     service_type: "",
     page_count: "",
@@ -87,6 +88,7 @@ export default function TeklifFormu() {
       return;
     }
 
+    track.documentUploadStarted();
     setUploadStatus("uploading");
     setFileName(file.name);
 
@@ -103,6 +105,7 @@ export default function TeklifFormu() {
       if (res.ok) {
         const data = await res.json();
         setFileKey(data.file_key);
+        track.documentUploadCompleted();
         setUploadStatus("done");
       } else {
         setUploadStatus("error");
@@ -126,6 +129,7 @@ export default function TeklifFormu() {
       alert("Kargo teslimatı için adres gereklidir.");
       return;
     }
+    track.offerFormStarted();
     setSubmitStatus("sending");
     const idempotencyKey = crypto.randomUUID();
     try {
@@ -232,9 +236,10 @@ mazzgord.com`;
         const whatsappURL = `https://wa.me/905386295040?text=${encodeURIComponent(mesaj)}`;
         window.open(whatsappURL, "_blank");
 
-        setSubmitStatus("success");
+        track.offerFormCompleted();
+      setSubmitStatus("success");
         setFormData({
-          name: "", email: "", phone: "", source_language: "", target_language: "",
+          name: "", email: "", phone: "", source_language: "İngilizce", target_language: "Türkçe",
           document_type: "", service_type: "", page_count: "", word_count: "",
           urgency: "standart", delivery_method: "digital", shipping_address: "", notes: "",
           notary_need: "", apostille_need: "", target_country: "", delivery_date: "",

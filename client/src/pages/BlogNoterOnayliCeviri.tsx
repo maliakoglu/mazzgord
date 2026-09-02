@@ -100,7 +100,7 @@ export default function BlogNoterOnayliCeviri() {
               <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg">1</div>
               <div>
                 <h3 className="text-lg font-semibold text-primary mb-2">Belge Teslimi ve Ön İnceleme</h3>
-                <p>Müşteri, çevrilecek belgeyi tercüme bürosuna iletir. Belgenin dili, konusu, sayfa sayısı ve teslim süresi belirlenir. Tercüman, belgenin yeminli tercümeye uygunluğunu kontrol eder.</p>
+                <p>Müşteri, çevrilecek belgeyi tercümana iletir. Belgenin dili, konusu, sayfa sayısı ve teslim süresi belirlenir. Tercüman, belgenin yeminli tercümeye uygunluğunu kontrol eder.</p>
               </div>
             </div>
 
@@ -149,7 +149,7 @@ export default function BlogNoterOnayliCeviri() {
           <p>Noter onaylı çeviri fiyatları iki bileşenden oluşur:</p>
           <ol className="space-y-3 mt-4">
             <li><strong>Çeviri ücreti:</strong> Belgenin diline, sayfa/karakter sayısına ve konusuna göre belirlenir. Standart belgeler için sayfa başına ücret uygulanır.</li>
-            <li><strong>Noter onay ücreti:</strong> Noter odası tarafından belirlenen tarifeye göre, belge başına sabit bir ücret alınır. Bu ücret çeviri bürosu tarafından değil, doğrudan noter tarafından tahsil edilir.</li>
+            <li><strong>Noter onay ücreti:</strong> Noter odası tarafından belirlenen tarifeye göre, belge başına sabit bir ücret alınır. Bu ücret tercüman tarafından değil, doğrudan noter tarafından tahsil edilir.</li>
           </ol>
           <p>2026 yılında noter onay ücreti belge başına yaklaşık 250-500 TL arasında değişmektedir. Çeviri ücreti ise dil çiftine ve belge türüne göre değişir.</p>
 
@@ -163,7 +163,7 @@ export default function BlogNoterOnayliCeviri() {
           <p>Apostil ve noter onayı <strong>farklı işlemlerdir</strong> ancak genellikle birlikte yapılırlar. Önce belge yeminli tercüman tarafından çevrilir, sonra noter onayı yapılır, ardından valilik veya kaymakamlıktan apostil alınır. Apostil, belgenin çevirisini değil, orijinal belgenin ve noter imzasının gerçekliğini onaylar.</p>
 
           <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">Online Noter Onaylı Çeviri Mümkün mü?</h2>
-          <p>Evet, mümkündür. Mazzgord Çeviri Hizmetleri olarak, belgelerinizi online olarak bize iletebilir, ödemenizi güvenli şekilde yapabilir ve noter onaylı çevirinizi kargo veya kurye ile teslim alabilirsiniz. Süreç şöyledir:</p>
+          <p>Evet, mümkündür. Belgelerinizi online olarak bana iletebilir, ödemenizi güvenli şekilde yapabilir ve noter onaylı çevirinizi kargo veya kurye ile teslim alabilirsiniz. Süreç şöyledir:</p>
           <ol className="space-y-3 mt-4">
             <li>1. Belgenizin fotoğrafını veya taranmış halini WhatsApp veya teklif formu üzerinden gönderin</li>
             <li>2. Fiyat teklifini onaylayın ve ödemeyi yapın</li>
@@ -209,6 +209,15 @@ export default function BlogNoterOnayliCeviri() {
               <li><a href="/yeminli-tercume" className="text-primary underline">Yeminli Tercüme</a></li>
             </ul>
           </div>
-    </BlogLayout>
+    
+        <div className="bg-primary text-primary-foreground rounded-xl p-8 text-center mt-12">
+          <h2 className="text-2xl font-bold mb-4">Belgeniz İçin Teklif Alın</h2>
+          <p className="mb-6 opacity-90">Belgenizi gönderin, aynı gün içinde net teklif veririm.</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/teklif" className="px-8 py-3 bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg font-medium transition">Teklif Alın</a>
+            <a href="https://wa.me/905386295040" target="_blank" className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition">WhatsApp ile Ulaşın</a>
+          </div>
+        </div>
+      </BlogLayout>
   )
 }

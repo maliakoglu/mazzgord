@@ -39,7 +39,7 @@ export default function VizeCeviri() {
         </div>
       </nav>
       <div className="container mx-auto px-4 py-12 max-w-4xl">
-        <Breadcrumb items={[{label: "Hizmetler", href: "/hizmetler"}, {label: "Vize Çevirisi"}]} />
+        <Breadcrumb items={[{label: "Hizmetler", href: "/"}, {label: "Vize Çevirisi"}]} />
         <h1 className="text-4xl font-bold text-primary mb-4">Vize Başvurusu Çevirisi | Denizli</h1>
         <p className="text-xl text-muted-foreground mb-8">İngiltere, ABD, Almanya ve diğer ülke vize başvuruları için yeminli tercüme hizmeti. Konsolosluk kabul şartlarına uygun çeviri.</p>
         <div className="grid md:grid-cols-3 gap-6 mb-12">
@@ -96,7 +96,7 @@ export default function VizeCeviri() {
 
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-primary mb-6">Vize Çevirisi Fiyatı 2026</h2>
-          <p className="text-muted-foreground leading-relaxed mb-4">Vize başvurusu için belge çevirisi fiyatı <strong>sayfa başı 350 TL'den</strong> başlar. Fiyatı etkileyen faktörler:</p>
+          <p className="text-muted-foreground leading-relaxed mb-4">Vize başvurusu için belge çevirisi fiyatı <strong>sayfa başı 450 TL'den</strong> başlar. Fiyatı etkileyen faktörler:</p>
           <ul className="space-y-2 my-4 pl-6 list-disc text-muted-foreground">
             <li><strong>Sayfa sayısı:</strong> Belge ne kadar çoksa, toplam maliyet o kadar artar.</li>
             <li><strong>Belge türü:</strong> Vukuatlı nüfus kayıt örneği gibi karmaşık belgeler daha fazla dikkat gerektirir.</li>

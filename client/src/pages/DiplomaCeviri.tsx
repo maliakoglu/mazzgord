@@ -33,7 +33,7 @@ export default function DiplomaCeviri() {
         </div>
       </nav>
       <div className="container mx-auto px-4 py-12 max-w-4xl">
-        <Breadcrumb items={[{label: "Hizmetler", href: "/hizmetler"}, {label: "Diploma Çevirisi"}]} />
+        <Breadcrumb items={[{label: "Hizmetler", href: "/"}, {label: "Diploma Çevirisi"}]} />
         <h1 className="text-4xl font-bold text-primary mb-4">Diploma ve Transkript Çevirisi | İngilizce-Türkçe Yeminli Tercüme</h1>
         <p className="text-xl text-muted-foreground mb-8">Diploma, transkript ve akademik belgelerinizin yeminli tercüman tarafından İngilizce veya Türkçe'ye çevirisi. Yurt dışı başvurular ve denklik işlemleri için hızlı, güvenilir ve doğru çeviri.</p>
         <div className="grid md:grid-cols-3 gap-6 mb-12">

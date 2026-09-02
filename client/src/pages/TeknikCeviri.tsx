@@ -39,7 +39,7 @@ export default function TeknikCeviri() {
         </div>
       </nav>
       <div className="container mx-auto px-4 py-12 max-w-4xl">
-        <Breadcrumb items={[{label: "Hizmetler", href: "/hizmetler"}, {label: "Teknik Çeviri"}]} />
+        <Breadcrumb items={[{label: "Hizmetler", href: "/"}, {label: "Teknik Çeviri"}]} />
         <h1 className="text-4xl font-bold text-primary mb-4">Teknik Çeviri Hizmeti | Denizli</h1>
         <p className="text-xl text-muted-foreground mb-8">İngilizce-Türkçe teknik belge çevirilerinde uzmanlaşmış profesyonel çeviri hizmetleri.</p>
         <div className="grid md:grid-cols-3 gap-6 mb-12">
@@ -121,7 +121,7 @@ export default function TeknikCeviri() {
 
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-primary mb-6">Teknik Çeviri Fiyatı 2026</h2>
-          <p className="text-muted-foreground leading-relaxed mb-4">Teknik çeviri fiyatı, belge türüne ve teknik zorluk derecesine göre belirlenir. Standart belgeler <strong>sayfa başı 350 TL'den</strong> başlar. Karmaşık teknik belgelerde fiyat farklılık gösterebilir.</p>
+          <p className="text-muted-foreground leading-relaxed mb-4">Teknik çeviri fiyatı, belge türüne ve teknik zorluk derecesine göre belirlenir. Standart belgeler <strong>sayfa başı 450 TL'den</strong> başlar. Karmaşık teknik belgelerde fiyat farklılık gösterebilir.</p>
           <p className="text-muted-foreground leading-relaxed mb-4">Fiyatı etkileyen faktörler:</p>
           <ul className="space-y-2 my-4 pl-6 list-disc text-muted-foreground">
             <li><strong>Belge türü:</strong> Kullanım kılavuzu, patent, MSDS gibi farklı belge türleri farklı zorluk derecesine sahiptir.</li>

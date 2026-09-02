@@ -113,6 +113,15 @@ export default function BlogHukukiCeviri() {
             <a href="/ingilizce-turkce-ceviri" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">İngilizce-Türkçe Çeviri</a>
           </div>
         </div>
-    </BlogLayout>
+    
+        <div className="bg-primary text-primary-foreground rounded-xl p-8 text-center mt-12">
+          <h2 className="text-2xl font-bold mb-4">Belgeniz İçin Teklif Alın</h2>
+          <p className="mb-6 opacity-90">Belgenizi gönderin, aynı gün içinde net teklif veririm.</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/teklif" className="px-8 py-3 bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg font-medium transition">Teklif Alın</a>
+            <a href="https://wa.me/905386295040" target="_blank" className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition">WhatsApp ile Ulaşın</a>
+          </div>
+        </div>
+      </BlogLayout>
   )
 }

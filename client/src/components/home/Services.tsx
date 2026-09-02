@@ -4,11 +4,12 @@ export default function Services() {
   return (
     <section id="services" className="py-20 md:py-32 bg-background">
       <div className="container mx-auto px-4" style={{ maxWidth: '1200px' }}>
-        <h2 className="text-center mb-4" style={{ fontFamily: '"Playfair Display", serif', fontSize: '36px', fontWeight: 700, color: 'var(--color-ink-black)', letterSpacing: '-0.02em' }}>Hizmetlerimiz</h2>
+        <h2 className="text-center mb-4" style={{ fontFamily: '"Libre Baskerville", serif', fontSize: '36px', fontWeight: 700, color: 'var(--color-heading)', letterSpacing: '-0.02em' }}>Hizmetlerimiz</h2>
         <p className="text-center mb-16 mx-auto" style={{ color: 'var(--color-mid-stone)', fontSize: '16px', lineHeight: 1.63, maxWidth: '600px' }}>
           İngilizce-Türkçe yeminli tercüme. Resmi belgeler ve vize evrakları için belgenizi gönderin, net teklif alın.
         </p>
 
+        <img src="/images/official-documents.webp" alt="Pasaport, diploma ve resmi belgelerin çeviri için hazırlanması" width={2176} height={1632} className="w-full rounded-2xl mb-12" style={{ maxHeight: "400px", objectFit: "cover" }} loading="lazy" />
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
             {
@@ -63,8 +64,8 @@ export default function Services() {
             <a key={idx} href={service.link} className="card-feature block no-underline hover:no-underline transition" style={{ transition: 'box-shadow 0.3s, transform 0.3s' }}
                onMouseEnter={e => { e.currentTarget.style.boxShadow = 'rgba(213, 208, 184, 0.4) 0px 8px 24px 0px'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
                onMouseLeave={e => { e.currentTarget.style.boxShadow = 'rgba(213, 208, 184, 0.4) 0px 2px 6px 0px'; e.currentTarget.style.transform = 'translateY(0)'; }}>
-              <service.icon className="mb-4" style={{ width: '28px', height: '28px', color: 'var(--color-editorial-teal)' }} />
-              <h3 style={{ fontFamily: '"Playfair Display", serif', fontSize: '20px', fontWeight: 500, marginBottom: '10px', color: 'var(--color-ink-black)' }}>{service.title}</h3>
+              <service.icon className="mb-4" style={{ width: '28px', height: '28px', color: 'var(--color-sage)' }} />
+              <h3 style={{ fontFamily: '"Libre Baskerville", serif', fontSize: '20px', fontWeight: 500, marginBottom: '10px', color: 'var(--color-heading)' }}>{service.title}</h3>
               <p style={{ color: 'var(--color-mid-stone)', fontSize: '14px', lineHeight: 1.63 }}>{service.description}</p>
             </a>
           ))}

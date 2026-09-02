@@ -12,6 +12,8 @@ import GalleryModal from "@/components/home/GalleryModal";
 import Process from "@/components/home/Process";
 import PricingPreview from "@/components/home/PricingPreview";
 import FAQ from "@/components/home/FAQ";
+import Portfolio from "@/components/home/Portfolio";
+import DenizliLocal from "@/components/home/DenizliLocal";
 
 export default function Home() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -114,6 +116,8 @@ export default function Home() {
         <WhyChooseUs />
         <PricingPreview />
         <Testimonials openGallery={openGallery} />
+        <Portfolio />
+        <DenizliLocal />
         <FAQ />
         <Contact formData={formData} handleChange={handleChange} handleSubmit={handleSubmit} submitStatus={submitStatus} />
       </main>

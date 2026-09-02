@@ -48,7 +48,7 @@ export default function BlogTeknikCeviri() {
 <p>Müşterilerimden biri, araç ruhsatı çevirisini Amerikan sigorta şirketine sunacaktı. Bu nedenle çeviriyi Amerikan İngilizcesine ve Amerikan formatına uyarladım. Hedef kitleyi bilmek, çevirinin kabulünü doğrudan etkiler.</p>
 
 <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">Teknik Çeviri Fiyatı 2026</h2>
-<p>Teknik çeviri fiyatı, belge türüne ve teknik zorluk derecesine göre belirlenir. Standart belgeler sayfa başı 350 TL'den başlar. Karmaşık teknik belgelerde fiyat farklılık gösterebilir. Net fiyat teklifi için belgenizin fotoğrafını WhatsApp üzerinden gönderin.</p>
+<p>Teknik çeviri fiyatı, belge türüne ve teknik zorluk derecesine göre belirlenir. Standart belgeler sayfa başı 450 TL'den başlar. Karmaşık teknik belgelerde fiyat farklılık gösterebilir. Net fiyat teklifi için belgenizin fotoğrafını WhatsApp üzerinden gönderin.</p>
 
 <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">Sonuç</h2>
 <p>Teknik çeviri, sadece dil bilmekle yapılabilecek bir iş değildir. Terminoloji tutarlılığı, güvenlik, format uyumluluğu, ölçü birimleri ve hedef kitleye uygun dil — bu beş noktaya dikkat etmek, teknik çevirinin kalitesini ve kabul edilebilirliğini belirler. Yukarıdaki gerçek vaka örnekleri de gösterdiği gibi, her detayın doğru olması kritiktir.</p>

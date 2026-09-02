@@ -22,13 +22,11 @@ export default function Navbar({ mobileOpen, setMobileOpen, servicesOpen, setSer
     <header className="sticky top-0 z-50">
       <nav className="bg-background/95 backdrop-blur-sm border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="text-2xl font-bold text-foreground cursor-pointer no-underline hover:no-underline" style={{ fontFamily: '"Playfair Display", serif', letterSpacing: '-0.02em' }} onClick={goHome}>Mazzgord</div>
+          <div className="text-2xl font-bold text-foreground cursor-pointer no-underline hover:no-underline" style={{ fontFamily: '"Libre Baskerville", serif', letterSpacing: '-0.02em' }} onClick={goHome}>Mazzgord</div>
           <div className="hidden md:flex gap-8 items-center">
             <div className="relative group">
               <span className="text-foreground hover:underline underline-offset-2 transition cursor-pointer flex items-center gap-1 no-underline hover:no-underline" style={{ fontWeight: 400 }}>Hizmetler <ChevronDown className="w-4 h-4" /></span>
               <div className="absolute top-full left-0 mt-2 w-56 bg-card border border-border rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 py-2" style={{ boxShadow: 'rgba(213, 208, 184, 0.4) 0px 4px 12px 0px' }}>
-                <a href="/hizmetler" className="block px-4 py-2 text-sm font-medium text-foreground hover:bg-secondary transition no-underline hover:no-underline">Tüm Hizmetler</a>
-                <div className="border-t border-border my-1"></div>
                 <a href="/yeminli-tercume" className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition no-underline hover:no-underline">Yeminli Tercüme</a>
                 <a href="/ingilizce-turkce-ceviri" className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition no-underline hover:no-underline">İngilizce-Türkçe Çeviri</a>
                 <a href="/teknik-ceviri" className="block px-4 py-2 text-sm text-foreground hover:bg-secondary transition no-underline hover:no-underline">Teknik Çeviri</a>
@@ -65,7 +63,6 @@ export default function Navbar({ mobileOpen, setMobileOpen, servicesOpen, setSer
             <button className="block w-full text-left px-4 py-3 text-foreground hover:bg-secondary rounded-lg text-lg no-underline hover:no-underline transition" onClick={() => setServicesOpen(!servicesOpen)}>Hizmetler <ChevronDown className={`w-4 h-4 inline transition-transform ${servicesOpen ? "rotate-180" : ""}`} /></button>
             {servicesOpen && (
               <div className="pl-4">
-                <a href="/hizmetler" className="block px-4 py-2 text-foreground font-medium hover:bg-secondary rounded-lg text-base no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Tüm Hizmetler</a>
                 <a href="/yeminli-tercume" className="block px-4 py-2 text-foreground hover:bg-secondary rounded-lg text-base no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Yeminli Tercüme</a>
                 <a href="/ingilizce-turkce-ceviri" className="block px-4 py-2 text-foreground hover:bg-secondary rounded-lg text-base no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>İngilizce-Türkçe Çeviri</a>
                 <a href="/teknik-ceviri" className="block px-4 py-2 text-foreground hover:bg-secondary rounded-lg text-base no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Teknik Çeviri</a>

@@ -10,17 +10,17 @@
   --radius-xl: 24px;
 
   /* === Canvas & Surfaces === */
-  --color-canvas-cream: #fdfcf5;
+  --color-canvas-cream: #F8F7F2;
   --color-paper-white: #ffffff;
   --color-soft-sand: #f5f3e9;
   --color-sandstone: #e5e2d0;
 
   /* === Ink & Text === */
-  --color-ink-black: #000000;
+  --color-ink-black: #17212B;
   --color-charcoal: #4c4c4a;
   --color-slate-black: #333231;
   --color-warm-gray: #7f7e7b;
-  --color-mid-stone: #656562;
+  --color-mid-stone: #3F4548;
 
   /* === Shadows & Borders === */
   --color-khaki-shadow: #edeadd;
@@ -31,6 +31,14 @@
   --color-ai-violet: #6938ef;
   --color-deep-violet: #6a27d9;
   --color-stamp-red: #f42c2b;
+
+  /* === Mazzgord Brand Palette === */
+  --color-heading: #17212B;
+  --color-heading-accent: #123F46;
+  --color-sage: #39756D;
+  --color-button: #111827;
+  --color-button-hover: #123F46;
+  --color-gold-detail: #A7834B;
 
   /* === Tailwind CSS Variable Mapping === */
   --color-background: var(--color-canvas-cream);
@@ -70,7 +78,7 @@
   }
   body {
     background-color: var(--color-canvas-cream);
-    color: var(--color-ink-black);
+    color: var(--color-body, var(--color-mid-stone));
     font-family: "Inter", system-ui, -apple-system, sans-serif;
     font-weight: 400;
     font-size: 16px;
@@ -79,11 +87,11 @@
     -moz-osx-font-smoothing: grayscale;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: "Playfair Display", "Georgia", serif;
+    font-family: "Libre Baskerville", "Georgia", serif;
     font-weight: 700;
     letter-spacing: -0.02em;
     line-height: 1.31;
-    color: var(--color-ink-black);
+    color: var(--color-heading);
   }
   h1 {
     font-size: 58px;
@@ -103,7 +111,7 @@
   p {
     font-size: 16px;
     line-height: 1.63;
-    color: var(--color-mid-stone);
+    color: var(--color-body, var(--color-mid-stone));
   }
   a {
     color: var(--color-ink-black);
@@ -156,7 +164,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background-color: var(--color-ink-black);
+    background-color: var(--color-button);
     color: var(--color-paper-white);
     font-family: "Inter", system-ui, sans-serif;
     font-weight: 600;
@@ -168,7 +176,7 @@
     text-decoration: none;
   }
   .btn-primary:hover {
-    opacity: 0.85;
+    background-color: var(--color-button-hover);
     text-decoration: none;
   }
   .btn-primary::after {
@@ -176,11 +184,55 @@
     opacity: 0.2;
   }
 
+  /* Secondary button — outline style */
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--color-heading);
+    font-family: "Inter", system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 8px 20px;
+    border-radius: 10000px;
+    border: 1px solid var(--color-sage);
+    transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+    text-decoration: none;
+  }
+  .btn-secondary:hover {
+    background-color: #E8F0ED;
+    border-color: var(--color-heading-accent);
+    color: var(--color-heading-accent);
+    text-decoration: none;
+  }
+
+  /* Section label — small uppercase tag */
+  .section-label {
+    font-family: "Inter", system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-sage);
+  }
+
+  /* Heading accent — keyword highlight in headings */
+  .heading-accent {
+    color: var(--color-heading-accent);
+  }
+
+  /* Decorative details — bronze/gold */
+  .decorative-line,
+  .decorative-icon {
+    color: var(--color-gold-detail);
+  }
+
   /* Secondary nav button */
   .btn-nav {
     display: inline-flex;
     align-items: center;
-    background-color: var(--color-ink-black);
+    background-color: var(--color-button);
     color: var(--color-paper-white);
     font-family: "Inter", system-ui, sans-serif;
     font-weight: 500;
@@ -192,7 +244,7 @@
     text-decoration: none;
   }
   .btn-nav:hover {
-    opacity: 0.85;
+    background-color: var(--color-button-hover);
     text-decoration: none;
   }
 
@@ -272,6 +324,7 @@
   --color-sandstone: #3a3a35;
 
   --color-ink-black: #f0efe8;
+  --color-heading: #f0efe8;
   --color-charcoal: #c8c7c0;
   --color-slate-black: #e0dfd8;
   --color-warm-gray: #a09e98;
@@ -284,6 +337,11 @@
   --color-ai-violet: #9b7ff5;
   --color-deep-violet: #8b5ff0;
   --color-stamp-red: #ff5454;
+  --color-heading-accent: #3ec4b5;
+  --color-sage: #5cb3a8;
+  --color-button: #A7834B;
+  --color-button-hover: #c9a86a;
+  --color-gold-detail: #c9a86a;
 
   --color-background: var(--color-canvas-cream);
   --color-foreground: var(--color-ink-black);

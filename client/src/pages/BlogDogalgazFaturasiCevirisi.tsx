@@ -86,7 +86,7 @@ export default function BlogDogalgazFaturasiCevirisi() {
 <p>Tek sayfalık bir fatura çevirisi <strong>birkaç saat içinde</strong> teslim edilebilir. Müşterimin doğalgaz faturası çevirisi, teklif onayından teslimata kadar yaklaşık 3 saatte tamamlandı. Belge net ve format talepleri net ise süre kısalır. Acil taleplerde aynı gün teslim mümkündür.</p>
 
 <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">Fatura Çevirisi Fiyatı 2026</h2>
-<p>Tek sayfalık bir fatura çevirisi <strong>350 TL'den</strong> başlar. Fiyatı etkileyen faktörler:</p>
+<p>Tek sayfalık bir fatura çevirisi <strong>450 TL'den</strong> başlar. Fiyatı etkileyen faktörler:</p>
 <ul className="space-y-2 my-4 pl-6 list-disc">
   <li><strong>Sayfa sayısı:</strong> Tek sayfalık faturalar en uygun fiyatlıdır.</li>
   <li><strong>Format uyarlama:</strong> Amerikan letter formatına uyarlama gibi özel talepler fiyata yansıyabilir.</li>

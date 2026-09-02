@@ -134,7 +134,7 @@ export default function Sepet() {
       <div className="min-h-screen bg-background">
         <nav className="sticky top-0 z-50 bg-background border-b border-border">
           <div className="container mx-auto px-4 py-4">
-            <a href="/hizmetler" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition">
+            <a href="/teklif" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition">
               <ArrowLeft className="w-5 h-5" /> Hizmetler
             </a>
           </div>
@@ -145,7 +145,7 @@ export default function Sepet() {
           </div>
           <h1 className="text-2xl font-bold text-foreground mb-2">Sepetiniz Boş</h1>
           <p className="text-muted-foreground mb-8">Henüz sepete hizmet eklenmedi.</p>
-          <a href="/hizmetler" className="inline-block px-8 py-4 bg-primary text-primary-foreground rounded-lg font-bold hover:bg-primary/90 transition">
+          <a href="/teklif" className="inline-block px-8 py-4 bg-primary text-primary-foreground rounded-lg font-bold hover:bg-primary/90 transition">
             Hizmetleri İncele
           </a>
         </div>
@@ -157,7 +157,7 @@ export default function Sepet() {
     <div className="min-h-screen bg-background">
       <nav className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="container mx-auto px-4 py-4">
-          <a href="/hizmetler" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition">
+          <a href="/teklif" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition">
             <ArrowLeft className="w-5 h-5" /> Hizmetler
           </a>
         </div>
@@ -329,7 +329,7 @@ export default function Sepet() {
         )}
 
         <div className="mt-8 text-center">
-          <a href="/hizmetler" className="text-primary hover:underline">← Hizmetlere geri dön</a>
+          <a href="/teklif" className="text-primary hover:underline">← Teklif formuna geri dön</a>
         </div>
       </div>
     </div>

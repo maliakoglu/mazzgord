@@ -28,7 +28,7 @@ export default function BlogYeminliTercume() {
               { "@type": "Question", "name": "Yeminli tercüme nedir?", "acceptedAnswer": { "@type": "Answer", "text": "Yeminli tercüme, noter huzurunda yemin etmiş yeminli tercümanlar tarafından yapılan, resmi kurumlarda geçerli olan çeviridir. Tercüman imzası ve kaşesi çevirinin doğruluğunu taahhüt eder." } },
               { "@type": "Question", "name": "Yeminli tercüme nerelerde kullanılır?", "acceptedAnswer": { "@type": "Answer", "text": "Vize başvuruları, göçmenlik işlemleri, üniversite başvuruları, mahkeme dosyaları, resmi ihaleler, şirket kuruluş işlemleri ve patent başvurularında yeminli tercüme istenir." } },
               { "@type": "Question", "name": "Yeminli tercüme ne kadar sürer?", "acceptedAnswer": { "@type": "Answer", "text": "Standart belgeler 1-3 iş günü içinde teslim edilir. Acil taleplerde aynı gün teslim kapasiteye bağlı olarak değerlendirilir." } },
-              { "@type": "Question", "name": "Yeminli tercüme fiyatı ne kadar?", "acceptedAnswer": { "@type": "Answer", "text": "Yeminli tercüme sayfa başı 350 TL'den başlar. Belge türü, sayfa sayısı ve teslim süresine göre fiyat değişir." } }
+              { "@type": "Question", "name": "Yeminli tercüme fiyatı ne kadar?", "acceptedAnswer": { "@type": "Answer", "text": "Yeminli tercüme sayfa başı 450 TL'den başlar. Belge türü, sayfa sayısı ve teslim süresine göre fiyat değişir." } }
             ]
           }
         ]
@@ -67,8 +67,8 @@ export default function BlogYeminliTercume() {
 <p>Ancak online hizmet verdiğim için Denizli dışından da müşterilerim var. İstanbul'dan, Ankara'dan, hatta yurt dışından belge gönderen müşterilerim var. Tüm süreci online yürütebilirsiniz.</p>
 
 <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">Yeminli Tercüme Fiyatı Nasıl Belirlenir?</h2>
-<p>Yeminli tercüme fiyatı belge türüne, sayfa sayısına, metin yoğunluğuna ve teslim süresine göre değişir. Sayfa başı <strong>350 TL'den</strong> başlayan fiyatlarla hizmet veriyorum. Diploma, transkript ve yoğun içerikli belgelerde fiyat farklılık gösterebilir. Kesin fiyat belge görüldükten sonra belirlenir.</p>
-<p>Geçen mart ayında İngiltere vize başvurusu için 9 belge çeviren müşteri, sayfa başı 350 TL üzerinden fiyatlandırdık. Müşteri 6 belge üzerinden teklif göndermemi istedi, kalan 3 belgeyi ertesi gün ileteceğini söyledi. Toplam 3 gün içinde tüm belgeler teslim edildi.</p>
+<p>Yeminli tercüme fiyatı belge türüne, sayfa sayısına, metin yoğunluğuna ve teslim süresine göre değişir. Sayfa başı <strong>450 TL'den</strong> başlayan fiyatlarla hizmet veriyorum. Diploma, transkript ve yoğun içerikli belgelerde fiyat farklılık gösterebilir. Kesin fiyat belge görüldükten sonra belirlenir.</p>
+<p>Geçen mart ayında İngiltere vize başvurusu için 9 belge çeviren müşteri, sayfa başı 450 TL üzerinden fiyatlandırdık. Müşteri 6 belge üzerinden teklif göndermemi istedi, kalan 3 belgeyi ertesi gün ileteceğini söyledi. Toplam 3 gün içinde tüm belgeler teslim edildi.</p>
 
 <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">Yeminli Tercüme Süresi</h2>
 <p>Standart belgeler çoğunlukla 1-3 iş günü içinde teslim edilir. Acil taleplerde aynı gün teslim kapasiteye bağlı olarak değerlendirilir (ek ücret uygulabilir). Belgenizi WhatsApp veya teklif formu üzerinden göndererek teslim süresi ve fiyat için net teklif alabilirsiniz.</p>
@@ -83,7 +83,7 @@ export default function BlogYeminliTercume() {
   <div className="p-5 bg-slate-50 rounded-lg border border-border"><h3 className="font-bold text-primary mb-2">Yeminli tercüme nedir?</h3><p className="text-muted-foreground">Yeminli tercüme, noter huzurunda yemin etmiş yeminli tercümanlar tarafından yapılan, resmi kurumlarda geçerli olan çeviridir. Tercüman imzası ve kaşesi çevirinin doğruluğunu taahhüt eder.</p></div>
   <div className="p-5 bg-slate-50 rounded-lg border border-border"><h3 className="font-bold text-primary mb-2">Yeminli tercüme nerelerde kullanılır?</h3><p className="text-muted-foreground">Vize başvuruları, göçmenlik işlemleri, üniversite başvuruları, mahkeme dosyaları, resmi ihaleler, şirket kuruluş işlemleri ve patent başvurularında yeminli tercüme istenir.</p></div>
   <div className="p-5 bg-slate-50 rounded-lg border border-border"><h3 className="font-bold text-primary mb-2">Yeminli tercüme ne kadar sürer?</h3><p className="text-muted-foreground">Standart belgeler 1-3 iş günü içinde teslim edilir. Acil taleplerde aynı gün teslim kapasiteye bağlı olarak değerlendirilir.</p></div>
-  <div className="p-5 bg-slate-50 rounded-lg border border-border"><h3 className="font-bold text-primary mb-2">Yeminli tercüme fiyatı ne kadar?</h3><p className="text-muted-foreground">Yeminli tercüme sayfa başı 350 TL'den başlar. Belge türü, sayfa sayısı ve teslim süresine göre fiyat değişir.</p></div>
+  <div className="p-5 bg-slate-50 rounded-lg border border-border"><h3 className="font-bold text-primary mb-2">Yeminli tercüme fiyatı ne kadar?</h3><p className="text-muted-foreground">Yeminli tercüme sayfa başı 450 TL'den başlar. Belge türü, sayfa sayısı ve teslim süresine göre fiyat değişir.</p></div>
 </div>
 
 <div className="mt-8 p-6 bg-secondary/30 rounded-xl border border-border">
@@ -93,6 +93,15 @@ export default function BlogYeminliTercume() {
     <a href="/vize-ceviri" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Vize Çeviri</a>
   </div>
 </div>
-    </BlogLayout>
+    
+        <div className="bg-primary text-primary-foreground rounded-xl p-8 text-center mt-12">
+          <h2 className="text-2xl font-bold mb-4">Belgeniz İçin Teklif Alın</h2>
+          <p className="mb-6 opacity-90">Belgenizi gönderin, aynı gün içinde net teklif veririm.</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/teklif" className="px-8 py-3 bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg font-medium transition">Teklif Alın</a>
+            <a href="https://wa.me/905386295040" target="_blank" className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition">WhatsApp ile Ulaşın</a>
+          </div>
+        </div>
+      </BlogLayout>
   );
 }

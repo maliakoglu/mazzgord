@@ -1,9 +1,13 @@
 import { Button } from "@/components/ui/button";
+import { track } from "@/lib/analytics";
 import { ArrowRight } from "lucide-react";
 
+import { useEffect } from "react";
+
 export default function PricingPreview() {
+  useEffect(() => { track.pricingView(); }, []);
   const items = [
-    { service: "Yeminli Tercüme", price: "1.000 TL'den başlayan", note: "Belge türü ve yoğunluğa göre" },
+    { service: "Yeminli Tercüme", price: "450 TL'den başlayan", note: "Belge türü ve yoğunluğa göre" },
     { service: "Noter Onaylı Tercüme", price: "Tercüme + gerçek noter bedeli", note: "Noter bedeli işlem öncesi teyit edilir" },
     { service: "Apostil Süreci", price: "350 TL'den başlayan işlem/takip", note: "Devlet apostil bedeli ayrı alınmaz" },
     { service: "Acil Teslim", price: "+%30-%50", note: "Aynı gün, kapasiteye bağlı" },

@@ -1,4 +1,66 @@
 # MAZZGORD Change Log
+### 2026-09-02 — Renk ve Tipografi Sistemi, Google Login, Yeni Sayfalar, Yeni Görseller
+
+**Renk ve Tipografi**
+
+* `client/src/index.css` — Yeni marka renk paleti: gece laciverti `#17212B` başlık, koyu petrol `#123F46` vurgu, sıcak kırık beyaz `#F8F7F2` zemin, kömür grisi `#3F4548` gövde, koyu adaçayı `#39756D` etiketler, derin kömür `#111827` CTA, bronz-altın `#A7834B` dekoratif. Yeni sınıflar: `.heading-accent`, `.section-label`, `.btn-secondary`, `.decorative-line`, `.decorative-icon`. Dark mode butonları altın/bronz.
+* `client/public/fonts/fonts.css` — Libre Baskerville (400 + 700) self-host edildi
+* `client/public/fonts/LibreBaskerville-400.ttf` + `LibreBaskerville-700.ttf` — yeni font dosyaları
+* 24 dosyada Playfair Display → Libre Baskerville geçişi (Hero, Navbar, Services, Process, About, WhyChooseUs, FAQ, Portfolio, Contact, Footer, MobileStickyCTA, DenizliLocal, NotFound + blog sayfaları)
+* 21 dosyada `--color-editorial-teal` → `--color-sage` geçişi
+* `client/src/components/home/Hero.tsx` — "İngilizce–Türkçe" `.heading-accent` vurgu; üst etiket `.section-label`; WhatsApp butonu `.btn-secondary`
+* `client/src/components/home/Process.tsx` — adım dairelerine hover animasyonu (koyu petrol + büyüme + gölge)
+
+**Google ile Giriş**
+
+* `client/src/pages/Giris.tsx` — Google OAuth login eklendi; şifre sıfırlama (forgot/reset) akışı eklendi; `googleReady` state, Google script lazy load
+* `routes/auth.js` — 3 yeni endpoint: `POST /api/auth/forgot-password`, `POST /api/auth/reset-password`, `POST /api/auth/google`; Google kullanıcısı şifre ile giremez kontrolü
+* `lib/seoProcessor.js` — CSP'ye `accounts.google.com` eklendi (script-src, connect-src, frame-src)
+* `wrangler.toml` — `GOOGLE_CLIENT_ID` env var eklendi
+* `client/index.html` — Google accounts DNS prefetch
+
+**Yeni Sayfalar ve Routing**
+
+* `client/src/App.tsx` — 10 yeni route eklendi: transkript-ceviri, adli-sicil-cevirisi, nufus-kayit-ornegi-cevirisi, acil-tercume, denizli-yeminli-tercume, denizli-noter-onayli-tercume, denizli-pasaport-tercumesi, denizli-diploma-tercumesi, denizli-vize-tercumesi, denizli-apostil-tercume
+* `client/src/pages/Hizmetler.tsx` — silindi (208 satır)
+* `lib/redirects.js` — `/hizmetler` → `/` ve `/ceviri` → `/` redirect
+* `prerender.py` — 10 yeni route eklendi (50 → 59), `/hizmetler` kaldırıldı
+* `scripts/generate_sitemap.py` — 10 yeni route + priority değerleri eklendi
+* `lib/seoData.js` — 10 yeni sayfa için SEO title/description; mevcut sayfalarda "çeviri bürosu" → "yeminli tercüman" güncellemesi; fiyat 350→450 TL
+* `lib/seoProcessor.js` — 10 yeni service page breadcrumb/SEO tanımı
+
+**SEO**
+
+* `client/src/components/Breadcrumb.tsx` — BreadcrumbList JSON-LD schema eklendi (dynamically injected)
+* `client/src/pages/Blog.tsx` — Blog altına CTA bölümü eklendi (Teklif Al + WhatsApp)
+* `client/src/pages/BlogNoterOnayliCeviri.tsx` — içerik güncellendi
+* `client/src/pages/BlogYeminliTercume.tsx` — içerik güncellendi
+
+**Yeni Görseller**
+
+* `public/images/hero-document-translation.webp` — Hero bölümü görseli
+* `public/images/official-documents.webp` — Services bölümü görseli
+* `public/images/apostille-notary.webp` — apostil/noter görseli
+* `public/images/online-translation.webp` — online çeviri görseli
+* `mazzgord gorseller/Mazzgord 2/` — görsel seti ve yerleşim önerileri dokümanı
+
+**Worker**
+
+* `worker.js` — yorum satırları temizlendi, kod daha sıkı hale getirildi
+
+**Cloudflare**
+
+* `mazzgordwebsite` (production) — deploy edildi
+* 68 new/modified asset yüklendi (182 total)
+* 59 route prerender edildi
+* Libre Baskerville TTF font dosyaları Workers Assets'e eklendi
+
+**Test**
+
+* Vite build: 1703 modül, 1.71s
+* Prerender: 59/59 sayfa render edildi
+* Dark mode buton görünürlüğü düzeltildi (altın/bronz)
+
 ### 2026-09-01 — Hero SEO Optimizasyonu ve Hedef Kitle Güncellemesi
 
 **Değişiklik**

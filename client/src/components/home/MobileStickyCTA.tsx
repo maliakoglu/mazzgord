@@ -1,17 +1,17 @@
 import { useLocation } from "wouter";
+import { track } from "@/lib/analytics";
 
 export default function MobileStickyCTA() {
   const [location] = useLocation();
 
   const tabs = [
     { path: "/", label: "Ana Sayfa", icon: "home" },
-    { path: "/hizmetler", label: "Hizmetler", icon: "services" },
     { path: "/teklif", label: "Teklif Al", icon: "form" },
     { path: "https://wa.me/905386295040?text=Merhaba,%20belgem%20için%20teklif%20almak%20istiyorum.", label: "WhatsApp", icon: "whatsapp", external: true },
   ];
 
   const renderIcon = (icon: string, active: boolean) => {
-    const color = active ? "var(--color-editorial-teal)" : "var(--color-warm-gray)";
+    const color = active ? "var(--color-sage)" : "var(--color-warm-gray)";
     if (icon === "home") {
       return (
         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -57,7 +57,7 @@ export default function MobileStickyCTA() {
               style={{ opacity: isActive ? 1 : 0.7 }}
             >
               {renderIcon(tab.icon, isActive)}
-              <span style={{ fontFamily: '"Inter", sans-serif', fontSize: '10px', fontWeight: isActive ? 600 : 500, color: isActive ? 'var(--color-editorial-teal)' : 'var(--color-warm-gray)' }}>
+              <span style={{ fontFamily: '"Inter", sans-serif', fontSize: '10px', fontWeight: isActive ? 600 : 500, color: isActive ? 'var(--color-sage)' : 'var(--color-warm-gray)' }}>
                 {tab.label}
               </span>
             </a>

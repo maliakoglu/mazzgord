@@ -88,3 +88,8 @@ id = "e7c4693b9f564f978a92898d96e25f1c"
 [observability.traces]
 enabled = true
 head_sampling_rate = 0.05
+
+
+
+[vars]
+GOOGLE_CLIENT_ID = "1026895491536-rcubkoj8unp8gtfefk8tueeg1a4mr10j.apps.googleusercontent.com"

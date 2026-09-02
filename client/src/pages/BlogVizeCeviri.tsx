@@ -70,7 +70,7 @@ export default function BlogVizeCeviri() {
 <p>Müşteri belgeleri göndermeye başladığında bir sorun çıktı: <strong>vukuatlı nüfus belgelerini yanlış çıkarmıştı</strong>. İki belgede de hata vardı. Bu tür durumlar çok yaygın — e-devlet üzerinden yanlış belge türü seçilebilir veya bilgiler eksik olabilir. <strong>Çeviri başlamadan önce belgelerin doğru ve eksiksiz olması şarttır.</strong> Yanlış belgeyi çevirmek hem zaman kaybı hem de maliyet demektir.</p>
 
 <h3 className="text-xl font-bold text-primary mt-8 mb-4">Fiyatlandırma ve Teslim</h3>
-<p>Sayfa başı 350 TL üzerinden fiyatlandırma yaptık. Müşteri 6 belge üzerinden teklif göndermemi istedi, kalan 3 belgeyi ertesi gün ileteceğini söyledi. 25 Mart randevusuna yetiştirmeyi taahhüt ettim. İlk 6 belgeyi bir günde çevirip teslim ettim. Toplam 9 belge 3 gün içinde tamamlandı.</p>
+<p>Sayfa başı 450 TL üzerinden fiyatlandırma yaptık. Müşteri 6 belge üzerinden teklif göndermemi istedi, kalan 3 belgeyi ertesi gün ileteceğini söyledi. 25 Mart randevusuna yetiştirmeyi taahhüt ettim. İlk 6 belgeyi bir günde çevirip teslim ettim. Toplam 9 belge 3 gün içinde tamamlandı.</p>
 
 <h3 className="text-xl font-bold text-primary mt-8 mb-4">Orijinal Belge ve Barkodlar</h3>
 <p>Teslim sırasında müşteri, belgelerin sonuna orijinal belgelerin eklenmemiş olmasını ve QR/barkodların görünmediğini fark edip uyardı. Bu önemli bir detay — bazı kurumlar orijinal belgeyi ve barkodları görmek isteyebilir. Orijinal belgeleri ekleyerek QR/barkodların görünmesini sağladım.</p>
@@ -86,7 +86,7 @@ export default function BlogVizeCeviri() {
 </ul>
 
 <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">İngiltere Vize Çevirisi Fiyatı 2026</h2>
-<p>İngiltere vize başvurusu için belge çevirisi fiyatı, <strong>sayfa başı 350 TL'den</strong> başlar. Fiyatı etkileyen faktörler:</p>
+<p>İngiltere vize başvurusu için belge çevirisi fiyatı, <strong>sayfa başı 450 TL'den</strong> başlar. Fiyatı etkileyen faktörler:</p>
 <ul className="space-y-2 my-4 pl-6 list-disc">
   <li><strong>Sayfa sayısı:</strong> Belge ne kadar çoksa, toplam maliyet o kadar artar.</li>
   <li><strong>Belge türü:</strong> Vukuatlı nüfus kayıt örneği gibi karmaşık belgeler daha fazla dikkat gerektirir.</li>

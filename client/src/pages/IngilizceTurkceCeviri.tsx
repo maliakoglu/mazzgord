@@ -39,7 +39,7 @@ export default function IngilizceTurkceCeviri() {
         </div>
       </nav>
       <div className="container mx-auto px-4 py-12 max-w-4xl">
-        <Breadcrumb items={[{label: "Hizmetler", href: "/hizmetler"}, {label: "İngilizce-Türkçe Çeviri"}]} />
+        <Breadcrumb items={[{label: "Hizmetler", href: "/"}, {label: "İngilizce-Türkçe Çeviri"}]} />
         <h1 className="text-4xl font-bold text-primary mb-4">İngilizce-Türkçe Çeviri Hizmeti | Denizli</h1>
         <p className="text-xl text-muted-foreground mb-8">İngilizce-Türkçe ve Türkçe-İngilizce profesyonel çeviri hizmetleri. Yeminli tercüme, teknik çeviri, akademik çeviri ve vize başvurusu çevirisi.</p>
         <div className="grid md:grid-cols-3 gap-6 mb-12">

@@ -49,7 +49,7 @@ export default function BlogCeviriSektoru() {
 <p>Online hizmet sunduğum için Denizli dışından da talep alıyorum. İstanbul, Ankara, İzmir ve hatta yurt dışından müşterilerim var. Belgenizi WhatsApp veya e-posta ile göndererek net teklif alabilirsiniz.</p>
 
 <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">Çeviri Fiyatları ve Süreç</h2>
-<p>Çeviri fiyatları belge türüne, dil çiftine, metin yoğunluğuna ve teslim süresine göre değişir. Yeminli tercüme sayfa başı 350 TL'den başlar. Noter onayı ve apostil süreçleri ayrı kalemler olarak fiyatlandırılır. Belgenizi inceledikten sonra kapsamı, teslim süresini ve ücretlendirmeyi açıkça paylaşırım.</p>
+<p>Çeviri fiyatları belge türüne, dil çiftine, metin yoğunluğuna ve teslim süresine göre değişir. Yeminli tercüme sayfa başı 450 TL'den başlar. Noter onayı ve apostil süreçleri ayrı kalemler olarak fiyatlandırılır. Belgenizi inceledikten sonra kapsamı, teslim süresini ve ücretlendirmeyi açıkça paylaşırım.</p>
 <p>Şeffaf fiyatlandırma, müşteri güveni için kritik. Müşteriye sürpriz ücret çıkarmamak esastır — bu yüzden teklifi baştan net veririm. Kesin fiyat belge görüldükten sonra belirlenir.</p>
 
 <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">Gelecek Öngörüleri</h2>
@@ -68,6 +68,15 @@ export default function BlogCeviriSektoru() {
     <a href="/ingilizce-turkce-ceviri" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">İngilizce-Türkçe Çeviri</a>
   </div>
 </div>
-    </BlogLayout>
+    
+        <div className="bg-primary text-primary-foreground rounded-xl p-8 text-center mt-12">
+          <h2 className="text-2xl font-bold mb-4">Belgeniz İçin Teklif Alın</h2>
+          <p className="mb-6 opacity-90">Belgenizi gönderin, aynı gün içinde net teklif veririm.</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/teklif" className="px-8 py-3 bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg font-medium transition">Teklif Alın</a>
+            <a href="https://wa.me/905386295040" target="_blank" className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition">WhatsApp ile Ulaşın</a>
+          </div>
+        </div>
+      </BlogLayout>
   );
 }

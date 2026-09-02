@@ -1,4 +1,5 @@
 import { Mail, Phone, MapPin } from "lucide-react";
+import { track } from "@/lib/analytics";
 
 interface ContactProps {
   formData: { name: string; email: string; phone: string; message: string };
@@ -11,7 +12,7 @@ export default function Contact({ formData, handleChange, handleSubmit, submitSt
   return (
     <section id="contact" className="py-20 md:py-32 parallax-yorumlar" style={{ backgroundColor: 'var(--color-soft-sand)' }}>
       <div className="container mx-auto px-4" style={{ maxWidth: '1200px' }}>
-        <h2 className="text-center mb-4" style={{ fontFamily: '"Playfair Display", serif', fontSize: '36px', fontWeight: 700, color: 'var(--color-ink-black)', letterSpacing: '-0.02em' }}>İletişim</h2>
+        <h2 className="text-center mb-4" style={{ fontFamily: '"Libre Baskerville", serif', fontSize: '36px', fontWeight: 700, color: 'var(--color-heading)', letterSpacing: '-0.02em' }}>İletişim</h2>
         <p className="text-center mb-16 mx-auto" style={{ color: 'var(--color-mid-stone)', fontSize: '16px', lineHeight: 1.63, maxWidth: '600px' }}>
           Çeviri ihtiyaçlarınız hakkında bilgi almak için bize ulaşın. Hızlı yanıt ve profesyonel danışmanlık.
         </p>
@@ -19,25 +20,25 @@ export default function Contact({ formData, handleChange, handleSubmit, submitSt
         <div className="grid md:grid-cols-2 gap-12">
           <div className="space-y-8">
             <div className="flex gap-4">
-              <Phone className="w-6 h-6 flex-shrink-0 mt-1" style={{ color: 'var(--color-editorial-teal)' }} />
+              <Phone className="w-6 h-6 flex-shrink-0 mt-1" style={{ color: 'var(--color-sage)' }} />
               <div>
-                <h3 style={{ fontFamily: '"Playfair Display", serif', fontSize: '18px', fontWeight: 500, marginBottom: '4px', color: 'var(--color-ink-black)' }}>Telefon</h3>
-                <a href="tel:+905386295040" style={{ color: 'var(--color-ink-black)', fontWeight: 600, textDecoration: 'underline', textUnderlineOffset: '2px' }}>+90 538 629 50 40</a>
-                <a href="https://wa.me/905386295040" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-warm-gray)', fontSize: '14px', display: 'block', marginTop: '4px' }}>WhatsApp üzerinden iletişim için tıklayın</a>
+                <h3 style={{ fontFamily: '"Libre Baskerville", serif', fontSize: '18px', fontWeight: 500, marginBottom: '4px', color: 'var(--color-heading)' }}>Telefon</h3>
+                <a href="tel:+905386295040" onClick={() => track.phoneClick()} style={{ color: 'var(--color-ink-black)', fontWeight: 600, textDecoration: 'underline', textUnderlineOffset: '2px' }}>+90 538 629 50 40</a>
+                <a href="https://wa.me/905386295040" target="_blank" rel="noopener noreferrer" onClick={() => track.whatsappClick("contact")} style={{ color: 'var(--color-warm-gray)', fontSize: '14px', display: 'block', marginTop: '4px' }}>WhatsApp üzerinden iletişim için tıklayın</a>
               </div>
             </div>
             <div className="flex gap-4">
-              <Mail className="w-6 h-6 flex-shrink-0 mt-1" style={{ color: 'var(--color-editorial-teal)' }} />
+              <Mail className="w-6 h-6 flex-shrink-0 mt-1" style={{ color: 'var(--color-sage)' }} />
               <div>
-                <h3 style={{ fontFamily: '"Playfair Display", serif', fontSize: '18px', fontWeight: 500, marginBottom: '4px', color: 'var(--color-ink-black)' }}>E-posta</h3>
-                <p style={{ color: 'var(--color-mid-stone)', fontSize: '15px' }}><a href="mailto:info@mazzgord.com" style={{ color: 'var(--color-ink-black)', textDecoration: 'underline', textUnderlineOffset: '2px' }}>info@mazzgord.com</a></p>
+                <h3 style={{ fontFamily: '"Libre Baskerville", serif', fontSize: '18px', fontWeight: 500, marginBottom: '4px', color: 'var(--color-heading)' }}>E-posta</h3>
+                <p style={{ color: 'var(--color-mid-stone)', fontSize: '15px' }}><a href="mailto:info@mazzgord.com" onClick={() => track.emailClick()} style={{ color: 'var(--color-ink-black)', textDecoration: 'underline', textUnderlineOffset: '2px' }}>info@mazzgord.com</a></p>
               </div>
             </div>
             <div className="flex flex-col gap-4">
               <div className="flex gap-4">
-                <MapPin className="w-6 h-6 flex-shrink-0 mt-1" style={{ color: 'var(--color-editorial-teal)' }} />
+                <MapPin className="w-6 h-6 flex-shrink-0 mt-1" style={{ color: 'var(--color-sage)' }} />
                 <div>
-                  <h3 style={{ fontFamily: '"Playfair Display", serif', fontSize: '18px', fontWeight: 500, marginBottom: '4px', color: 'var(--color-ink-black)' }}>Konum</h3>
+                  <h3 style={{ fontFamily: '"Libre Baskerville", serif', fontSize: '18px', fontWeight: 500, marginBottom: '4px', color: 'var(--color-heading)' }}>Konum</h3>
                   <p style={{ color: 'var(--color-mid-stone)', fontSize: '15px' }}>Denizli, Türkiye</p>
                 </div>
               </div>
@@ -77,7 +78,7 @@ export default function Contact({ formData, handleChange, handleSubmit, submitSt
               <button type="submit" className="btn-primary w-full" style={{ justifyContent: 'center', padding: '12px 24px', fontSize: '16px', border: 'none' }}>Gönder</button>
             </form>
             {submitStatus === "success" && (
-              <p style={{ color: 'var(--color-editorial-teal)', fontWeight: 600, marginTop: '16px', textAlign: 'center', fontSize: '14px' }}>Mesajınız başarıyla gönderildi! En kısa sürede size dönüş yapacağız.</p>
+              <p style={{ color: 'var(--color-sage)', fontWeight: 600, marginTop: '16px', textAlign: 'center', fontSize: '14px' }}>Mesajınız başarıyla gönderildi! En kısa sürede size dönüş yapacağız.</p>
             )}
             {submitStatus === "error" && (
               <p style={{ color: 'var(--color-stamp-red)', fontWeight: 600, marginTop: '16px', textAlign: 'center', fontSize: '14px' }}>Bir hata oluştu. Lütfen tekrar deneyin.</p>

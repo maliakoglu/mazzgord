@@ -34,7 +34,7 @@ export default function ApostilTercume() {
         </div>
       </nav>
       <div className="container mx-auto px-4 py-12 max-w-4xl">
-        <Breadcrumb items={[{ label: "Hizmetler", href: "/hizmetler" }, { label: "Apostil Tercüme" }]} />
+        <Breadcrumb items={[{ label: "Hizmetler", href: "/" }, { label: "Apostil Tercüme" }]} />
         <h1 className="text-4xl font-bold text-primary mb-4">Denizli Apostil Tercüme | Yeminli Çeviri ve Apostil İşlemleri</h1>
         <p className="text-xl text-muted-foreground mb-8">Denizli'de apostil tercüme hizmetleri. Yurt dışı işlemleriniz için yeminli tercüman tarafından çevrilmiş ve apostil tasdikli belgeler. Lahey Apostil Sözleşmesi kapsamında tüm ülkelerde geçerli.</p>
         <div className="grid md:grid-cols-3 gap-6 mb-12">

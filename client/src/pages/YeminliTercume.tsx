@@ -39,7 +39,7 @@ export default function YeminliTercume() {
         </div>
       </nav>
       <div className="container mx-auto px-4 py-12 max-w-4xl">
-        <Breadcrumb items={[{label: "Hizmetler", href: "/hizmetler"}, {label: "Yeminli Tercüme"}]} />
+        <Breadcrumb items={[{label: "Hizmetler", href: "/"}, {label: "Yeminli Tercüme"}]} />
         <h1 className="text-4xl font-bold text-primary mb-4">Denizli Yeminli Tercüman | Noter Onaylı Tercüme</h1>
         <p className="text-xl text-muted-foreground mb-8">Denizli'de profesyonel yeminli tercüme hizmetleri. Resmi belgeleriniz için güvenilir ve doğru çeviri çözümleri.</p>
         <div className="grid md:grid-cols-3 gap-6 mb-12">
@@ -136,7 +136,7 @@ export default function YeminliTercume() {
 
         <div className="bg-secondary/30 rounded-xl p-8 mb-8">
           <h2 className="text-2xl font-bold text-primary mb-4">Yeminli Tercüme Fiyatları 2026</h2>
-          <p className="text-muted-foreground leading-relaxed mb-4">Yeminli tercüme fiyatı <strong>sayfa başı 350 TL'den</strong> başlar. Fiyat; belgenin diline, sayfa veya karakter sayısına ve konusuna göre belirlenir. Özel içerikli belgelerde (hukuki, teknik, tıbbi) fiyat değişebilir.</p>
+          <p className="text-muted-foreground leading-relaxed mb-4">Yeminli tercüme fiyatı <strong>sayfa başı 450 TL'den</strong> başlar. Fiyat; belgenin diline, sayfa veya karakter sayısına ve konusuna göre belirlenir. Özel içerikli belgelerde (hukuki, teknik, tıbbi) fiyat değişebilir.</p>
           <div className="grid md:grid-cols-2 gap-4 mb-4">
             <div className="p-4 bg-card rounded-lg border border-border">
               <h3 className="font-bold text-primary mb-2">Fiyatı Etkileyen Faktörler</h3>

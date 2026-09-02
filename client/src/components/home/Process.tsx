@@ -30,7 +30,7 @@ export default function Process() {
   return (
     <section className="py-20 md:py-32" style={{ backgroundColor: 'var(--color-soft-sand)' }}>
       <div className="container mx-auto px-4" style={{ maxWidth: '1200px' }}>
-        <h2 className="text-center mb-4" style={{ fontFamily: '"Playfair Display", serif', fontSize: '36px', fontWeight: 700, color: 'var(--color-ink-black)', letterSpacing: '-0.02em' }}>Nasıl Çalışıyorum?</h2>
+        <h2 className="text-center mb-4" style={{ fontFamily: '"Libre Baskerville", serif', fontSize: '36px', fontWeight: 700, color: 'var(--color-heading)', letterSpacing: '-0.02em' }}>Nasıl Çalışıyorum?</h2>
         <p className="text-center mb-16 mx-auto" style={{ color: 'var(--color-mid-stone)', fontSize: '16px', lineHeight: 1.63, maxWidth: '600px' }}>
           Belgenizi göndermekten teslim almaya kadar beş adımda tamamlanır.
         </p>
@@ -38,10 +38,12 @@ export default function Process() {
           {steps.map((step, idx) => (
             <div key={idx} className="text-center">
               <div className="mx-auto mb-4 flex items-center justify-center"
-                   style={{ width: '48px', height: '48px', borderRadius: '10000px', backgroundColor: 'var(--color-ink-black)', color: 'var(--color-paper-white)', fontFamily: '"Playfair Display", serif', fontSize: '20px', fontWeight: 700 }}>
+                   style={{ width: '48px', height: '48px', borderRadius: '10000px', backgroundColor: 'var(--color-button)', color: 'var(--color-paper-white)', fontFamily: '"Libre Baskerville", serif', fontSize: '20px', fontWeight: 700, transition: 'background-color 250ms ease, transform 250ms ease, box-shadow 250ms ease', cursor: 'default' }}
+                   onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'var(--color-button-hover)'; e.currentTarget.style.transform = 'scale(1.12)'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(18, 63, 70, 0.3)'; }}
+                   onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'var(--color-button)'; e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = 'none'; }}>
                 {step.num}
               </div>
-              <h3 style={{ fontFamily: '"Playfair Display", serif', fontSize: '18px', fontWeight: 500, marginBottom: '8px', color: 'var(--color-ink-black)' }}>{step.title}</h3>
+              <h3 style={{ fontFamily: '"Libre Baskerville", serif', fontSize: '18px', fontWeight: 500, marginBottom: '8px', color: 'var(--color-heading)' }}>{step.title}</h3>
               <p style={{ color: 'var(--color-mid-stone)', fontSize: '14px', lineHeight: 1.63 }}>{step.desc}</p>
             </div>
           ))}

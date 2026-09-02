@@ -22,25 +22,18 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    // escapeHtml imported from lib/escapeHtml.js
-    // === REDIRECTS ===
     const redirectResponse = handleRedirects(url);
     if (redirectResponse) return redirectResponse;
 
 
-    // === API ENDPOINTS ===
 
-    // CORS headers imported from lib/cors.js
-    // Handle CORS preflight
     if (request.method === "OPTIONS") {
       return new Response(null, { headers: corsHeaders });
     }
 
-    // === RATE LIMITING (imported from lib/rateLimit.js) ===
     const rateLimitResponse = await checkRateLimit(request, env, path);
     if (rateLimitResponse) return rateLimitResponse;
 
-    // === CSRF KORUMASI — POST isteklerinde Origin/Referer kontrolü ===
     if (request.method === "POST" && !path.startsWith("/api/payment/") && !path.startsWith("/odeme/sonuc")) {
       const csrfOk = checkCsrf(request);
       if (!csrfOk) {
@@ -55,60 +48,45 @@ export default {
       }
     }
 
-    // POST /api/contact — imported from routes/contact.js
     if (path === "/api/contact" && request.method === "POST") {
       return handleContact(request, env);
     }
 
-    // POST /api/quote — imported from routes/quote.js
-    // GET /api/quote/:orderNo — public quote status (müşteri takibi)
     if ((path === "/api/quote" && request.method === "POST") || (path.startsWith("/api/quote/") && request.method === "GET" && !path.endsWith("/detail")) || (path === "/api/quote/send-code" && request.method === "POST") || (path === "/api/quote/verify-code" && request.method === "POST") || (path.match(/^\/api\/quote\/\d+\/(?:accept|reject|upload-document|review)$/) && request.method === "POST")) {
       return handleQuote(request, env, path, request.method);
     }
 
-    // POST /api/upload — imported from routes/upload.js
     if (path === "/api/upload" && request.method === "POST") {
       return handleUpload(request, env);
     }
 
-    // === ADMIN ENDPOINTS (imported from routes/admin.js) ===
     const adminResponse = await handleAdminRoute(path, request, env);
     if (adminResponse) return adminResponse;
 
-    // POST /api/calculate-price — imported from routes/calculatePrice.js
     if (path === "/api/calculate-price" && request.method === "POST") {
       return handleCalculatePrice(request, env);
     }
 
-    // /api/services & /api/admin/services — imported from routes/services.js
     const servicesResponse = await handleServicesRoute(path, request, env);
     if (servicesResponse) return servicesResponse;
 
-    // GET /api/iyzico/products.xml — iyzico XML feed (public)
     if (path === "/api/iyzico/products.xml" && request.method === "GET") {
       return handleXmlFeed(request, env);
     }
 
-    // === MÜŞTERİ AUTH & HESAP ===
-    // /api/auth/register, /api/auth/login
     const authResponse = await handleAuthRoute(path, request, env);
     if (authResponse) return authResponse;
 
-    // /api/account/profile, /api/account/orders, /api/account/files/:key
     const accountResponse = await handleAccountRoute(path, request, env);
     if (accountResponse) return accountResponse;
 
-    // /api/messages/order/:quoteId — Sipariş bazlı mesajlaşma
     const messagesResponse = await handleMessagesRoute(path, request, env);
     if (messagesResponse) return messagesResponse;
 
-    // POST /api/orders — Sepetten sipariş oluştur (public)
     const ordersResponse = await handleOrdersRoute(path, request, env);
     if (ordersResponse) return ordersResponse;
 
-    // === IYZICO ÖDEME ENDPOINT'LERİ ===
 
-    // === E-POSTA GÖNDERME (Resend API) ===
     async function sendPaymentEmails(env, payment, iyzicoPaymentId) {
       const resendKey = env.RESEND_API_KEY;
       if (!resendKey) {
@@ -120,7 +98,6 @@ export default {
       const amount = Number(payment.amount).toFixed(2);
       const date = new Date().toLocaleString("tr-TR", { timeZone: "Europe/Istanbul" });
 
-      // 1. Müşteriye e-posta
       const customerHtml = `
 <!DOCTYPE html><html><body style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333">
   <div style="background:#f8f9fa;padding:30px;border-radius:10px">
@@ -142,7 +119,6 @@ export default {
   </div>
 </body></html>`;
 
-      // 2. Admin'e e-posta
       const adminHtml = `
 <!DOCTYPE html><html><body style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333">
   <div style="background:#f8f9fa;padding:30px;border-radius:10px">
@@ -164,7 +140,6 @@ export default {
 </body></html>`;
 
       try {
-        // Müşteriye gönder
         await fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: {
@@ -179,7 +154,6 @@ export default {
           }),
         });
 
-        // Admin'e gönder
         await fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: {
@@ -199,7 +173,6 @@ export default {
       }
     }
 
-    // iyzico auth signature (V2) — SDK'ya birebir uygun
     async function iyzicoAuth(apiKey, secretKey, uri, body) {
       const random = String(Date.now()) + Math.random().toString(8).slice(2);
       const encoder = new TextEncoder();
@@ -219,7 +192,6 @@ export default {
       return { authHeader, random };
     }
 
-    // POST /api/payment/create — Admin: ödeme linki oluştur
     if (path === "/api/payment/create" && request.method === "POST") {
       try {
         if (!checkAdminAuth(request, env)) return unauthorizedResponse();
@@ -251,7 +223,6 @@ export default {
       }
     }
 
-    // GET /api/payment/:id — Müşteri: ödeme bilgisi getir
     if (path.startsWith("/api/payment/") && !path.startsWith("/api/payment/create") && !path.startsWith("/api/payment/verify") && !path.startsWith("/api/payment/callback") && request.method === "GET") {
       try {
         const linkId = path.replace("/api/payment/", "");
@@ -275,7 +246,6 @@ export default {
       }
     }
 
-    // POST /api/payment/initialize — Müşteri: iyzico 3D Secure başlat
     if (path === "/api/payment/initialize" && request.method === "POST") {
       try {
         const body = await request.json();
@@ -382,7 +352,6 @@ export default {
 
         const iyzicoData = await iyzicoResponse.json();
 
-        // Conversation ID'yi kaydet
         await env.DB.prepare(
           "UPDATE payments SET iyzico_conversation_id = ? WHERE payment_link_id = ?"
         ).bind(conversationId, payment_link_id).run();
@@ -411,7 +380,6 @@ export default {
       }
     }
 
-    // POST /api/payment/verify — 3D Secure dönüşünü doğrula
     if (path === "/api/payment/verify" && request.method === "POST") {
       try {
         const body = await request.json();
@@ -459,15 +427,12 @@ export default {
             "UPDATE payments SET status = 'paid', iyzico_payment_id = ?, paid_at = datetime('now') WHERE payment_link_id = ?"
           ).bind(iyzicoPaymentId, link_id).run();
 
-          // Ödeme başarılı — quote durumunu in_progress yap (DOCUMENT_ACCESS_GRANTED + IN_PROGRESS)
-          // Belge erişimi payments.status='paid' ile otomatik açılır (account.js kontrolü)
           if (payment.quote_id) {
             await env.DB.prepare(
               "UPDATE quotes SET order_status = 'in_progress' WHERE id = ? AND order_status NOT IN ('completed', 'delivered')"
             ).bind(payment.quote_id).run();
           }
 
-          // E-posta bildirimi gönder (müşteri + admin)
           try {
             await sendPaymentEmails(env, payment, iyzicoPaymentId);
           } catch (err) {
@@ -493,7 +458,6 @@ export default {
       }
     }
 
-    // POST /api/payment/refund — Admin: iyzico üzerinden iade
     if (path === "/api/payment/refund" && request.method === "POST") {
       try {
         if (!checkAdminAuth(request, env)) return unauthorizedResponse();
@@ -580,7 +544,6 @@ export default {
       }
     }
 
-    // GET /api/payments — Admin: tüm ödemeleri listele
     if (path === "/api/payments" && request.method === "GET") {
       try {
         if (!checkAdminAuth(request, env)) return unauthorizedResponse();
@@ -597,10 +560,8 @@ export default {
       }
     }
 
-    // POST /api/payment/webhook — iyzico ödeme bildirimleri (secret ile doğrulanmış)
     if (path === "/api/payment/webhook" && request.method === "POST") {
       try {
-        // Secret token doğrulaması
         const webhookSecret = env.WEBHOOK_SECRET;
         const providedSecret = url.searchParams.get("secret") || "";
         if (!webhookSecret || providedSecret !== webhookSecret) {
@@ -621,11 +582,9 @@ export default {
             await env.DB.prepare(
               "UPDATE payments SET status = 'paid', iyzico_payment_id = ?, paid_at = datetime('now') WHERE id = ?"
             ).bind(String(body.paymentId), payment.id).run();
-            // E-posta bildirimi gönder
             try { await sendPaymentEmails(env, payment, String(body.paymentId)); } catch (e) { console.log("Webhook e-posta hatası:", String(e)); }
           }
         }
-        // Token ile de ara
         if (body.status === "success" && body.token) {
           const payment = await env.DB.prepare(
             "SELECT * FROM payments WHERE payment_link_id = ?"
@@ -634,11 +593,9 @@ export default {
             await env.DB.prepare(
               "UPDATE payments SET status = 'paid', paid_at = datetime('now') WHERE id = ?"
             ).bind(payment.id).run();
-            // E-posta bildirimi gönder
             try { await sendPaymentEmails(env, payment, String(body.paymentId || body.token)); } catch (e) { console.log("Webhook e-posta hatası:", String(e)); }
           }
         }
-        // Başarısız ödeme
         if (body.status === "failure") {
           const payment = await env.DB.prepare(
             "SELECT * FROM payments WHERE iyzico_conversation_id = ?"
@@ -660,7 +617,6 @@ export default {
       }
     }
 
-    // iyzico callback POST handler — token'ı URL'e taşı ve GET redirect
     if ((path === "/odeme/sonuc" || path === "/odeme/sonuc/mobil") && request.method === "POST") {
       try {
         const formData = await request.formData();
@@ -670,10 +626,8 @@ export default {
         const status = formData.get("status") || callbackUrl.searchParams.get("status") || "";
         const linkId = formData.get("link") || callbackUrl.searchParams.get("link") || "";
 
-        // Mobil redirect — iyzico callback'inde mobil app scheme'e yonlendir
         const isMobile = path === "/odeme/sonuc/mobil" || callbackUrl.searchParams.get("mobile") === "1" || request.headers.get("X-Mazzgord-Mobile") === "1" || formData.get("mobile") === "1";
         if (isMobile) {
-          // Mobilde once backend'de verify yap, sonra scheme'e redirect
           let verifyStatus = status;
           if (token && linkId) {
             try {
@@ -732,7 +686,6 @@ export default {
           return Response.redirect(`mazzgord://payment-result?${mobileParams.toString()}`, 302);
         }
 
-        // GET redirect — SPA token'ı query param'dan okusun
         const params = new URLSearchParams();
         if (linkId) params.set("link", linkId);
         if (token) params.set("token", token);
@@ -745,7 +698,6 @@ export default {
       }
     }
 
-    // GET /api/pricing — Fiyat listesi (public)
     if (path === "/api/pricing" && request.method === "GET") {
       try {
         const result = await env.DB.prepare(
@@ -762,7 +714,6 @@ export default {
     }
 
 
-    // POST /api/chat — AI Çeviri Asistanı
     if (path === "/api/chat" && request.method === "POST") {
       try {
         const body = await request.json();
@@ -774,7 +725,6 @@ export default {
           });
         }
 
-        // --- KORUMA: Mesaj uzunluk ve adet limiti (token israfini onle) ---
         const MAX_MSG_LEN = 2000;
         const MAX_MSG_COUNT = 30;
         if (messages.length > MAX_MSG_COUNT) {
@@ -795,7 +745,6 @@ export default {
           });
         }
 
-        // --- KORUMA: Ayni mesaj 3 kez tekrari -> insana yonlendir ---
         const userMsgs = messages.filter(m => m.role === "user").map(m => m.content);
         if (userMsgs.length >= 3) {
           const last3 = userMsgs.slice(-3);
@@ -810,7 +759,6 @@ export default {
           }
         }
 
-        // D1'den tum pricing data cek (context icin)
         let pricingContext = "";
         try {
           const prices = await env.DB.prepare(
@@ -825,9 +773,8 @@ export default {
                 return line;
               }).join("\n");
           }
-        } catch(e) { /* pricing tablosu yoksa devam et */ }
+        } catch(e) {  }
 
-        // D1'den satis teklifi bilgilerini cek (sartlar, kapsam, iletisim)
         let proposalContext = "";
         try {
           const proposal = await env.DB.prepare(
@@ -837,7 +784,7 @@ export default {
             proposalContext = "\n\nSATIS TEKLIFI BILGILERI (müşteriye teklif/email oluştururken bunları referans al):\n" +
               proposal.results.map(p => `[${p.section}]: ${p.content}`).join("\n\n");
           }
-        } catch(e) { /* service_proposal tablosu yoksa devam et */ }
+        } catch(e) {  }
 
         const systemPrompt = `Sen Mazzgord Çeviri Hizmetleri'nin profesyonel AI satış danışmanısın. Denizli'de 15+ yıllık deneyimle çeviri hizmetleri sunan güvenilir bir firmayı temsil ediyorsun. Amacın müşteriye doğru bilgi vermek, güven oluşturmak ve teklif formuna yönlendirerek satışı kapatmak.
 
@@ -868,7 +815,7 @@ BLOG BİLGİLERİN (bu konularda bilgi sahibisin):
 
 FİYATLANDIRMA:
 - Aşağıdaki GÜNCEL FİYAT LİSTESİ'ni kullan. Fiyatlar SABİT'tir, sayfa başına değildir.
-- Fiyat sorulduğunda listedeki fiyatı ver, örnek: "Pasaport çevirisi yeminli 1000 TL'dir."
+- Fiyat sorulduğunda listedeki fiyatı ver, örnek: "Pasaport çevirisi yeminli 450 TL.dir."
 
 TESLİMAT:
 - Kısa belgeler (pasaport, diploma, vekaletname vb.): 3-5 iş günü
@@ -925,7 +872,7 @@ UÇ NOKTA SENARYOLARI (tuzaklara düşme, uyanık ol):
 - "Bana yeminli tercüman bağlayın" → "Yeminli tercümanlarımız size /teklif formunu doldurduktan sonra bağlanır. Formu doldurursanız hemen süreci başlatalım."
 - "Fiyat pazarlık yapar mısınız?" → "Fiyatlarımız belge türüne göre belirlenir. /teklif formundan özel teklif alabilirsiniz." Asla indirim vaat etme.
 - "Kaç yıldır yapıyorsunuz?" → "15+ yıllık deneyimimizle Denizli'de profesyonel çeviri hizmetleri sunuyoruz."
-- "Sabit telefonunuz var mı?" → "WhatsApp ve +90 538 629 50 40 numarasından bize ulaşabilirsiniz."
+- "Sabit telefonunuz var mı?" → "WhatsApp ve +90 538 629 50 40 numarasından bana ulaşabilirsiniz."
 - "Siz kimsiniz?" → "Ben Mazzgord Çeviri Hizmetleri'nin AI asistanıyım. Çeviri hizmetlerimiz hakkında size bilgi veriyor ve teklif sürecinizi hızlandırıyorum."
 - "Çeviri yapmadan önce ücret alıyor musunuz?" → "Ücretsiz teklif alabilirsiniz. Onayladıktan sonra iyzipay güvenli ödeme ile ödeme yaparsınız."
 - "Belgelerim gizli kalır mı?" → "Evet, tüm belgeleriniz gizli tutulur. Müşteri gizliliği önceliğimizdir."
@@ -935,10 +882,10 @@ UÇ NOKTA SENARYOLARI (tuzaklara düşme, uyanık ol):
 
 ÖZEL VE BİLİNMEYEN PROJELER (çok önemli):
 - Eğer müşteri standart belge türleri dışında bir şey sorarsa (kitap, film senaryosu, dizi, oyun, reklam, pazarlama metni, şiir, manga, çizgi roman vb.): ASLA "uzmanız", "profesyoneliz", "bu konuda uzmanlaşmış bir şirketiz" gibi ifadeler kullanma.
-- Bunun yerine şöyle de: "Bu tür özel projeler için sizi doğrudan ekibimize bağlayabilirim. info@mazzgord.com adresine yazabilir veya WhatsApp +90 538 629 50 40 numarasından ulaşabilirsiniz. Size özel çözüm sunalım."
+- Bunun yerine şöyle de: "Bu tür özel projeler için size doğrudan bilgi verebilirim. info@mazzgord.com adresine yazabilir veya WhatsApp +90 538 629 50 40 numarasından ulaşabilirsiniz. Size özel çözüm sunalım."
 - Asla bilmediğin bir proje türü için süre, fiyat veya detay uydurma. Sadece insana yönlendir.
-- Standart hizmetler (yeminli tercüme, teknik, akademik, vize, İngilizce-Türkçe) dışındaki her şey "özel proje" sayılır. Bu durumda kısa ve net ol: "Bu özel bir proje, sizi ekibimize bağlayayım" de ve iletişim bilgilerini ver.
-- Asla "3-5 iş günü" gibi standart süreler verme özel projeler için. "Süre projeye göre değişir, ekibimiz size detaylı bilgi verir" de.
+- Standart hizmetler (yeminli tercüme, teknik, akademik, vize, İngilizce-Türkçe) dışındaki her şey "özel proje" sayılır. Bu durumda kısa ve net ol: "Bu özel bir proje, size bilgi verelim" de ve iletişim bilgilerini ver.
+- Asla "3-5 iş günü" gibi standart süreler verme özel projeler için. "Süre projeye göre değişir, size detaylı bilgi veririm" de.
 
 YASAKLAR:
 - Asla "sayfa başına" veya "50-150 TL" gibi tahmini fiyatlar verme.
@@ -949,7 +896,6 @@ YASAKLAR:
 - Sadece İngilizce-Türkçe çeviri yaptığınızı belirt, başka dil sorduysa yönlendir.
 ${pricingContext}${proposalContext}`;
 
-        // AI'ya gonder — once Llama-3.3-70B, basarisiz olursa Llama-3.1-8B'ye fallback
         let reply = "";
         let aiResponse;
         try {
@@ -979,10 +925,9 @@ ${pricingContext}${proposalContext}`;
         }
 
         if (!reply) {
-          reply = "Su anda teknik bir sorun yasiyoruz. Lutfen info@mazzgord.com adresine e-posta gonderin veya +90 538 629 50 40 numarasindan bize ulasin.";
+          reply = "Su anda teknik bir sorun yasiyoruz. Lutfen info@mazzgord.com adresine e-posta gonderin veya +90 538 629 50 40 numarasindan bana ulasin.";
         }
 
-        // --- TOKEN LOG: Maliyet takibi ---
         const estInputTokens = Math.ceil((systemPrompt.length + messages.reduce((s, m) => s + (m.content || "").length, 0)) / 4);
         const estOutputTokens = Math.ceil((reply || "").length / 4);
 
@@ -1000,12 +945,10 @@ ${pricingContext}${proposalContext}`;
       }
     }
 
-    // /gtm/ ve /gtm isteklerini engelle
     if (path === "/gtm" || path.startsWith("/gtm/")) {
       return new Response("Not Found", { status: 404, headers: { "Content-Type": "text/plain" } });
     }
 
-    // robots.txt
     if (path === "/robots.txt") {
       return new Response(
         "User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /giris\nDisallow: /hesabim\nDisallow: /sepet\nDisallow: /odeme\nDisallow: /odeme/sonuc\nDisallow: /api/\n\n# AI Botlari\nUser-agent: GPTBot\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /\n\nUser-agent: CCBot\nAllow: /\n\nUser-agent: Google-Extended\nAllow: /\n\nUser-agent: anthropic-ai\nAllow: /\n\nUser-agent: YandexBot\nAllow: /\n\nUser-agent: DuckDuckBot\nAllow: /\n\nUser-agent: Bingbot\nAllow: /\n\nUser-agent: Slurp\nAllow: /\n\nSitemap: https://mazzgord.com/sitemap.xml",
@@ -1018,7 +961,6 @@ ${pricingContext}${proposalContext}`;
       );
     }
 
-    // sitemap.xml — sitemap index
     if (path === "/sitemap.xml") {
       const index = '<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <sitemap><loc>https://mazzgord.com/sitemap-pages.xml</loc></sitemap>\n  <sitemap><loc>https://mazzgord.com/sitemap-blog.xml</loc></sitemap>\n</sitemapindex>';
       return new Response(index, {
@@ -1026,7 +968,6 @@ ${pricingContext}${proposalContext}`;
       });
     }
 
-    // sitemap-pages.xml — ana sayfalar
     if (path === "/sitemap-pages.xml") {
       const pages = ["/", "/hakkimizda", "/yeminli-tercume", "/teknik-ceviri", "/akademik-ceviri", "/vize-ceviri", "/ingilizce-turkce-ceviri", "/pasaport-ceviri", "/diploma-ceviri", "/fiyatlar", "/hizmetler", "/blog", "/gizlilik", "/kullanim-kosullari", "/cerez-politikasi", "/sss", "/teklif", "/iletisim"];
       const today = new Date().toISOString().split("T")[0];
@@ -1039,7 +980,6 @@ ${pricingContext}${proposalContext}`;
       );
     }
 
-    // sitemap-blog.xml — blog yazıları
     if (path === "/sitemap-blog.xml") {
       const blogPosts = Object.keys(seoData).filter(p => p.startsWith("/blog/"));
       const today = new Date().toISOString().split("T")[0];
@@ -1079,11 +1019,9 @@ ${pricingContext}${proposalContext}`;
         }
       );
     }
-    // === SEO HTML PROCESSING (imported from lib/seoProcessor.js) ===
     return processResponse(response, path);
   },
 
-  // === CRON: R2 retention temizlik — süresi dolmuş dosyaları sil ===
   async scheduled(event, env) {
     try {
       const now = new Date();

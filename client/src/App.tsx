@@ -12,7 +12,6 @@ const About = lazy(() => import("@/pages/About"));
 const CookiePolicy = lazy(() => import("@/pages/CookiePolicy"));
 const SSS = lazy(() => import("@/pages/SSS"));
 const Fiyatlar = lazy(() => import("@/pages/Fiyatlar"));
-const Hizmetler = lazy(() => import("@/pages/Hizmetler"));
 const SiparisTakip = lazy(() => import("@/pages/SiparisTakip"));
 const Iletisim = lazy(() => import("@/pages/Iletisim"));
 const Giris = lazy(() => import("@/pages/Giris"));
@@ -24,6 +23,16 @@ const VizeCeviri = lazy(() => import("@/pages/VizeCeviri"));
 const IngilizceTurkceCeviri = lazy(() => import("@/pages/IngilizceTurkceCeviri"));
 const PasaportCeviri = lazy(() => import("@/pages/PasaportCeviri"));
 const DiplomaCeviri = lazy(() => import("@/pages/DiplomaCeviri"));
+const TranskriptCeviri = lazy(() => import("@/pages/TranskriptCeviri"));
+const AdliSicilCevirisi = lazy(() => import("@/pages/AdliSicilCevirisi"));
+const NufusKayitOrnegiCevirisi = lazy(() => import("@/pages/NufusKayitOrnegiCevirisi"));
+const AcilTercume = lazy(() => import("@/pages/AcilTercume"));
+const DenizliYeminliTercume = lazy(() => import("@/pages/DenizliYeminliTercume"));
+const DenizliNoterOnayliTercume = lazy(() => import("@/pages/DenizliNoterOnayliTercume"));
+const DenizliPasaportTercumesi = lazy(() => import("@/pages/DenizliPasaportTercumesi"));
+const DenizliDiplomaTercumesi = lazy(() => import("@/pages/DenizliDiplomaTercumesi"));
+const DenizliVizeTercumesi = lazy(() => import("@/pages/DenizliVizeTercumesi"));
+const DenizliApostilTercume = lazy(() => import("@/pages/DenizliApostilTercume"));
 const NoterOnayliTercume = lazy(() => import("@/pages/NoterOnayliTercume"));
 const ApostilTercume = lazy(() => import("@/pages/ApostilTercume"));
 const Blog = lazy(() => import("@/pages/Blog"));
@@ -58,7 +67,6 @@ function Router() {
       <Route path={"/cerez-politikasi"} component={CookiePolicy} />
       <Route path={"/sss"} component={SSS} />
       <Route path={"/fiyatlar"} component={Fiyatlar} />
-      <Route path={"/hizmetler"} component={Hizmetler} />
       <Route path={"/siparis"} component={SiparisTakip} />
       <Route path={"/iletisim"} component={Iletisim} />
       <Route path={"/giris"} component={Giris} />
@@ -70,6 +78,16 @@ function Router() {
       <Route path={"/ingilizce-turkce-ceviri"} component={IngilizceTurkceCeviri} />
       <Route path={"/pasaport-ceviri"} component={PasaportCeviri} />
       <Route path={"/diploma-ceviri"} component={DiplomaCeviri} />
+      <Route path={"/transkript-ceviri"} component={TranskriptCeviri} />
+      <Route path={"/adli-sicil-cevirisi"} component={AdliSicilCevirisi} />
+      <Route path={"/nufus-kayit-ornegi-cevirisi"} component={NufusKayitOrnegiCevirisi} />
+      <Route path={"/acil-tercume"} component={AcilTercume} />
+      <Route path={"/denizli-yeminli-tercume"} component={DenizliYeminliTercume} />
+      <Route path={"/denizli-noter-onayli-tercume"} component={DenizliNoterOnayliTercume} />
+      <Route path={"/denizli-pasaport-tercumesi"} component={DenizliPasaportTercumesi} />
+      <Route path={"/denizli-diploma-tercumesi"} component={DenizliDiplomaTercumesi} />
+      <Route path={"/denizli-vize-tercumesi"} component={DenizliVizeTercumesi} />
+      <Route path={"/denizli-apostil-tercume"} component={DenizliApostilTercume} />
       <Route path={"/noter-onayli-tercume"} component={NoterOnayliTercume} />
       <Route path={"/apostil-tercume"} component={ApostilTercume} />
       <Route path={"/blog"} component={Blog} />

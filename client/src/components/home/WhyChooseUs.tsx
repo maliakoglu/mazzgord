@@ -6,7 +6,7 @@ export default function WhyChooseUs() {
       <div className="container mx-auto px-4" style={{ maxWidth: '1200px' }}>
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 style={{ fontFamily: '"Playfair Display", serif', fontSize: '36px', fontWeight: 700, marginBottom: '32px', color: 'var(--color-ink-black)', letterSpacing: '-0.02em', lineHeight: 1.31 }}>Neden Benimle Çalışmalısınız?</h2>
+            <h2 style={{ fontFamily: '"Libre Baskerville", serif', fontSize: '36px', fontWeight: 700, marginBottom: '32px', color: 'var(--color-heading)', letterSpacing: '-0.02em', lineHeight: 1.31 }}>Neden Benimle Çalışmalısınız?</h2>
             <div className="space-y-6">
               {[
                 "Noter yeminli tercüman olarak resmi belgeler için yasal geçerlilik",
@@ -16,7 +16,7 @@ export default function WhyChooseUs() {
                 "Teslim öncesi isim, tarih, sayı ve kurum adları ikinci kez kontrol edilir",
               ].map((benefit, idx) => (
                 <div key={idx} className="flex gap-4">
-                  <CheckCircle2 className="w-6 h-6 flex-shrink-0 mt-1" style={{ color: 'var(--color-editorial-teal)' }} />
+                  <CheckCircle2 className="w-6 h-6 flex-shrink-0 mt-1" style={{ color: 'var(--color-sage)' }} />
                   <p style={{ color: 'var(--color-ink-black)', fontSize: '16px', lineHeight: 1.5 }}>{benefit}</p>
                 </div>
               ))}

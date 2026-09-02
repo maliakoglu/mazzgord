@@ -63,7 +63,7 @@ export default function BlogIngiltereVizeCeviri() {
 <p>Müşteri belgeleri göndermeye başladığında bir sorun çıktı: <strong>vukuatlı nüfus belgelerini yanlış çıkarmıştı</strong>. İki belgede de hata vardı. Müşteri bu belgeleri silip yeniden çıkarması gerektiğini belirtti. Bu tür durumlar çok yaygın — e-devlet üzerinden yanlış belge türü seçilebilir veya bilgiler eksik olabilir. <strong>Çeviri başlamadan önce belgelerin doğru ve eksiksiz olması şarttır.</strong> Yanlış belgeyi çevirmek hem zaman kaybı hem de maliyet demektir.</p>
 
 <h3 className="text-xl font-bold text-primary mt-8 mb-4">3. Fiyatlandırma ve Süre</h3>
-<p>Sayfa başı 350 TL üzerinden fiyatlandırma yaptık. Müşteri 6 belge üzerinden teklif göndermemi istedi, kalan 3 belgeyi ertesi gün ileteceğini söyledi. Toplamda 6 belge için teklif gönderdim ve müşteri onayladı. 25 Mart randevusuna yetiştirmeyi taahhüt ettim.</p>
+<p>Sayfa başı 450 TL üzerinden fiyatlandırma yaptık. Müşteri 6 belge üzerinden teklif göndermemi istedi, kalan 3 belgeyi ertesi gün ileteceğini söyledi. Toplamda 6 belge için teklif gönderdim ve müşteri onayladı. 25 Mart randevusuna yetiştirmeyi taahhüt ettim.</p>
 
 <h3 className="text-xl font-bold text-primary mt-8 mb-4">4. Teslim ve Teknik Sorun: Dijital İmza</h3>
 <p>İlk 6 belgeyi bir günde çevirip teslim ettim. Ancak son iki belgede teknik bir sorun çıktı: <strong>dijital imza programı hata verdi</strong>. Müşteri, belgelerin sonuna orijinal belgelerin eklenmemiş olmasını ve QR/barkodların görünmediğini fark edip uyardı — bu önemli bir detay, çünkü bazı kurumlar orijinal belgeyi ve barkodları görmek isteyebilir.</p>
@@ -86,7 +86,7 @@ export default function BlogIngiltereVizeCeviri() {
 </div>
 
 <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">İngiltere Vize Çevirisi Fiyatı 2026</h2>
-<p>İngiltere vize başvurusu için belge çevirisi fiyatı, <strong>sayfa başı 350 TL'den</strong> başlar. Fiyatı etkileyen faktörler:</p>
+<p>İngiltere vize başvurusu için belge çevirisi fiyatı, <strong>sayfa başı 450 TL'den</strong> başlar. Fiyatı etkileyen faktörler:</p>
 <ul className="space-y-2 my-4 pl-6 list-disc">
   <li><strong>Sayfa sayısı:</strong> Belge ne kadar çoksa, toplam maliyet o kadar artar.</li>
   <li><strong>Belge türü:</strong> Vukuatlı nüfus kayıt örneği gibi karmaşık belgeler daha fazla dikkat gerektirir.</li>

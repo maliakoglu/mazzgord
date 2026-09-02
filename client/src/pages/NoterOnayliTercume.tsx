@@ -34,7 +34,7 @@ export default function NoterOnayliTercume() {
         </div>
       </nav>
       <div className="container mx-auto px-4 py-12 max-w-4xl">
-        <Breadcrumb items={[{ label: "Hizmetler", href: "/hizmetler" }, { label: "Noter Onaylı Tercüme" }]} />
+        <Breadcrumb items={[{ label: "Hizmetler", href: "/" }, { label: "Noter Onaylı Tercüme" }]} />
         <h1 className="text-4xl font-bold text-primary mb-4">Denizli Noter Onaylı Tercüme | Yeminli Çeviri Hizmeti</h1>
         <p className="text-xl text-muted-foreground mb-8">Denizli'de noter onaylı tercüme hizmetleri. Pasaport, diploma, vize belgeleri ve resmi evraklarınız için yeminli tercüman tarafından yapılan, noter tasdikli çeviri.</p>
         <div className="grid md:grid-cols-3 gap-6 mb-12">
@@ -42,6 +42,7 @@ export default function NoterOnayliTercume() {
           <div className="flex gap-4 p-6 bg-card rounded-xl border border-border"><Shield className="w-8 h-8 text-primary flex-shrink-0" /><div><h3 className="font-bold mb-2">Resmi Geçerlilik</h3><p className="text-muted-foreground text-sm">Noter onaylı tercüme tüm resmi kurumlarda geçerlidir.</p></div></div>
           <div className="flex gap-4 p-6 bg-card rounded-xl border border-border"><Clock className="w-8 h-8 text-primary flex-shrink-0" /><div><h3 className="font-bold mb-2">Hızlı Süreç</h3><p className="text-muted-foreground text-sm">Çeviri ve noter onayı aynı gün içinde tamamlanabilir.</p></div></div>
         </div>
+        <img src="/images/apostille-notary.webp" alt="Noter onaylı tercüme ve apostil sürecini temsil eden mühürlü belge" width={1632} height={2176} className="w-full max-w-sm mx-auto rounded-2xl mb-8" style={{ maxHeight: "500px", objectFit: "cover" }} loading="lazy" />
         <div className="bg-secondary/30 rounded-xl p-8 mb-8">
           <h2 className="text-2xl font-bold text-primary mb-4">Noter Onaylı Tercüme Nedir?</h2>
           <p className="text-muted-foreground leading-relaxed mb-4">Noter onaylı tercüme, yeminli tercüman tarafından yapılan çevirinin, noter huzurunda imzalanarak resmi olarak tasdik edilmesidir. Bu işlem, çevirinin doğruluğunu ve yeminli tercümanın yetkisini resmi olarak belgeler. Noter onaylı tercüme, özellikle yurt dışı işlemlerinde, vize başvurularında, göçmenlik dosyalarında ve resmi kurum işlemlerinde istenir.</p>

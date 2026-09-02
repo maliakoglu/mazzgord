@@ -1,4 +1,19 @@
 /* Self-hosted fonts — eliminates Google Fonts round trip */
+/* Libre Baskerville — heading font (replaces Playfair Display) */
+@font-face {
+  font-family: 'Libre Baskerville';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/LibreBaskerville-400.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Libre Baskerville';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/fonts/LibreBaskerville-700.ttf) format('truetype');
+}
 @font-face {
   font-family: 'Inter';
   font-style: normal;

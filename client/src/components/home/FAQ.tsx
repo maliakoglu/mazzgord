@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { track } from "@/lib/analytics";
 import { ChevronDown } from "lucide-react";
 
 export default function FAQ() {
@@ -26,7 +27,7 @@ export default function FAQ() {
   return (
     <section className="py-20 md:py-32" style={{ backgroundColor: "var(--color-soft-sand)" }}>
       <div className="container mx-auto px-4" style={{ maxWidth: "800px" }}>
-        <h2 className="text-center mb-4" style={{ fontFamily: "\"Playfair Display\", serif", fontSize: "36px", fontWeight: 700, color: "var(--color-ink-black)", letterSpacing: "-0.02em" }}>Sıkça Sorulan Sorular</h2>
+        <h2 className="text-center mb-4" style={{ fontFamily: "\"Libre Baskerville\", serif", fontSize: "36px", fontWeight: 700, color: 'var(--color-heading)', letterSpacing: "-0.02em" }}>Sıkça Sorulan Sorular</h2>
         <p className="text-center mb-12 mx-auto" style={{ color: "var(--color-mid-stone)", fontSize: "16px", lineHeight: 1.63, maxWidth: "600px" }}>
           Aklınıza takılan sorular için buraya bakabilirsiniz.
         </p>
