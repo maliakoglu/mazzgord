@@ -18,7 +18,10 @@ type EventName =
   | "email_click"
   | "service_page_cta_click"
   | "pricing_view"
-  | "faq_opened";
+  | "faq_opened"
+  | "scroll_depth"
+  | "page_time"
+  | "form_abandoned";
 
 export function trackEvent(name: EventName, params?: Record<string, unknown>): void {
   // Kişisel belge içeriğini analitiğe aktarma — yalnızca anonim olay bilgisi
@@ -55,4 +58,7 @@ export const track = {
   servicePageCtaClick: (service?: string) => trackEvent("service_page_cta_click", { service }),
   pricingView: () => trackEvent("pricing_view"),
   faqOpened: (question?: string) => trackEvent("faq_opened", { question }),
+  scrollDepth: (depth: number) => trackEvent("scroll_depth", { depth }),
+  pageTime: (seconds: number) => trackEvent("page_time", { seconds }),
+  formAbandoned: (step?: string) => trackEvent("form_abandoned", { step }),
 };

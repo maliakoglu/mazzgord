@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import { usePageAnalytics } from "@/lib/useAnalytics";
 const Toaster = lazy(() => import("@/components/ui/sonner").then(m => ({ default: m.Toaster })));
 const TooltipProvider = lazy(() => import("@/components/ui/tooltip").then(m => ({ default: m.TooltipProvider })));
 import { blogRegistry } from "@/data/blogRegistry";
@@ -53,6 +54,7 @@ function BlogRoute() {
 }
 
 function Router() {
+  usePageAnalytics();
   return (
     <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" /></div>}>
     <Switch>

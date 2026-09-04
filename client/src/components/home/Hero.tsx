@@ -30,7 +30,7 @@ export default function Hero() {
           Noter Yeminli <span className="heading-accent">İngilizce–Türkçe</span> Tercüme
         </h1>
         <span className="fade-up fade-up-delay-1 block" style={{ fontFamily: '"Libre Baskerville", serif', fontSize: 'clamp(1.1rem, 4vw, 1.5rem)', fontWeight: 500, marginBottom: '24px', color: 'var(--color-charcoal)' }}>
-          İngilizce-Türkçe Resmi Belge ve Vize Çevirisi
+          {subtitleText}
         </span>
         <p className="fade-up fade-up-delay-2" style={{ fontSize: 'clamp(0.95rem, 3.5vw, 1.1rem)', color: 'var(--color-mid-stone)', maxWidth: '680px', margin: '0 auto 40px', lineHeight: 1.63 }}>
           Yeminli tercüman güvencesiyle pasaport, diploma, transkript, vize evrakı ve adli sicil belgelerinizi hızla çeviriyorum. Noter onaylı çeviri ve apostil çeviri takibini sizin yerinize tamamlıyorum. Zaman kaybetmeyin; belgenizi WhatsApp'tan gönderin, net teklifinizi hemen alın.

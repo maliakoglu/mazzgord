@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ArrowLeft, Upload, FileText, CheckCircle2, Loader2, X, Globe, Clock, FileType, Mail, Phone, User } from "lucide-react";
 import { track } from "@/lib/analytics";
 
@@ -76,7 +76,23 @@ export default function TeklifFormu() {
     meeting_time: "",
   });
 
+  const interactedRef = useRef(false);
+
+  // Form terk takibi — kullanici formu doldurmaya basladiysa ve sayfadan ayrilirsa
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (interactedRef.current && submitStatus !== "success") {
+        track.formAbandoned("form");
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [submitStatus]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    if (!interactedRef.current) {
+      interactedRef.current = true;
+    }
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
