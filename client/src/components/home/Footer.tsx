@@ -11,7 +11,15 @@ export default function Footer() {
         <div className="grid md:grid-cols-5 gap-8 mb-8">
           <div>
             <h4 style={{ fontFamily: '"Libre Baskerville", serif', fontSize: '18px', fontWeight: 700, marginBottom: '16px' }}>Mazzgord</h4>
-            <p style={{ fontSize: '14px', lineHeight: 1.63, color: 'rgba(255,255,255,0.7)' }}>Yeminli tercüme ve resmi belge çevirisi</p>
+            <p style={{ fontSize: '14px', lineHeight: 1.63, color: 'rgba(255,255,255,0.7)', marginBottom: '16px' }}>Yeminli tercüme ve resmi belge çevirisi</p>
+            <img
+              src="/images/denizli-pamukkale-horoz-armasi.png"
+              alt="Denizli Pamukkale Horoz Amblemi"
+              width={300}
+              height={300}
+              style={{ width: '100%', maxWidth: '200px', height: 'auto', borderRadius: '12px', opacity: 0.9 }}
+              loading="lazy"
+            />
           </div>
           <div>
             <h4 style={{ fontFamily: '"Inter", sans-serif', fontSize: '14px', fontWeight: 700, marginBottom: '16px' }}>Hizmetler</h4>

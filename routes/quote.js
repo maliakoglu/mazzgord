@@ -406,7 +406,7 @@ export async function handleQuote(request, env, path = "", method = "POST") {
     const validation = validateBody(quoteSchema, body);
     if (!validation.success) return validation.response;
 
-    const { name, email, phone, source_language, target_language, document_type, page_count, notes, file_key, service_type, urgency, delivery_method, word_count, yeminli, noter_onay } = validation.data;
+    const { name, email, phone, source_language, target_language, document_type, page_count, notes, file_key, service_type, urgency, delivery_method, word_count, yeminli, noter_onay, meeting_day, meeting_time } = validation.data;
 
     // Auth token varsa e-posta dogrulamayi atla (mobil giris yapmis kullanici)
     const authCustomer = await getCustomerFromRequest(request, env);
@@ -420,7 +420,7 @@ export async function handleQuote(request, env, path = "", method = "POST") {
     }
 
     const delivery = delivery_method || 'digital';
-    const address = delivery === 'shipping' ? (validation.data.shipping_address || null) : null;
+    const address = (delivery === 'shipping' || delivery === 'hand_delivery') ? (validation.data.shipping_address || null) : null;
 
     // Idempotency kontrolü — aynı anahtarla 60sn içinde tekrar gönderim engelle
     const idempotencyKey = validation.data.idempotency_key;
@@ -436,14 +436,14 @@ export async function handleQuote(request, env, path = "", method = "POST") {
 
     const orderToken = crypto.randomUUID();
     await env.DB.prepare(
-      "INSERT INTO quotes (name, email, phone, source_language, target_language, document_type, page_count, notes, file_key, service_type, urgency, delivery_method, word_count, yeminli, noter_onay, order_status, shipping_address, notary_need, apostille_need, target_country, delivery_date, order_token, customer_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?)"
+      "INSERT INTO quotes (name, email, phone, source_language, target_language, document_type, page_count, notes, file_key, service_type, urgency, delivery_method, word_count, yeminli, noter_onay, order_status, shipping_address, notary_need, apostille_need, target_country, delivery_date, meeting_day, meeting_time, order_token, customer_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?)"
     ).bind(
       name, email, phone || null, source_language, target_language,
       document_type || null, page_count || null, notes || null, file_key || null,
       service_type || null, urgency, delivery,
       word_count || null, yeminli ? 1 : 0, noter_onay ? 1 : 0, address,
       validation.data.notary_need || null, validation.data.apostille_need || null, validation.data.target_country || null,
-      validation.data.delivery_date || null, orderToken, authCustomer ? authCustomer.customerId : null
+      validation.data.delivery_date || null, meeting_day || null, meeting_time || null, orderToken, authCustomer ? authCustomer.customerId : null
     ).run();
 
     // Sipariş numarası oluştur

@@ -414,3 +414,20 @@
   .hover-lift:hover { transform: none !important; }
   .page-transition { animation: none !important; }
 }
+
+
+
+@media (max-width: 767px) {
+  .ad-banner {
+    transform: scale(0.42);
+    transform-origin: center center;
+    width: 728px;
+    height: 90px;
+  }
+  .ad-banner-wrap {
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+}

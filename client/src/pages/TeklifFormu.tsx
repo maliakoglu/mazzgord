@@ -72,6 +72,8 @@ export default function TeklifFormu() {
     apostille_need: "",
     target_country: "",
     delivery_date: "",
+    meeting_day: "",
+    meeting_time: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -129,6 +131,10 @@ export default function TeklifFormu() {
       alert("Kargo teslimatı için adres gereklidir.");
       return;
     }
+    if (formData.delivery_method === "hand_delivery" && !formData.shipping_address.trim()) {
+      alert("Elden teslimat için buluşma yeri gereklidir.");
+      return;
+    }
     track.offerFormStarted();
     setSubmitStatus("sending");
     const idempotencyKey = crypto.randomUUID();
@@ -143,13 +149,15 @@ export default function TeklifFormu() {
           word_count: formData.word_count ? parseInt(formData.word_count) : null,
           file_key: fileKey || null,
           delivery_method: formData.delivery_method,
-          shipping_address: formData.delivery_method === "shipping" ? formData.shipping_address : null,
+          shipping_address: (formData.delivery_method === "shipping" || formData.delivery_method === "hand_delivery") ? formData.shipping_address : null,
           yeminli: formData.service_type === "yeminli" || formData.service_type === "noter",
           noter_onay: formData.service_type === "noter",
           notary_need: formData.notary_need || null,
           apostille_need: formData.apostille_need || null,
           target_country: formData.target_country || null,
           delivery_date: formData.delivery_date || null,
+          meeting_day: formData.delivery_method === "hand_delivery" ? (formData.meeting_day || null) : null,
+          meeting_time: formData.delivery_method === "hand_delivery" ? (formData.meeting_time || null) : null,
           idempotency_key: idempotencyKey,
         }),
       });
@@ -167,7 +175,8 @@ export default function TeklifFormu() {
           `Sayfa Sayısı: ${formData.page_count || "Belirtilmedi"}\n` +
           `Kelime Sayısı: ${formData.word_count || "Belirtilmedi"}\n` +
           `Aciliyet: ${URGENCY_OPTIONS.find(u => u.value === formData.urgency)?.label || formData.urgency}\n` +
-          `Teslimat: ${formData.delivery_method === "shipping" ? "Kargo" : "Dijital (E-posta)"}\n` +
+          `Teslimat: ${formData.delivery_method === "shipping" ? "Kargo" : formData.delivery_method === "hand_delivery" ? "Elden Teslim" : "Dijital (E-posta)"}\n` +
+          (formData.delivery_method === "hand_delivery" && formData.meeting_day ? `Tarih: ${formData.meeting_day}${formData.meeting_time ? " " + formData.meeting_time : ""}\n` : "") +
           `Dosya: ${fileName || "Yüklenmedi"}\n` +
           `Notlar: ${formData.notes || "Yok"}`,
         access_key: "bcd1bf4b-064e-4e56-83f7-5dc9aaf5d74c",
@@ -224,8 +233,10 @@ export default function TeklifFormu() {
 ` +
           `*Aciliyet:* ${urgencyLabel}
 ` +
-          `*Teslimat:* ${formData.delivery_method === "shipping" ? "Kargo" : "Dijital (E-posta)"}
+          `*Teslimat:* ${formData.delivery_method === "shipping" ? "Kargo" : formData.delivery_method === "hand_delivery" ? "Elden Teslim" : "Dijital (E-posta)"}
 ` +
+          (formData.delivery_method === "hand_delivery" && formData.meeting_day ? `*Tarih:* ${formData.meeting_day}${formData.meeting_time ? " " + formData.meeting_time : ""}
+` : "") +
           (formData.notes ? `*Notlar:* ${formData.notes}
 ` : "") +
           (fileName ? `*Dosya:* ${fileName}
@@ -243,6 +254,7 @@ mazzgord.com`;
           document_type: "", service_type: "", page_count: "", word_count: "",
           urgency: "standart", delivery_method: "digital", shipping_address: "", notes: "",
           notary_need: "", apostille_need: "", target_country: "", delivery_date: "",
+          meeting_day: "", meeting_time: "",
         });
         removeFile();
         // Başarı ekranı kalıcı — kullanıcı manuel olarak yeni teklif verebilir
@@ -484,7 +496,7 @@ mazzgord.com`;
               </div>
               <div>
                 <label className={labelClass}>Teslimat Yöntemi <span className="text-red-500">*</span></label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <button type="button"
                     onClick={() => setFormData({ ...formData, delivery_method: "digital" })}
                     className={`flex items-center gap-3 p-4 border-2 rounded-lg transition text-left ${formData.delivery_method === "digital" ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"}`}>
@@ -507,6 +519,17 @@ mazzgord.com`;
                       <div className="text-xs text-muted-foreground">Fiziksel belge gönderimi</div>
                     </div>
                   </button>
+                  <button type="button"
+                    onClick={() => setFormData({ ...formData, delivery_method: "hand_delivery" })}
+                    className={`flex items-center gap-3 p-4 border-2 rounded-lg transition text-left ${formData.delivery_method === "hand_delivery" ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"}`}>
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${formData.delivery_method === "hand_delivery" ? "border-primary" : "border-muted-foreground"}`}>
+                      {formData.delivery_method === "hand_delivery" && <div className="w-2.5 h-2.5 rounded-full bg-primary" />}
+                    </div>
+                    <div>
+                      <div className="font-medium text-foreground text-sm">Elden Teslim</div>
+                      <div className="text-xs text-muted-foreground">Belirlenen noktada buluşma</div>
+                    </div>
+                  </button>
                 </div>
               </div>
               {formData.delivery_method === "shipping" && (
@@ -516,6 +539,29 @@ mazzgord.com`;
                     rows={3}
                     className={inputClass + " resize-none"}
                     placeholder="Ad Soyad, Mahalle, Sokak, Bina No, İlçe, İl, Posta Kodu" />
+                </div>
+              )}
+              {formData.delivery_method === "hand_delivery" && (
+                <div>
+                  <label className={labelClass}>Buluşma Yeri / Bölge <span className="text-red-500">*</span></label>
+                  <textarea name="shipping_address" value={formData.shipping_address} onChange={handleChange}
+                    rows={2}
+                    className={inputClass + " resize-none"}
+                    placeholder="Örn: Denizli Merkez, Çınar Meydanı çevresi" />
+                </div>
+              )}
+              {formData.delivery_method === "hand_delivery" && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className={labelClass}>Tercih Edilen Gün</label>
+                    <input type="date" name="meeting_day" value={formData.meeting_day} onChange={handleChange}
+                      className={inputClass} />
+                  </div>
+                  <div>
+                    <label className={labelClass}>Tercih Edilen Saat</label>
+                    <input type="time" name="meeting_time" value={formData.meeting_time} onChange={handleChange}
+                      className={inputClass} />
+                  </div>
                 </div>
               )}
             </div>

@@ -22,11 +22,20 @@ export default function WhyChooseUs() {
               ))}
             </div>
           </div>
-          <div className="rounded-lg h-96 flex items-center justify-center" style={{ backgroundColor: 'var(--color-soft-sand)', borderRadius: '24px' }}>
-            <div className="text-center">
-              <Globe className="w-24 h-24 mx-auto mb-4" style={{ color: 'var(--color-sandstone)' }} />
-              <p style={{ color: 'var(--color-warm-gray)', fontSize: '16px', lineHeight: 1.5 }}>İngilizce-Türkçe Yeminli Tercüme</p>
-            </div>
+          <div className="rounded-lg flex items-center justify-center hidden md:flex" style={{ backgroundColor: 'var(--color-soft-sand)', borderRadius: '24px', padding: '40px' }}>
+            <iframe
+              src="https://a.impactradius-go.com/gen-ad-code/4677196/3976191/54446/"
+              width="100%"
+              height="250"
+              scrolling="no"
+              frameBorder="0"
+              marginHeight={0}
+              marginWidth={0}
+              referrerPolicy="no-referrer-when-downgrade"
+              style={{ border: 'none', maxWidth: '300px', width: '100%', height: '250px' }}
+              title="Reklam"
+              loading="lazy"
+            />
           </div>
         </div>
       </div>
