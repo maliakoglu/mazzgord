@@ -47,8 +47,8 @@ export default function TeklifFormu() {
   const [verifyStatus, setVerifyStatus] = useState<"idle" | "sending" | "sent" | "verifying" | "error">("idle");
   const [verifyCode, setVerifyCode] = useState("");
   const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "done" | "error">("idle");
-  const [fileKey, setFileKey] = useState<string | null>(null);
-  const [fileName, setFileName] = useState<string>("");
+  const [fileKeys, setFileKeys] = useState<string[]>([]);
+  const [fileNames, setFileNames] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [kvkkAccepted, setKvkkAccepted] = useState(false);
   const [orderToken, setOrderToken] = useState<string>("");
@@ -81,46 +81,63 @@ export default function TeklifFormu() {
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
-    // Dosya boyutu kontrolü (max 10MB)
-    if (file.size > 10 * 1024 * 1024) {
-      alert("Dosya boyutu 10MB'dan küçük olmalıdır.");
+    if (fileKeys.length + files.length > 10) {
+      alert("En fazla 10 dosya yükleyebilirsiniz.");
       return;
     }
 
     track.documentUploadStarted();
     setUploadStatus("uploading");
-    setFileName(file.name);
 
-    try {
-      const fd = new FormData();
-      fd.append("file", file);
-      fd.append("customer_name", formData.name || "Bilinmeyen");
+    const newKeys: string[] = [];
+    const newNames: string[] = [];
+    let hasError = false;
 
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: fd,
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        setFileKey(data.file_key);
-        track.documentUploadCompleted();
-        setUploadStatus("done");
-      } else {
-        setUploadStatus("error");
+    for (const file of Array.from(files)) {
+      if (file.size > 10 * 1024 * 1024) {
+        alert(`${file.name} 10MB\'dan küçük olmalıdır.`);
+        hasError = true;
+        continue;
       }
-    } catch {
-      setUploadStatus("error");
+
+      try {
+        const fd = new FormData();
+        fd.append("file", file);
+        fd.append("customer_name", formData.name || "Bilinmeyen");
+
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: fd,
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          newKeys.push(data.file_key);
+          newNames.push(file.name);
+        } else {
+          hasError = true;
+        }
+      } catch {
+        hasError = true;
+      }
     }
+
+    if (newKeys.length > 0) {
+      setFileKeys([...fileKeys, ...newKeys]);
+      setFileNames([...fileNames, ...newNames]);
+      track.documentUploadCompleted();
+    }
+    setUploadStatus(hasError && newKeys.length === 0 ? "error" : "done");
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const removeFile = () => {
-    setFileKey(null);
-    setFileName("");
-    setUploadStatus("idle");
+  const removeFile = (index: number) => {
+    setFileKeys(fileKeys.filter((_, i) => i !== index));
+    setFileNames(fileNames.filter((_, i) => i !== index));
+    if (fileKeys.length <= 1) setUploadStatus("idle");
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
@@ -147,7 +164,8 @@ export default function TeklifFormu() {
           ...formData,
           page_count: formData.page_count ? parseInt(formData.page_count) : null,
           word_count: formData.word_count ? parseInt(formData.word_count) : null,
-          file_key: fileKey || null,
+          file_key: fileKeys.length > 0 ? fileKeys[0] : null,
+          file_keys: fileKeys.length > 0 ? fileKeys : null,
           delivery_method: formData.delivery_method,
           shipping_address: (formData.delivery_method === "shipping" || formData.delivery_method === "hand_delivery") ? formData.shipping_address : null,
           yeminli: formData.service_type === "yeminli" || formData.service_type === "noter",
@@ -177,7 +195,7 @@ export default function TeklifFormu() {
           `Aciliyet: ${URGENCY_OPTIONS.find(u => u.value === formData.urgency)?.label || formData.urgency}\n` +
           `Teslimat: ${formData.delivery_method === "shipping" ? "Kargo" : formData.delivery_method === "hand_delivery" ? "Elden Teslim" : "Dijital (E-posta)"}\n` +
           (formData.delivery_method === "hand_delivery" && formData.meeting_day ? `Tarih: ${formData.meeting_day}${formData.meeting_time ? " " + formData.meeting_time : ""}\n` : "") +
-          `Dosya: ${fileName || "Yüklenmedi"}\n` +
+          `Dosyalar: ${fileNames.length > 0 ? fileNames.join(", ") : "Yüklenmedi"}\n` +
           `Notlar: ${formData.notes || "Yok"}`,
         access_key: "bcd1bf4b-064e-4e56-83f7-5dc9aaf5d74c",
         subject: "Yeni Teklif Talebi - Mazzgord",
@@ -256,7 +274,8 @@ mazzgord.com`;
           notary_need: "", apostille_need: "", target_country: "", delivery_date: "",
           meeting_day: "", meeting_time: "",
         });
-        removeFile();
+        setFileKeys([]);
+        setFileNames([]);
         // Başarı ekranı kalıcı — kullanıcı manuel olarak yeni teklif verebilir
       } else {
         // Backend hatasi - spesifik mesaj goster
@@ -573,22 +592,27 @@ mazzgord.com`;
               <Upload className="w-5 h-5 text-primary" /> Belge Yükleme <span className="text-red-500">*</span>
             </h2>
             <p className="text-sm text-muted-foreground mb-4">
-              Çevrilmesini istediğiniz belgeyi yükleyin (PDF, DOC, DOCX, TXT — max 10MB). Belge yükleme isteğe bağlıdır (opsiyonel).
+              Çevrilmesini istediğiniz belgeleri yükleyin (PDF, DOC, DOCX, TXT, JPG, PNG — her dosya max 10MB, en fazla 10 dosya). Belge yükleme isteğe bağlıdır (opsiyonel).
             </p>
-            {uploadStatus === "done" && fileKey ? (
-              <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg p-4">
-                <div className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-green-600" />
-                  <div>
-                    <p className="font-medium text-green-800">{fileName}</p>
-                    <p className="text-xs text-green-600">Yüklendi</p>
+            {fileKeys.length > 0 && (
+              <div className="space-y-2 mb-3">
+                {fileNames.map((name, i) => (
+                  <div key={i} className="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg p-3">
+                    <div className="flex items-center gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-green-600" />
+                      <div>
+                        <p className="font-medium text-green-800 text-sm">{name}</p>
+                        <p className="text-xs text-green-600">Yüklendi</p>
+                      </div>
+                    </div>
+                    <button type="button" onClick={() => removeFile(i)} className="text-red-600 hover:text-red-700">
+                      <X className="w-5 h-5" />
+                    </button>
                   </div>
-                </div>
-                <button type="button" onClick={removeFile} className="text-red-600 hover:text-red-700">
-                  <X className="w-5 h-5" />
-                </button>
+                ))}
               </div>
-            ) : (
+            )}
+            {fileKeys.length < 10 && (
               <div
                 onClick={() => fileInputRef.current?.click()}
                 className="border-2 border-dashed border-border rounded-lg p-8 text-center cursor-pointer hover:border-primary hover:bg-primary/5 transition"
@@ -602,12 +626,12 @@ mazzgord.com`;
                   <div className="flex flex-col items-center gap-2">
                     <Upload className="w-8 h-8 text-muted-foreground" />
                     <p className="text-muted-foreground">Dosya seçmek için tıklayın</p>
-                    <p className="text-xs text-muted-foreground">PDF, DOC, DOCX, TXT, JPG, PNG — max 10MB</p>
+                    <p className="text-xs text-muted-foreground">PDF, DOC, DOCX, TXT, JPG, PNG — max 10MB ({fileKeys.length}/10 yüklendi)</p>
                   </div>
                 )}
               </div>
             )}
-            <input ref={fileInputRef} type="file" accept=".pdf,.doc,.docx,.txt,.rtf,.jpg,.jpeg,.png,.webp" onChange={handleFileUpload} className="hidden" />
+            <input ref={fileInputRef} type="file" accept=".pdf,.doc,.docx,.txt,.rtf,.jpg,.jpeg,.png,.webp" onChange={handleFileUpload} className="hidden" multiple />
             {uploadStatus === "error" && (
               <p className="text-red-600 text-sm mt-2">Dosya yüklenemedi. Lütfen tekrar deneyin.</p>
             )}
