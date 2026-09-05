@@ -15,6 +15,11 @@ function createMockEnv(quoteRow = { id: 1 }) {
       })),
     },
     RESEND_API_KEY: null,
+    RATE_LIMIT: {
+      get: vi.fn(async () => "1"),
+      put: vi.fn(async () => {}),
+      delete: vi.fn(async () => {}),
+    },
   };
 }
 

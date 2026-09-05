@@ -1,6 +1,6 @@
 import { seoData } from "./lib/seoData.js";
 import { handleRedirects } from "./lib/redirects.js";
-import { corsHeaders, checkAdminAuth, unauthorizedResponse, checkCsrf, csrfFailedResponse } from "./lib/cors.js";
+import { corsHeaders, getCorsHeaders, checkAdminAuth, unauthorizedResponse, checkCsrf, csrfFailedResponse } from "./lib/cors.js";
 import { checkRateLimit } from "./lib/rateLimit.js";
 import { handleContact } from "./routes/contact.js";
 import { handleQuote } from "./routes/quote.js";
@@ -16,6 +16,113 @@ import { handleMessagesRoute } from "./routes/messages.js";
 import { processResponse } from "./lib/seoProcessor.js";
 import { escapeHtml } from "./lib/escapeHtml.js";
 
+async function sendPaymentEmails(env, payment, iyzicoPaymentId) {
+    const resendKey = env.RESEND_API_KEY;
+    if (!resendKey) {
+      console.log("RESEND_API_KEY eksik — e-posta gönderilemedi");
+      return;
+    }
+
+    const refNumber = payment.payment_link_id;
+    const amount = Number(payment.amount).toFixed(2);
+    const date = new Date().toLocaleString("tr-TR", { timeZone: "Europe/Istanbul" });
+
+    const customerHtml = `
+<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333">
+  <div style="background:#f8f9fa;padding:30px;border-radius:10px">
+  <h1 style="color:#16a34a;text-align:center">✅ Ödemeniz Alındı!</h1>
+  <p>Sayın <strong>${escapeHtml(payment.customer_name)}</strong>,</p>
+  <p>Çeviri hizmeti ödemeniz başarıyla alınmıştır.</p>
+  <div style="background:#fff;padding:20px;border-radius:8px;margin:20px 0;border:1px solid #e5e7eb">
+    <table style="width:100%;border-collapse:collapse">
+      <tr><td style="padding:8px 0;color:#666">Hizmet:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${escapeHtml(payment.description || "Çeviri Hizmeti")}</td></tr>
+      <tr><td style="padding:8px 0;color:#666">Tutar:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${amount} ₺</td></tr>
+      <tr><td style="padding:8px 0;color:#666">Tarih:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${date}</td></tr>
+      <tr><td style="padding:8px 0;color:#666">Ödeme Referansı:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${refNumber}</td></tr>
+      <tr><td style="padding:8px 0;color:#666">İşlem No:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${iyzicoPaymentId}</td></tr>
+    </table>
+  </div>
+  <p>Lütfen ödeme referans numaranızı saklayın. Çeviri işleminiz en kısa sürede başlatılacaktır.</p>
+  <hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0">
+  <p style="font-size:13px;color:#666">Mazzgord Çeviri Hizmetleri<br>Denizli, Türkiye<br>info@mazzgord.com | +90 538 629 50 40</p>
+  </div>
+</body></html>`;
+
+    const adminHtml = `
+<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333">
+  <div style="background:#f8f9fa;padding:30px;border-radius:10px">
+  <h1 style="color:#2563eb;text-align:center">💰 Yeni Ödeme Alındı!</h1>
+  <div style="background:#fff;padding:20px;border-radius:8px;margin:20px 0;border:1px solid #e5e7eb">
+    <table style="width:100%;border-collapse:collapse">
+      <tr><td style="padding:8px 0;color:#666">Müşteri:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${escapeHtml(payment.customer_name)}</td></tr>
+      <tr><td style="padding:8px 0;color:#666">E-posta:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${escapeHtml(payment.customer_email)}</td></tr>
+      <tr><td style="padding:8px 0;color:#666">Telefon:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${escapeHtml(payment.customer_phone || "—")}</td></tr>
+      <tr><td style="padding:8px 0;color:#666">Hizmet:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${escapeHtml(payment.description || "Çeviri Hizmeti")}</td></tr>
+      <tr><td style="padding:8px 0;color:#666">Tutar:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${amount} ₺</td></tr>
+      <tr><td style="padding:8px 0;color:#666">Tarih:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${date}</td></tr>
+      <tr><td style="padding:8px 0;color:#666">Ödeme Referansı:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${refNumber}</td></tr>
+      <tr><td style="padding:8px 0;color:#666">İşlem No:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${iyzicoPaymentId}</td></tr>
+    </table>
+  </div>
+  <p style="text-align:center"><a href="https://mazzgord.com/admin" style="display:inline-block;padding:10px 24px;background:#2563eb;color:#fff;text-decoration:none;border-radius:6px;font-weight:bold">Admin Paneli</a></p>
+  </div>
+</body></html>`;
+
+    try {
+      await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${resendKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: "Mazzgord <info@mazzgord.com>",
+          to: [payment.customer_email],
+          subject: "Ödemeniz Alındı — Mazzgord Çeviri Hizmetleri",
+          html: customerHtml,
+        }),
+      });
+
+      await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${resendKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: "Mazzgord <info@mazzgord.com>",
+          to: ["info@mazzgord.com"],
+          subject: `Yeni Ödeme: ${amount} ₺ — ${escapeHtml(payment.customer_name)}`,
+          html: adminHtml,
+        }),
+      });
+
+    } catch (err) {
+      console.log("E-posta gönderme hatası:", String(err));
+    }
+  }
+
+async function iyzicoAuth(apiKey, secretKey, uri, body) {
+    const randArr = new Uint32Array(1);
+    crypto.getRandomValues(randArr);
+    const random = String(Date.now()) + randArr[0].toString(8);
+    const encoder = new TextEncoder();
+    const dataToSign = random + uri + JSON.stringify(body);
+    const key = await crypto.subtle.importKey(
+      'raw', encoder.encode(secretKey),
+      { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
+    );
+    const sigBuffer = await crypto.subtle.sign('HMAC', key, encoder.encode(dataToSign));
+    const sigBytes = new Uint8Array(sigBuffer);
+    let hex = '';
+    for (let i = 0; i < sigBytes.length; i++) {
+      hex += sigBytes[i].toString(16).padStart(2, '0');
+    }
+    const authParams = `apiKey:${apiKey}&randomKey:${random}&signature:${hex}`;
+    const authHeader = `IYZWSv2 ` + btoa(authParams);
+    return { authHeader, random };
+  }
+
 export default {
   async fetch(request, env) {
 
@@ -28,7 +135,7 @@ export default {
 
 
     if (request.method === "OPTIONS") {
-      return new Response(null, { headers: corsHeaders });
+      return new Response(null, { headers: getCorsHeaders(request) });
     }
 
     const rateLimitResponse = await checkRateLimit(request, env, path);
@@ -87,111 +194,6 @@ export default {
     if (ordersResponse) return ordersResponse;
 
 
-    async function sendPaymentEmails(env, payment, iyzicoPaymentId) {
-      const resendKey = env.RESEND_API_KEY;
-      if (!resendKey) {
-        console.log("RESEND_API_KEY eksik — e-posta gönderilemedi");
-        return;
-      }
-
-      const refNumber = payment.payment_link_id;
-      const amount = Number(payment.amount).toFixed(2);
-      const date = new Date().toLocaleString("tr-TR", { timeZone: "Europe/Istanbul" });
-
-      const customerHtml = `
-<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333">
-  <div style="background:#f8f9fa;padding:30px;border-radius:10px">
-    <h1 style="color:#16a34a;text-align:center">✅ Ödemeniz Alındı!</h1>
-    <p>Sayın <strong>${escapeHtml(payment.customer_name)}</strong>,</p>
-    <p>Çeviri hizmeti ödemeniz başarıyla alınmıştır.</p>
-    <div style="background:#fff;padding:20px;border-radius:8px;margin:20px 0;border:1px solid #e5e7eb">
-      <table style="width:100%;border-collapse:collapse">
-        <tr><td style="padding:8px 0;color:#666">Hizmet:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${escapeHtml(payment.description || "Çeviri Hizmeti")}</td></tr>
-        <tr><td style="padding:8px 0;color:#666">Tutar:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${amount} ₺</td></tr>
-        <tr><td style="padding:8px 0;color:#666">Tarih:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${date}</td></tr>
-        <tr><td style="padding:8px 0;color:#666">Ödeme Referansı:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${refNumber}</td></tr>
-        <tr><td style="padding:8px 0;color:#666">İşlem No:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${iyzicoPaymentId}</td></tr>
-      </table>
-    </div>
-    <p>Lütfen ödeme referans numaranızı saklayın. Çeviri işleminiz en kısa sürede başlatılacaktır.</p>
-    <hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0">
-    <p style="font-size:13px;color:#666">Mazzgord Çeviri Hizmetleri<br>Denizli, Türkiye<br>info@mazzgord.com | +90 538 629 50 40</p>
-  </div>
-</body></html>`;
-
-      const adminHtml = `
-<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333">
-  <div style="background:#f8f9fa;padding:30px;border-radius:10px">
-    <h1 style="color:#2563eb;text-align:center">💰 Yeni Ödeme Alındı!</h1>
-    <div style="background:#fff;padding:20px;border-radius:8px;margin:20px 0;border:1px solid #e5e7eb">
-      <table style="width:100%;border-collapse:collapse">
-        <tr><td style="padding:8px 0;color:#666">Müşteri:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${escapeHtml(payment.customer_name)}</td></tr>
-        <tr><td style="padding:8px 0;color:#666">E-posta:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${escapeHtml(payment.customer_email)}</td></tr>
-        <tr><td style="padding:8px 0;color:#666">Telefon:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${escapeHtml(payment.customer_phone || "—")}</td></tr>
-        <tr><td style="padding:8px 0;color:#666">Hizmet:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${escapeHtml(payment.description || "Çeviri Hizmeti")}</td></tr>
-        <tr><td style="padding:8px 0;color:#666">Tutar:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${amount} ₺</td></tr>
-        <tr><td style="padding:8px 0;color:#666">Tarih:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${date}</td></tr>
-        <tr><td style="padding:8px 0;color:#666">Ödeme Referansı:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${refNumber}</td></tr>
-        <tr><td style="padding:8px 0;color:#666">İşlem No:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${iyzicoPaymentId}</td></tr>
-      </table>
-    </div>
-    <p style="text-align:center"><a href="https://mazzgord.com/admin" style="display:inline-block;padding:10px 24px;background:#2563eb;color:#fff;text-decoration:none;border-radius:6px;font-weight:bold">Admin Paneli</a></p>
-  </div>
-</body></html>`;
-
-      try {
-        await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${resendKey}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            from: "Mazzgord <info@mazzgord.com>",
-            to: [payment.customer_email],
-            subject: "Ödemeniz Alındı — Mazzgord Çeviri Hizmetleri",
-            html: customerHtml,
-          }),
-        });
-
-        await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${resendKey}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            from: "Mazzgord <info@mazzgord.com>",
-            to: ["info@mazzgord.com"],
-            subject: `Yeni Ödeme: ${amount} ₺ — ${escapeHtml(payment.customer_name)}`,
-            html: adminHtml,
-          }),
-        });
-
-      } catch (err) {
-        console.log("E-posta gönderme hatası:", String(err));
-      }
-    }
-
-    async function iyzicoAuth(apiKey, secretKey, uri, body) {
-      const random = String(Date.now()) + Math.random().toString(8).slice(2);
-      const encoder = new TextEncoder();
-      const dataToSign = random + uri + JSON.stringify(body);
-      const key = await crypto.subtle.importKey(
-        'raw', encoder.encode(secretKey),
-        { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
-      );
-      const sigBuffer = await crypto.subtle.sign('HMAC', key, encoder.encode(dataToSign));
-      const sigBytes = new Uint8Array(sigBuffer);
-      let hex = '';
-      for (let i = 0; i < sigBytes.length; i++) {
-        hex += sigBytes[i].toString(16).padStart(2, '0');
-      }
-      const authParams = `apiKey:${apiKey}&randomKey:${random}&signature:${hex}`;
-      const authHeader = `IYZWSv2 ` + btoa(authParams);
-      return { authHeader, random };
-    }
-
     if (path === "/api/payment/create" && request.method === "POST") {
       try {
         if (!checkAdminAuth(request, env)) return unauthorizedResponse();
@@ -227,7 +229,7 @@ export default {
       try {
         const linkId = path.replace("/api/payment/", "");
         const result = await env.DB.prepare(
-          "SELECT * FROM payments WHERE payment_link_id = ?"
+          "SELECT payment_link_id, amount, description, status, created_at, paid_at FROM payments WHERE payment_link_id = ?"
         ).bind(linkId).first();
 
         if (!result) {
@@ -367,7 +369,7 @@ export default {
           return new Response(JSON.stringify({
             success: false,
             error: iyzicoData.errorMessage || iyzicoData.errorGroup || "iyzico hatası",
-            raw: iyzicoData,
+            // raw: iyzicoData  — güvenlik nedeniyle kaldırıldı,
 
           }), {
             status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
@@ -422,6 +424,15 @@ export default {
         const iyzicoData = await iyzicoResponse.json();
 
         if (iyzicoData.status === "success") {
+          // conversationId doğrula — token bu ödemeye ait mi?
+          const expectedConvId = payment.iyzico_conversation_id;
+          if (expectedConvId && iyzicoData.conversationId && iyzicoData.conversationId !== expectedConvId) {
+            console.log("conversationId uyuşmazlığı:", { expected: expectedConvId, got: iyzicoData.conversationId });
+            return new Response(JSON.stringify({ success: false, error: "Ödeme doğrulanamadı" }), {
+              status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+            });
+          }
+
           const iyzicoPaymentId = String(iyzicoData.paymentId || token);
           await env.DB.prepare(
             "UPDATE payments SET status = 'paid', iyzico_payment_id = ?, paid_at = datetime('now') WHERE payment_link_id = ?"
@@ -439,7 +450,7 @@ export default {
             console.log("E-posta bildirim hatası:", String(err));
           }
 
-          return new Response(JSON.stringify({ success: true, status: "paid", data: iyzicoData }), {
+          return new Response(JSON.stringify({ success: true, status: "paid" }), {
             headers: { "Content-Type": "application/json", ...corsHeaders },
           });
         } else {
@@ -447,7 +458,7 @@ export default {
             "UPDATE payments SET status = 'failed', iyzico_payment_id = ? WHERE payment_link_id = ?"
           ).bind(String(iyzicoData.paymentId || token), link_id).run();
 
-          return new Response(JSON.stringify({ success: false, status: "failed", error: iyzicoData.errorMessage || "Ödeme başarısız", raw: iyzicoData }), {
+          return new Response(JSON.stringify({ success: false, status: "failed", error: iyzicoData.errorMessage || "Ödeme başarısız" }), {
             status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
           });
         }
@@ -532,7 +543,7 @@ export default {
           return new Response(JSON.stringify({
             success: false,
             error: iyzicoData.errorMessage || iyzicoData.errorGroup || "İade işlemi başarısız",
-            raw: iyzicoData
+            // raw: iyzicoData  — güvenlik nedeniyle kaldırıldı
           }), {
             status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
           });
@@ -564,7 +575,18 @@ export default {
       try {
         const webhookSecret = env.WEBHOOK_SECRET;
         const providedSecret = url.searchParams.get("secret") || "";
-        if (!webhookSecret || providedSecret !== webhookSecret) {
+        // Timing-safe karşılaştırma
+        if (!webhookSecret || providedSecret.length !== webhookSecret.length) {
+          return new Response(JSON.stringify({ error: "Yetkisiz" }), {
+            status: 401, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+        const enc = new TextEncoder();
+        const a = enc.encode(providedSecret);
+        const b = enc.encode(webhookSecret);
+        let diff = 0;
+        for (let i = 0; i < a.length; i++) diff |= a[i] ^ b[i];
+        if (diff !== 0) {
           return new Response(JSON.stringify({ error: "Yetkisiz" }), {
             status: 401, headers: { "Content-Type": "application/json", ...corsHeaders },
           });
@@ -575,7 +597,7 @@ export default {
 
         if (body.status === "success" && body.paymentId) {
           const payment = await env.DB.prepare(
-            "SELECT * FROM payments WHERE iyzico_conversation_id = ?"
+            "SELECT id, customer_name, customer_email, customer_phone, description, amount, payment_link_id, quote_id FROM payments WHERE iyzico_conversation_id = ?"
           ).bind(body.conversationId || "").first();
 
           if (payment) {
@@ -587,7 +609,7 @@ export default {
         }
         if (body.status === "success" && body.token) {
           const payment = await env.DB.prepare(
-            "SELECT * FROM payments WHERE payment_link_id = ?"
+            "SELECT id, customer_name, customer_email, customer_phone, description, amount, payment_link_id, quote_id FROM payments WHERE payment_link_id = ?"
           ).bind(body.token || "").first();
           if (payment) {
             await env.DB.prepare(
@@ -598,7 +620,7 @@ export default {
         }
         if (body.status === "failure") {
           const payment = await env.DB.prepare(
-            "SELECT * FROM payments WHERE iyzico_conversation_id = ?"
+            "SELECT id FROM payments WHERE iyzico_conversation_id = ?"
           ).bind(body.conversationId || "").first();
           if (payment) {
             await env.DB.prepare(
@@ -632,7 +654,7 @@ export default {
           if (token && linkId) {
             try {
               const payment = await env.DB.prepare(
-                "SELECT * FROM payments WHERE payment_link_id = ?"
+                "SELECT id, customer_name, customer_email, customer_phone, description, amount, payment_link_id, quote_id, iyzico_conversation_id FROM payments WHERE payment_link_id = ?"
               ).bind(linkId).first();
               if (payment) {
                 const apiKey = env.IYZICO_API_KEY;
@@ -946,7 +968,7 @@ ${pricingContext}${proposalContext}`;
     }
 
     if (path === "/gtm" || path.startsWith("/gtm/")) {
-      return new Response("Not Found", { status: 404, headers: { "Content-Type": "text/plain" } });
+      return new Response(null, { status: 204 });
     }
 
     if (path === "/robots.txt") {

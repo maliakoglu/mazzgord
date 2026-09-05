@@ -35,23 +35,21 @@ export async function handleAccountRoute(path, request, env) {
   // GET /api/account/orders — Sipariş geçmişi (quotes + orders)
   if (path === "/api/account/orders" && request.method === "GET") {
     try {
-      // Quotes (teklifler) — payment_link_id + payment_status eklendi
-      const quotes = await env.DB.prepare(
-        `SELECT q.id, q.name, q.email, q.source_language, q.target_language, q.document_type, q.page_count, q.word_count, q.urgency, q.delivery_method, q.order_status, q.offer_status, q.offer_note, q.estimated_price, q.delivery_date, q.delivered_file_key, q.file_key, q.document_uploaded_at, q.created_at,
-         (SELECT p.payment_link_id FROM payments p WHERE p.quote_id = q.id AND p.status = 'pending' ORDER BY p.created_at DESC LIMIT 1) as payment_link_id,
-         (SELECT p.status FROM payments p WHERE p.quote_id = q.id AND p.status = 'paid' ORDER BY p.paid_at DESC LIMIT 1) as payment_status
-         FROM quotes q WHERE q.email = ? ORDER BY q.created_at DESC`
-      ).bind(customer.email).all();
-
-      // Orders (siparişler)
-      const orders = await env.DB.prepare(
-        "SELECT payment_link_id, customer_name, items_json, total, status, delivery_method, shipping_tracking, delivered_file_key, created_at FROM orders WHERE customer_email = ? ORDER BY created_at DESC"
-      ).bind(customer.email).all();
-
-      // Payments (ödeme geçmişi)
-      const payments = await env.DB.prepare(
-        "SELECT p.amount, p.description, p.status, p.payment_link_id, p.created_at FROM payments p WHERE p.customer_email = ? ORDER BY p.created_at DESC"
-      ).bind(customer.email).all();
+      // Quotes, Orders ve Payments — paralel çek
+      const [quotes, orders, payments] = await Promise.all([
+        env.DB.prepare(
+          `SELECT q.id, q.name, q.email, q.source_language, q.target_language, q.document_type, q.page_count, q.word_count, q.urgency, q.delivery_method, q.order_status, q.offer_status, q.offer_note, q.estimated_price, q.delivery_date, q.delivered_file_key, q.file_key, q.document_uploaded_at, q.created_at,
+           (SELECT p.payment_link_id FROM payments p WHERE p.quote_id = q.id AND p.status = 'pending' ORDER BY p.created_at DESC LIMIT 1) as payment_link_id,
+           (SELECT p.status FROM payments p WHERE p.quote_id = q.id AND p.status = 'paid' ORDER BY p.paid_at DESC LIMIT 1) as payment_status
+           FROM quotes q WHERE q.email = ? ORDER BY q.created_at DESC`
+        ).bind(customer.email).all(),
+        env.DB.prepare(
+          "SELECT payment_link_id, customer_name, items_json, total, status, delivery_method, shipping_tracking, delivered_file_key, created_at FROM orders WHERE customer_email = ? ORDER BY created_at DESC"
+        ).bind(customer.email).all(),
+        env.DB.prepare(
+          "SELECT p.amount, p.description, p.status, p.payment_link_id, p.created_at FROM payments p WHERE p.customer_email = ? ORDER BY p.created_at DESC"
+        ).bind(customer.email).all(),
+      ]);
 
       // Orders items_json'u parse et
       const parsedOrders = (orders.results || []).map(o => {

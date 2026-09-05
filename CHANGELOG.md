@@ -1,4 +1,53 @@
 # MAZZGORD Change Log
+### 2026-09-05 — Kapsamlı Güvenlik Denetimi ve Düzeltmeleri
+
+**Kritik Güvenlik Düzeltmeleri**
+
+* `lib/cors.js` — CSRF bypass kapatıldı: Origin/Referer yoksa artık reddediliyor (önceden `true` dönüyordu); `X-Mazzgord-Mobile` header'ı tek başına CSRF bypass edemiyor
+* `lib/cors.js` — CORS wildcard `*` kaldırıldı; dinamik `getCorsHeaders(request)` eklendi, sadece izinli origin'ler kendi origin'ini alıyor
+* `lib/cors.js` — `checkAdminAuth` timing-safe karşılaştırmaya geçirildi
+* `lib/customerAuth.js` — Müşteri token imzalama anahtarı `ADMIN_TOKEN`'dan ayrı `CUSTOMER_TOKEN_SECRET`'e taşındı; `fallback-secret` tamamen kaldırıldı
+* `worker.js` — Ödeme GET endpoint IDOR kapatıldı: `SELECT *` → sadece gerekli alanlar (`payment_link_id, amount, description, status, created_at, paid_at`)
+* `worker.js` — iyzico `raw` yanıt sızıntısı kaldırıldı (3 yerde: initialize, verify, refund)
+* `worker.js` — Payment verify `data: iyzicoData` sızıntısı kaldırıldı; `conversationId` doğrulaması eklendi
+* `worker.js` — Webhook secret timing-safe karşılaştırmaya geçirildi
+* `worker.js` — Webhook ve `/odeme/sonuc` `SELECT *` sorguları daraltıldı
+* `worker.js` — `iyzicoAuth` `Math.random()` → `crypto.getRandomValues()`
+
+**Yüksek Öncelikli Düzeltmeler**
+
+* `routes/auth.js` — Şifre sıfırlama kodu `Math.random()` → `crypto.getRandomValues()`
+* `lib/emailVerify.js` — E-posta doğrulama kodu `Math.random()` → `crypto.getRandomValues()`
+* `lib/rateLimit.js` — Admin login için 5/dakika, chat için 3/dakika özel rate limit
+* `routes/messages.js` — HTML escaping düzeltildi: `message.replace(/</g, "&lt;")` → `escapeHtml()`; `quote.name` ve `quote.email` escape edildi
+
+**Orta Öncelikli Düzeltmeler**
+
+* `routes/orders.js` — `customer_name`, `delivery_note`, `tracking_number` escape edildi; gereksiz dinamik `import()` kaldırıldı
+* `routes/admin.js` — `quote.name`, `tracking_number`, `delivery_note` escape edildi; dashboard 9 sequential DB sorgusu → `Promise.all`
+* `routes/services.js` — Admin POST/PUT için Zod validation şemaları eklendi (`serviceCreateSchema`, `serviceUpdateSchema`)
+* `lib/validation.js` — Service create/update şemaları eklendi (negatif fiyat, uzun SKU/slug önleme)
+* `routes/account.js` — 3 sequential DB sorgusu → `Promise.all`
+* `routes/upload.js` — Double rate limit kaldırıldı (global + handler içi)
+* `client/src/pages/Odeme.tsx` — `customer_name` ve `customer_email` gösterimi kaldırıldı (IDOR düzeltmesiyle uyumlu)
+
+**Düşük Öncelikli Düzeltmeler**
+
+* `wrangler.toml` — `GOOGLE_CLIENT_ID` production ve preview env'lara eklendi (top-level `[vars]` miras alınmıyordu)
+* `worker.js` — `sendPaymentEmails` ve `iyzicoAuth` fonksiyonları `fetch` içinden modül seviyesine taşındı
+* `client/index.html` — hreflang tekrarı ve yalnız `</script>` etiketi kaldırıldı
+* `.bak` dosyaları temizlendi (`prerender.py.bak`, `worker.js.bak`, `routes/quote.js.bak`, `routes/account.js.bak`)
+* `lib/redirects.js` — localhost istisnası eklendi (local test için)
+
+**Test ve Altyapı**
+
+* `tests/cors.test.ts` — CORS değişikliklerine göre güncellendi
+* `tests/quote.test.ts` — Mock env'e `RATE_LIMIT` (KV) eklendi
+* `@testing-library/dom` dev dependency eklendi — `cart.test.tsx` artık geçiyor
+* 96/96 test geçiyor
+* `.gitignore` — Eski test/ara dosyalar eklendi; git takibinden çıkarıldı
+* `CUSTOMER_TOKEN_SECRET` Wrangler secret olarak production + default env'e eklendi
+
 ### 2026-09-02 — Renk ve Tipografi Sistemi, Google Login, Yeni Sayfalar, Yeni Görseller
 
 **Renk ve Tipografi**

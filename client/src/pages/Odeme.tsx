@@ -111,8 +111,6 @@ export default function Odeme() {
     const time = new Date().toLocaleTimeString("tr-TR");
     const ref = paymentData?.payment_link_id || "—";
     const amount = paymentData?.amount?.toFixed(2) || "0.00";
-    const name = paymentData?.customer_name || "—";
-    const email = paymentData?.customer_email || "—";
     const desc = paymentData?.description || "Çeviri Hizmeti";
 
     const html = `<!DOCTYPE html><html lang="tr"><head><meta charset="UTF-8">
@@ -143,8 +141,6 @@ export default function Odeme() {
   <div class="receipt-title">✅ ÖDEME MAKBUZU</div>
 
   <table class="info-table">
-    <tr><td>Müşteri Adı Soyadı</td><td>${name}</td></tr>
-    <tr><td>E-posta</td><td>${email}</td></tr>
     <tr><td>Hizmet</td><td>${desc}</td></tr>
     <tr><td>Ödeme Referansı</td><td style="font-family: monospace;">${ref}</td></tr>
     <tr><td>Ödeme Tarihi</td><td>${date} ${time}</td></tr>
@@ -312,14 +308,7 @@ export default function Odeme() {
               <span className="text-muted-foreground">Hizmet:</span>
               <span className="font-medium text-foreground">{paymentData.description || "Çeviri Hizmeti"}</span>
             </div>
-            <div className="flex justify-between items-center pb-3 border-b border-border">
-              <span className="text-muted-foreground">Müşteri:</span>
-              <span className="font-medium text-foreground">{paymentData.customer_name}</span>
-            </div>
-            <div className="flex justify-between items-center pb-3 border-b border-border">
-              <span className="text-muted-foreground">E-posta:</span>
-              <span className="font-medium text-foreground">{paymentData.customer_email}</span>
-            </div>
+
             <div className="flex justify-between items-center pt-3">
               <span className="text-lg font-bold text-foreground">Toplam:</span>
               <span className="text-2xl font-bold text-primary">{paymentData.amount?.toFixed(2)} ₺</span>

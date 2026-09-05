@@ -1,5 +1,6 @@
 // /api/orders — Sipariş oluşturma (sepet → ödeme)
 import { corsHeaders, checkAdminAuth, unauthorizedResponse } from "../lib/cors.js";
+import { escapeHtml } from "../lib/escapeHtml.js";
 import { orderSchema, validateBody } from "../lib/validation.js";
 
 function jsonResponse(data, status = 200) {
@@ -95,7 +96,6 @@ export async function handleOrdersRoute(path, request, env) {
   const deliverMatch = path.match(/^\/api\/orders\/([a-f0-9]+)\/deliver$/);
   if (deliverMatch && request.method === "PUT") {
     try {
-      const { checkAdminAuth, unauthorizedResponse } = await import("../lib/cors.js");
       if (!checkAdminAuth(request, env)) return unauthorizedResponse();
 
       const linkId = deliverMatch[1];
@@ -168,17 +168,17 @@ export async function handleOrdersRoute(path, request, env) {
 <!DOCTYPE html><html><body style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333">
   <div style="background:#f8f9fa;padding:30px;border-radius:10px">
     <h1 style="color:#16a34a;text-align:center">📦 Belgeleriniz Hazır!</h1>
-    <p>Sayın <strong>${order.customer_name}</strong>,</p>
+    <p>Sayın <strong>${escapeHtml(order.customer_name)}</strong>,</p>
     <p>Çeviri işleminiz tamamlanmıştır.</p>
     <div style="background:#fff;padding:20px;border-radius:8px;margin:20px 0;border:1px solid #e5e7eb">
       <table style="width:100%;border-collapse:collapse">
         <tr><td style="padding:8px 0;color:#666">Sipariş No:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${linkId}</td></tr>
         <tr><td style="padding:8px 0;color:#666">Teslimat:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${isDigital ? "Dijital (E-posta/WhatsApp)" : "Kargo"}</td></tr>
-        ${tracking_number ? `<tr><td style="padding:8px 0;color:#666">Kargo Takip:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${tracking_number}</td></tr>` : ""}
+        ${tracking_number ? `<tr><td style="padding:8px 0;color:#666">Kargo Takip:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${escapeHtml(tracking_number)}</td></tr>` : ""}
       </table>
     </div>
     ${deliveryHtml}
-    ${delivery_note ? `<p><em>Not: ${delivery_note}</em></p>` : ""}
+    ${delivery_note ? `<p><em>Not: ${escapeHtml(delivery_note)}</em></p>` : ""}
     <hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0">
     <p style="font-size:13px;color:#666">Mazzgord Çeviri Hizmetleri<br>Denizli, Türkiye<br>info@mazzgord.com | +90 538 629 50 40</p>
   </div>

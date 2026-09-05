@@ -1,12 +1,7 @@
 // POST /api/upload — R2'ye dosya yükle (anlamlı isimlendirme)
 import { corsHeaders } from "../lib/cors.js";
-import { checkRateLimit } from "../lib/rateLimit.js";
 
 export async function handleUpload(request, env) {
-  // Rate limit - IP basina dakikada 10 yukleme
-  const rateLimitResponse = await checkRateLimit(request, env, "/api/upload");
-  if (rateLimitResponse) return rateLimitResponse;
-
   try {
     const formData = await request.formData();
     const file = formData.get("file");

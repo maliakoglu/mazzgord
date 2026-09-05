@@ -119,7 +119,9 @@ export async function handleAuthRoute(path, request, env) {
 
       if (customer && customer.password_hash !== "google_oauth") {
         // 6 haneli kod üret
-        const code = Math.floor(100000 + Math.random() * 900000).toString();
+        const randArr = new Uint32Array(1);
+        crypto.getRandomValues(randArr);
+        const code = (100000 + (randArr[0] % 900000)).toString();
         const kvKey = `resetpwd:${email.toLowerCase()}`;
         await env.RATE_LIMIT.put(kvKey, code, { expirationTtl: 300 }); // 5 dakika
 

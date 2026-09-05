@@ -57,6 +57,9 @@ binding = "AI"
 binding = "RATE_LIMIT"
 id = "e7c4693b9f564f978a92898d96e25f1c"
 
+[env.production.vars]
+GOOGLE_CLIENT_ID = "1026895491536-rcubkoj8unp8gtfefk8tueeg1a4mr10j.apps.googleusercontent.com"
+
 [[env.production.routes]]
 pattern = "mazzgord.com/*"
 zone_name = "mazzgord.com"
@@ -84,6 +87,9 @@ binding = "AI"
 [[env.preview.kv_namespaces]]
 binding = "RATE_LIMIT"
 id = "e7c4693b9f564f978a92898d96e25f1c"
+
+[env.preview.vars]
+GOOGLE_CLIENT_ID = "1026895491536-rcubkoj8unp8gtfefk8tueeg1a4mr10j.apps.googleusercontent.com"
 
 [observability.traces]
 enabled = true

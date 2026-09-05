@@ -1,6 +1,7 @@
 // Admin API endpoints — extracted from worker.js
 import { corsHeaders, checkAdminAuth, unauthorizedResponse } from "../lib/cors.js";
 import { sendStatusNotification } from "../lib/notifications.js";
+import { escapeHtml } from "../lib/escapeHtml.js";
 
 export async function handleAdminRoute(path, request, env) {
   // GET /api/messages — Admin: mesajları listele
@@ -77,33 +78,17 @@ export async function handleAdminRoute(path, request, env) {
       const today = new Date().toISOString().split("T")[0];
       const monthStart = today.substring(0, 7) + "-01";
 
-      const todayQuotes = await env.DB.prepare(
-        "SELECT COUNT(*) as count FROM quotes WHERE date(created_at) = date('now')"
-      ).first();
-      const pendingQuotes = await env.DB.prepare(
-        "SELECT COUNT(*) as count FROM quotes WHERE order_status = 'pending'"
-      ).first();
-      const urgentQuotes = await env.DB.prepare(
-        "SELECT COUNT(*) as count FROM quotes WHERE urgency = 'acil' AND order_status NOT IN ('completed', 'delivered', 'cancelled')"
-      ).first();
-      const todayRevenue = await env.DB.prepare(
-        "SELECT COALESCE(SUM(amount), 0) as total FROM payments WHERE date(paid_at) = date('now') AND status = 'paid'"
-      ).first();
-      const monthRevenue = await env.DB.prepare(
-        "SELECT COALESCE(SUM(amount), 0) as total FROM payments WHERE paid_at >= ? AND status = 'paid'"
-      ).bind(monthStart).first();
-      const totalQuotes = await env.DB.prepare(
-        "SELECT COUNT(*) as count FROM quotes"
-      ).first();
-      const totalPaid = await env.DB.prepare(
-        "SELECT COUNT(*) as count FROM payments WHERE status = 'paid'"
-      ).first();
-      const langPairs = await env.DB.prepare(
-        "SELECT source_language || ' → ' || target_language as pair, COUNT(*) as count FROM quotes GROUP BY pair ORDER BY count DESC LIMIT 5"
-      ).all();
-      const recentCustomers = await env.DB.prepare(
-        "SELECT name, email, created_at FROM quotes ORDER BY created_at DESC LIMIT 5"
-      ).all();
+      const [todayQuotes, pendingQuotes, urgentQuotes, todayRevenue, monthRevenue, totalQuotes, totalPaid, langPairs, recentCustomers] = await Promise.all([
+        env.DB.prepare("SELECT COUNT(*) as count FROM quotes WHERE date(created_at) = date('now')").first(),
+        env.DB.prepare("SELECT COUNT(*) as count FROM quotes WHERE order_status = 'pending'").first(),
+        env.DB.prepare("SELECT COUNT(*) as count FROM quotes WHERE urgency = 'acil' AND order_status NOT IN ('completed', 'delivered', 'cancelled')").first(),
+        env.DB.prepare("SELECT COALESCE(SUM(amount), 0) as total FROM payments WHERE date(paid_at) = date('now') AND status = 'paid'").first(),
+        env.DB.prepare("SELECT COALESCE(SUM(amount), 0) as total FROM payments WHERE paid_at >= ? AND status = 'paid'").bind(monthStart).first(),
+        env.DB.prepare("SELECT COUNT(*) as count FROM quotes").first(),
+        env.DB.prepare("SELECT COUNT(*) as count FROM payments WHERE status = 'paid'").first(),
+        env.DB.prepare("SELECT source_language || ' → ' || target_language as pair, COUNT(*) as count FROM quotes GROUP BY pair ORDER BY count DESC LIMIT 5").all(),
+        env.DB.prepare("SELECT name, email, created_at FROM quotes ORDER BY created_at DESC LIMIT 5").all(),
+      ]);
 
       return new Response(JSON.stringify({
         success: true,
@@ -280,17 +265,17 @@ export async function handleAdminRoute(path, request, env) {
 <!DOCTYPE html><html><body style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333">
   <div style="background:#f8f9fa;padding:30px;border-radius:10px">
     <h1 style="color:#16a34a;text-align:center">📦 Belgeleriniz Hazır!</h1>
-    <p>Sayın <strong>${quote.name}</strong>,</p>
+    <p>Sayın <strong>${escapeHtml(quote.name)}</strong>,</p>
     <p>Çeviri işleminiz tamamlanmıştır.</p>
     <div style="background:#fff;padding:20px;border-radius:8px;margin:20px 0;border:1px solid #e5e7eb">
       <table style="width:100%;border-collapse:collapse">
         <tr><td style="padding:8px 0;color:#666">Sipariş No:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${orderNo}</td></tr>
         <tr><td style="padding:8px 0;color:#666">Teslimat:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${isDigital ? "Dijital (E-posta/WhatsApp)" : "Kargo"}</td></tr>
-        ${tracking_number ? `<tr><td style="padding:8px 0;color:#666">Kargo Takip:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${tracking_number}</td></tr>` : ""}
+        ${tracking_number ? `<tr><td style="padding:8px 0;color:#666">Kargo Takip:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${escapeHtml(tracking_number)}</td></tr>` : ""}
       </table>
     </div>
     ${deliveryHtml}
-    ${delivery_note ? `<p><em>Not: ${delivery_note}</em></p>` : ""}
+    ${delivery_note ? `<p><em>Not: ${escapeHtml(delivery_note)}</em></p>` : ""}
     <hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0">
     <p style="font-size:13px;color:#666">Mazzgord Çeviri Hizmetleri<br>Denizli, Türkiye<br>info@mazzgord.com | +90 538 629 50 40</p>
   </div>

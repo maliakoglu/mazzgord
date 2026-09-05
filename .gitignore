@@ -128,3 +128,13 @@ __pycache__/
 
 # Redacted screenshots
 Redacted Doc Images/
+
+# Eski test/ara dosyalar
+mazzgordwebsite-content.js
+mazzgordwebsite-worker.js
+iyzico_test.js
+iyzico_test.cjs
+iyzico_3ds_test.cjs
+iyzico_checkout_test.cjs
+kaldır
+.dev.vars

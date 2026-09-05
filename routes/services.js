@@ -1,5 +1,6 @@
 // /api/services — Hizmet ürünü kataloğu API
 import { corsHeaders, checkAdminAuth, unauthorizedResponse } from "../lib/cors.js";
+import { serviceCreateSchema, serviceUpdateSchema, validateBody } from "../lib/validation.js";
 
 function jsonResponse(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -85,11 +86,9 @@ export async function handleServicesRoute(path, request, env) {
     try {
       if (!checkAdminAuth(request, env)) return unauthorizedResponse();
       const body = await request.json();
-      const { sku, slug, name, description, category, source_language, target_language, unit, base_price, currency, image, tax_rate, delivery_type, sort_order, options } = body;
-
-      if (!sku || !slug || !name || !category || base_price === undefined) {
-        return jsonResponse({ success: false, error: "Eksik alan: sku, slug, name, category, base_price zorunlu" }, 400);
-      }
+      const validation = validateBody(serviceCreateSchema, body);
+      if (!validation.success) return validation.response;
+      const { sku, slug, name, description, category, source_language, target_language, unit, base_price, currency, image, tax_rate, delivery_type, sort_order, options } = validation.data;
 
       const optionsJson = options ? JSON.stringify(options) : null;
       await env.DB.prepare(
@@ -118,19 +117,22 @@ export async function handleServicesRoute(path, request, env) {
       if (!checkAdminAuth(request, env)) return unauthorizedResponse();
       const id = updateMatch[1];
       const body = await request.json();
+      const validation = validateBody(serviceUpdateSchema, body);
+      if (!validation.success) return validation.response;
+      const validated = validation.data;
 
       const allowedFields = ["sku", "slug", "name", "description", "category", "source_language", "target_language", "unit", "base_price", "currency", "active", "image", "tax_rate", "delivery_type", "sort_order", "options"];
       const updates = [];
       const values = [];
 
       for (const field of allowedFields) {
-        if (body[field] !== undefined) {
+        if (validated[field] !== undefined) {
           if (field === "options") {
             updates.push("options = ?");
-            values.push(JSON.stringify(body[field]));
+            values.push(JSON.stringify(validated[field]));
           } else {
             updates.push(`${field} = ?`);
-            values.push(body[field]);
+            values.push(validated[field]);
           }
         }
       }

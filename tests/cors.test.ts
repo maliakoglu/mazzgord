@@ -7,11 +7,11 @@ describe("corsHeaders", () => {
   });
 
   it("should allow POST and OPTIONS", () => {
-    expect(corsHeaders["Access-Control-Allow-Methods"]).toBe("POST, OPTIONS");
+    expect(corsHeaders["Access-Control-Allow-Methods"]).toBe("GET, POST, OPTIONS");
   });
 
   it("should allow Content-Type header", () => {
-    expect(corsHeaders["Access-Control-Allow-Headers"]).toBe("Content-Type");
+    expect(corsHeaders["Access-Control-Allow-Headers"]).toBe("Content-Type, Authorization, X-Mazzgord-Mobile");
   });
 });
 

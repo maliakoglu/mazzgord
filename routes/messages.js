@@ -1,6 +1,7 @@
 // /api/messages/order/:id — Sipariş bazlı mesajlaşma
 import { corsHeaders, checkAdminAuth, unauthorizedResponse } from "../lib/cors.js";
 import { getCustomerFromRequest, unauthorizedCustomerResponse } from "../lib/customerAuth.js";
+import { escapeHtml } from "../lib/escapeHtml.js";
 
 function jsonResponse(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -92,7 +93,7 @@ export async function handleMessagesRoute(path, request, env) {
                   from: "Mazzgord <info@mazzgord.com>",
                   to: ["info@mazzgord.com"],
                   subject: `Yeni Mesaj — ${orderNo} | ${quote.name}`,
-                  html: `<p><strong>${quote.name}</strong> (${quote.email}) sipariş <strong>${orderNo}</strong> için yeni mesaj gönderdi:</p><p style="background:#f8f9fa;padding:15px;border-radius:8px">${message.replace(/</g, "&lt;")}</p>`,
+                  html: `<p><strong>${escapeHtml(quote.name)}</strong> (${escapeHtml(quote.email)}) sipariş <strong>${orderNo}</strong> için yeni mesaj gönderdi:</p><p style="background:#f8f9fa;padding:15px;border-radius:8px">${escapeHtml(message)}</p>`,
                 }),
               });
             }
