@@ -123,6 +123,22 @@ async function iyzicoAuth(apiKey, secretKey, uri, body) {
     return { authHeader, random };
   }
 
+// Email+telefon'dan deterministic 11 haneli kimlik numarası üret
+// Aynı müşteri her zaman aynı numarayı alır, farklı müşteriler farklı
+// iyzico fraud tespiti için her müşteri için benzersiz numara
+async function deterministicIdentityNumber(email, phone) {
+  const input = (email || "").toLowerCase() + "|" + (phone || "");
+  const enc = new TextEncoder();
+  const hashBuffer = await crypto.subtle.digest("SHA-256", enc.encode(input));
+  const hashArray = new Uint8Array(hashBuffer);
+  let num = 0;
+  for (let i = 0; i < 5; i++) {
+    num = num * 256 + hashArray[i];
+  }
+  num = 10000000000 + (num % 90000000000);
+  return num.toString();
+}
+
 export default {
   async fetch(request, env) {
 
@@ -298,7 +314,7 @@ export default {
             surname: payment.customer_name.split(" ").slice(1).join(" ") || "Müşteri",
             gsmNumber: (payment.customer_phone || "+905000000000").replace(/\s/g, "").replace(/^(\+?90)?0*/, "+90"),
             email: payment.customer_email,
-            identityNumber: "11111111111",
+            identityNumber: await deterministicIdentityNumber(payment.customer_email, payment.customer_phone),
             lastLoginDate: new Date().toISOString().replace("T", " ").substring(0, 19),
             registrationDate: new Date().toISOString().replace("T", " ").substring(0, 19),
             registrationAddress: "Kınıklı Mah., Pamukkale, Denizli, 20160",
