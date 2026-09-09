@@ -44,6 +44,7 @@ const URGENCY_OPTIONS = [
 
 export default function TeklifFormu() {
   const [submitStatus, setSubmitStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
   const [emailVerified, setEmailVerified] = useState(false);
   const [verifyStatus, setVerifyStatus] = useState<"idle" | "sending" | "sent" | "verifying" | "error">("idle");
   const [verifyCode, setVerifyCode] = useState("");
@@ -296,13 +297,14 @@ mazzgord.com`;
           if (errData.error) errorMsg = errData.error;
         } catch {}
         setSubmitStatus("error");
-        // Hata mesajini state'e kaydet
-        setTimeout(() => setSubmitStatus("idle"), 8000);
+        setErrorMsg(errorMsg);
+        setTimeout(() => { setSubmitStatus("idle"); setErrorMsg(""); }, 8000);
       }
     } catch (err) {
       // Ag hatasi veya sunucu yanit vermiyor
       setSubmitStatus("error");
-      setTimeout(() => setSubmitStatus("idle"), 8000);
+      setErrorMsg("Baglanti hatasi. Internet baglantinizi kontrol edin veya WhatsApp'tan iletisime gecin.");
+      setTimeout(() => { setSubmitStatus("idle"); setErrorMsg(""); }, 8000);
     }
   };
 
@@ -355,7 +357,7 @@ mazzgord.com`;
 
         {submitStatus === "error" && (
           <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4 text-center">
-            <p className="text-red-700 font-medium">Bir hata olustu. Lutfen tekrar deneyin veya WhatsApp'tan iletisime gecin.</p>
+            <p className="text-red-700 font-medium">{errorMsg || "Bir hata olustu. Lutfen tekrar deneyin veya WhatsApp'tan iletisime gecin."}</p>
             <p className="text-sm text-red-600 mt-1">
               <a href="https://wa.me/905386295040" className="underline hover:no-underline" target="_blank" rel="noopener noreferrer">+90 538 629 50 40 (WhatsApp)</a>
             </p>
