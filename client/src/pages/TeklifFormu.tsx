@@ -370,12 +370,12 @@ mazzgord.com`;
             </h2>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className={labelClass}>Ad Soyad <span className="text-red-500">*</span></label>
-                <input type="text" name="name" value={formData.name} onChange={handleChange} className={inputClass} placeholder="Adınız Soyadınız" required />
+                <label htmlFor="tf-name" className={labelClass}>Ad Soyad <span className="text-red-500">*</span></label>
+                <input id="tf-name" type="text" name="name" value={formData.name} onChange={handleChange} className={inputClass} placeholder="Adınız Soyadınız" required />
               </div>
               <div>
-                <label className={labelClass}><Mail className="w-4 h-4" /> E-posta <span className="text-red-500">*</span></label>
-                <input type="email" name="email" value={formData.email} onChange={(e) => { handleChange(e); setEmailVerified(false); setVerifyStatus("idle"); }} className={inputClass} placeholder="e-posta@adresi.com" required />
+                <label htmlFor="tf-email" className={labelClass}><Mail className="w-4 h-4" /> E-posta <span className="text-red-500">*</span></label>
+                <input id="tf-email" type="email" name="email" value={formData.email} onChange={(e) => { handleChange(e); setEmailVerified(false); setVerifyStatus("idle"); }} className={inputClass} placeholder="e-posta@adresi.com" required />
                 {emailVerified && <p className="text-green-600 text-sm mt-1 flex items-center gap-1"><CheckCircle2 className="w-4 h-4" /> E-posta doğrulandı</p>}
                 {!emailVerified && formData.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && (
                   <div className="mt-2 flex gap-2 items-center">
@@ -413,8 +413,8 @@ mazzgord.com`;
                 )}
               </div>
               <div className="md:col-span-2">
-                <label className={labelClass}><Phone className="w-4 h-4" /> Telefon <span className="text-red-500">*</span></label>
-                <input type="tel" name="phone" value={formData.phone} onChange={handleChange} className={inputClass} placeholder="05XX XXX XX XX" required />
+                <label htmlFor="tf-phone" className={labelClass}><Phone className="w-4 h-4" /> Telefon <span className="text-red-500">*</span></label>
+                <input id="tf-phone" type="tel" name="phone" value={formData.phone} onChange={handleChange} className={inputClass} placeholder="05XX XXX XX XX" required />
               </div>
             </div>
           </div>
@@ -426,44 +426,44 @@ mazzgord.com`;
             </h2>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className={labelClass}>Kaynak Dil <span className="text-red-500">*</span></label>
-                <select name="source_language" value={formData.source_language} onChange={handleChange} className={inputClass} required>
+                <label htmlFor="tf-source-lang" className={labelClass}>Kaynak Dil <span className="text-red-500">*</span></label>
+                <select id="tf-source-lang" name="source_language" value={formData.source_language} onChange={handleChange} className={inputClass} required>
                   <option value="">Dil seçiniz</option>
                   {LANGUAGES.map(lang => <option key={lang} value={lang}>{lang}</option>)}
                 </select>
               </div>
               <div>
-                <label className={labelClass}>Hedef Dil <span className="text-red-500">*</span></label>
-                <select name="target_language" value={formData.target_language} onChange={handleChange} className={inputClass} required>
+                <label htmlFor="tf-target-lang" className={labelClass}>Hedef Dil <span className="text-red-500">*</span></label>
+                <select id="tf-target-lang" name="target_language" value={formData.target_language} onChange={handleChange} className={inputClass} required>
                   <option value="">Dil seçiniz</option>
                   {LANGUAGES.map(lang => <option key={lang} value={lang}>{lang}</option>)}
                 </select>
               </div>
               <div>
-                <label className={labelClass}><FileType className="w-4 h-4" /> Belge Türü</label>
-                <select name="document_type" value={formData.document_type} onChange={handleChange} className={inputClass}>
+                <label htmlFor="tf-doc-type" className={labelClass}><FileType className="w-4 h-4" /> Belge Türü</label>
+                <select id="tf-doc-type" name="document_type" value={formData.document_type} onChange={handleChange} className={inputClass}>
                   <option value="">Belge türü seçiniz</option>
                   {DOCUMENT_TYPES.map(doc => <option key={doc} value={doc}>{doc}</option>)}
                 </select>
               </div>
               <div>
-                <label className={labelClass}>Hizmet Türü</label>
-                <select name="service_type" value={formData.service_type} onChange={handleChange} className={inputClass}>
+                <label htmlFor="tf-service-type" className={labelClass}>Hizmet Türü</label>
+                <select id="tf-service-type" name="service_type" value={formData.service_type} onChange={handleChange} className={inputClass}>
                   <option value="">Hizmet seçiniz</option>
                   {SERVICE_TYPES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
                 </select>
               </div>
               <div>
-                <label className={labelClass}>Sayfa Sayısı</label>
-                <input type="number" name="page_count" value={formData.page_count} onChange={handleChange} className={inputClass} placeholder="Örn: 5" min="1" />
+                <label htmlFor="tf-page-count" className={labelClass}>Sayfa Sayısı</label>
+                <input id="tf-page-count" type="number" name="page_count" value={formData.page_count} onChange={handleChange} className={inputClass} placeholder="Örn: 5" min="1" />
               </div>
               <div>
-                <label className={labelClass}>Kelime Sayısı</label>
-                <input type="number" name="word_count" value={formData.word_count} onChange={handleChange} className={inputClass} placeholder="Örn: 2500" min="1" />
+                <label htmlFor="tf-word-count" className={labelClass}>Kelime Sayısı</label>
+                <input id="tf-word-count" type="number" name="word_count" value={formData.word_count} onChange={handleChange} className={inputClass} placeholder="Örn: 2500" min="1" />
               </div>
               <div>
-                <label className={labelClass}>Noter Onayı Gerekli mi?</label>
-                <select name="notary_need" value={formData.notary_need} onChange={handleChange} className={inputClass}>
+                <label htmlFor="tf-notary" className={labelClass}>Noter Onayı Gerekli mi?</label>
+                <select id="tf-notary" name="notary_need" value={formData.notary_need} onChange={handleChange} className={inputClass}>
                   <option value="">Seçiniz</option>
                   <option value="evet">Evet, gerekli</option>
                   <option value="hayir">Hayır, gerekli değil</option>
@@ -471,8 +471,8 @@ mazzgord.com`;
                 </select>
               </div>
               <div>
-                <label className={labelClass}>Apostil Gerekli mi?</label>
-                <select name="apostille_need" value={formData.apostille_need} onChange={handleChange} className={inputClass}>
+                <label htmlFor="tf-apostil" className={labelClass}>Apostil Gerekli mi?</label>
+                <select id="tf-apostil" name="apostille_need" value={formData.apostille_need} onChange={handleChange} className={inputClass}>
                   <option value="">Seçiniz</option>
                   <option value="evet">Evet, gerekli</option>
                   <option value="hayir">Hayır, gerekli değil</option>
@@ -480,8 +480,8 @@ mazzgord.com`;
                 </select>
               </div>
               <div>
-                <label className={labelClass}>Belge Hangi Ülke/Kurum İçin?</label>
-                <input type="text" name="target_country" value={formData.target_country} onChange={handleChange} className={inputClass} placeholder="Örn: İngiltere vizesi, ABD göçmenlik" />
+                <label htmlFor="tf-country" className={labelClass}>Belge Hangi Ülke/Kurum İçin?</label>
+                <input id="tf-country" type="text" name="target_country" value={formData.target_country} onChange={handleChange} className={inputClass} placeholder="Örn: İngiltere vizesi, ABD göçmenlik" />
               </div>
 
             </div>
@@ -494,8 +494,8 @@ mazzgord.com`;
             </h2>
             <div className="space-y-4">
               <div>
-                <label className={labelClass}>Aciliyet Durumu</label>
-                <select name="urgency" value={formData.urgency} onChange={handleChange} className={inputClass}>
+                <label htmlFor="tf-urgency" className={labelClass}>Aciliyet Durumu</label>
+                <select id="tf-urgency" name="urgency" value={formData.urgency} onChange={handleChange} className={inputClass}>
                   {URGENCY_OPTIONS.map(u => <option key={u.value} value={u.value}>{u.label}{u.price}</option>)}
                 </select>
               </div>
@@ -539,8 +539,8 @@ mazzgord.com`;
               </div>
               {formData.delivery_method === "shipping" && (
                 <div>
-                  <label className={labelClass}>Kargo Adresi <span className="text-red-500">*</span></label>
-                  <textarea name="shipping_address" value={formData.shipping_address} onChange={handleChange}
+                  <label htmlFor="tf-shipping" className={labelClass}>Kargo Adresi <span className="text-red-500">*</span></label>
+                  <textarea id="tf-shipping" name="shipping_address" value={formData.shipping_address} onChange={handleChange}
                     rows={3}
                     className={inputClass + " resize-none"}
                     placeholder="Ad Soyad, Mahalle, Sokak, Bina No, İlçe, İl, Posta Kodu" />
@@ -548,8 +548,8 @@ mazzgord.com`;
               )}
               {formData.delivery_method === "hand_delivery" && (
                 <div>
-                  <label className={labelClass}>Buluşma Yeri / Bölge <span className="text-red-500">*</span></label>
-                  <textarea name="shipping_address" value={formData.shipping_address} onChange={handleChange}
+                  <label htmlFor="tf-meeting-place" className={labelClass}>Buluşma Yeri / Bölge <span className="text-red-500">*</span></label>
+                  <textarea id="tf-meeting-place" name="shipping_address" value={formData.shipping_address} onChange={handleChange}
                     rows={2}
                     className={inputClass + " resize-none"}
                     placeholder="Örn: Denizli Merkez, Çınar Meydanı çevresi" />
@@ -558,13 +558,13 @@ mazzgord.com`;
               {formData.delivery_method === "hand_delivery" && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className={labelClass}>Tercih Edilen Gün</label>
-                    <input type="date" name="meeting_day" value={formData.meeting_day} onChange={handleChange}
+                    <label htmlFor="tf-meeting-day" className={labelClass}>Tercih Edilen Gün</label>
+                    <input id="tf-meeting-day" type="date" name="meeting_day" value={formData.meeting_day} onChange={handleChange}
                       className={inputClass} />
                   </div>
                   <div>
-                    <label className={labelClass}>Tercih Edilen Saat</label>
-                    <input type="time" name="meeting_time" value={formData.meeting_time} onChange={handleChange}
+                    <label htmlFor="tf-meeting-time" className={labelClass}>Tercih Edilen Saat</label>
+                    <input id="tf-meeting-time" type="time" name="meeting_time" value={formData.meeting_time} onChange={handleChange}
                       className={inputClass} />
                   </div>
                 </div>
@@ -612,12 +612,12 @@ mazzgord.com`;
                   <div className="flex flex-col items-center gap-2">
                     <Upload className="w-8 h-8 text-muted-foreground" />
                     <p className="text-muted-foreground">Dosya seçmek için tıklayın</p>
-                    <p className="text-xs text-muted-foreground">PDF, DOC, DOCX, TXT, JPG, PNG — max 10MB ({fileKeys.length}/10 yüklendi)</p>
+                    <p id="tf-file-desc" className="text-xs text-muted-foreground">PDF, DOC, DOCX, TXT, JPG, PNG — max 10MB ({fileKeys.length}/10 yüklendi)</p>
                   </div>
                 )}
               </div>
             )}
-            <input ref={fileInputRef} type="file" accept=".pdf,.doc,.docx,.txt,.rtf,.jpg,.jpeg,.png,.webp" onChange={handleFileUpload} className="hidden" multiple />
+            <input ref={fileInputRef} id="tf-file" type="file" aria-describedby="tf-file-desc" accept=".pdf,.doc,.docx,.txt,.rtf,.jpg,.jpeg,.png,.webp" onChange={handleFileUpload} className="hidden" multiple />
             {uploadStatus === "error" && (
               <p className="text-red-600 text-sm mt-2">Dosya yüklenemedi. Lütfen tekrar deneyin.</p>
             )}
@@ -627,6 +627,7 @@ mazzgord.com`;
           <div className={sectionClass}>
             <h2 className="text-lg font-bold text-foreground mb-4">Ek Notlar</h2>
             <textarea
+              id="tf-notes"
               name="notes"
               value={formData.notes}
               onChange={handleChange}
@@ -641,12 +642,14 @@ mazzgord.com`;
             <label className="flex items-start gap-3 cursor-pointer">
               <input
                 type="checkbox"
+                id="tf-kvkk"
+                aria-describedby="tf-kvkk-desc"
                 checked={kvkkAccepted}
                 onChange={(e) => setKvkkAccepted(e.target.checked)}
                 className="mt-1 w-5 h-5 rounded border-border text-primary focus:ring-primary"
                 required
               />
-              <div className="text-sm text-muted-foreground">
+              <div id="tf-kvkk-desc" className="text-sm text-muted-foreground">
                 <span className="font-medium text-foreground">Kişisel verilerimin işlenmesine ilişkin aydınlatma metnini</span> okudum. Verilerimin teklif hazırlama, iletişim ve hizmet sunumu amacıyla işlenmesine, gerektiğinde üçüncü taraflarla (noter, kurye, resmi kurumlar) paylaşılmasına ve 90 gün süreyle saklanmasına izin veriyorum. Onayımı istediğim zaman geri alabilirim.
               </div>
             </label>

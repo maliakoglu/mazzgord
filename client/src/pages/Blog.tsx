@@ -31,8 +31,6 @@ export default function Blog() {
     { title: "Yerelleştirme Hizmetleri: Küresel Pazarda Başarı İçin Anahtar", date: "30 Haziran 2026", slug: "/blog/yerellestirme-hizmetleri", category: "Rehberler" },
     { title: "Tıbbi Çeviri: Sağlık Sektöründe Doğruluk ve Hassasiyet", date: "29 Haziran 2026", slug: "/blog/tibbi-ceviri", category: "Rehberler" },
     { title: "Akademik Çeviri Rehberi: Bilimsel Çalışmalarınız İçin Doğru Adres", date: "22 Haziran 2026", slug: "/blog/akademik-ceviri", category: "Rehberler" },
-    { title: "Teknik Çeviri Rehberi: Uzmanlık ve Doğruluk", date: "22 Haziran 2026", slug: "/blog/teknik-ceviri", category: "Rehberler" },
-    { title: "Yeminli Tercüme Sürecinde Sıkça Sorulan Sorular ve Cevapları", date: "22 Haziran 2026", slug: "/blog/yeminli-tercume", category: "Rehberler" },
     { title: "Yeminli Tercüme Nedir? Nerelerde Kullanılır?", date: "15 Mayıs 2026", slug: "/blog/yeminli-tercume", category: "Rehberler" },
     { title: "İngiltere Vize Başvurusu İçin Çeviri Rehberi", date: "10 Mayıs 2026", slug: "/blog/vize-ceviri", category: "Rehberler" },
     { title: "Teknik Çeviride Dikkat Edilmesi Gereken 5 Önemli Nokta", date: "5 Mayıs 2026", slug: "/blog/teknik-ceviri", category: "Rehberler" },
