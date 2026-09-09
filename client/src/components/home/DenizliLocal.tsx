@@ -44,7 +44,7 @@ export default function DenizliLocal() {
             Teklif Alın
           </a>
           <a href="https://wa.me/905386295040" target="_blank" rel="noopener noreferrer" onClick={() => track.whatsappClick("denizli_local")} className="px-8 py-3 rounded-lg font-medium transition" style={{ backgroundColor: '#22C55E', color: 'white' }}>
-            WhatsApp ile Ulaşın
+            WhatsApp'tan Gönderin
           </a>
         </div>
       </div>

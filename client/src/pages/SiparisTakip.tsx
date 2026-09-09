@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Search, Package, Mail, Truck, CheckCircle2, Clock, AlertCircle, Loader2, ArrowLeft } from "lucide-react";
+import Navbar from "@/components/home/Navbar";
+import { Search, Package, Mail, Truck, CheckCircle2, Clock, AlertCircle, Loader2 } from "lucide-react";
 
 interface OrderItem {
   name: string;
@@ -68,15 +69,13 @@ export default function SiparisTakip() {
               name: `${q.source_language} → ${q.target_language}${q.document_type ? " — " + q.document_type : ""}`,
               quantity: 1,
               unitPrice: q.estimated_price || 0,
-              totalPrice: q.estimated_price || 0,
-            }],
+              totalPrice: q.estimated_price || 0 }],
             total: q.estimated_price || 0,
             status: q.order_status || "pending",
             delivery_method: q.delivery_method || "digital",
             shipping_address: null,
             shipping_tracking: q.shipping_tracking,
-            created_at: q.created_at,
-          });
+            created_at: q.created_at });
         } else {
           setOrder(data.data);
         }
@@ -101,21 +100,14 @@ export default function SiparisTakip() {
     pending: { label: "Ödeme Bekleniyor", color: "text-orange-600 bg-orange-50 border-orange-200", icon: Clock },
     paid: { label: "Çeviri Devam Ediyor", color: "text-blue-600 bg-blue-50 border-blue-200", icon: Loader2 },
     delivered: { label: "Teslim Edildi", color: "text-emerald-600 bg-emerald-50 border-emerald-200", icon: CheckCircle2 },
-    cancelled: { label: "İptal Edildi", color: "text-red-600 bg-red-50 border-red-200", icon: AlertCircle },
-  };
+    cancelled: { label: "İptal Edildi", color: "text-red-600 bg-red-50 border-red-200", icon: AlertCircle } };
 
   const status = order ? statusConfig[order.status] || statusConfig.pending : null;
   const StatusIcon = status?.icon || Clock;
 
   return (
     <div className="min-h-screen bg-background">
-      <nav className="sticky top-0 z-50 bg-background border-b border-border">
-        <div className="container mx-auto px-4 py-4">
-          <a href="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition">
-            <ArrowLeft className="w-5 h-5" /> Ana Sayfa
-          </a>
-        </div>
-      </nav>
+      <Navbar />
 
       <div className="container mx-auto px-4 py-12 max-w-2xl">
         <h1 className="text-3xl font-bold text-primary mb-2 flex items-center gap-3">

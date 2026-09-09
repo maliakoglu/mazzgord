@@ -1,15 +1,13 @@
+import { useState } from "react";
 import { ChevronDown, User, Moon, Sun } from "lucide-react";
 import { useLocation } from "wouter";
 import { useTheme } from "@/contexts/ThemeContext";
 
-export default function Navbar({ mobileOpen, setMobileOpen, servicesOpen, setServicesOpen }: {
-  mobileOpen: boolean;
-  setMobileOpen: (v: boolean) => void;
-  servicesOpen: boolean;
-  setServicesOpen: (v: boolean) => void;
-}) {
+export default function Navbar() {
   const [location, navigate] = useLocation();
   const { theme, toggleTheme } = useTheme();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
 
   const goHome = () => {
     if (location !== "/") {

@@ -12,12 +12,11 @@ import GalleryModal from "@/components/home/GalleryModal";
 import Process from "@/components/home/Process";
 import PricingPreview from "@/components/home/PricingPreview";
 import FAQ from "@/components/home/FAQ";
-import Portfolio from "@/components/home/Portfolio";
 import DenizliLocal from "@/components/home/DenizliLocal";
 
 export default function Home() {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
+
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -108,60 +107,18 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} servicesOpen={servicesOpen} setServicesOpen={setServicesOpen} />
+      <Navbar />
       <main>
         <Hero />
         <Process />
         <Services />
         <WhyChooseUs />
-        <section className="py-8 bg-background hidden md:block">
-          <div className="container mx-auto px-4" style={{ maxWidth: '1200px' }}>
-            <div className="flex justify-center">
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <iframe
-                  src="https://a.impactradius-go.com/gen-ad-code/4677196/4009076/4823/"
-                  width="728"
-                  height="90"
-                  scrolling="no"
-                  frameBorder="0"
-                  marginHeight={0}
-                  marginWidth={0}
-                  referrerPolicy="no-referrer-when-downgrade"
-                  style={{ border: "none", width: "728px", height: "90px" }}
-                  title="Reklam"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
         <PricingPreview />
         <Testimonials openGallery={openGallery} />
         <Portfolio />
         <DenizliLocal />
-        <section className="py-8 bg-background hidden md:block">
-          <div className="container mx-auto px-4" style={{ maxWidth: '1200px' }}>
-            <div className="flex justify-center">
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <iframe
-                  src="https://a.impactradius-go.com/gen-ad-code/4677196/462271/8199/"
-                  width="728"
-                  height="90"
-                  scrolling="no"
-                  frameBorder="0"
-                  marginHeight={0}
-                  marginWidth={0}
-                  referrerPolicy="no-referrer-when-downgrade"
-                  style={{ border: "none", width: "728px", height: "90px" }}
-                  title="Reklam"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
         <FAQ />
-        <Contact formData={formData} handleChange={handleChange} handleSubmit={handleSubmit} submitStatus={submitStatus} />
+        <Contact />
       </main>
       <Footer />
       <GalleryModal open={gallery.open} images={gallery.images} current={gallery.current} onClose={closeGallery} onNext={nextImage} onPrev={prevImage} />

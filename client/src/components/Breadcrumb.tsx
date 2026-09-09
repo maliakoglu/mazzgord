@@ -24,7 +24,7 @@ export default function Breadcrumb({ items }: { items: Crumb[] }) {
       itemListElement: itemList,
     };
 
-    let script = document.querySelector('script[data-breadcrumb-jsonld]');
+    let script = document.querySelector('script[data-breadcrumb-jsonld]') as HTMLScriptElement | null;
     if (!script) {
       script = document.createElement('script');
       script.type = 'application/ld+json';

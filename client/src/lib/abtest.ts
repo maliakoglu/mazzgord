@@ -14,16 +14,16 @@ const experiments: Record<string, Experiment> = {
   hero_cta_text: {
     name: "hero_cta_text",
     variants: {
-      A: "Belgem İçin Teklif Al",
-      B: "Hemen Teklif Al",
+      A: "Belgenizi Gönderin, Teklif Alın",
+      B: "Belgeniz İçin Teklif Alın",
     },
     active: true,
   },
   hero_subtitle: {
     name: "hero_subtitle",
     variants: {
-      A: "İngilizce-Türkçe Resmi Belge ve Vize Çevirisi",
-      B: "Denizli'den Online Yeminli Tercüme — Hızlı Teklif",
+      A: "Pasaport, diploma, transkript, adli sicil ve vize belgeleriniz için yeminli tercüme.",
+      B: "Belgenizi inceleyip size uygun hizmeti, fiyatı ve teslim süresini açıkça paylaşırım.",
     },
     active: true,
   },

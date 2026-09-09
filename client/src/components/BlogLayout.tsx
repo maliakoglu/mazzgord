@@ -35,16 +35,19 @@ function BlogCTA() {
   return (
     <div className="mt-12 p-8 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 border border-border">
       <div className="text-center">
-        <h3 className="text-2xl font-bold text-primary mb-3">Belgeniz için Teklif Alın</h3>
-        <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-          Yeminli tercüme, noter onaylı çeviri, apostil süreci ve daha fazlası için belgenizi gönderin; net teklif alırsınız.
+        <h3 className="text-2xl font-bold text-primary mb-3">Belgenizi Gönderin, Aynı Gün Net Teklif Alın</h3>
+        <p className="text-muted-foreground mb-4 max-w-xl mx-auto">
+          Bağımsız Tercüman yeminli tercüman olarak pasaport, diploma, vize ve resmi belge çevirilerinizi yapıyorum. Noter onayı ve apostil takibi dahil.
+        </p>
+        <p className="text-sm text-muted-foreground mb-6">
+          ⏱ Pzt–Cmt 09:00–18:00 · 📍 Pamukkale, Denizli · Mesai içinde aynı gün dönüş
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a href="/teklif" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl font-semibold hover:opacity-90 transition no-underline">
-            <FileText className="w-5 h-5" /> Teklif Al
+            <FileText className="w-5 h-5" /> Teklif Formu — Belgeni Gönder
           </a>
-          <a href="https://wa.me/905386295040" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-accent text-accent-foreground rounded-xl font-semibold hover:opacity-90 transition no-underline">
-            <MessageCircle className="w-5 h-5" /> WhatsApp ile İletişim
+          <a href="https://wa.me/905386295040?text=Merhaba,%20belgem%20için%20teklif%20almak%20istiyorum." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-accent text-accent-foreground rounded-xl font-semibold hover:opacity-90 transition no-underline">
+            <MessageCircle className="w-5 h-5" /> WhatsApp'tan Hızlı Teklif
           </a>
         </div>
       </div>
@@ -114,7 +117,7 @@ export default function BlogLayout({ title, description, canonical, date, illust
       if (!e) { e = document.createElement('meta'); e.setAttribute('property',prop); document.head.appendChild(e) }
       e.setAttribute('content', content)
     }
-    let j = document.querySelector('script[data-blog-jsonld]')
+    let j = document.querySelector('script[data-blog-jsonld]') as HTMLScriptElement | null
     if (jsonLd) {
       if (!j) { j = document.createElement('script'); j.type='application/ld+json'; j.setAttribute('data-blog-jsonld',''); document.head.appendChild(j) }
       j.textContent = jsonLd

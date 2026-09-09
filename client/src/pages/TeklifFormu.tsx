@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { ArrowLeft, Upload, FileText, CheckCircle2, Loader2, X, Globe, Clock, FileType, Mail, Phone, User } from "lucide-react";
+import Navbar from "@/components/home/Navbar";
+import { Upload, FileText, CheckCircle2, Loader2, X, Globe, Clock, FileType, Mail, Phone, User } from "lucide-react";
 import { track } from "@/lib/analytics";
 
 const LANGUAGES = [
@@ -24,12 +25,13 @@ const DOCUMENT_TYPES = [
 ];
 
 const SERVICE_TYPES = [
-  { value: "yeminli", label: "Yeminli Tercüme (Resmi)" },
-  { value: "noter", label: "Noter Tasdikli Çeviri" },
+  { value: "yeminli", label: "Yeminli Tercüme (Resmî Belgeler)" },
+  { value: "noter", label: "Noter Onaylı Tercüme" },
   { value: "profesyonel", label: "Profesyonel Çeviri" },
   { value: "akademik", label: "Akademik Çeviri" },
   { value: "teknik", label: "Teknik Çeviri" },
   { value: "hukuki", label: "Hukuki Çeviri" },
+  { value: "apostil", label: "Apostil Takibi" },
 ];
 
 const URGENCY_OPTIONS = [
@@ -41,7 +43,6 @@ const URGENCY_OPTIONS = [
 
 
 export default function TeklifFormu() {
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [emailVerified, setEmailVerified] = useState(false);
   const [verifyStatus, setVerifyStatus] = useState<"idle" | "sending" | "sent" | "verifying" | "error">("idle");
@@ -73,8 +74,7 @@ export default function TeklifFormu() {
     target_country: "",
     delivery_date: "",
     meeting_day: "",
-    meeting_time: "",
-  });
+    meeting_time: "" });
 
   const interactedRef = useRef(false);
 
@@ -126,8 +126,7 @@ export default function TeklifFormu() {
 
         const res = await fetch("/api/upload", {
           method: "POST",
-          body: fd,
-        });
+          body: fd });
 
         if (res.ok) {
           const data = await res.json();
@@ -192,9 +191,7 @@ export default function TeklifFormu() {
           delivery_date: formData.delivery_date || null,
           meeting_day: formData.delivery_method === "hand_delivery" ? (formData.meeting_day || null) : null,
           meeting_time: formData.delivery_method === "hand_delivery" ? (formData.meeting_time || null) : null,
-          idempotency_key: idempotencyKey,
-        }),
-      });
+          idempotency_key: idempotencyKey }) });
 
       // Web3Forms'e de gönder (e-posta düşer)
       const emailBody = {
@@ -214,14 +211,12 @@ export default function TeklifFormu() {
           `Dosyalar: ${fileNames.length > 0 ? fileNames.join(", ") : "Yüklenmedi"}\n` +
           `Notlar: ${formData.notes || "Yok"}`,
         access_key: "bcd1bf4b-064e-4e56-83f7-5dc9aaf5d74c",
-        subject: "Yeni Teklif Talebi - Mazzgord",
-      };
+        subject: "Yeni Teklif Talebi - Mazzgord" };
 
       const web3Res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(emailBody),
-      });
+        body: JSON.stringify(emailBody) });
       if (!web3Res.ok) {
         console.error("Web3Forms bildirim hatasi:", web3Res.status);
       }
@@ -273,7 +268,7 @@ export default function TeklifFormu() {
 ` : "") +
           (formData.notes ? `*Notlar:* ${formData.notes}
 ` : "") +
-          (fileName ? `*Dosya:* ${fileName}
+          (fileNames.length > 0 ? `*Dosya:* ${fileNames.join(", ")}
 ` : "") +
           `
 mazzgord.com`;
@@ -288,8 +283,7 @@ mazzgord.com`;
           document_type: "", service_type: "", page_count: "", word_count: "",
           urgency: "standart", delivery_method: "digital", shipping_address: "", notes: "",
           notary_need: "", apostille_need: "", target_country: "", delivery_date: "",
-          meeting_day: "", meeting_time: "",
-        });
+          meeting_day: "", meeting_time: "" });
         setFileKeys([]);
         setFileNames([]);
         // Başarı ekranı kalıcı — kullanıcı manuel olarak yeni teklif verebilir
@@ -319,32 +313,7 @@ mazzgord.com`;
   return (
     <div className="min-h-screen bg-background">
       {/* Nav */}
-      <nav className="sticky top-0 z-50 bg-background border-b border-border">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <a href="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition">
-            <ArrowLeft className="w-5 h-5" /> Ana Sayfa
-          </a>
-          <div className="hidden md:flex gap-8">
-            <a href="/fiyatlar" className="text-foreground hover:text-primary transition">Fiyatlar</a>
-            <a href="/blog" className="text-foreground hover:text-primary transition">Blog</a>
-            <a href="/hakkimizda" className="text-foreground hover:text-primary transition">Hakkımda</a>
-            <a href="/teklif" className="bg-primary text-primary-foreground px-5 py-2 rounded-lg font-medium hover:bg-primary/90 transition no-underline">Teklif Al</a>
-          </div>
-          <button className="md:hidden flex flex-col gap-1.5 p-2 cursor-pointer bg-transparent border-none z-60" onClick={() => setMobileOpen(!mobileOpen)}>
-            <span className={`block w-6 h-0.5 bg-foreground rounded transition-all duration-300 ${mobileOpen ? "rotate-45 translate-y-[7px]" : ""}`}></span>
-            <span className={`block w-6 h-0.5 bg-foreground rounded transition-all duration-300 ${mobileOpen ? "opacity-0" : ""}`}></span>
-            <span className={`block w-6 h-0.5 bg-foreground rounded transition-all duration-300 ${mobileOpen ? "-rotate-45 -translate-y-[7px]" : ""}`}></span>
-          </button>
-          {mobileOpen && (
-            <div className="fixed top-0 right-0 w-72 h-full bg-background z-50 shadow-2xl p-8 pt-24 flex flex-col gap-2 md:hidden">
-              <a href="/fiyatlar" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Fiyatlar</a>
-              <a href="/blog" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Blog</a>
-              <a href="/hakkimizda" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Hakkımda</a>
-              <a href="/teklif" className="block px-4 py-3 bg-primary text-primary-foreground font-medium hover:bg-primary/90 rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Teklif Al</a>
-            </div>
-          )}
-        </div>
-      </nav>
+      <Navbar />
 
       <div className="container mx-auto px-4 py-12 max-w-3xl">
         {/* Header */}
@@ -379,6 +348,7 @@ mazzgord.com`;
                 </a>
               </div>
               <p className="text-xs text-muted-foreground pt-2">Genellikle 2-4 saat içinde dönüş yapılır. Acil taleplerde WhatsApp'tan ulaşabilirsiniz.</p>
+              <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3 mt-3">⚠ Kurum kabulü veya vize sonucu garanti edilmez; belgenin kullanılacağı kurumun güncel şartlarını ayrıca kontrol edin.</p>
             </div>
           </div>
         )}
@@ -605,7 +575,7 @@ mazzgord.com`;
           {/* Dosya Yükleme */}
           <div className={sectionClass}>
             <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
-              <Upload className="w-5 h-5 text-primary" /> Belge Yükleme <span className="text-red-500">*</span>
+              <Upload className="w-5 h-5 text-primary" /> Belge Yükleme <span className="text-xs text-muted-foreground font-normal">(isteğe bağlı)</span>
             </h2>
             <p className="text-sm text-muted-foreground mb-4">
               Çevrilmesini istediğiniz belgeleri yükleyin (PDF, DOC, DOCX, TXT, JPG, PNG — her dosya max 10MB, en fazla 10 dosya). Belge yükleme isteğe bağlıdır (opsiyonel).
@@ -695,7 +665,7 @@ mazzgord.com`;
           <div className="text-center">
             <button
               type="submit"
-              disabled={submitStatus === "sending" || uploadStatus === "uploading" || !emailVerified || !kvkkAccepted}
+              disabled={submitStatus === "sending" || uploadStatus === "uploading" || !kvkkAccepted}
               className="px-8 py-4 bg-primary text-primary-foreground rounded-lg font-bold text-lg hover:bg-primary/90 transition disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2"
             >
               {submitStatus === "sending" ? (

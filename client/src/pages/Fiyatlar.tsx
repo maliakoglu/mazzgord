@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, Search, FileText, CheckCircle2 } from "lucide-react";
+import Navbar from "@/components/home/Navbar";
+import { Search, FileText, CheckCircle2 } from "lucide-react";
 
 interface PriceItem {
   id: number;
@@ -14,8 +15,7 @@ interface PriceItem {
 const CATEGORY_LABELS: Record<string, string> = {
   resmi: "Resmi Belgeler",
   egitim: "Eğitim Belgeleri",
-  ticari: "Ticari Belgeler",
-};
+  ticari: "Ticari Belgeler" };
 
 function formatPrice(price: number): string {
   return price.toLocaleString("tr-TR", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
@@ -47,13 +47,7 @@ export default function Fiyatlar() {
 
   return (
     <div className="min-h-screen bg-background">
-      <nav className="sticky top-0 z-50 bg-background border-b border-border">
-        <div className="container mx-auto px-4 py-4">
-          <a href="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition">
-            <ArrowLeft className="w-5 h-5" /> Ana Sayfa
-          </a>
-        </div>
-      </nav>
+      <Navbar />
 
       <div className="container mx-auto px-4 py-12 max-w-5xl">
         <div className="text-center mb-10">
@@ -127,7 +121,8 @@ export default function Fiyatlar() {
                   <th className="text-left py-3 px-4 font-bold text-foreground">Belge Adı</th>
                   <th className="text-right py-3 px-4 font-bold text-foreground whitespace-nowrap">Yeminli Tercüme</th>
                   <th className="text-right py-3 px-4 font-bold text-foreground whitespace-nowrap">Noter İşlem/Takip</th>
-                  <th className="text-right py-3 px-4 font-bold text-foreground whitespace-nowrap">Apostil İşlem/Takip</th>
+                  <th className="text-right py-3 px-4 font-bold text-foreground whitespace-nowrap">Noter ile Toplam</th>
+                  <th className="text-right py-3 px-4 font-bold text-foreground whitespace-nowrap">Apostil ile Toplam</th>
                 </tr>
               </thead>
               <tbody>
@@ -136,7 +131,8 @@ export default function Fiyatlar() {
                     <td className="py-3 px-4 text-foreground font-medium">{p.document_name}</td>
                     <td className="py-3 px-4 text-right text-foreground whitespace-nowrap">{formatPrice(p.yeminli_price)} ₺</td>
                     <td className="py-3 px-4 text-right text-foreground whitespace-nowrap">+{formatPrice(p.noter_price - p.yeminli_price)} ₺</td>
-                    <td className="py-3 px-4 text-right text-foreground whitespace-nowrap">{p.has_apostil_variant ? `+${formatPrice(p.apostil_price - p.noter_price)} ₺` : "—"}</td>
+                    <td className="py-3 px-4 text-right text-foreground whitespace-nowrap font-semibold">{formatPrice(p.noter_price)} ₺</td>
+                    <td className="py-3 px-4 text-right text-foreground whitespace-nowrap font-semibold">{p.has_apostil_variant ? `${formatPrice(p.apostil_price)} ₺` : "—"}</td>
                   </tr>
                 ))}
               </tbody>
@@ -158,6 +154,7 @@ export default function Fiyatlar() {
             <li>• Apostil işlem/takip bedeli, başvuru, takip ve teslim hizmetidir.</li>
             <li>• Acil teslimde +%30-%50 ek ücret uygulanır; kapasiteye bağlıdır.</li>
             <li>• Kargo bedeli gerçek gönderim bedelidir; şehir ve teslim şekline göre değişir.</li>
+            <li className="font-medium text-foreground">• Kurum kabulü veya vize sonucu garanti edilmez; belgenin kullanılacağı kurumun güncel şartlarını ayrıca kontrol edin.</li>
           </ul>
         </div>
 

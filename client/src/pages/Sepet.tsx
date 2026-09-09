@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import Navbar from "@/components/home/Navbar";
 import { ArrowLeft, ShoppingCart, Trash2, Plus, Minus, Loader2, User, Mail, Phone, Upload, FileText, X, CheckCircle2 } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 
@@ -132,13 +133,7 @@ export default function Sepet() {
   if (items.length === 0 && !showCheckout) {
     return (
       <div className="min-h-screen bg-background">
-        <nav className="sticky top-0 z-50 bg-background border-b border-border">
-          <div className="container mx-auto px-4 py-4">
-            <a href="/teklif" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition">
-              <ArrowLeft className="w-5 h-5" /> Hizmetler
-            </a>
-          </div>
-        </nav>
+        <Navbar />
         <div className="container mx-auto px-4 py-20 max-w-2xl text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary mb-4">
             <ShoppingCart className="w-8 h-8 text-muted-foreground" />

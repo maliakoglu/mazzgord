@@ -5,7 +5,7 @@ export default function About() {
         <h2 style={{ fontFamily: '"Libre Baskerville", serif', fontSize: '32px', fontWeight: 700, marginBottom: '24px', color: 'var(--color-heading)', letterSpacing: '-0.02em', lineHeight: 1.31 }}>Denizli'den Tüm Türkiye'ye Yeminli Tercüme</h2>
         <div className="space-y-4">
           <p style={{ color: 'var(--color-mid-stone)', fontSize: '16px', lineHeight: 1.63 }}>
-            Ben Mehmet Akoğlu; Denizli merkezli noter yeminli tercümanım. İngilizce-Türkçe resmi belge ve vize çevirisi konusunda hizmet veriyorum. Pasaport, diploma, adli sicil, nüfus kayıt örneği ve vize evraklarınızı belge türüne, noter ve apostil ihtiyacına göre inceler, net teklif sunarım.
+            Ben Mehmet Akoğlu; Denizli merkezli, noter huzurunda yemin etmiş bağımsız İngilizce-Türkçe yeminli tercümanım. Yemin zaptım Denizli 2. Noterliği'nde düzenlenmiştir. İngilizce-Türkçe resmi belge ve vize çevirisi konusunda hizmet veriyorum. Pasaport, diploma, adli sicil, nüfus kayıt örneği ve vize evraklarınızı belge türüne, noter ve apostil ihtiyacına göre inceler, net teklif sunarım.
           </p>
           <h3 style={{ fontFamily: '"Libre Baskerville", serif', fontSize: '24px', fontWeight: 500, marginTop: '32px', marginBottom: '16px', color: 'var(--color-heading)' }}>Yeminli Tercüme ve Resmi Belge Çevirisi</h3>
           <p style={{ color: 'var(--color-mid-stone)', fontSize: '16px', lineHeight: 1.63 }}>

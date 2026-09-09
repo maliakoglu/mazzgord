@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, CreditCard, Shield, CheckCircle2, Loader2, AlertCircle, Download } from "lucide-react";
+import Navbar from "@/components/home/Navbar";
+import { CreditCard, Shield, CheckCircle2, Loader2, AlertCircle, Download } from "lucide-react";
 
 export default function Odeme() {
   const [paymentData, setPaymentData] = useState<any>(null);
@@ -88,9 +89,7 @@ export default function Odeme() {
         body: JSON.stringify({
           link_id: linkId,
           token: token,
-          conversation_id: conversationId,
-        }),
-      });
+          conversation_id: conversationId }) });
       const data = await res.json();
       if (data.success) {
         setStatus("success");
@@ -183,8 +182,7 @@ export default function Odeme() {
       const res = await fetch("/api/payment/initialize", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ payment_link_id: paymentData.payment_link_id }),
-      });
+        body: JSON.stringify({ payment_link_id: paymentData.payment_link_id }) });
       const data = await res.json();
       if (data.success && data.payment_page_url) {
         // link_id'yi localStorage'a kaydet — geri döndüğümüzde kullanacağız
@@ -285,13 +283,7 @@ export default function Odeme() {
 
   return (
     <div className="min-h-screen bg-background">
-      <nav className="sticky top-0 z-50 bg-background border-b border-border">
-        <div className="container mx-auto px-4 py-4">
-          <a href="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition">
-            <ArrowLeft className="w-5 h-5" /> Ana Sayfa
-          </a>
-        </div>
-      </nav>
+      <Navbar />
 
       <div className="container mx-auto px-4 py-12 max-w-lg">
         <div className="text-center mb-8">

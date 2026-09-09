@@ -1,38 +1,12 @@
 import { ArrowLeft, CheckCircle2, Shield, Clock, FileText, Stamp } from "lucide-react";
+import Navbar from "@/components/home/Navbar";
 import Breadcrumb from "@/components/Breadcrumb";
 import { useState } from "react";
 
 export default function NoterOnayliTercume() {
-  const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <div className="min-h-screen bg-background">
-      <nav className="sticky top-0 z-50 bg-background border-b border-border">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <a href="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition"><ArrowLeft className="w-5 h-5" /> Ana Sayfa</a>
-          <div className="hidden md:flex gap-8">
-            <a href="/fiyatlar" className="text-foreground hover:text-primary transition">Fiyatlar</a>
-            <a href="/blog" className="text-foreground hover:text-primary transition">Blog</a>
-            <a href="/hakkimizda" className="text-foreground hover:text-primary transition">Hakkımda</a>
-            <a href="/teklif" className="bg-primary text-primary-foreground px-5 py-2 rounded-lg font-medium hover:bg-primary/90 transition no-underline">Teklif Al</a>
-          </div>
-          <button className="md:hidden flex flex-col gap-1.5 p-2 cursor-pointer bg-transparent border-none z-60" onClick={() => setMobileOpen(!mobileOpen)}>
-            <span className={`block w-6 h-0.5 bg-foreground rounded transition-all duration-300 ${mobileOpen ? "rotate-45 translate-y-[7px]" : ""}`}></span>
-            <span className={`block w-6 h-0.5 bg-foreground rounded transition-all duration-300 ${mobileOpen ? "opacity-0" : ""}`}></span>
-            <span className={`block w-6 h-0.5 bg-foreground rounded transition-all duration-300 ${mobileOpen ? "-rotate-45 -translate-y-[7px]" : ""}`}></span>
-          </button>
-          {mobileOpen && (
-            <>
-              <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setMobileOpen(false)}></div>
-              <div className="fixed top-0 right-0 w-72 h-full bg-background z-50 shadow-2xl p-8 pt-24 flex flex-col gap-2 md:hidden">
-                <a href="/fiyatlar" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Fiyatlar</a>
-                <a href="/blog" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Blog</a>
-                <a href="/hakkimizda" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Hakkımda</a>
-                <a href="/teklif" className="block px-4 py-3 bg-primary text-primary-foreground font-medium hover:bg-primary/90 rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Teklif Al</a>
-              </div>
-            </>
-          )}
-        </div>
-      </nav>
+      <Navbar />
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <Breadcrumb items={[{ label: "Hizmetler", href: "/" }, { label: "Noter Onaylı Tercüme" }]} />
         <h1 className="text-4xl font-bold text-primary mb-4">Denizli Noter Onaylı Tercüme | Yeminli Çeviri Hizmeti</h1>
@@ -71,7 +45,7 @@ export default function NoterOnayliTercume() {
           <h2 className="text-2xl font-bold text-primary mb-4">Noter Onaylı Tercüme Fiyatları</h2>
           <p className="text-muted-foreground leading-relaxed mb-4">Noter onaylı tercüme fiyatı, belgenin uzunluğuna, diline ve noter harç bedeline göre değişir. Çeviri ücreti sayfa bazında hesaplanır; noter onay bedeli belge başına ayrı olarak uygulanır.</p>
           <p className="text-muted-foreground leading-relaxed">Net fiyat teklifi için belgenizi göndermeniz yeterlidir. Fiyat teklifi ücretsizdir.</p>
-          <a href="/teklif" className="inline-flex items-center gap-2 mt-4 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition no-underline">Ücretsiz Teklif Al <ArrowLeft className="w-4 h-4 rotate-180" /></a>
+          <a href="/teklif" className="inline-flex items-center gap-2 mt-4 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition no-underline">Teklif Al <ArrowLeft className="w-4 h-4 rotate-180" /></a>
         </div>
         <div className="grid md:grid-cols-2 gap-4">
           <a href="/yeminli-tercume" className="block p-4 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Yeminli Tercüme</a>

@@ -1,47 +1,15 @@
-import { ArrowLeft, CheckCircle2, Shield, Clock, FileText } from "lucide-react";
+import { CheckCircle2, Shield, Clock, FileText } from "lucide-react";
+import Navbar from "@/components/home/Navbar";
 import Breadcrumb from "@/components/Breadcrumb";
 import { useState } from "react";
 export default function YeminliTercume() {
-  const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <div className="min-h-screen bg-background">
-      <nav className="sticky top-0 z-50 bg-background border-b border-border">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <a href="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition"><ArrowLeft className="w-5 h-5" /> Ana Sayfa</a>
-          <div className="hidden md:flex gap-8">
-            <a href="/fiyatlar" className="text-foreground hover:text-primary transition">Fiyatlar</a>
-            <a href="/blog" className="text-foreground hover:text-primary transition">Blog</a>
-            <a href="/hakkimizda" className="text-foreground hover:text-primary transition">Hakkımda</a>
-            <a href="/teklif" className="bg-primary text-primary-foreground px-5 py-2 rounded-lg font-medium hover:bg-primary/90 transition no-underline">Teklif Al</a>
-                      </div>
-          <button
-            className="md:hidden flex flex-col gap-1.5 p-2 cursor-pointer bg-transparent border-none z-60"
-            onClick={() => setMobileOpen(!mobileOpen)}
-          >
-            <span className={`block w-6 h-0.5 bg-foreground rounded transition-all duration-300 ${mobileOpen ? "rotate-45 translate-y-[7px]" : ""}`}></span>
-            <span className={`block w-6 h-0.5 bg-foreground rounded transition-all duration-300 ${mobileOpen ? "opacity-0" : ""}`}></span>
-            <span className={`block w-6 h-0.5 bg-foreground rounded transition-all duration-300 ${mobileOpen ? "-rotate-45 -translate-y-[7px]" : ""}`}></span>
-          </button>
-          {mobileOpen && (
-            <>
-              <div
-                className="fixed inset-0 bg-black/50 z-40 md:hidden"
-                onClick={() => setMobileOpen(false)}
-              ></div>
-              <div className="fixed top-0 right-0 w-72 h-full bg-background z-50 shadow-2xl p-8 pt-24 flex flex-col gap-2 md:hidden">
-                <a href="/fiyatlar" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Fiyatlar</a>
-                <a href="/blog" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Blog</a>
-                <a href="/hakkimizda" className="block px-4 py-3 text-foreground hover:bg-accent rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Hakkımda</a>
-                <a href="/teklif" className="block px-4 py-3 bg-primary text-primary-foreground font-medium hover:bg-primary/90 rounded-lg text-lg no-underline transition" onClick={() => setMobileOpen(false)}>Teklif Al</a>
-                              </div>
-            </>
-          )}
-        </div>
-      </nav>
+      <Navbar />
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <Breadcrumb items={[{label: "Hizmetler", href: "/"}, {label: "Yeminli Tercüme"}]} />
         <h1 className="text-4xl font-bold text-primary mb-4">Denizli Yeminli Tercüman | Noter Onaylı Tercüme</h1>
-        <p className="text-xl text-muted-foreground mb-8">Denizli'de profesyonel yeminli tercüme hizmetleri. Resmi belgeleriniz için güvenilir ve doğru çeviri çözümleri.</p>
+        <p className="text-xl text-muted-foreground mb-8">Ben Mehmet Akoğlu; Denizli merkezli, noter huzurunda yemin etmiş bağımsız İngilizce-Türkçe yeminli tercümanım. Yemin zaptım Denizli 2. Noterliği'nde düzenlenmiştir. Pasaport, diploma, vize ve resmi belgelerinizi çeviriyorum. Belgenizi WhatsApp'tan gönderin — mesai içinde aynı gün net fiyat ve teslim süresi alın.</p>
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           <div className="flex gap-4 p-6 bg-card rounded-xl border border-border"><Shield className="w-8 h-8 text-primary flex-shrink-0" /><div><h3 className="font-bold mb-2">Resmi Geçerlilik</h3><p className="text-muted-foreground text-sm">Yeminli tercüman imzam tüm resmi kurumlarda geçerlidir.</p></div></div>
           <div className="flex gap-4 p-6 bg-card rounded-xl border border-border"><Clock className="w-8 h-8 text-primary flex-shrink-0" /><div><h3 className="font-bold mb-2">Hızlı Teslimat</h3><p className="text-muted-foreground text-sm">Acil talepleriniz için aynı gün teslimat seçeneği var.</p></div></div>
@@ -49,9 +17,9 @@ export default function YeminliTercume() {
         </div>
         <div className="bg-secondary/30 rounded-xl p-8 mb-8">
           <h2 className="text-2xl font-bold text-primary mb-4">Yeminli Tercüme Nedir?</h2>
-          <p className="text-muted-foreground leading-relaxed mb-4">Yeminli tercüme, yeminli tercümanlar tarafından yapılan ve noter onayı gerektirmeyen resmi çeviri işlemidir. Yeminli tercüman, yeminname vererek çevirisinin doğru ve eksiksiz olduğunu taahhüt eder. Bu çeviriler, mahkemeler, konsolosluklar, üniversiteler ve diğer resmi kurumlar tarafından kabul edilir.</p>
-          <p className="text-muted-foreground leading-relaxed mb-4">Türkiye'de yeminli tercümanlık, 6325 sayılı Yeminli Mali Müşavirlik ve Yeminli Tercümanlık Kanunu ile düzenlenmiştir. Yeminli tercümanlar, noter huzurunda yemin ederek bu unvanı alır ve yaptıkları çeviriler resmi belge niteliği taşır.</p>
-          <p className="text-muted-foreground leading-relaxed">Yeminli tercüme, özellikle yurt dışı başvurularında, vize işlemlerinde, göçmenlik dosyalarında ve üniversite başvurularında zorunlu bir belgedir. Yanlış veya eksik çeviri, başvurunun reddedilmesine neden olabilir.</p>
+          <p className="text-muted-foreground leading-relaxed mb-4">Yeminli tercüme, noter huzurunda yemin etmiş bir tercümanın yaptığı ve imzasıyla geçerlilik kazanan resmi çeviridir. Yemin zaptım Denizli 2. Noterliği'nde düzenlenmiştir. Yaptığım her çeviri imzalı ve kaşelidir, mahkemeler, konsolosluklar, üniversiteler ve resmi kurumlar tarafından kabul edilir.</p>
+          <p className="text-muted-foreground leading-relaxed mb-4">Pasaport, diploma, adli sicil, vize evrakı gibi belgeleriniz yurt dışı başvurusunda, göçmenlik dosyasında veya üniversite başvurusunda kullanılacaksa yeminli tercüme istenir. Yanlış veya eksik çeviri başvurunun reddedilmesine yol açabilir — bu yüzden her belgeyi bizzat çevirir, teslimden önce isim, tarih, sayı ve kurum adlarını ikinci kez kontrol ederim.</p>
+          <p className="text-muted-foreground leading-relaxed">Noter onayı çoğu durumda gerekmez; yeminli tercüman imzası yeterlidir. Ancak bazı kurumlar noter tasdiki veya apostil şart koşabilir — belgenizin kullanılacağı kurumun güncel şartlarını kontrol etmenizi öneririm.</p>
         </div>
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-primary mb-6">Yeminli Tercüme Yapılan Belgeler</h2>
@@ -63,9 +31,9 @@ export default function YeminliTercume() {
         </div>
         <div className="bg-secondary/30 rounded-xl p-8 mb-8">
           <h2 className="text-2xl font-bold text-primary mb-4">Denizli'de Yeminli Tercüme</h2>
-          <p className="text-muted-foreground leading-relaxed mb-4">Denizli merkezli yeminli tercüme hizmeti veriyorum. Denizli Adliyesi, Denizli Valiliği, Pamukkale Üniversitesi ve diğer kurumlar tarafından kabul edilen yeminli tercümelerle resmi işlemlerinizi sorunsuz tamamlayabilirsiniz.</p>
+          <p className="text-muted-foreground leading-relaxed mb-4">Pamukkale, Denizli merkezli bağımsız yeminli tercümanım. Yemin zaptım Denizli 2. Noterliği'nde düzenlenmiştir; imza ve kaşem resmi kurumlarda geçerlidir. Denizli Adliyesi, Denizli Valiliği, Pamukkale Üniversitesi ve diğer kurumlar tarafından kabul edilen yeminli tercümelerle resmi işlemlerinizi sorunsuz tamamlayabilirsiniz.</p>
           <p className="text-muted-foreground leading-relaxed mb-4">Ancak online hizmet verdiğim için Denizli dışından da müşterilerim var. İstanbul, Ankara, İzmir ve hatta yurt dışından belge gönderen müşterilerim var. Tüm süreci online yürütebilirsiniz — belgenizi WhatsApp ile gönderir, çeviriyi dijital olarak teslim alırsınız.</p>
-          <p className="text-muted-foreground leading-relaxed">WhatsApp üzerinden ulaşabilir, belgenizin fotoğrafını göndererek net teklif alabilirsiniz. Mesai saatlerinde yanıt veririm.</p>
+          <p className="text-muted-foreground leading-relaxed">WhatsApp üzerinden ulaşabilir, belgenizin fotoğrafını göndererek net teklif alabilirsiniz. Pzt–Cmt 09:00–18:00 arasında yanıt veririm.</p>
         </div>
 
         <div className="bg-primary/5 p-6 rounded-xl border border-primary/10 mb-8">
@@ -166,11 +134,11 @@ export default function YeminliTercume() {
           <div className="space-y-4">
             <div className="p-5 bg-card rounded-lg border border-border">
               <h3 className="font-bold text-primary mb-2">Yeminli tercüme nedir?</h3>
-              <p className="text-muted-foreground">Yeminli tercüme, yeminli tercümanlar tarafından yapılan ve resmi belge niteliği taşıyan çeviri işlemidir. Yeminli tercüman, çevirisinin doğru ve eksiksiz olduğunu taahhüt eder. Bu çeviriler mahkemeler, konsolosluklar, üniversiteler ve diğer resmi kurumlar tarafından kabul edilir.</p>
+              <p className="text-muted-foreground">Noter huzurunda yemin etmiş tercümanın imzalı ve kaşeli çevirisidir. Yemin zaptım Denizli 2. Noterliği'nde düzenlenmiştir. Yaptığım çeviriler mahkeme, konsolosluk, üniversite ve resmi kurumlarda geçerlidir.</p>
             </div>
             <div className="p-5 bg-card rounded-lg border border-border">
               <h3 className="font-bold text-primary mb-2">Yeminli tercüme için noter onayı gerekir mi?</h3>
-              <p className="text-muted-foreground">Çoğu durumda yeminli tercüman imzası yeterlidir, noter onayı gerekmez. Ancak bazı kurumlar ve ülkeler noter onayını şart koşabilir. Belgenizi sunacağınız kuruma danışmanızı öneririz.</p>
+              <p className="text-muted-foreground">Çoğu durumda yeminli tercüman imzası yeterlidir, noter onayı gerekmez. Ancak bazı kurumlar ve ülkeler noter onayını şart koşabilir. Belgenizi sunacağınız kurumun güncel şartlarını kontrol etmenizi öneririm.</p>
             </div>
             <div className="p-5 bg-card rounded-lg border border-border">
               <h3 className="font-bold text-primary mb-2">Yeminli tercüme ne kadar sürer?</h3>
@@ -178,17 +146,17 @@ export default function YeminliTercume() {
             </div>
             <div className="p-5 bg-card rounded-lg border border-border">
               <h3 className="font-bold text-primary mb-2">Yeminli tercüme fiyatları nasıl belirlenir?</h3>
-              <p className="text-muted-foreground">Fiyat belgenin diline, sayfa/karakter sayısına ve belge türüne göre belirlenir. Belgenizin fotoğrafını WhatsApp'tan gönderin; net teklif alırsınız.</p>
+              <p className="text-muted-foreground">Fiyatı belgenin diline, sayfa/karakter sayısına ve belge türüne göre belirlerim. Belgenizin fotoğrafını WhatsApp'tan gönderin; net teklif alırsınız.</p>
             </div>
             <div className="p-5 bg-card rounded-lg border border-border">
               <h3 className="font-bold text-primary mb-2">Denizli'de yeminli tercüman nerede bulunur?</h3>
-              <p className="text-muted-foreground">Denizli merkezli yeminli tercümanım. Belgenizi online veya WhatsApp üzerinden iletebilir, teslimatınızı dijital veya kargo ile alabilirsiniz.</p>
+              <p className="text-muted-foreground">Pamukkale, Denizli merkezli bağımsız yeminli tercümanım. Yemin zaptım Denizli 2. Noterliği'nde düzenlenmiştir. Belgenizi online veya WhatsApp üzerinden iletebilir, teslimatınızı dijital veya kargo ile alabilirsiniz.</p>
             </div>
           </div>
         </div>
 
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-primary mb-6">Diğer Hizmetlerimiz</h2>
+          <h2 className="text-2xl font-bold text-primary mb-6">Diğer Hizmetlerim</h2>
           <div className="grid md:grid-cols-2 gap-4">
             <a href="/ingilizce-turkce-ceviri" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">İngilizce-Türkçe Çeviri</a>
             <a href="/teknik-ceviri" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Teknik Çeviri</a>
@@ -200,11 +168,12 @@ export default function YeminliTercume() {
           </div>
         </div>
         <div className="bg-primary text-primary-foreground rounded-xl p-8 text-center">
-          <h2 className="text-2xl font-bold mb-4">Yeminli Tercüme Teklifi Alın</h2>
-          <p className="mb-6 opacity-90">Belgenizi gönderin, net teklif alın.</p>
+          <h2 className="text-2xl font-bold mb-4">Belgenizi Gönderin, Aynı Gün Net Teklif Alın</h2>
+          <p className="mb-2 opacity-90">Bağımsız Tercüman yeminli tercüman. Noter onayı ve apostil takibi dahil.</p>
+          <p className="text-sm mb-6 opacity-80">⏱ Pzt–Cmt 09:00–18:00 · 📍 Pamukkale, Denizli</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/teklif" className="px-8 py-3 bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg font-medium transition">Teklif Alın</a>
-            <a href="https://wa.me/905386295040" target="_blank" className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition">WhatsApp ile Ulaşın</a>
+            <a href="/teklif" className="px-8 py-3 bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg font-medium transition">Teklif Formu — Belgenizi Gönderin</a>
+            <a href="https://wa.me/905386295040?text=Merhaba,%20belgem%20için%20teklif%20almak%20istiyorum." target="_blank" rel="noopener noreferrer" className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition">WhatsApp'tan Hızlı Teklif</a>
           </div>
         </div>
       </div>

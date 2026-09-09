@@ -138,3 +138,4 @@ iyzico_3ds_test.cjs
 iyzico_checkout_test.cjs
 kaldır
 .dev.vars
+.wrangler/state/

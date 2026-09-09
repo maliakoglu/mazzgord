@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Navbar from "@/components/home/Navbar";
 import { useLocation } from "wouter";
 import { User, FileText, Download, LogOut, Loader2, AlertCircle, Package, CreditCard, Clock, MessageCircle, Send, X, CheckCircle, XCircle } from "lucide-react";
 
@@ -197,14 +198,7 @@ export default function Hesabim() {
 
   return (
     <div className="min-h-screen bg-background">
-      <nav className="sticky top-0 z-50 bg-background border-b border-border">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <a href="/" className="text-2xl font-bold text-primary">Mazzgord</a>
-          <button onClick={handleLogout} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition">
-            <LogOut className="w-4 h-4" /> Çıkış
-          </button>
-        </div>
-      </nav>
+      <Navbar />
 
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Profil */}

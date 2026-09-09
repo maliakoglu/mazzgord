@@ -34,7 +34,7 @@ export default function BlogYeminliTercume() {
         ]
       })}
     >
-<p className="text-xl leading-relaxed">Yeminli tercüme, resmi kurumlarda geçerli olan ve yeminli tercümanlar tarafından yapılan çeviri işlemidir. Türkiye'de yeminli tercümanlık, 6325 sayılı kanun ile düzenlenmiş olup, yeminli tercümanlar noter huzurunda yemin ederek bu unvanı alırlar.</p>
+<p className="text-xl leading-relaxed">Yeminli tercüme, resmi kurumlarda geçerli olan ve noter huzurunda yemin etmiş tercümanlar tarafından yapılan çeviri işlemidir. Yeminli tercümanlar, noter huzurunda yemin ederek bu unvanı alır ve yaptıkları çeviriler resmi belge niteliği taşır.</p>
 <p>Bu yazıda, yeminli tercümenin ne olduğunu, nasıl yapıldığını ve nerelerde kullanıldığını <strong>gerçek müşteri deneyimlerinden örneklerle</strong> anlatacağım. Çünkü yeminli tercüme, sadece bir tanım değil — günlük hayatta karşılaştığınız gerçek ihtiyaçlar.</p>
 
 <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">Yeminli Tercüme Nasıl Yapılır?</h2>
@@ -98,8 +98,8 @@ export default function BlogYeminliTercume() {
           <h2 className="text-2xl font-bold mb-4">Belgeniz İçin Teklif Alın</h2>
           <p className="mb-6 opacity-90">Belgenizi gönderin, aynı gün içinde net teklif veririm.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/teklif" className="px-8 py-3 bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg font-medium transition">Teklif Alın</a>
-            <a href="https://wa.me/905386295040" target="_blank" className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition">WhatsApp ile Ulaşın</a>
+            <a href="/teklif" className="px-8 py-3 bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg font-medium transition">Teklif Al</a>
+            <a href="https://wa.me/905386295040" target="_blank" className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition">WhatsApp'tan Gönderin</a>
           </div>
         </div>
       </BlogLayout>
