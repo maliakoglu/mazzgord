@@ -112,11 +112,17 @@ export default function BlogLayout({ title, description, canonical, date, illust
     let l = document.querySelector('link[rel="canonical"]')
     if (!l) { l = document.createElement('link'); l.setAttribute('rel','canonical'); document.head.appendChild(l) }
     l.setAttribute('href', canonical)
-    for (const [prop, content] of [['og:title',title],['og:description',description],['og:url',canonical],['og:type',ogType],['og:locale','tr_TR']]) {
+    for (const [prop, content] of [['og:title',title],['og:description',description],['og:url',canonical],['og:type',ogType],['og:locale','tr_TR'],['og:image','https://mazzgord.com/og-image.png'],['og:image:width','1200'],['og:image:height','630']]) {
       let e = document.querySelector('meta[property="'+prop+'"]')
       if (!e) { e = document.createElement('meta'); e.setAttribute('property',prop); document.head.appendChild(e) }
       e.setAttribute('content', content)
     }
+    let tw = document.querySelector('meta[name="twitter:card"]')
+    if (!tw) { tw = document.createElement('meta'); tw.setAttribute('name','twitter:card'); document.head.appendChild(tw) }
+    tw.setAttribute('content','summary_large_image')
+    let twi = document.querySelector('meta[name="twitter:image"]')
+    if (!twi) { twi = document.createElement('meta'); twi.setAttribute('name','twitter:image'); document.head.appendChild(twi) }
+    twi.setAttribute('content','https://mazzgord.com/og-image.png')
     let j = document.querySelector('script[data-blog-jsonld]') as HTMLScriptElement | null
     if (jsonLd) {
       if (!j) { j = document.createElement('script'); j.type='application/ld+json'; j.setAttribute('data-blog-jsonld',''); document.head.appendChild(j) }
