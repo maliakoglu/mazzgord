@@ -1,4 +1,5 @@
 import { Home, MessageCircle } from "lucide-react";
+import { track } from "@/lib/analytics";
 import { useLocation } from "wouter";
 
 export default function NotFound() {

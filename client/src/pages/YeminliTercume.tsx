@@ -1,8 +1,12 @@
 import { CheckCircle2, Shield, Clock, FileText } from "lucide-react";
 import Navbar from "@/components/home/Navbar";
 import Breadcrumb from "@/components/Breadcrumb";
-import { useState } from "react";
+import { track } from "@/lib/analytics";
+import { useState, useEffect } from "react";
 export default function YeminliTercume() {
+  useEffect(() => {
+    track.servicePageView("yeminli_tercume");
+  }, []);
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -173,7 +177,7 @@ export default function YeminliTercume() {
           <p className="text-sm mb-6 opacity-80">⏱ Pzt–Cmt 09:00–18:00 · 📍 Pamukkale, Denizli</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="/teklif" className="px-8 py-3 bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg font-medium transition">Teklif Formu — Belgenizi Gönderin</a>
-            <a href="https://wa.me/905386295040?text=Merhaba,%20belgem%20için%20teklif%20almak%20istiyorum." target="_blank" rel="noopener noreferrer" className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition">WhatsApp'tan Hızlı Teklif</a>
+            <a href="https://wa.me/905386295040?text=Merhaba,%20belgem%20için%20teklif%20almak%20istiyorum." onClick={() => track.whatsappClick("service_card", "yeminli_tercume")} target="_blank" rel="noopener noreferrer" className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition">WhatsApp'tan Hızlı Teklif</a>
           </div>
         </div>
       </div>

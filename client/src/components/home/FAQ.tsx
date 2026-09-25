@@ -37,7 +37,7 @@ export default function FAQ() {
               <button
                 className="w-full flex justify-between items-center p-6 text-left cursor-pointer"
                 style={{ border: "none", background: "transparent" }}
-                onClick={() => setOpen(open === idx ? null : idx)}
+                onClick={() => { setOpen(open === idx ? null : idx); if (open !== idx) track.faqOpened(faq.q); }}
               >
                 <span style={{ fontFamily: "\"Inter\", sans-serif", fontWeight: 700, fontSize: "16px", color: "var(--color-ink-black)" }}>{faq.q}</span>
                 <ChevronDown className="w-5 h-5 flex-shrink-0 ml-4 transition-transform" style={{ color: "var(--color-warm-gray)", transform: open === idx ? "rotate(180deg)" : "rotate(0deg)" }} />

@@ -1,5 +1,6 @@
 import { ArrowLeft, MessageCircle, FileText } from "lucide-react"
 import Breadcrumb from "@/components/Breadcrumb";
+import { track } from "@/lib/analytics";
 import { useState, useEffect, ReactNode } from "react"
 type IllustrationKey =
   | "akademik" | "hatalar" | "ipuclari" | "sektor" | "teknoloji"
@@ -46,7 +47,7 @@ function BlogCTA() {
           <a href="/teklif" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl font-semibold hover:opacity-90 transition no-underline">
             <FileText className="w-5 h-5" /> Teklif Formu — Belgeni Gönder
           </a>
-          <a href="https://wa.me/905386295040?text=Merhaba,%20belgem%20için%20teklif%20almak%20istiyorum." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-accent text-accent-foreground rounded-xl font-semibold hover:opacity-90 transition no-underline">
+          <a href="https://wa.me/905386295040?text=Merhaba,%20belgem%20için%20teklif%20almak%20istiyorum." target="_blank" rel="noopener noreferrer" onClick={() => track.whatsappClick("blog_inline")} className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-accent text-accent-foreground rounded-xl font-semibold hover:opacity-90 transition no-underline">
             <MessageCircle className="w-5 h-5" /> WhatsApp'tan Hızlı Teklif
           </a>
         </div>

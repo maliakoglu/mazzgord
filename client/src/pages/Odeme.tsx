@@ -1,12 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Navbar from "@/components/home/Navbar";
 import { CreditCard, Shield, CheckCircle2, Loader2, AlertCircle, Download } from "lucide-react";
+import { track } from "@/lib/analytics";
 
 export default function Odeme() {
   const [paymentData, setPaymentData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [status, setStatus] = useState<"idle" | "redirecting" | "success" | "failed">("idle");
+
+  // Ödeme başarılı olduğunda tek seferlik event gönder
+  const paymentSuccessSent = useRef(false);
+  useEffect(() => {
+    if (status === "success" && !paymentSuccessSent.current) {
+      paymentSuccessSent.current = true;
+      track.paymentSuccess();
+    }
+  }, [status]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -177,6 +187,7 @@ export default function Odeme() {
   };
 
   const handlePay = async () => {
+    track.paymentStart();
     setStatus("redirecting");
     try {
       const res = await fetch("/api/payment/initialize", {

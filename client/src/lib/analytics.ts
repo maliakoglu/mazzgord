@@ -1,4 +1,4 @@
-// Analytics event tracking — talimatta tanımlı 10 dönüşüm olayı
+// Analytics event tracking — talimatta tanımlı dönüşüm olayları
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
@@ -17,11 +17,46 @@ type EventName =
   | "phone_click"
   | "email_click"
   | "service_page_cta_click"
+  | "service_page_view"
   | "pricing_view"
   | "faq_opened"
   | "scroll_depth"
   | "page_time"
-  | "form_abandoned";
+  | "form_abandoned"
+  | "payment_start"
+  | "payment_success"
+  | "review_section_view";
+
+// CTA konum tipleri — manus dokümanına göre
+export type CtaLocation =
+  | "hero"
+  | "header"
+  | "service_card"
+  | "pricing_section"
+  | "blog_inline"
+  | "sticky_mobile"
+  | "footer"
+  | "footer_fab"
+  | "contact_page"
+  | "denizli_local"
+  | "contact";
+
+// Hizmet tipleri
+export type ServiceType =
+  | "yeminli_tercume"
+  | "pasaport_cevirisi"
+  | "diploma_cevirisi"
+  | "noter_onayli_ceviri"
+  | "apostil"
+  | "vize_cevirisi"
+  | "teknik_ceviri"
+  | "akademik_ceviri"
+  | "adli_sicil_cevirisi"
+  | "nufus_kayit_ornegi"
+  | "transkript_cevirisi"
+  | "ingilizce_turkce"
+  | "acil_tercume"
+  | "general";
 
 export function trackEvent(name: EventName, params?: Record<string, unknown>): void {
   // Kişisel belge içeriğini analitiğe aktarma — yalnızca anonim olay bilgisi
@@ -52,13 +87,23 @@ export const track = {
   offerFormCompleted: () => trackEvent("offer_form_completed"),
   documentUploadStarted: () => trackEvent("document_upload_started"),
   documentUploadCompleted: () => trackEvent("document_upload_completed"),
-  whatsappClick: (source?: string) => trackEvent("whatsapp_click", { source }),
-  phoneClick: () => trackEvent("phone_click"),
-  emailClick: () => trackEvent("email_click"),
+  whatsappClick: (cta_location: CtaLocation, service_type: ServiceType = "general") =>
+    trackEvent("whatsapp_click", { cta_location, service_type }),
+  phoneClick: (cta_location: CtaLocation = "contact_page") =>
+    trackEvent("phone_click", { cta_location }),
+  emailClick: (cta_location: CtaLocation = "contact_page") =>
+    trackEvent("email_click", { cta_location }),
   servicePageCtaClick: (service?: string) => trackEvent("service_page_cta_click", { service }),
+  servicePageView: (service_type: ServiceType) =>
+    trackEvent("service_page_view", { service_type }),
   pricingView: () => trackEvent("pricing_view"),
   faqOpened: (question?: string) => trackEvent("faq_opened", { question }),
   scrollDepth: (depth: number) => trackEvent("scroll_depth", { depth }),
   pageTime: (seconds: number) => trackEvent("page_time", { seconds }),
   formAbandoned: (step?: string) => trackEvent("form_abandoned", { step }),
+  paymentStart: (service_type: ServiceType = "general") =>
+    trackEvent("payment_start", { service_type }),
+  paymentSuccess: (service_type: ServiceType = "general") =>
+    trackEvent("payment_success", { service_type }),
+  reviewSectionView: () => trackEvent("review_section_view"),
 };

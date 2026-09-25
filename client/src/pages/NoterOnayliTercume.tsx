@@ -1,9 +1,13 @@
 import { ArrowLeft, CheckCircle2, Shield, Clock, FileText, Stamp } from "lucide-react";
 import Navbar from "@/components/home/Navbar";
 import Breadcrumb from "@/components/Breadcrumb";
-import { useState } from "react";
+import { track } from "@/lib/analytics";
+import { useState, useEffect } from "react";
 
 export default function NoterOnayliTercume() {
+  useEffect(() => {
+    track.servicePageView("noter_onayli_ceviri");
+  }, []);
   return (
     <div className="min-h-screen bg-background">
       <Navbar />

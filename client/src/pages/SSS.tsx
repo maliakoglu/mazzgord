@@ -1,5 +1,6 @@
 import Navbar from "@/components/home/Navbar";
 import Breadcrumb from "@/components/Breadcrumb";
+import { track } from "@/lib/analytics";
 import { useState } from "react";
 export default function SSS() {
   const [openItems, setOpenItems] = useState<number[]>([]);
@@ -104,7 +105,7 @@ export default function SSS() {
             <a href="/teklif" className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition font-medium no-underline">
               Teklif Al
             </a>
-            <a href="https://wa.me/905386295040" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition font-medium no-underline">
+            <a href="https://wa.me/905386295040" onClick={() => track.whatsappClick("service_card", "general")} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition font-medium no-underline">
               WhatsApp
             </a>
           </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Navbar from "@/components/home/Navbar";
 import { Search, FileText, CheckCircle2 } from "lucide-react";
+import { track } from "@/lib/analytics";
 
 interface PriceItem {
   id: number;
@@ -26,6 +27,7 @@ export default function Fiyatlar() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     fetch("/api/pricing")
@@ -34,11 +36,11 @@ export default function Fiyatlar() {
         if (data.success) setPrices(data.data);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(() => { setError(true); setLoading(false); });
   }, []);
 
   const filtered = prices.filter(p => {
-    const matchSearch = p.document_name.toLowerCase().includes(search.toLowerCase());
+    const matchSearch = p.document_name.toLocaleLowerCase("tr-TR").includes(search.toLocaleLowerCase("tr-TR"));
     const matchCategory = activeCategory === "all" || p.category === activeCategory;
     return matchSearch && matchCategory;
   });
@@ -110,8 +112,27 @@ export default function Fiyatlar() {
             ))}
           </div>
         ) : filtered.length === 0 ? (
-          <div className="text-center py-20 text-muted-foreground">
-            <p>Sonuç bulunamadı.</p>
+          <div className="text-center py-20">
+            {error ? (
+              <div>
+                <p className="text-muted-foreground mb-2">Fiyat listesi yüklenemedi. Lütfen daha sonra tekrar deneyin.</p>
+                <button onClick={() => window.location.reload()} className="px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition">Tekrar Dene</button>
+              </div>
+            ) : (
+              <div>
+                <p className="text-muted-foreground mb-2">Aramanızla eşleşen belge bulunamadı.</p>
+                <p className="text-sm text-muted-foreground mb-6">Aradığınız belge listede yoksa net fiyat için sorun.</p>
+                <a
+                  href="https://wa.me/905386295040?text=Merhaba,%20fiyat%20listesinde%20arad%C4%B1%C4%9F%C4%B1m%20belgeyi%20bulamad%C4%B1m.%20Fiyat%20teklifi%20alabilir%20miyim?"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => track.whatsappClick("pricing_section", "general")}
+                  className="inline-block px-8 py-3 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition"
+                >
+                  WhatsApp'tan Sor
+                </a>
+              </div>
+            )}
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -197,6 +218,26 @@ export default function Fiyatlar() {
               <h4 className="font-medium text-foreground mb-1">Kargo ile teslimat var mı?</h4>
               <p className="text-sm text-muted-foreground">Evet, Türkiye'nin her yerine kargo ile fiziksel teslimat yapılır. Dijital teslimat (PDF) e-posta veya WhatsApp ile de mümkündür. Kargo bedeli gerçek gönderim bedelidir.</p>
             </div>
+            <div>
+              <h4 className="font-medium text-foreground mb-1">Yeminli tercüme fiyatları ne kadar?</h4>
+              <p className="text-sm text-muted-foreground">Yeminli tercüme sayfa başı 450 TL'den başlar. Pasaport, diploma, transkript, adli sicil gibi standart belgelerde fiyat sayfa sayısına göre belirlenir. Net fiyat için belgenizi WhatsApp'tan göndermeniz yeterli.</p>
+            </div>
+            <div>
+              <h4 className="font-medium text-foreground mb-1">Transkript çeviri ücreti ne kadar?</h4>
+              <p className="text-sm text-muted-foreground">Transkript çevirisi sayfa başı 450 TL'den başlar. Yurt dışı üniversite başvuruları için yeminli tercüman tarafından çevrilir, imzalanır ve kaşelenir. Çok sayfalı transkriptlerde toplu indirim uygulanabilir.</p>
+            </div>
+            <div>
+              <h4 className="font-medium text-foreground mb-1">Akademik çeviri ücretleri nasıl hesaplanır?</h4>
+              <p className="text-sm text-muted-foreground">Tez, makale ve bildiri çevirisi sayfa başı 450 TL'den başlar. Akademik terminoloji, APA/MLA formatı ve kaynakça düzenlemesi dahildir. Uzun belgelerde (tez gibi) toplu fiyat teklifi verilir.</p>
+            </div>
+            <div>
+              <h4 className="font-medium text-foreground mb-1">Noter onaylı çeviri ücreti ne kadar?</h4>
+              <p className="text-sm text-muted-foreground">Noter onaylı çeviride yeminli tercüme bedeli (sayfa başı 450 TL) + noter tasdik bedeli alınır. Noter bedeli belge türüne ve sayfa sayısına göre değişir; işlem öncesi noter makbuzuyla gerçek bedel teyit edilir.</p>
+            </div>
+            <div>
+              <h4 className="font-medium text-foreground mb-1">Belge tercümesi fiyatları neye göre değişir?</h4>
+              <p className="text-sm text-muted-foreground">Belge türü, dil yönü, sayfa sayısı, metin yoğunluğu ve istenen onay türü (yeminli, noter, apostil) fiyatı belirler. Standart resmi belgelerde sayfa başı 450 TL sabit fiyat uygulanır.</p>
+            </div>
           </div>
         </div>
 
@@ -209,12 +250,13 @@ export default function Fiyatlar() {
             href="https://wa.me/905386295040?text=Merhaba,%20belgem%20için%20fiyat%20teklifi%20almak%20istiyorum."
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => track.whatsappClick("pricing_section")}
             className="inline-block px-8 py-4 bg-green-500 text-white rounded-lg font-bold text-lg hover:bg-green-600 transition"
           >
             WhatsApp'tan Sor
           </a>
           <p className="text-sm text-muted-foreground mt-4">
-            Sorularınız için: <a href="mailto:info@mazzgord.com" className="text-primary hover:underline">info@mazzgord.com</a> · <a href="tel:+905386295040" className="text-primary hover:underline">+90 538 629 50 40</a>
+            Sorularınız için: <a href="mailto:info@mazzgord.com" onClick={() => track.emailClick("pricing_section")} className="text-primary hover:underline">info@mazzgord.com</a> · <a href="tel:+905386295040" onClick={() => track.phoneClick("pricing_section")} className="text-primary hover:underline">+90 538 629 50 40</a>
           </p>
         </div>
       </div>

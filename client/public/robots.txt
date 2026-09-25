@@ -1,5 +1,14 @@
 User-agent: *
 Allow: /
+Disallow: /odeme
+Disallow: /odeme/sonuc
+Disallow: /giris
+Disallow: /hesabim
+Disallow: /sepet
 Disallow: /admin
-Disallow: /api/
+Disallow: /siparis-takip
+Disallow: /kullanim-kosullari
+Disallow: /gizlilik
+Disallow: /cerez-politikasi
+
 Sitemap: https://mazzgord.com/sitemap.xml

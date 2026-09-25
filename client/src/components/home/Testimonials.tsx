@@ -1,4 +1,11 @@
+import { useEffect } from "react";
+import { track } from "@/lib/analytics";
+
 export default function Testimonials({ openGallery }: { openGallery: (images: string[], startIndex: number) => void }) {
+  useEffect(() => {
+    track.reviewSectionView();
+  }, []);
+
   return (
     <section id="testimonials" className="py-20 md:py-32 bg-secondary/30 parallax-yorumlar">
       <div className="container mx-auto px-4">

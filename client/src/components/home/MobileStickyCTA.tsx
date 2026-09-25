@@ -53,6 +53,9 @@ export default function MobileStickyCTA() {
               key={idx}
               href={tab.path}
               {...(tab.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              onClick={() => {
+                if (tab.icon === "whatsapp") track.whatsappClick("sticky_mobile");
+              }}
               className="flex flex-col items-center justify-center gap-1 no-underline transition flex-1"
               style={{ opacity: isActive ? 1 : 0.7 }}
             >

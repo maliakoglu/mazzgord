@@ -1,8 +1,12 @@
 import { CheckCircle2, GraduationCap, BookOpen, FileText } from "lucide-react";
 import Navbar from "@/components/home/Navbar";
 import Breadcrumb from "@/components/Breadcrumb";
-import { useState } from "react";
+import { track } from "@/lib/analytics";
+import { useState, useEffect } from "react";
 export default function AkademikCeviri() {
+  useEffect(() => {
+    track.servicePageView("akademik_ceviri");
+  }, []);
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -30,6 +34,50 @@ export default function AkademikCeviri() {
           </div>
         </div>
         <div className="mb-8">
+          <h2 className="text-2xl font-bold text-primary mb-6">Akademik Çeviri Fiyatları 2026</h2>
+          <div className="bg-secondary/30 rounded-xl p-8 mb-6">
+            <p className="text-muted-foreground leading-relaxed mb-6">Akademik çeviri fiyatları, belgenin türüne, teknik karmaşıklığına ve teslim süresine göre değişir. Aşağıdaki fiyatlar referans niteliğindedir. Net fiyat için belgenizi gönderin, ücretsiz teklif alın.</p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-border">
+                    <th className="py-3 px-4 font-semibold text-foreground">Belge Türü</th>
+                    <th className="py-3 px-4 font-semibold text-foreground">Fiyat Aralığı</th>
+                    <th className="py-3 px-4 font-semibold text-foreground">Teslim Süresi</th>
+                  </tr>
+                </thead>
+                <tbody className="text-muted-foreground">
+                  <tr className="border-b border-border"><td className="py-3 px-4">Makale çevirisi</td><td className="py-3 px-4">450-600 TL / sayfa</td><td className="py-3 px-4">3-5 iş günü</td></tr>
+                  <tr className="border-b border-border"><td className="py-3 px-4">Tez / dissertasyon çevirisi</td><td className="py-3 px-4">450-550 TL / sayfa</td><td className="py-3 px-4">5-10 iş günü</td></tr>
+                  <tr className="border-b border-border"><td className="py-3 px-4">Bildiri çevirisi</td><td className="py-3 px-4">450-500 TL / sayfa</td><td className="py-3 px-4">2-4 iş günü</td></tr>
+                  <tr className="border-b border-border"><td className="py-3 px-4">Özet (abstract) çevirisi</td><td className="py-3 px-4">150-250 TL</td><td className="py-3 px-4">1-2 iş günü</td></tr>
+                  <tr className="border-b border-border"><td className="py-3 px-4">Akademik CV çevirisi</td><td className="py-3 px-4">300-500 TL</td><td className="py-3 px-4">1-2 iş günü</td></tr>
+                  <tr><td className="py-3 px-4">Transkript çevirisi</td><td className="py-3 px-4">450 TL / sayfa</td><td className="py-3 px-4">1-3 iş günü</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p className="text-sm text-muted-foreground mt-4">Fiyatlar İngilizce-Türkçe çeviri için geçerlidir. Acil teslimat için +%50 ücret uygulanır. Noter onayı talep edilirse noter harcı ayrıca tahsil edilir.</p>
+          </div>
+        </div>
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-primary mb-6">Akademik Çeviri Süreci</h2>
+          <div className="space-y-4">
+            <div className="flex gap-4 p-4 bg-card rounded-lg border border-border"><div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">1</div><div><h3 className="font-bold mb-1">Belge Gönderimi</h3><p className="text-muted-foreground text-sm">Belgenizi WhatsApp veya teklif formu üzerinden gönderin. İnceleyip size net fiyat ve teslim süresi bildirelim.</p></div></div>
+            <div className="flex gap-4 p-4 bg-card rounded-lg border border-border"><div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">2</div><div><h3 className="font-bold mb-1">Terminoloji Analizi</h3><p className="text-muted-foreground text-sm">Akademik alana özgü terminoloji belirlenir. Kaynak metindeki atıf formatları (APA, MLA, Chicago) tespit edilir.</p></div></div>
+            <div className="flex gap-4 p-4 bg-card rounded-lg border border-border"><div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">3</div><div><h3 className="font-bold mb-1">Çeviri ve İnceleme</h3><p className="text-muted-foreground text-sm">Çeviri yapılır, akademik üslup ve terminoloji tutarlılığı kontrol edilir. Atıf ve kaynakça formatı korunur.</p></div></div>
+            <div className="flex gap-4 p-4 bg-card rounded-lg border border-border"><div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">4</div><div><h3 className="font-bold mb-1">Teslimat</h3><p className="text-muted-foreground text-sm">Çevrilmiş belge Word veya PDF formatında teslim edilir. Noter onayı gerekiyorsa noter işlemleri takip edilir.</p></div></div>
+          </div>
+        </div>
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-primary mb-6">Akademik Çeviri Sıkça Sorulan Sorular</h2>
+          <div className="space-y-4">
+            <div className="bg-card rounded-lg border border-border p-6"><h3 className="font-bold mb-2">Akademik çeviri için yeminli tercüman şart mı?</h3><p className="text-muted-foreground text-sm">Yurt dışı üniversite başvuruları ve denklik işlemleri için yeminli tercüman tarafından çevrilmiş ve noter onaylı belge gereklidir. Uluslararası dergi yayınları için yeminli onay şart değildir, ancak profesyonel akademik çeviri önerilir.</p></div>
+            <div className="bg-card rounded-lg border border-border p-6"><h3 className="font-bold mb-2">Tez çevirisi ne kadar sürer?</h3><p className="text-muted-foreground text-sm">Tez uzunluğuna göre değişir. 50 sayfalık bir tez yaklaşık 5-7 iş gününde çevrilir. Acil ihtiyaçlarda süre kısaltılabilir, ek ücret uygulanır.</p></div>
+            <div className="bg-card rounded-lg border border-border p-6"><h3 className="font-bold mb-2">APA ve MLA formatını koruyor musunuz?</h3><p className="text-muted-foreground text-sm">Evet. Kaynak metindeki atıf formatı (APA, MLA, Chicago, Harvard) aynen korunur. Kaynakça ve referanslar titizlikle çevrilir.</p></div>
+            <div className="bg-card rounded-lg border border-border p-6"><h3 className="font-bold mb-2">Hangi akademik alanlarda çeviri yapıyorsunuz?</h3><p className="text-muted-foreground text-sm">Sosyal bilimler, eğitim, işletme, hukuk, tıp ve mühendislik alanlarında İngilizce-Türkçe akademik çeviri yapıyorum. Yüksek teknik içerikli çalışmalarda alan uzmanıyla görüşme önerilebilir.</p></div>
+          </div>
+        </div>
+        <div className="mb-8">
           <h2 className="text-2xl font-bold text-primary mb-6">İlgili Blog Yazıları</h2>
           <div className="grid md:grid-cols-2 gap-4 mb-8">
             <a href="/blog/akademik-ceviri" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Akademik Çeviri Rehberi</a>
@@ -51,7 +99,7 @@ export default function AkademikCeviri() {
           <p className="mb-6 opacity-90">Akademik belgenizi gönderin, net teklif alın.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="/teklif" className="px-8 py-3 bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg font-medium transition">Teklif Al</a>
-            <a href="https://wa.me/905386295040" target="_blank" className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition">WhatsApp</a>
+            <a href="https://wa.me/905386295040" onClick={() => track.whatsappClick("service_card", "akademik_ceviri")} target="_blank" className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition">WhatsApp</a>
           </div>
         </div>
       </div>

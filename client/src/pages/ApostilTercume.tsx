@@ -1,9 +1,13 @@
 import { ArrowLeft, CheckCircle2, Shield, Clock, Globe } from "lucide-react";
 import Navbar from "@/components/home/Navbar";
 import Breadcrumb from "@/components/Breadcrumb";
-import { useState } from "react";
+import { track } from "@/lib/analytics";
+import { useState, useEffect } from "react";
 
 export default function ApostilTercume() {
+  useEffect(() => {
+    track.servicePageView("apostil");
+  }, []);
   return (
     <div className="min-h-screen bg-background">
       <Navbar />

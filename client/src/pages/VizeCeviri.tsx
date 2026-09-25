@@ -1,8 +1,12 @@
 import { CheckCircle2, Plane, FileCheck, Stamp } from "lucide-react";
 import Navbar from "@/components/home/Navbar";
 import Breadcrumb from "@/components/Breadcrumb";
-import { useState } from "react";
+import { track } from "@/lib/analytics";
+import { useState, useEffect } from "react";
 export default function VizeCeviri() {
+  useEffect(() => {
+    track.servicePageView("vize_cevirisi");
+  }, []);
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -116,7 +120,7 @@ export default function VizeCeviri() {
           <p className="mb-6 opacity-90">Belgelerinizi gönderin, net teklif alın.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="/teklif" className="px-8 py-3 bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg font-medium transition">Belgem İçin Teklif Al</a>
-            <a href="https://wa.me/905386295040" target="_blank" className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition">WhatsApp</a>
+            <a href="https://wa.me/905386295040" onClick={() => track.whatsappClick("service_card", "vize_cevirisi")} target="_blank" className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition">WhatsApp</a>
           </div>
         </div>
       </div>
