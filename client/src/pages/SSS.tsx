@@ -14,7 +14,7 @@ export default function SSS() {
   const faqs = [
     {
       q: "Çeviri ücretleri nasıl belirleniyor?",
-      a: "Çeviri ücretleri; kelime sayısı, dil çifti, teknik zorluk derecesi, teslimat süresi ve belgenin yeminli tercüme gerektirip gerektirmediğine göre belirlenir. Standart tek sayfalık belgelerde yeminli tercüme 950 TL'den başlayan fiyatlarla başlar. Belge türü, yoğunluk, dil çifti ve teslim tarihi fiyatı etkiler. Noter ve apostil bedelleri ayrı hesaplanır. Kesin fiyat belge görüldükten sonra belirlenir."
+      a: "Çeviri ücretleri; kelime sayısı, dil çifti, teknik zorluk derecesi, teslimat süresi ve belgenin yeminli tercüme gerektirip gerektirmediğine göre belirlenir. Standart tek sayfalık belgelerde yeminli tercüme 450 TL'den başlayan fiyatlarla başlar. Belge türü, yoğunluk, dil çifti ve teslim tarihi fiyatı etkiler. Noter ve apostil bedelleri ayrı hesaplanır. Kesin fiyat belge görüldükten sonra belirlenir."
     },
     {
       q: "Yeminli tercüme ile normal tercüme arasındaki fark nedir?",
