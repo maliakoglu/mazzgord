@@ -130,20 +130,32 @@ export default function TeklifFormu() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Hizmet türü değişince teslimat yöntemini otomatik ayarla
+  // Hizmet türü değişince teslimat yöntemi ve noter/apostil durumunu otomatik ayarla
   const handleServiceTypeChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     if (!interactedRef.current) interactedRef.current = true;
     const newServiceType = e.target.value;
     let newDelivery = formData.delivery_method;
+    let newNotary = formData.notary_need;
+    let newApostil = formData.apostille_need;
+
     // Noter onaylı ve apostil fiziksel teslimat gerektirir
     if (newServiceType === "noter" || newServiceType === "apostil") {
       if (formData.delivery_method === "digital") newDelivery = "shipping";
     }
-    // Yeminli/profesyonel dijital olabilir
-    if (newServiceType === "yeminli" || newServiceType === "profesyonel" || newServiceType === "akademik" || newServiceType === "teknik" || newServiceType === "hukuki") {
-      // mevcut seçim korunur
+
+    // Noter/apostil durumlarını hizmet türüne göre otomatik ayarla
+    if (newServiceType === "noter") {
+      newNotary = "evet";
+      newApostil = "hayir";
+    } else if (newServiceType === "apostil") {
+      newNotary = "evet";
+      newApostil = "evet";
+    } else if (newServiceType === "yeminli" || newServiceType === "profesyonel" || newServiceType === "akademik" || newServiceType === "teknik" || newServiceType === "hukuki") {
+      newNotary = "hayir";
+      newApostil = "hayir";
     }
-    setFormData({ ...formData, service_type: newServiceType, delivery_method: newDelivery });
+
+    setFormData({ ...formData, service_type: newServiceType, delivery_method: newDelivery, notary_need: newNotary, apostille_need: newApostil });
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -542,21 +554,31 @@ mazzgord.com`;
               </div>
               <div>
                 <label htmlFor="tf-notary" className={labelClass}>Noter Onayı Gerekli mi?</label>
-                <select id="tf-notary" name="notary_need" value={formData.notary_need} onChange={handleChange} className={inputClass}>
+                <select id="tf-notary" name="notary_need" value={formData.notary_need} onChange={handleChange}
+                  disabled={formData.service_type === "noter" || formData.service_type === "apostil"}
+                  className={inputClass + (formData.service_type === "noter" || formData.service_type === "apostil" ? " opacity-60 cursor-not-allowed" : "")}>
                   <option value="">Seçiniz</option>
                   <option value="evet">Evet, gerekli</option>
                   <option value="hayir">Hayır, gerekli değil</option>
                   <option value="bilmiyorum">Bilmiyorum</option>
                 </select>
+                {(formData.service_type === "noter" || formData.service_type === "apostil") && (
+                  <p className="text-xs text-muted-foreground mt-1">Hizmet türüne göre otomatik "Evet" olarak ayarlandı.</p>
+                )}
               </div>
               <div>
                 <label htmlFor="tf-apostil" className={labelClass}>Apostil Gerekli mi?</label>
-                <select id="tf-apostil" name="apostille_need" value={formData.apostille_need} onChange={handleChange} className={inputClass}>
+                <select id="tf-apostil" name="apostille_need" value={formData.apostille_need} onChange={handleChange}
+                  disabled={formData.service_type === "apostil"}
+                  className={inputClass + (formData.service_type === "apostil" ? " opacity-60 cursor-not-allowed" : "")}>
                   <option value="">Seçiniz</option>
                   <option value="evet">Evet, gerekli</option>
                   <option value="hayir">Hayır, gerekli değil</option>
                   <option value="bilmiyorum">Bilmiyorum</option>
                 </select>
+                {formData.service_type === "apostil" && (
+                  <p className="text-xs text-muted-foreground mt-1">Hizmet türüne göre otomatik "Evet" olarak ayarlandı.</p>
+                )}
               </div>
               <div>
                 <label htmlFor="tf-country" className={labelClass}>Belge Hangi Ülke/Kurum İçin?</label>
