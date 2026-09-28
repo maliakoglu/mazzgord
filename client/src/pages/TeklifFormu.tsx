@@ -55,6 +55,8 @@ export default function TeklifFormu() {
   const [kvkkAccepted, setKvkkAccepted] = useState(false);
   const [orderToken, setOrderToken] = useState<string>("");
   const [orderNo, setOrderNo] = useState<string>("");
+  const [priceEstimate, setPriceEstimate] = useState<number | null>(null);
+  const [priceLoading, setPriceLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -89,6 +91,38 @@ export default function TeklifFormu() {
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [submitStatus]);
+
+  // Canlı fiyat hesaplama — kullanıcı formu doldurdukça otomatik güncellenir
+  useEffect(() => {
+    if (!formData.service_type || (!formData.page_count && !formData.word_count)) {
+      setPriceEstimate(null);
+      return;
+    }
+    const timer = setTimeout(async () => {
+      setPriceLoading(true);
+      try {
+        const res = await fetch("/api/calculate-price", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            service_type: formData.service_type,
+            page_count: formData.page_count ? parseInt(formData.page_count) : null,
+            word_count: formData.word_count ? parseInt(formData.word_count) : null,
+            urgency: formData.urgency,
+            yeminli: formData.service_type === "yeminli" || formData.service_type === "noter",
+            noter_onay: formData.service_type === "noter",
+          }),
+        });
+        const data = await res.json();
+        if (data.success) setPriceEstimate(data.estimated_price);
+      } catch {
+        // sessiz geç — fiyat göstermez
+      } finally {
+        setPriceLoading(false);
+      }
+    }, 600);
+    return () => clearTimeout(timer);
+  }, [formData.service_type, formData.page_count, formData.word_count, formData.urgency, formData.notary_need, formData.apostille_need]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     if (!interactedRef.current) {
@@ -573,6 +607,38 @@ mazzgord.com`;
               )}
             </div>
           </div>
+
+          {/* Tahmini Fiyat */}
+          {(priceEstimate !== null || priceLoading) && (
+            <div className="bg-primary/5 border-2 border-primary/20 rounded-lg p-6">
+              <div className="flex items-center justify-between flex-wrap gap-4">
+                <div>
+                  <p className="text-sm text-muted-foreground mb-1">Tahmini Fiyat</p>
+                  {priceLoading ? (
+                    <div className="flex items-center gap-2">
+                      <Loader2 className="w-6 h-6 text-primary animate-spin" />
+                      <span className="text-lg text-muted-foreground">Hesaplanıyor...</span>
+                    </div>
+                  ) : (
+                    <p className="text-3xl font-bold text-primary">
+                      {priceEstimate?.toLocaleString("tr-TR")} ₺
+                    </p>
+                  )}
+                  <p className="text-xs text-muted-foreground mt-2">
+                    * Belge incelendikten sonra kesin fiyat belirlenir. Bu bir tahmindir.
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs text-muted-foreground">Teslim Süresi</p>
+                  <p className="text-sm font-medium text-foreground">
+                    {formData.urgency === "acil" ? "24 saat içinde" :
+                     formData.urgency === "hizli" ? "1-2 iş günü" :
+                     "3-5 iş günü"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Dosya Yükleme */}
           <div className={sectionClass}>

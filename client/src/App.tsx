@@ -14,6 +14,7 @@ const CookiePolicy = lazy(() => import("@/pages/CookiePolicy"));
 const SSS = lazy(() => import("@/pages/SSS"));
 const Fiyatlar = lazy(() => import("@/pages/Fiyatlar"));
 const SiparisTakip = lazy(() => import("@/pages/SiparisTakip"));
+const Degerlendir = lazy(() => import("@/pages/Degerlendir"));
 const Iletisim = lazy(() => import("@/pages/Iletisim"));
 const Giris = lazy(() => import("@/pages/Giris"));
 const Hesabim = lazy(() => import("@/pages/Hesabim"));
@@ -42,7 +43,6 @@ import { Route, Switch, useParams, useLocation } from "wouter";
 import MobileStickyCTA from "@/components/home/MobileStickyCTA";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import { CartProvider } from "./contexts/CartContext";
 const Home = lazy(() => import("./pages/Home"));
 
 // Dinamik blog route — registry'den slug'a göre component seç
@@ -70,6 +70,7 @@ function Router() {
       <Route path={"/sss"} component={SSS} />
       <Route path={"/fiyatlar"} component={Fiyatlar} />
       <Route path={"/siparis"} component={SiparisTakip} />
+      <Route path={"/degerlendir"} component={Degerlendir} />
       <Route path={"/iletisim"} component={Iletisim} />
       <Route path={"/giris"} component={Giris} />
       <Route path={"/hesabim"} component={Hesabim} />
@@ -105,14 +106,12 @@ function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light" switchable>
-        <CartProvider>
-          <TooltipProvider>
+        <TooltipProvider>
             <Toaster />
             <Router />
             <Suspense fallback={null}><ChatWidget /></Suspense>
             <MobileStickyCTA />
           </TooltipProvider>
-        </CartProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

@@ -88,7 +88,7 @@ export async function handleQuote(request, env, path = "", method = "POST") {
       const uuidMatch = orderNo.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
       if (uuidMatch) {
         quote = await env.DB.prepare(
-          "SELECT id, name, email, source_language, target_language, document_type, page_count, word_count, urgency, delivery_method, shipping_address, shipping_tracking, order_status, offer_status, estimated_price, delivery_date, created_at FROM quotes WHERE order_token = ?"
+          "SELECT id, name, email, source_language, target_language, document_type, page_count, word_count, urgency, delivery_method, shipping_address, shipping_tracking, order_status, offer_status, estimated_price, delivery_date, delivered_file_key, created_at FROM quotes WHERE order_token = ?"
         ).bind(orderNo).first();
       } else {
         // MZ-00001 formatı — sadece id ile sorgula (geriye uyumluluk)
@@ -100,7 +100,7 @@ export async function handleQuote(request, env, path = "", method = "POST") {
         }
         const quoteId = parseInt(idMatch[1]);
         quote = await env.DB.prepare(
-          "SELECT id, name, email, source_language, target_language, document_type, page_count, word_count, urgency, delivery_method, shipping_address, shipping_tracking, order_status, offer_status, estimated_price, delivery_date, created_at FROM quotes WHERE id = ?"
+          "SELECT id, name, email, source_language, target_language, document_type, page_count, word_count, urgency, delivery_method, shipping_address, shipping_tracking, order_status, offer_status, estimated_price, delivery_date, delivered_file_key, created_at FROM quotes WHERE id = ?"
         ).bind(quoteId).first();
       }
 
@@ -128,6 +128,7 @@ export async function handleQuote(request, env, path = "", method = "POST") {
           offer_status: quote.offer_status,
           estimated_price: quote.estimated_price,
           delivery_date: quote.delivery_date,
+          delivered_file_key: quote.delivered_file_key,
           created_at: quote.created_at,
         }
       }), { headers: { "Content-Type": "application/json", ...corsHeaders } });
@@ -391,6 +392,137 @@ export async function handleQuote(request, env, path = "", method = "POST") {
         await sendStatusNotification(env, { ...quote, order_status: "reviewing" });
       } catch {}
       return new Response(JSON.stringify({ success: true, file_key: fileKey, message: "Belge yuklendi" }), {
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    } catch (err) {
+      return new Response(JSON.stringify({ success: false, error: "Sunucu hatasi" }), {
+        status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+  }
+
+  // POST /api/quote/review/public — Public: order_token ile değerlendirme (giriş gerektirmez)
+  if (path === "/api/quote/review/public" && method === "POST") {
+    try {
+      const body = await request.json();
+      const { order_token, rating, comment } = body;
+      if (!order_token || !rating) {
+        return new Response(JSON.stringify({ success: false, error: "Eksik bilgi" }), {
+          status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+      const ratingNum = parseInt(rating);
+      if (ratingNum < 1 || ratingNum > 5) {
+        return new Response(JSON.stringify({ success: false, error: "Puan 1-5 arasi olmali" }), {
+          status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+      const quote = await env.DB.prepare(
+        "SELECT id, order_status, name FROM quotes WHERE order_token = ?"
+      ).bind(order_token).first();
+      if (!quote) {
+        return new Response(JSON.stringify({ success: false, error: "Siparis bulunamadi" }), {
+          status: 404, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+      if (quote.order_status !== "delivered" && quote.order_status !== "completed") {
+        return new Response(JSON.stringify({ success: false, error: "Sadece tamamlanan siparisler degerlendirilebilir" }), {
+          status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+      const existing = await env.DB.prepare(
+        "SELECT id FROM reviews WHERE quote_id = ?"
+      ).bind(quote.id).first();
+      if (existing) {
+        return new Response(JSON.stringify({ success: false, error: "Bu siparis zaten degerlendirilmis" }), {
+          status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+      await env.DB.prepare(
+        "INSERT INTO reviews (quote_id, rating, comment) VALUES (?, ?, ?)"
+      ).bind(quote.id, ratingNum, (comment || "").trim() || null).run();
+      return new Response(JSON.stringify({ success: true, message: "Degerlendirmeniz alindi. Tesekkurler!" }), {
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    } catch (err) {
+      return new Response(JSON.stringify({ success: false, error: "Sunucu hatasi" }), {
+        status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+  }
+
+  // GET /api/quote/:orderNo/download — Müşteri: teslim edilen dosyayı indir (quote akışı)
+  const quoteDownloadMatch = path.match(/^\/api\/quote\/([^/]+)\/download$/);
+  if (quoteDownloadMatch && method === "GET") {
+    try {
+      const orderNo = decodeURIComponent(quoteDownloadMatch[1]);
+      let quote;
+      const uuidMatch = orderNo.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+      if (uuidMatch) {
+        quote = await env.DB.prepare(
+          "SELECT order_status, delivered_file_key FROM quotes WHERE order_token = ?"
+        ).bind(orderNo).first();
+      } else {
+        const idMatch = orderNo.match(/^MZ-(\d+)$/i);
+        if (!idMatch) {
+          return new Response(JSON.stringify({ success: false, error: "Geçersiz sipariş numarası" }), {
+            status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+        quote = await env.DB.prepare(
+          "SELECT order_status, delivered_file_key FROM quotes WHERE id = ?"
+        ).bind(parseInt(idMatch[1])).first();
+      }
+      if (!quote) {
+        return new Response(JSON.stringify({ success: false, error: "Sipariş bulunamadı" }), {
+          status: 404, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+      if (quote.order_status !== "delivered" && quote.order_status !== "completed") {
+        return new Response(JSON.stringify({ success: false, error: "Dosya henüz teslim edilmedi" }), {
+          status: 403, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+      if (!quote.delivered_file_key) {
+        return new Response(JSON.stringify({ success: false, error: "Teslim dosyası bulunamadı" }), {
+          status: 404, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+      const file = await env.DOCS.get(quote.delivered_file_key);
+      if (!file) {
+        return new Response(JSON.stringify({ success: false, error: "Dosya bulunamadı" }), {
+          status: 404, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+      const originalName = file.customMetadata?.original_filename || "cevrilmis_belge";
+      const contentType = file.httpMetadata?.contentType || "application/octet-stream";
+      return new Response(file.body, {
+        status: 200,
+        headers: {
+          "Content-Type": contentType,
+          "Content-Disposition": `attachment; filename="${originalName}"`,
+          ...corsHeaders,
+        },
+      });
+    } catch (err) {
+      return new Response(JSON.stringify({ success: false, error: "Sunucu hatasi" }), {
+        status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+  }
+
+  // GET /api/reviews/approved — Public: onaylanmış yorumları getir
+  if (path === "/api/reviews/approved" && method === "GET") {
+    try {
+      const result = await env.DB.prepare(
+        `SELECT r.id, r.rating, r.comment, r.created_at,
+         q.name as customer_name, q.source_language, q.target_language, q.document_type
+         FROM reviews r
+         LEFT JOIN quotes q ON q.id = r.quote_id
+         WHERE r.approved = 1
+         ORDER BY r.created_at DESC LIMIT 50`
+      ).all();
+      return new Response(JSON.stringify({ success: true, data: result.results || [] }), {
         headers: { "Content-Type": "application/json", ...corsHeaders },
       });
     } catch (err) {

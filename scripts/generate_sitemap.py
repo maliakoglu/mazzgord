@@ -27,7 +27,6 @@ ROUTES = [
     "/noter-onayli-tercume",
     "/apostil-tercume",
     "/fiyatlar",
-    "/sepet",
     "/teklif",
     "/odeme",
     "/odeme/sonuc",
@@ -65,7 +64,7 @@ ROUTES = [
 ]
 
 # noindex sayfalar — sitemap'e eklenmez
-NOINDEX = {"/giris", "/hesabim", "/sepet", "/odeme", "/odeme/sonuc", "/admin", "/cerez-politikasi", "/kullanim-kosullari", "/gizlilik", "/siparis-takip"}
+NOINDEX = {"/giris", "/hesabim", "/odeme", "/odeme/sonuc", "/admin", "/cerez-politikasi", "/kullanim-kosullari", "/gizlilik", "/siparis-takip"}
 
 # Öncelikler
 PRIORITY = {

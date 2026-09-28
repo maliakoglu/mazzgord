@@ -63,7 +63,6 @@ ROUTES = [
     "/noter-onayli-tercume",
     "/apostil-tercume",
     "/fiyatlar",
-    "/sepet",
     "/teklif",
     "/odeme",
     "/odeme/sonuc",
