@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/home/Navbar";
 import { Upload, FileText, CheckCircle2, Loader2, X, Globe, Clock, FileType, Mail, Phone, User } from "lucide-react";
 import { track } from "@/lib/analytics";
@@ -945,33 +946,53 @@ mazzgord.com`;
           <p className="mt-1">Telefon: <a href="tel:+905386295040" className="text-primary hover:underline">+90 538 629 50 40</a></p>
         </div>
       </div>
-      {/* Mobile Fiyat Barı */}
-      {(priceEstimate !== null || priceLoading) && (
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-card border-t-2 border-primary/30 shadow-2xl">
-          <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-            <div>
-              <p className="text-xs text-muted-foreground">Tahmini Fiyat</p>
-              {priceLoading ? (
-                <div className="flex items-center gap-2">
-                  <Loader2 className="w-5 h-5 text-primary animate-spin" />
-                  <span className="text-sm text-muted-foreground">Hesaplanıyor...</span>
-                </div>
-              ) : (
-                <p className="text-xl font-bold text-primary">
-                  {priceEstimate?.toLocaleString("tr-TR")} ₺
+      {/* Mobile Fiyat Barı — Dinamik animasyonlu */}
+      <AnimatePresence>
+        {(priceEstimate !== null || priceLoading) && (
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-card border-t-2 border-primary/30 shadow-2xl"
+          >
+            <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+              <div>
+                <p className="text-xs text-muted-foreground">Tahmini Fiyat</p>
+                {priceLoading ? (
+                  <div className="flex items-center gap-2">
+                    <Loader2 className="w-5 h-5 text-primary animate-spin" />
+                    <span className="text-sm text-muted-foreground">Hesaplanıyor...</span>
+                  </div>
+                ) : (
+                  <motion.p
+                    key={priceEstimate}
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                    className="text-xl font-bold text-primary"
+                  >
+                    {priceEstimate?.toLocaleString("tr-TR")} ₺
+                  </motion.p>
+                )}
+              </div>
+              <motion.div
+                key={formData.urgency}
+                initial={{ x: 20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.1 }}
+                className="text-right"
+              >
+                <p className="text-xs text-muted-foreground">Teslim</p>
+                <p className="text-sm font-medium text-foreground">
+                  {formData.urgency === "acil" ? "24 saat" :
+                   formData.urgency === "hizli" ? "1-2 gün" : "3-5 gün"}
                 </p>
-              )}
+              </motion.div>
             </div>
-            <div className="text-right">
-              <p className="text-xs text-muted-foreground">Teslim</p>
-              <p className="text-sm font-medium text-foreground">
-                {formData.urgency === "acil" ? "24 saat" :
-                 formData.urgency === "hizli" ? "1-2 gün" : "3-5 gün"}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
