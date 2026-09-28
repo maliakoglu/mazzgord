@@ -20,7 +20,43 @@ export default function Testimonials({ openGallery }: { openGallery: (images: st
     track.reviewSectionView();
     fetch("/api/reviews/approved")
       .then(res => res.json())
-      .then(data => { if (data.success && data.data) setDbReviews(data.data); })
+      .then(data => {
+        if (data.success && data.data) {
+          setDbReviews(data.data);
+          // Review schema enjekte et
+          const existing = document.getElementById('review-schema');
+          if (existing) existing.remove();
+          const reviews = data.data;
+          if (reviews.length > 0) {
+            const avgRating = (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1);
+            const schema = {
+              "@context": "https://schema.org",
+              "@type": "ProfessionalService",
+              "name": "Mazzgord Çeviri Hizmetleri",
+              "url": "https://mazzgord.com",
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": avgRating,
+                "reviewCount": reviews.length,
+                "bestRating": "5",
+                "worstRating": "1"
+              },
+              "review": reviews.map((r) => ({
+                "@type": "Review",
+                "author": { "@type": "Person", "name": r.customer_name || "Müşteri" },
+                "reviewRating": { "@type": "Rating", "ratingValue": r.rating, "bestRating": "5", "worstRating": "1" },
+                "reviewBody": r.comment || "Mükemmel hizmet!",
+                "datePublished": r.created_at ? r.created_at.split("T")[0] : "2026-01-01"
+              }))
+            };
+            const script = document.createElement("script");
+            script.type = "application/ld+json";
+            script.id = "review-schema";
+            script.textContent = JSON.stringify(schema);
+            document.head.appendChild(script);
+          }
+        }
+      })
       .catch(() => {});
   }, []);
 
