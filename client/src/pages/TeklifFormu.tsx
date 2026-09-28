@@ -7,21 +7,9 @@ const LANGUAGES = [
   "Türkçe", "İngilizce"
 ];
 
-const DOCUMENT_TYPES = [
-  "Pasaport / Kimlik",
-  "Diploma / Transkript",
-  "Evlilik Cüzdanı / Nüfus Kayıt",
-  "Vize Belgeleri",
-  "Sözleşme / Hukuki Belge",
-  "Teknik Kılavuz / Doküman",
-  "Akademik Makale / Tez",
-  "Tıbbi Belge / Rapor",
-  "Noter Tasdikli Belge",
-  "Mahkeme Kararı / Dilekçe",
-  "Şirket Evrakı / Ticari Belge",
-  "Web Sitesi / Yazılım",
-  "Reklam / Pazarlama Metni",
-  "Diğer"
+const DOCUMENT_TYPES_FALLBACK = [
+  "Pasaport", "Kimlik Kartı", "Diploma", "Transkript (1 Sayfa)",
+  "Vize Belgeleri", "Sözleşme / Hukuki Belge", "Diğer"
 ];
 
 const SERVICE_TYPES = [
@@ -56,6 +44,7 @@ export default function TeklifFormu() {
   const [orderToken, setOrderToken] = useState<string>("");
   const [orderNo, setOrderNo] = useState<string>("");
   const [priceEstimate, setPriceEstimate] = useState<number | null>(null);
+  const [pricingDocs, setPricingDocs] = useState<{document_name: string; category: string}[]>([]);
   const [priceLoading, setPriceLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -92,9 +81,17 @@ export default function TeklifFormu() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [submitStatus]);
 
+  // Pricing tablosundan belge türlerini yükle
+  useEffect(() => {
+    fetch("/api/pricing")
+      .then(res => res.json())
+      .then(data => { if (data.success && data.data) setPricingDocs(data.data); })
+      .catch(() => {});
+  }, []);
+
   // Canlı fiyat hesaplama — kullanıcı formu doldurdukça otomatik güncellenir
   useEffect(() => {
-    if (!formData.service_type || (!formData.page_count && !formData.word_count)) {
+    if (!formData.service_type || (!formData.document_type && !formData.page_count && !formData.word_count)) {
       setPriceEstimate(null);
       return;
     }
@@ -106,6 +103,7 @@ export default function TeklifFormu() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             service_type: formData.service_type,
+            document_type: formData.document_type || null,
             page_count: formData.page_count ? parseInt(formData.page_count) : null,
             word_count: formData.word_count ? parseInt(formData.word_count) : null,
             urgency: formData.urgency,
@@ -122,7 +120,7 @@ export default function TeklifFormu() {
       }
     }, 600);
     return () => clearTimeout(timer);
-  }, [formData.service_type, formData.page_count, formData.word_count, formData.urgency, formData.notary_need, formData.apostille_need]);
+  }, [formData.service_type, formData.document_type, formData.page_count, formData.word_count, formData.urgency, formData.notary_need, formData.apostille_need]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     if (!interactedRef.current) {
@@ -479,7 +477,18 @@ mazzgord.com`;
                 <label htmlFor="tf-doc-type" className={labelClass}><FileType className="w-4 h-4" /> Belge Türü</label>
                 <select id="tf-doc-type" name="document_type" value={formData.document_type} onChange={handleChange} className={inputClass}>
                   <option value="">Belge türü seçiniz</option>
-                  {DOCUMENT_TYPES.map(doc => <option key={doc} value={doc}>{doc}</option>)}
+                  {pricingDocs.length > 0 ? (
+                    ["egitim", "resmi", "ticari"].map(cat => {
+                      const docs = pricingDocs.filter(d => d.category === cat);
+                      if (docs.length === 0) return null;
+                      const catLabel = cat === "egitim" ? "Eğitim Belgeleri" : cat === "resmi" ? "Resmi Belgeler" : "Ticari Belgeler";
+                      return <optgroup key={cat} label={catLabel}>
+                        {docs.map(doc => <option key={doc.document_name} value={doc.document_name}>{doc.document_name}</option>)}
+                      </optgroup>;
+                    })
+                  ) : (
+                    DOCUMENT_TYPES_FALLBACK.map(doc => <option key={doc} value={doc}>{doc}</option>)
+                  )}
                 </select>
               </div>
               <div>

@@ -15,7 +15,7 @@ export async function handleCalculatePrice(request, env) {
     const validation = validateBody(calculatePriceSchema, body);
     if (!validation.success) return validation.response;
 
-    const { product_id, sku, page_count, word_count, service_type, urgency, yeminli, noter_onay, quantity, options } = validation.data;
+    const { product_id, sku, document_type, page_count, word_count, service_type, urgency, yeminli, noter_onay, quantity, options } = validation.data;
 
     // === YENİ: services tablosundan ürün tabanlı hesaplama ===
     if ((product_id || sku) && env.DB) {
@@ -61,6 +61,44 @@ export async function handleCalculatePrice(request, env) {
           estimated_price: finalPrice,
           breakdown,
           source: "services"
+        }), {
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+    }
+
+    // === PRICING TABLOSU: document_type + service_type ile ===
+    if (document_type && env.DB) {
+      let serviceColumn = "yeminli_price";
+      if (service_type === "noter") serviceColumn = "noter_price";
+      else if (service_type === "apostil") serviceColumn = "apostil_price";
+      else if (service_type === "yeminli") serviceColumn = "yeminli_price";
+      else serviceColumn = "yeminli_price"; // varsayılan
+
+      // document_type pricing tablosunda var mı?
+      const priceRow = await env.DB.prepare(
+        `SELECT yeminli_price, noter_price, apostil_price FROM pricing WHERE document_name = ?`
+      ).bind(document_type).first();
+
+      if (priceRow) {
+        let base = priceRow[serviceColumn] || priceRow.yeminli_price;
+        const breakdown = { base, source: "pricing_table", document_type, service_type, multipliers: {} };
+
+        // Aciliyet çarpanı
+        if (urgency === 'hizli') {
+          base = base * 1.3;
+          breakdown.multipliers.urgency = { value: 1.3, amount: Math.round((base - base/1.3) * 100) / 100 };
+        } else if (urgency === 'acil') {
+          base = base * 1.5;
+          breakdown.multipliers.urgency = { value: 1.5, amount: Math.round((base - base/1.5) * 100) / 100 };
+        }
+
+        const finalPrice = Math.round(base * 100) / 100;
+        return new Response(JSON.stringify({
+          success: true,
+          estimated_price: finalPrice,
+          breakdown,
+          source: "pricing"
         }), {
           headers: { "Content-Type": "application/json", ...corsHeaders },
         });

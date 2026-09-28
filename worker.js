@@ -8,6 +8,7 @@ import { handleUpload } from "./routes/upload.js";
 import { handleAdminRoute } from "./routes/admin.js";
 import { handleCalculatePrice } from "./routes/calculatePrice.js";
 import { handleServicesRoute } from "./routes/services.js";
+import { handlePricingRoute } from "./routes/services.js";
 import { handleXmlFeed } from "./routes/xmlFeed.js";
 import { handleOrdersRoute } from "./routes/orders.js";
 import { handleAuthRoute } from "./routes/auth.js";

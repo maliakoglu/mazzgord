@@ -18,6 +18,25 @@ function parseOptions(optionsJson) {
   }
 }
 
+// GET /api/pricing — Public: pricing tablosundan belge türleri ve fiyatlar
+export async function handlePricingRoute(path, request, env) {
+  if (path === "/api/pricing" && request.method === "GET") {
+    try {
+      const result = await env.DB.prepare(
+        "SELECT document_name, yeminli_price, noter_price, apostil_price, category FROM pricing ORDER BY category, document_name"
+      ).all();
+      return new Response(JSON.stringify({ success: true, data: result.results || [] }), {
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    } catch (err) {
+      return new Response(JSON.stringify({ success: false, error: "Sunucu hatasi" }), {
+        status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+  }
+  return null;
+}
+
 export async function handleServicesRoute(path, request, env) {
   // GET /api/services — Aktif hizmetleri listele (public)
   if (path === "/api/services" && request.method === "GET") {
