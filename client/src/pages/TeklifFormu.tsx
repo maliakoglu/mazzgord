@@ -515,14 +515,16 @@ mazzgord.com`;
                   {SERVICE_TYPES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
                 </select>
                 {formData.service_type === "noter" && (
-                  <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3 mt-2">
-                    ℹ Noter onaylı çeviriler fiziksel olarak teslim edilmelidir. Dijital teslimat seçilemez. Kargo veya elden teslim zorunludur. Noter harç ücreti fiyata dahildir.
-                  </p>
+                  <div className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3 mt-2 space-y-2">
+                    <p>ℹ Noter onaylı çeviriler fiziksel olarak teslim edilmelidir. Dijital teslimat seçilemez. Kargo veya elden teslim zorunludur. Noter harç ücreti fiyata dahildir.</p>
+                    <p className="font-medium">📎 Orijinal belgenizi kargo ile veya elden teslim edebilirsiniz. Kargo adresini teklif onayından sonra size ileteceğim. Belgeniz güvende tutulur ve işlem tamamlandığında size iade edilir.</p>
+                  </div>
                 )}
                 {formData.service_type === "apostil" && (
-                  <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3 mt-2">
-                    ℹ Apostil işlemleri fiziksel olarak teslim edilmelidir. Dijital teslimat seçilemez. Kargo veya elden teslim zorunludur. Apostil ve noter harç ücretleri fiyata dahildir.
-                  </p>
+                  <div className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3 mt-2 space-y-2">
+                    <p>ℹ Apostil işlemleri fiziksel olarak teslim edilmelidir. Dijital teslimat seçilemez. Kargo veya elden teslim zorunludur. Apostil ve noter harç ücretleri fiyata dahildir.</p>
+                    <p className="font-medium">📎 Orijinal belgenizi kargo ile veya elden teslim edebilirsiniz. Kargo adresini teklif onayından sonra size ileteceğim. Belgeniz güvende tutulur ve işlem tamamlandığında size iade edilir.</p>
+                  </div>
                 )}
                 {formData.service_type === "yeminli" && (
                   <p className="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-lg p-3 mt-2">
