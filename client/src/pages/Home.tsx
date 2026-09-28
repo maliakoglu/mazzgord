@@ -112,6 +112,7 @@ export default function Home() {
         <Hero />
         <Process />
         <Services />
+        <About />
         <WhyChooseUs />
         <PricingPreview />
         <Testimonials openGallery={openGallery} />
