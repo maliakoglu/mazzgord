@@ -15,7 +15,7 @@ export async function handleCalculatePrice(request, env) {
     const validation = validateBody(calculatePriceSchema, body);
     if (!validation.success) return validation.response;
 
-    const { product_id, sku, document_type, page_count, word_count, service_type, urgency, yeminli, noter_onay, quantity, options } = validation.data;
+    const { product_id, sku, document_type, delivery_method, page_count, word_count, service_type, urgency, yeminli, noter_onay, quantity, options } = validation.data;
 
     // === YENİ: services tablosundan ürün tabanlı hesaplama ===
     if ((product_id || sku) && env.DB) {
@@ -91,6 +91,12 @@ export async function handleCalculatePrice(request, env) {
         } else if (urgency === 'acil') {
           base = base * 1.5;
           breakdown.multipliers.urgency = { value: 1.5, amount: Math.round((base - base/1.5) * 100) / 100 };
+        }
+
+        // Kargo teslimatı ek ücret
+        if (delivery_method === "shipping") {
+          base += 300;
+          breakdown.multipliers.shipping = { value: 300, amount: 300 };
         }
 
         const finalPrice = Math.round(base * 100) / 100;

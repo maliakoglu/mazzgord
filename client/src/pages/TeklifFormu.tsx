@@ -104,6 +104,7 @@ export default function TeklifFormu() {
           body: JSON.stringify({
             service_type: formData.service_type,
             document_type: formData.document_type || null,
+            delivery_method: formData.delivery_method || "digital",
             page_count: formData.page_count ? parseInt(formData.page_count) : null,
             word_count: formData.word_count ? parseInt(formData.word_count) : null,
             urgency: formData.urgency,
@@ -120,7 +121,7 @@ export default function TeklifFormu() {
       }
     }, 600);
     return () => clearTimeout(timer);
-  }, [formData.service_type, formData.document_type, formData.page_count, formData.word_count, formData.urgency, formData.notary_need, formData.apostille_need]);
+  }, [formData.service_type, formData.document_type, formData.delivery_method, formData.page_count, formData.word_count, formData.urgency, formData.notary_need, formData.apostille_need]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     if (!interactedRef.current) {
