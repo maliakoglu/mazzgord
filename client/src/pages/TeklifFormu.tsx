@@ -378,7 +378,7 @@ mazzgord.com`;
       {/* Nav */}
       <Navbar />
 
-      <div className="container mx-auto px-4 py-12 max-w-3xl">
+      <div className="container mx-auto px-4 py-12 max-w-6xl">
         {/* Header */}
         <div className="text-center mb-10">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
@@ -425,6 +425,7 @@ mazzgord.com`;
           </div>
         )}
 
+        <div className="grid lg:grid-cols-[1fr_320px] gap-6">
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Kişisel Bilgiler */}
           <div className={sectionClass}>
@@ -862,12 +863,115 @@ mazzgord.com`;
           </div>
         </form>
 
+        {/* Sticky Fiyat Paneli — Desktop */}
+        <div className="hidden lg:block">
+          <div className="sticky top-24">
+            <div className="bg-card border-2 border-primary/20 rounded-lg p-6 shadow-lg">
+              <h3 className="text-sm font-bold text-foreground mb-4 flex items-center gap-2">
+                <FileText className="w-4 h-4 text-primary" /> Tahmini Fiyat
+              </h3>
+              {(priceEstimate !== null || priceLoading) ? (
+                <div>
+                  {priceLoading ? (
+                    <div className="flex items-center gap-2 py-4">
+                      <Loader2 className="w-6 h-6 text-primary animate-spin" />
+                      <span className="text-muted-foreground">Hesaplanıyor...</span>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <p className="text-4xl font-bold text-primary transition-all duration-300">
+                        {priceEstimate?.toLocaleString("tr-TR")} ₺
+                      </p>
+                      <div className="space-y-1 pt-3 border-t border-border">
+                        <div className="flex justify-between text-xs text-muted-foreground">
+                          <span>Belge</span>
+                          <span className="text-foreground font-medium">{formData.document_type || "—"}</span>
+                        </div>
+                        <div className="flex justify-between text-xs text-muted-foreground">
+                          <span>Hizmet</span>
+                          <span className="text-foreground font-medium">
+                            {formData.service_type === "noter" ? "Noter Onaylı" :
+                             formData.service_type === "apostil" ? "Apostil" :
+                             formData.service_type === "yeminli" ? "Yeminli" : formData.service_type || "—"}
+                          </span>
+                        </div>
+                        {formData.page_count && parseInt(formData.page_count) > 1 && (
+                          <div className="flex justify-between text-xs text-muted-foreground">
+                            <span>Sayfa</span>
+                            <span className="text-foreground font-medium">{formData.page_count}</span>
+                          </div>
+                        )}
+                        <div className="flex justify-between text-xs text-muted-foreground">
+                          <span>Teslimat</span>
+                          <span className="text-foreground font-medium">
+                            {formData.delivery_method === "shipping" ? "Kargo (+300₺)" :
+                             formData.delivery_method === "hand_delivery" ? "Elden" : "Dijital"}
+                          </span>
+                        </div>
+                        <div className="flex justify-between text-xs text-muted-foreground">
+                          <span>Teslim Süresi</span>
+                          <span className="text-foreground font-medium">
+                            {formData.urgency === "acil" ? "24 saat" :
+                             formData.urgency === "hizli" ? "1-2 gün" : "3-5 gün"}
+                          </span>
+                        </div>
+                      </div>
+                      {(formData.service_type === "noter" || formData.service_type === "apostil") && (
+                        <div className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-2 mt-2">
+                          {formData.service_type === "noter" ? "Noter harcı dahil" : "Apostil + noter dahil"}
+                        </div>
+                      )}
+                      <p className="text-xs text-muted-foreground pt-2">
+                        * Belge incelendikten sonra kesin fiyat belirlenir.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <FileText className="w-12 h-12 text-muted-foreground/30 mx-auto mb-3" />
+                  <p className="text-sm text-muted-foreground">Belge türü ve hizmet seçtikçe fiyat burada görünecek.</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        </div>
+
         {/* Alt bilgi */}
         <div className="mt-12 text-center text-sm text-muted-foreground border-t border-border pt-6">
           <p>Sorularınız için: <a href="mailto:info@mazzgord.com" className="text-primary hover:underline">info@mazzgord.com</a></p>
           <p className="mt-1">Telefon: <a href="tel:+905386295040" className="text-primary hover:underline">+90 538 629 50 40</a></p>
         </div>
       </div>
+      {/* Mobile Fiyat Barı */}
+      {(priceEstimate !== null || priceLoading) && (
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-card border-t-2 border-primary/30 shadow-2xl">
+          <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div>
+              <p className="text-xs text-muted-foreground">Tahmini Fiyat</p>
+              {priceLoading ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="w-5 h-5 text-primary animate-spin" />
+                  <span className="text-sm text-muted-foreground">Hesaplanıyor...</span>
+                </div>
+              ) : (
+                <p className="text-xl font-bold text-primary">
+                  {priceEstimate?.toLocaleString("tr-TR")} ₺
+                </p>
+              )}
+            </div>
+            <div className="text-right">
+              <p className="text-xs text-muted-foreground">Teslim</p>
+              <p className="text-sm font-medium text-foreground">
+                {formData.urgency === "acil" ? "24 saat" :
+                 formData.urgency === "hizli" ? "1-2 gün" : "3-5 gün"}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
