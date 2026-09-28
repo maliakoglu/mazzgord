@@ -130,6 +130,22 @@ export default function TeklifFormu() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Hizmet türü değişince teslimat yöntemini otomatik ayarla
+  const handleServiceTypeChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    if (!interactedRef.current) interactedRef.current = true;
+    const newServiceType = e.target.value;
+    let newDelivery = formData.delivery_method;
+    // Noter onaylı ve apostil fiziksel teslimat gerektirir
+    if (newServiceType === "noter" || newServiceType === "apostil") {
+      if (formData.delivery_method === "digital") newDelivery = "shipping";
+    }
+    // Yeminli/profesyonel dijital olabilir
+    if (newServiceType === "yeminli" || newServiceType === "profesyonel" || newServiceType === "akademik" || newServiceType === "teknik" || newServiceType === "hukuki") {
+      // mevcut seçim korunur
+    }
+    setFormData({ ...formData, service_type: newServiceType, delivery_method: newDelivery });
+  };
+
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -494,10 +510,25 @@ mazzgord.com`;
               </div>
               <div>
                 <label htmlFor="tf-service-type" className={labelClass}>Hizmet Türü</label>
-                <select id="tf-service-type" name="service_type" value={formData.service_type} onChange={handleChange} className={inputClass}>
+                <select id="tf-service-type" name="service_type" value={formData.service_type} onChange={handleServiceTypeChange} className={inputClass}>
                   <option value="">Hizmet seçiniz</option>
                   {SERVICE_TYPES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
                 </select>
+                {formData.service_type === "noter" && (
+                  <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3 mt-2">
+                    ℹ Noter onaylı çeviriler fiziksel olarak teslim edilmelidir. Dijital teslimat seçilemez. Kargo veya elden teslim zorunludur. Noter harç ücreti fiyata dahildir.
+                  </p>
+                )}
+                {formData.service_type === "apostil" && (
+                  <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3 mt-2">
+                    ℹ Apostil işlemleri fiziksel olarak teslim edilmelidir. Dijital teslimat seçilemez. Kargo veya elden teslim zorunludur. Apostil ve noter harç ücretleri fiyata dahildir.
+                  </p>
+                )}
+                {formData.service_type === "yeminli" && (
+                  <p className="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-lg p-3 mt-2">
+                    ℹ Yeminli çeviri dijital (e-posta/WhatsApp), kargo veya elden teslim edilebilir.
+                  </p>
+                )}
               </div>
               <div>
                 <label htmlFor="tf-page-count" className={labelClass}>Sayfa Sayısı</label>
@@ -547,10 +578,16 @@ mazzgord.com`;
               </div>
               <div>
                 <label className={labelClass}>Teslimat Yöntemi <span className="text-red-500">*</span></label>
+                {(formData.service_type === "noter" || formData.service_type === "apostil") && (
+                  <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-2 mb-3">
+                    {formData.service_type === "noter" ? "Noter onaylı" : "Apostilli"} çevirilerde dijital teslimat mümkün değildir. Lütfen kargo veya elden teslim seçin.
+                  </p>
+                )}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <button type="button"
-                    onClick={() => setFormData({ ...formData, delivery_method: "digital" })}
-                    className={`flex items-center gap-3 p-4 border-2 rounded-lg transition text-left ${formData.delivery_method === "digital" ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"}`}>
+                    onClick={() => { if (formData.service_type !== "noter" && formData.service_type !== "apostil") setFormData({ ...formData, delivery_method: "digital" }); }}
+                    disabled={formData.service_type === "noter" || formData.service_type === "apostil"}
+                    className={`flex items-center gap-3 p-4 border-2 rounded-lg transition text-left ${(formData.service_type === "noter" || formData.service_type === "apostil") ? "opacity-40 cursor-not-allowed border-border" : formData.delivery_method === "digital" ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"}`}>
                     <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${formData.delivery_method === "digital" ? "border-primary" : "border-muted-foreground"}`}>
                       {formData.delivery_method === "digital" && <div className="w-2.5 h-2.5 rounded-full bg-primary" />}
                     </div>
@@ -621,7 +658,7 @@ mazzgord.com`;
           {/* Tahmini Fiyat */}
           {(priceEstimate !== null || priceLoading) && (
             <div className="bg-primary/5 border-2 border-primary/20 rounded-lg p-6">
-              <div className="flex items-center justify-between flex-wrap gap-4">
+              <div className="flex items-center justify-between flex-wrap gap-4 mb-4">
                 <div>
                   <p className="text-sm text-muted-foreground mb-1">Tahmini Fiyat</p>
                   {priceLoading ? (
@@ -634,9 +671,6 @@ mazzgord.com`;
                       {priceEstimate?.toLocaleString("tr-TR")} ₺
                     </p>
                   )}
-                  <p className="text-xs text-muted-foreground mt-2">
-                    * Belge incelendikten sonra kesin fiyat belirlenir. Bu bir tahmindir.
-                  </p>
                 </div>
                 <div className="text-right">
                   <p className="text-xs text-muted-foreground">Teslim Süresi</p>
@@ -647,6 +681,49 @@ mazzgord.com`;
                   </p>
                 </div>
               </div>
+              {/* Fiyat dökümü */}
+              {!priceLoading && priceEstimate !== null && (
+                <div className="space-y-1 pt-3 border-t border-primary/10">
+                  <p className="text-xs font-medium text-foreground mb-2">Fiyat Dökümü:</p>
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>Çeviri ücreti ({formData.document_type || "Belge"})</span>
+                    <span>{formData.service_type === "noter" ? "Noter harcı dahil" : formData.service_type === "apostil" ? "Apostil + noter dahil" : "Yeminli tercüme"}</span>
+                  </div>
+                  {formData.urgency === "hizli" && (
+                    <div className="flex justify-between text-xs text-muted-foreground">
+                      <span>Hızlı teslimat ek ücreti</span>
+                      <span>+30%</span>
+                    </div>
+                  )}
+                  {formData.urgency === "acil" && (
+                    <div className="flex justify-between text-xs text-muted-foreground">
+                      <span>Acil teslimat ek ücreti</span>
+                      <span>+50%</span>
+                    </div>
+                  )}
+                  {formData.delivery_method === "shipping" && (
+                    <div className="flex justify-between text-xs text-muted-foreground">
+                      <span>Kargo ücreti</span>
+                      <span>+300 ₺</span>
+                    </div>
+                  )}
+                  {formData.delivery_method === "hand_delivery" && (
+                    <div className="flex justify-between text-xs text-muted-foreground">
+                      <span>Elden teslim</span>
+                      <span>Ücretsiz</span>
+                    </div>
+                  )}
+                  {(formData.service_type === "noter" || formData.service_type === "apostil") && (
+                    <div className="flex justify-between text-xs text-amber-700 bg-amber-50 rounded p-2 mt-2">
+                      <span>ℹ Fiziksel teslimat zorunludur</span>
+                      <span>{formData.delivery_method === "shipping" ? "Kargo" : "Elden"}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+              <p className="text-xs text-muted-foreground mt-3">
+                * Belge incelendikten sonra kesin fiyat belirlenir. Bu bir tahmindir.
+              </p>
             </div>
           )}
 
