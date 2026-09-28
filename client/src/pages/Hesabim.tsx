@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Navbar from "@/components/home/Navbar";
 import { useLocation } from "wouter";
-import { User, FileText, Download, LogOut, Loader2, AlertCircle, Package, CreditCard, Clock, MessageCircle, Send, X, CheckCircle, XCircle } from "lucide-react";
+import { User, FileText, Download, LogOut, Loader2, AlertCircle, Package, CreditCard, Clock, MessageCircle, Send, X, CheckCircle, XCircle, MapPin } from "lucide-react";
 
 interface Customer { id: number; name: string; email: string; phone: string; }
 interface Quote { id: number; source_language: string; target_language: string; document_type: string; order_status: string; offer_status: string; offer_note: string | null; estimated_price: number; delivery_date: string | null; delivered_file_key: string | null; file_key: string | null; document_uploaded_at: string | null; created_at: string; }
@@ -203,16 +203,32 @@ export default function Hesabim() {
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Profil */}
         <div className="bg-card border border-border rounded-xl p-6 mb-6">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-              <User className="w-6 h-6 text-primary" />
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <User className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-foreground">{customer?.name}</h1>
+                <p className="text-sm text-muted-foreground">{customer?.email}</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-xl font-bold text-foreground">{customer?.name}</h1>
-              <p className="text-sm text-muted-foreground">{customer?.email}</p>
-            </div>
+            <button onClick={handleLogout} className="px-4 py-2 text-sm rounded-lg border border-border text-foreground hover:bg-destructive hover:text-white transition" aria-label="Çıkış Yap">Çıkış Yap</button>
           </div>
         </div>
+
+        {/* Müşteriye özel teslim adresi — sadece ödemesi olan müşterilere */}
+        {data?.payments?.length > 0 && (
+          <div className="bg-card border border-border rounded-xl p-6 mb-6">
+            <h2 className="text-lg font-bold text-foreground mb-3">Teslim Adresi</h2>
+            <p className="text-sm text-muted-foreground mb-2">Belge teslimi ve noter/apostil işlemleri için adres:</p>
+            <div className="flex items-start gap-2 text-foreground text-sm leading-relaxed">
+              <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
+              <span>Kınıklı Mah. 6080 Sok. No: 11 Daire: 4<br />20160 Pamukkale / Denizli</span>
+            </div>
+            <p className="text-xs text-muted-foreground mt-3">Bu adres yalnızca ödeme yapmış müşterilere görünür. Randevu almadan gelmeyiniz.</p>
+          </div>
+        )}
 
         {error && (
           <div className="flex items-center gap-2 bg-destructive/10 text-destructive text-sm rounded-lg p-3 mb-6">

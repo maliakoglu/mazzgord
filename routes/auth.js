@@ -27,6 +27,16 @@ export async function handleAuthRoute(path, request, env) {
         });
       }
 
+      // Teklif formu doldurmus mu? — rastgele kayitlari engelle
+      const hasQuote = await env.DB.prepare(
+        "SELECT id FROM quotes WHERE email = ? LIMIT 1"
+      ).bind(email).first();
+      if (!hasQuote) {
+        return new Response(JSON.stringify({ success: false, error: "Hesap acmak icin once teklif formunu doldurmaniz gerekir." }), {
+          status: 403, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+
       // Şifre hashle
       const salt = email + Date.now();
       const passwordHash = await hashPassword(password, salt);
@@ -260,6 +270,16 @@ export async function handleAuthRoute(path, request, env) {
       ).bind(email).first();
 
       if (!customer) {
+        // Teklif formu doldurmus mu? — rastgele Google kayitlarini engelle
+        const hasQuote = await env.DB.prepare(
+          "SELECT id FROM quotes WHERE email = ? LIMIT 1"
+        ).bind(email).first();
+        if (!hasQuote) {
+          return new Response(JSON.stringify({ success: false, error: "Hesap acmak icin once teklif formunu doldurmaniz gerekir." }), {
+            status: 403, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+
         // Yeni Google kullanıcısı oluştur
         const result = await env.DB.prepare(
           "INSERT INTO customers (email, password_hash, name, phone) VALUES (?, ?, ?, ?)"
