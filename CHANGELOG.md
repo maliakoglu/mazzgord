@@ -1,4 +1,51 @@
 # MAZZGORD Change Log
+### 2026-09-29 — SEO, Fiyatlandırma, Sipariş Takibi, Chatbot ve İçerik Güncellemeleri
+
+**SEO İyileştirmeleri**
+* `lib/seoData.js` — Meta title/description güncellemeleri (tüm sayfalar)
+* `lib/seoProcessor.js` — Kritik font preload, blog og:image + twitter card eklendi
+* `client/index.html` — hreflang tekrarı ve yalnız `</script>` etiketi kaldırıldı
+* Denizli ve Fiyatlar sayfaları içerik olarak güçlendirildi
+* Review schema ve robots.txt eklendi
+* Sitemap güncellemesi ve sayfa içerik iyileştirmeleri
+* `/sepet` → `/` 301 redirect, `/degerlendir` noindex, sitemap temizliği
+* Blog slug çakışmaları düzeltildi, favicon.ico 404 giderildi
+
+**Fiyatlandırma**
+* Canlı fiyat hesaplama sistemi eklendi (pricing tablosundan doğru fiyatlar)
+* Kademeli sayfa fiyatlandırması: ilk sayfa + 250₺/ek sayfa + 200₺/6+ sayfa
+* Kargo teslimatında +300₺ ek ücret eklendi
+* SSS sayfasındaki fiyat tutarsızlığı düzeltildi (950₺ → 450₺)
+* Noter/apostil fiziksel teslimat zorunlu hale getirildi, fiyat dökümü ve bilgi notları eklendi
+* Noter/apostil seçilince otomatik doldur ve devre dışı bırak özelliği
+
+**Sipariş Takibi**
+* 17 durumlu sipariş takibi sistemi
+* Otomatik değerlendirme sistemi
+* Sepet akışı temizliği
+* Müşteriye özel teslim adresi ve teklif kontrolü
+
+**Chatbot**
+* Streaming yanıt, markdown render, localStorage persistence
+* System prompt refactor, bağımsız tercüman kimliği
+* Kargo fiyatı, hizmet listesi ve çalışma saatleri güncellendi
+* Quote flow hardening
+
+**UI/UX**
+* Sticky fiyat paneli (desktop sağda) + mobile alt bar
+* Framer-motion animasyonlu mobile bar
+* ErrorBoundary Türkçeleştirildi
+* Form erişilebilirliği: htmlFor/id/aria eklendi
+* Form hata mesajları: backend hatası ve ağ hatası artık kullanıcıya gösteriliyor
+* Anasayfaya About bölümü eklendi
+* Hesap güvenliği: çıkış butonu eklendi
+
+**Tip Düzeltmeleri ve Temizlik**
+* TypeScript tip düzeltmeleri (HTMLScriptElement cast)
+* `.wrangler/state` gitignore'a eklendi
+* One-time patch scriptleri temizlendi
+
+**Güvenlik (2026-09-05 — Kapsamlı Güvenlik Denetimi)**
 ### 2026-09-05 — Kapsamlı Güvenlik Denetimi ve Düzeltmeleri
 
 **Kritik Güvenlik Düzeltmeleri**
