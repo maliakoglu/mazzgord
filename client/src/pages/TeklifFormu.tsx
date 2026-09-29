@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useSearch } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/home/Navbar";
 import { Upload, FileText, CheckCircle2, Loader2, X, Globe, Clock, FileType, Mail, Phone, User } from "lucide-react";
@@ -70,6 +71,22 @@ export default function TeklifFormu() {
     meeting_time: "" });
 
   const interactedRef = useRef(false);
+  const [search] = useSearch();
+
+  // URL parametrelerinden formu otomatik doldur (chatbot yönlendirmesi)
+  useEffect(() => {
+    const params = new URLSearchParams(search);
+    const updates: any = {};
+    if (params.get("document_type")) updates.document_type = params.get("document_type");
+    if (params.get("service_type")) updates.service_type = params.get("service_type");
+    if (params.get("source_language")) updates.source_language = params.get("source_language");
+    if (params.get("target_language")) updates.target_language = params.get("target_language");
+    if (params.get("urgency")) updates.urgency = params.get("urgency");
+    if (params.get("delivery_method")) updates.delivery_method = params.get("delivery_method");
+    if (Object.keys(updates).length > 0) {
+      setFormData(prev => ({ ...prev, ...updates }));
+    }
+  }, [search]);
 
   // Form terk takibi — kullanici formu doldurmaya basladiysa ve sayfadan ayrilirsa
   useEffect(() => {

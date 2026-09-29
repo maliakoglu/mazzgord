@@ -16,6 +16,7 @@ import { handleAccountRoute } from "./routes/account.js";
 import { handleMessagesRoute } from "./routes/messages.js";
 import { processResponse } from "./lib/seoProcessor.js";
 import { escapeHtml } from "./lib/escapeHtml.js";
+import { buildSystemPrompt } from "./lib/chatSystemPrompt.js";
 
 async function sendPaymentEmails(env, payment, iyzicoPaymentId) {
     const resendKey = env.RESEND_API_KEY;
@@ -753,6 +754,97 @@ export default {
     }
 
 
+    // POST /api/chat/submit-quote — Chatbot icinden teklif olustur
+    if (path === "/api/chat/submit-quote" && request.method === "POST") {
+      try {
+        // Rate limit — IP basina 10 dakikada max 3 teklif
+        const clientIP = request.headers.get("CF-Connecting-IP") || "unknown";
+        const rlKey = "chatquote:" + clientIP;
+        const rlCount = await env.RATE_LIMIT.get(rlKey);
+        if (rlCount && parseInt(rlCount) >= 3) {
+          return new Response(JSON.stringify({ success: false, error: "Cok fazla teklif talebi. Lutfen 10 dakika sonra tekrar deneyin." }), {
+            status: 429, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+        await env.RATE_LIMIT.put(rlKey, String((parseInt(rlCount) || 0) + 1), { expirationTtl: 600 });
+
+        const body = await request.json();
+        const { name, email, phone, document_type, service_type, source_language, target_language, urgency, delivery_method, file_key, file_name, notes } = body;
+
+        // Zorunlu alanlar
+        if (!name || !email) {
+          return new Response(JSON.stringify({ success: false, error: "Isim ve e-posta zorunlu" }), {
+            status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+
+        // Email validasyonu
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          return new Response(JSON.stringify({ success: false, error: "Gecerli bir e-posta adresi girin" }), {
+            status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+
+        // Dosya yuklu olmali
+        if (!file_key) {
+          return new Response(JSON.stringify({ success: false, error: "Teklif icin dosya yuklemesi gerekli" }), {
+            status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+
+        // Name length limit
+        if (name.length > 100) {
+          return new Response(JSON.stringify({ success: false, error: "Isim cok uzun" }), {
+            status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+
+        const orderToken = crypto.randomUUID();
+        const yeminli = service_type === "yeminli" || service_type === "noter" ? 1 : 0;
+        const noter_onay = service_type === "noter" ? 1 : 0;
+        const delivery = delivery_method || "digital";
+
+        await env.DB.prepare(
+          "INSERT INTO quotes (name, email, phone, source_language, target_language, document_type, notes, file_key, service_type, urgency, delivery_method, yeminli, noter_onay, order_status, order_token) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)"
+        ).bind(
+          name, email, phone || null,
+          source_language || "İngilizce", target_language || "Türkçe",
+          document_type || null, notes || null, file_key || null,
+          service_type || null, urgency || "standart", delivery,
+          yeminli, noter_onay, orderToken
+        ).run();
+
+        const quoteRow = await env.DB.prepare("SELECT last_insert_rowid() as id").first();
+        const orderNo = "MZ-" + String(quoteRow.id).padStart(5, "0");
+
+        // Müşteriye e-posta gönder
+        try {
+          const resendKey = env.RESEND_API_KEY;
+          if (resendKey) {
+            const html = `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333"><div style="background:#f8f9fa;padding:30px;border-radius:10px"><h1 style="color:#2563eb">📋 Teklif Talebiniz Alındı!</h1><p>Sayın <strong>${name}</strong>,</p><p>Çeviri hizmeti teklif talebiniz başarıyla alınmıştır.</p><div style="background:#fff;padding:20px;border-radius:8px;margin:20px 0;border:1px solid #e5e7eb"><table style="width:100%;border-collapse:collapse"><tr><td style="padding:8px 0;color:#666">Sipariş No:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${orderNo}</td></tr><tr><td style="padding:8px 0;color:#666">Kaynak Dil:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${source_language || "İngilizce"}</td></tr><tr><td style="padding:8px 0;color:#666">Hedef Dil:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${target_language || "Türkçe"}</td></tr>${document_type ? `<tr><td style="padding:8px 0;color:#666">Belge Türü:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${document_type}</td></tr>` : ""}</table></div><p>En kısa sürede teklifinizi hazırlayıp size bildireceğiz.</p><hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0"><p style="font-size:13px;color:#666">Mazzgord Çeviri Hizmetleri<br>Denizli, Türkiye<br>info@mazzgord.com | +90 538 629 50 40</p></div></body></html>`;
+            await fetch("https://api.resend.com/emails", {
+              method: "POST",
+              headers: { "Authorization": `Bearer ${resendKey}`, "Content-Type": "application/json" },
+              body: JSON.stringify({
+                from: "Mazzgord <info@mazzgord.com>",
+                to: [email],
+                subject: `Teklif Talebiniz Alındı — ${orderNo} | Mazzgord`,
+                html,
+              }),
+            });
+          }
+        } catch(e) { }
+
+        return new Response(JSON.stringify({ success: true, orderNo }), {
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      } catch (err) {
+        return new Response(JSON.stringify({ success: false, error: "Sunucu hatasi" }), {
+          status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+    }
+
     if (path === "/api/chat" && request.method === "POST") {
       try {
         const body = await request.json();
@@ -825,171 +917,49 @@ export default {
           }
         } catch(e) {  }
 
-        const systemPrompt = `Sen Mazzgord Çeviri Hizmetleri'nin profesyonel AI satış danışmanısın. Denizli'de 8+ yıllık deneyime sahip bağımsız bir yeminli tercümansın. Amacın müşteriye doğru bilgi vermek, güven oluşturmak ve teklif formuna yönlendirerek satışı kapatmak.
+        const systemPrompt = buildSystemPrompt(pricingContext, proposalContext);
 
-HİZMETLER:
-- Yeminli tercüme (noter onaylı, resmi belgeler için)
-- İngilizce-Türkçe çift yönlü çeviri
-- Teknik çeviri (mühendislik, tıp, yazılım)
-- Akademik çeviri (tez, makale, bildiri)
-- Vize çevirisi (Schengen, ABD, İngiltere)
-- Pasaport çevirisi
-- Diploma ve transkript çevirisi
-- Adli sicil çevirisi
-- Nüfus kayıt örneği çevirisi
-- Noter onaylı tercüme
-- Apostil tercüme
-- Acil tercüme (24 saat içinde)
+        // Streaming response — AI yanitini token token gonder
+        const streamHeaders = {
+          "Content-Type": "text/event-stream; charset=utf-8",
+          "Cache-Control": "no-cache",
+          "Connection": "keep-alive",
+          ...corsHeaders,
+        };
 
-BLOG BİLGİLERİN (bu konularda bilgi sahibisin):
-- Yeminli tercüme: Noter onaylı, resmi belgeler için gerekli. Pasaport, diploma, evlilik cüzdanı gibi belgeler.
-- Teknik çeviri: Mühendislik, tıp, yazılım, otomotiv sektörleri. Terminoloji yönetimi kritik.
-- Akademik çeviri: Tez, makale, bildiri. APA formatı, akademik üslup önemli.
-- Hukuki çeviri: Sözleşme, mahkeme kararı, vekaletname, patent. Tek kelime hayati önem taşıyabilir.
-- Vize çevirisi: Schengen, ABD, İngiltere, Kanada. Resmi belgeler yeminli tercüme gerektirir.
-- Tıbbi çeviri: Klinik araştırma, ilaç prospektüsü, tıbbi cihaz kılavuzu. Hassasiyet kritik.
-- Yerelleştirme: Web sitesi, yazılım, pazarlama. Kültürel adaptasyon.
-- Çeviri teknolojileri: CAT araçları, çeviri belleği, makine çevirisi. İnsan-teknoloji işbirliği.
-- Çeviri hataları: Mekanik çeviri, terminoloji tutarsızlığı, kültürel uygunsuzluk.
-- Google Translate vs profesyonel: Doğruluk, gizlilik, hukuki geçerlilik farkları.
-- Noter onaylı çeviri: Apostil, yeminli tercüme, noter onayı süreçleri.
-- İngilizce sözleşme çevirisi: Hukuki terminoloji, sorumluluk, gizlilik hükümleri.
-- İngilizce edebi metin: Deyimler, metaforlar, kültürel nüanslar.
-- İngilizce mektup/e-posta: Resmi ve gündelik yazışma formatları.
-- Çevirmenlik kariyeri: Uzmanlık alanları, CAT araçları, portfolyo yönetimi.
-- Kitap/edebi çeviri: Roman, hikaye, şiir çevirisi. Kültürel adaptasyon ve edebi üslup önemli. Süre içeriğe göre değişir, /teklif formundan teklif alınmalı.
 
-FİYATLANDIRMA:
-- Aşağıdaki GÜNCEL FİYAT LİSTESİ'ni kullan. Fiyatlar SABİT'tir, sayfa başına değildir.
-- Fiyat sorulduğunda listedeki fiyatı ver, örnek: "Pasaport çevirisi yeminli 450 TL.dir."
-
-TESLİMAT:
-- Kısa belgeler (pasaport, diploma, vekaletname vb.): 3-5 iş günü
-- Hızlı: 1-2 gün (ek ücret)
-- Acil: 24 saat (ek ücret)
-- Uzun projeler (kitap, tez, teknik doküman, sözleşme paketi): Süre içeriğe göre değişir. Kitap çevirisi için haftalar/aylar sürebilir. Bu tür projelerde süre ve fiyat için /teklif formunu doldurmasını iste.
-- ASLA kitap, tez veya büyük projeler için "24 saat" veya "1-2 gün" gibi süreler söyleme. Bu tür projelerde "süre içeriğe ve uzunluğa göre değişir, /teklif formundan detaylı teklif alabilirsiniz" de.
-
-KARGO:
-- Fiziksel teslimat (kargo ile): 300 TL (sabit fiyat, Türkiye geneli)
-- Dijital teslimat: ücretsiz (imzalı ve kaşeli PDF)
-- Müşteri kargo istediğinde: "Kargo ile teslimat 300 TL'dir, Türkiye geneline gönderilir" de.
-
-İLETİŞİM:
-- E-posta: info@mazzgord.com
-- Telefon/WhatsApp: +90 538 629 50 40
-- Konum: Pamukkale, Denizli
-- Çalışma saatleri: Pzt-Cmt 09:00-18:00 (hafta sonu kapalı)
-- Ödeme: iyzipay güvenli ödeme
-
-SENİN KİŞİLİĞİN:
-- Profesyonel ama samimi bir danışmansın. Soğuk ve robotik değilsin.
-- Müşteriye "siz" diye hitap edersin, saygılı ve sıcaksın.
-- Girişimci ruhun var — müşteriyi anlamaya çalışır, ihtiyacını tespit edersin.
-- Çeviri uzmanısın — yukarıdaki blog konularında bilgi sahibisin ve bu bilgileri doğal şekilde paylaşırsın.
-- Satış odaklısın ama baskıcı değilsin. Doğal bir akışla müşteriyi teklif formuna yönlendirirsin.
-
-KONUŞMA TARZIN:
-- Düzgün, akıcı, profesyonel Türkçe konuş. Tüm Türkçe karakterleri doğru kullan: ç, ğ, ı, ö, ş, ü, İ.
-- Kısa ama anlamlı cümleler kur (max 4-5 cümle).
-- "Başka sorunuz var mı?" gibi robotik kapanışlar YAPMA. Bunun yerine sohbete doğal bir şekilde devam et.
-- Örnek kapanışlar: "Hangi belgeyi çevirtmek istiyorsunuz?", "Belgenizi /teklif formundan yükleyebilirsiniz, hemen bakalım.", "Acil mi yoksa standart teslimat mı işinizi görür?"
-- Müşteri bilgi aldığında, bir sonraki adımı öner. Bekleme yerine aktif ol.
-- Sorulara doğrudan cevap ver, sonra ilgili bir soru sorarak sohbeti devam ettir.
-
-SATIŞ TEKNİKLERİN:
-- Müşteri fiyat sorduğunda: Fiyatı ver, sonra hemen "Belgenizi /teklif formundan yükleyebilirsiniz, size özel teklif hazırlayalım" de.
-- Müşteri tereddütte olduğunda: Güven ver — "8 yıllık deneyimle, yeminli tercüman garantisiyle" gibi ifadeler kullan.
-- Müşteri belge türü belirtmediğinde: "Hangi belgeyi çevirtmek istiyorsunuz?" diye sor.
-- Müşteri acil ihtiyaç duyduğunda: "Acil teslimat seçeneğimizle 24 saat içinde teslim edebiliriz" de ve /teklif'e yönlendir.
-- Müşteri kitap, tez, katalog veya büyük proje sorduğunda: "Bu tür projelerde süre ve fiyat içeriğe göre belirlenir. /teklif formundan belgenizi yükleyin, size özel teklif hazırlayalım" de. Asla kısa süre veya sabit fiyat verme.
-- Müşteri hangi belgeyi çevirtmek istediğini söylemiyorsa: "Hangi belgeyi çevirtmek istiyorsunuz?" diye sor. Belge türüne göre süre ve fiyat değişir.
-- Müşteri fiyatın yanlış olduğunu söylerse: "Fiyatlarım güncellenmiş olabilir, en güncel fiyat için /fiyatlar sayfamı kontrol edebilirsiniz" de.
-- Müşteri çeviri hakkında genel bilgi istediğinde: Blog bilgilerini kullanarak açıkla, sonra "Bu konuda /blog sayfamızda detaylı bir yazımız var" de.
-
-BİLMEDİĞİN KONULAR VE UÇ NOKTALAR:
-- Çeviri dışı bir konu sorulursa ve satışa çeviremeyeceksen: Kibarca "Bu konuda bilgim sınırlı, ancak çeviri hizmetlerimle ilgili size yardımcı olabilirim" de ve sohbeti çeviriye getir.
-- Çeviriyle ilgili ama bilmediğin bir detay sorulursa: "Bu konuyu teyit etmek için info@mazzgord.com adresine yazabilir veya /teklif formunu doldurabilirsiniz" de. Asla uydurma.
-- Müşteri ilgisi olmayan bir konuda ısrar ederse: Kibarca konuyu çeviri hizmetlerine getir.
-
-UÇ NOKTA SENARYOLARI (tuzaklara düşme, uyanık ol):
-- "Kitap çevirisi yapıyor musunuz?" → "Evet, kitap çevirisi yapıyorum. Süre ve fiyat kitabın uzunluğuna göre değişir. /teklif formundan kitabınızı yükleyin, size özel teklif hazırlayayım." Kısa süre veya sabit fiyat VERME.
-- "Almanca/Fransızca/Arapça çeviri yapıyor musunuz?" → "Şu anda İngilizce-Türkçe çeviri hizmeti veriyorum. Diğer diller için sizi ileride bilgilendirebilirim." Asla "evet" deme.
-- "Google Translate kullanırsam daha ucuz olmaz mı?" → "Google Translate ücretsiz olabilir ancak resmi belgelerde geçerli değildir. Yeminli tercüme için profesyonel çeviri şarttır. /fiyatlar sayfamızdan fiyatlarımıza bakabilirsiniz."
-- "Başka firma daha ucuz verdi" → "Fiyatlarım yeminli tercüman garantisi ve 8 yıllık deneyimle belirlenir. Kalite ve güven için /teklif formundan size özel teklif alabilirsiniz." Asla fiyat kırmaya gitme.
-- "Kaç sayfa çevirebilirsiniz?" → "Sınırlama yok, ancak uzun projelerde süre değişir. /teklif formundan belgenizi yükleyin."
-- "Noter onayı şart mı?" → "Resmi belgeler için evet. Hangi belge için olduğunu söylersen tam bilgi veririm."
-- "Belgeyi göndereyim mi?" → "Evet, /teklif formundan yükleyebilirsiniz. Hemen inceleyip teklif hazırlayalım."
-- "Siz gerçek bir insansınız?" → "Ben Mazzgord'un AI asistanıyım ancak size gerçek bir danışman gibi yardımcı oluyorum. Çeviri sürecinizle ilgili her adımda buradayım."
-- "Bana yeminli tercüman bağlayın" → "Yeminli tercüman olarak size /teklif formunu doldurduktan sonra dönüş yaparım. Formu doldurursanız hemen süreci başlatalım."
-- "Fiyat pazarlık yapar mısınız?" → "Fiyatlarım belge türüne göre belirlenir. /teklif formundan özel teklif alabilirsiniz." Asla indirim vaat etme.
-- "Kaç yıldır yapıyorsunuz?" → "8+ yıllık deneyimle Denizli'de profesyonel çeviri hizmeti sunuyorum."
-- "Sabit telefonunuz var mı?" → "WhatsApp ve +90 538 629 50 40 numarasından bana ulaşabilirsiniz."
-- "Siz kimsiniz?" → "Ben Mazzgord Çeviri Hizmetleri'nin AI asistanıyım. Çeviri hizmetlerimiz hakkında size bilgi veriyor ve teklif sürecinizi hızlandırıyorum."
-- "Çeviri yapmadan önce ücret alıyor musunuz?" → "Ücretsiz teklif alabilirsiniz. Onayladıktan sonra iyzipay güvenli ödeme ile ödeme yaparsınız."
-- "Belgelerim gizli kalır mı?" → "Evet, tüm belgeleriniz gizli tutulur. Müşteri gizliliği önceliğimizdir."
-- Müşteri saçma veya provoke edici bir şey söylerse: Sükunetle "Anlıyorum, çeviri hizmetlerimle ilgili size nasıl yardımcı olabilirim?" de. Asla tartışmaya girme.
-- Müşteri AI'ı test etmeye çalışırsa (tuzak sorular): Sadece çeviri hizmetleriyle ilgili yanıt ver. Çeviri dışı test sorularında "Ben çeviri hizmetleri danışmanıyım, bu konuda size yardımcı olabilirim" de.
-- Müşteri aynı soruyu tekrar tekrar sorarsa: "Sanırım bu konuda netleşmedi, info@mazzgord.com adresine yazarsanız detaylı yanıt verelim" de.
-
-ÖZEL VE BİLİNMEYEN PROJELER (çok önemli):
-- Eğer müşteri standart belge türleri dışında bir şey sorarsa (kitap, film senaryosu, dizi, oyun, reklam, pazarlama metni, şiir, manga, çizgi roman vb.): ASLA "uzmanız", "profesyoneliz", "bu konuda uzmanlaşmış bir tercümansın" gibi ifadeler kullanma.
-- Bunun yerine şöyle de: "Bu tür özel projeler için size doğrudan bilgi verebilirim. info@mazzgord.com adresine yazabilir veya WhatsApp +90 538 629 50 40 numarasından ulaşabilirsiniz. Size özel çözüm sunalım."
-- Asla bilmediğin bir proje türü için süre, fiyat veya detay uydurma. Sadece insana yönlendir.
-- Standart hizmetler (yeminli tercüme, teknik, akademik, vize, İngilizce-Türkçe) dışındaki her şey "özel proje" sayılır. Bu durumda kısa ve net ol: "Bu özel bir proje, size bilgi verelim" de ve iletişim bilgilerini ver.
-- Asla "3-5 iş günü" gibi standart süreler verme özel projeler için. "Süre projeye göre değişir, size detaylı bilgi veririm" de.
-
-YASAKLAR:
-- Asla "sayfa başına" veya "50-150 TL" gibi tahmini fiyatlar verme.
-- Asla "yanıt veremiyorum" veya "üzgünüm" gibi ifadeler kullanma.
-- Asla "Başka sorunuz var mı?" gibi robotik kapanışlar yapma.
-- Asla Türkçe karakterleri atlama veya yanlış yazma.
-- Asla bilmediğin bir konuda bilgi uydurma. "Bilmiyorum" demek profesyoneldir.
-- Sadece İngilizce-Türkçe çeviri yaptığınızı belirt, başka dil sorduysa yönlendir.
-${pricingContext}${proposalContext}`;
-
-        let reply = "";
-        let aiResponse;
+        let aiStream;
         try {
-          aiResponse = await env.AI.run("@cf/meta/llama-3.3-70b-instruct-fp8-fast", {
+          aiStream = await env.AI.run("@cf/meta/llama-3.3-70b-instruct-fp8-fast", {
             messages: [
               { role: "system", content: systemPrompt },
               ...messages.slice(-10)
             ],
             max_tokens: 500,
             temperature: 0.3,
+            stream: true,
           });
-          reply = aiResponse.response || aiResponse.result || aiResponse.text || "";
         } catch(e1) {
-          console.log("Llama-3.3-70B hatasi:", String(e1));
+          console.log("Llama-3.3-70B streaming hatasi:", String(e1));
           try {
-            aiResponse = await env.AI.run("@cf/meta/llama-3.1-8b-instruct-fast", {
+            aiStream = await env.AI.run("@cf/meta/llama-3.1-8b-instruct-fast", {
               messages: [
                 { role: "system", content: systemPrompt },
                 ...messages.slice(-10)
               ],
               max_tokens: 300,
+              stream: true,
             });
-            reply = aiResponse.response || "";
           } catch(e2) {
-            console.log("Llama hatasi:", String(e2));
+            console.log("Llama streaming hatasi:", String(e2));
+            return new Response(JSON.stringify({ success: false, error: "AI hatasi" }), {
+              status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+            });
           }
         }
 
-        if (!reply) {
-          reply = "Su anda teknik bir sorun yasiyoruz. Lutfen info@mazzgord.com adresine e-posta gonderin veya +90 538 629 50 40 numarasindan bana ulasin.";
-        }
-
-        const estInputTokens = Math.ceil((systemPrompt.length + messages.reduce((s, m) => s + (m.content || "").length, 0)) / 4);
-        const estOutputTokens = Math.ceil((reply || "").length / 4);
-
-        return new Response(JSON.stringify({
-          success: true,
-          reply: reply,
-          sessionId: sessionId || Date.now().toString(),
-        }), {
-          headers: { "Content-Type": "application/json", ...corsHeaders },
-        });
+        // AI stream'i zaten SSE formatinda — dogrudan passthrough
+        return new Response(aiStream, { headers: streamHeaders });
       } catch (err) {
         return new Response(JSON.stringify({ success: false, error: "AI hatasi" }), {
           status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },

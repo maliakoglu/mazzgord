@@ -431,3 +431,19 @@
     justify-content: center;
   }
 }
+
+/* Chatbot markdown stilleri */
+.chat-md {
+  color: inherit;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.chat-md p { margin: 0 0 0.5rem 0; }
+.chat-md p:last-child { margin-bottom: 0; }
+.chat-md ul, .chat-md ol { margin: 0.25rem 0 0.5rem 0; padding-left: 1.25rem; }
+.chat-md li { margin: 0.15rem 0; }
+.chat-md strong { font-weight: 700; }
+.chat-md a { color: hsl(var(--primary)); text-decoration: underline; }
+.chat-md code { background: hsl(var(--muted)); padding: 0.1rem 0.3rem; border-radius: 0.25rem; font-size: 0.8em; }
+.chat-md blockquote { border-left: 3px solid hsl(var(--primary)); padding-left: 0.75rem; margin: 0.5rem 0; opacity: 0.9; }
+.chat-md h1, .chat-md h2, .chat-md h3 { font-size: 0.95rem; font-weight: 700; margin: 0.5rem 0 0.25rem 0; }
