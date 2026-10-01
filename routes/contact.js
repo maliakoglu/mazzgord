@@ -1,5 +1,6 @@
 // POST /api/contact — İletişim formunu D1'e kaydet
 import { corsHeaders } from "../lib/cors.js";
+import { sendTelegramNotification } from "../lib/notifications.js";
 import { contactSchema, validateBody } from "../lib/validation.js";
 
 export async function handleContact(request, env) {
@@ -47,6 +48,19 @@ export async function handleContact(request, env) {
       }
     } catch (err) {
       console.log("İletişim e-posta hatası:", String(err));
+    }
+
+    // Admin'e Telegram bildirimi
+    try {
+      const tgText = `📩 <b>Yeni İletişim Mesajı</b>
+
+<b>Ad:</b> ${name}
+<b>E-posta:</b> ${email}
+${phone ? `<b>Telefon:</b> ${phone}
+` : ""}<b>Mesaj:</b> ${message.substring(0, 200)}`;
+      await sendTelegramNotification(env, tgText);
+    } catch (err) {
+      console.log("Telegram bildirim hatası:", String(err));
     }
 
     return new Response(JSON.stringify({ success: true }), {

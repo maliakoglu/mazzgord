@@ -5,7 +5,7 @@ import { escapeHtml } from "../lib/escapeHtml.js";
 import { quoteSchema, validateBody } from "../lib/validation.js";
 import { generateCode, storeVerifyCode, checkVerifyCode, sendVerifyEmail, markEmailVerified, isEmailVerified } from "../lib/emailVerify.js";
 import { getCustomerFromRequest } from "../lib/customerAuth.js";
-import { sendStatusNotification } from "../lib/notifications.js";
+import { sendStatusNotification, sendTelegramNotification } from "../lib/notifications.js";
 
 export async function handleQuote(request, env, path = "", method = "POST") {
   // GET /api/quote/:id/review — Değerlendirme getir
@@ -621,6 +621,14 @@ export async function handleQuote(request, env, path = "", method = "POST") {
       }
     } catch (err) {
       console.error("Teklif e-posta hatası:", String(err));
+    }
+
+    // Admin'e Telegram bildirimi
+    try {
+      const tgText = `📋 <b>Yeni Teklif Talebi</b>\n\n<b>Sipariş:</b> ${orderNo}\n<b>Ad:</b> ${name}\n<b>E-posta:</b> ${email}\n${phone ? `<b>Telefon:</b> ${phone}\n` : ""}<b>Belge:</b> ${document_type || "Belirtilmedi"}\n<b>Dil:</b> ${source_language || "?"} → ${target_language || "?"}\n${page_count ? `<b>Sayfa:</b> ${page_count}\n` : ""}${urgency === "urgent" ? "⚠️ ACIL\n" : ""}\n🔗 https://mazzgord.com/admin`;
+      await sendTelegramNotification(env, tgText);
+    } catch (err) {
+      console.error("Telegram bildirim hatası:", String(err));
     }
 
     return new Response(JSON.stringify({ success: true, order_no: orderNo, order_token: orderToken }), {
