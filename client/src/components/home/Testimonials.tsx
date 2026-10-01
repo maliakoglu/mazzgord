@@ -28,7 +28,7 @@ export default function Testimonials({ openGallery }: { openGallery: (images: st
           if (existing) existing.remove();
           const reviews = data.data;
           if (reviews.length > 0) {
-            const avgRating = (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1);
+            const avgRating = (reviews.reduce((s: number, r: any) => s + r.rating, 0) / reviews.length).toFixed(1);
             const schema = {
               "@context": "https://schema.org",
               "@type": "ProfessionalService",
@@ -41,7 +41,7 @@ export default function Testimonials({ openGallery }: { openGallery: (images: st
                 "bestRating": "5",
                 "worstRating": "1"
               },
-              "review": reviews.map((r) => ({
+              "review": reviews.map((r: any) => ({
                 "@type": "Review",
                 "author": { "@type": "Person", "name": r.customer_name || "Müşteri" },
                 "reviewRating": { "@type": "Rating", "ratingValue": r.rating, "bestRating": "5", "worstRating": "1" },

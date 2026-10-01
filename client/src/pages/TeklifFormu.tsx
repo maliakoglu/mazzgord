@@ -71,7 +71,7 @@ export default function TeklifFormu() {
     meeting_time: "" });
 
   const interactedRef = useRef(false);
-  const [search] = useSearch();
+  const [search] = useSearch() as unknown as [string];
 
   // URL parametrelerinden formu otomatik doldur (chatbot yönlendirmesi)
   useEffect(() => {

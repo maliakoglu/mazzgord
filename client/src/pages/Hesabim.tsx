@@ -218,7 +218,7 @@ export default function Hesabim() {
         </div>
 
         {/* Müşteriye özel teslim adresi — sadece ödemesi olan müşterilere */}
-        {data?.payments?.length > 0 && (
+        {(data?.payments?.length ?? 0) > 0 && (
           <div className="bg-card border border-border rounded-xl p-6 mb-6">
             <h2 className="text-lg font-bold text-foreground mb-3">Teslim Adresi</h2>
             <p className="text-sm text-muted-foreground mb-2">Belge teslimi ve noter/apostil işlemleri için adres:</p>
