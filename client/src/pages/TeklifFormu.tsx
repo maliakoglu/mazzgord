@@ -1,3 +1,4 @@
+import QuickQuote from "@/components/QuickQuote";
 import { useState, useRef, useEffect } from "react";
 import { useSearch } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
@@ -407,6 +408,8 @@ mazzgord.com`;
             Belge türü, dil yönü, noter ve apostil ihtiyacını belirtin. Belgenizi inceleyip net fiyat ve teslim süresiyle dönüş yapayım.
           </p>
         </div>
+
+        {submitStatus !== "success" && <QuickQuote />}
 
         {submitStatus === "success" && (
           <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-6 text-center">

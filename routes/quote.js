@@ -542,7 +542,7 @@ export async function handleQuote(request, env, path = "", method = "POST") {
 
     // Auth token varsa e-posta dogrulamayi atla (mobil giris yapmis kullanici)
     const authCustomer = await getCustomerFromRequest(request, env);
-    if (!authCustomer) {
+    if (!authCustomer && email) {
       const verified = await isEmailVerified(env, email);
       if (!verified) {
         return new Response(JSON.stringify({ success: false, error: "E-posta dogrulamasi gerekli" }), {
