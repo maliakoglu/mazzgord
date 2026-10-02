@@ -371,3 +371,28 @@
 
 **Notlar**
 * /gtm 403 zararsız — worker 204 dönüyor, tarayıcı script olarak değerlendiriyor
+
+---
+
+## 2026-10-02 — PageSpeed 90+ Hedef Optimizasyonu
+
+**LCP Render Gecikmesi (1.950 ms hedef: ~500 ms)**
+* Hero maskImage wrapper div'e taşındı — img artık masksız hızlı çizilir
+* Hero görsel sıkıştırma: 110 KB → 80 KB (quality 75)
+
+**Responsive Görsel**
+* Services.tsx sizes attribute düzeltildi: mobilde 1920w yerine 640w indirilir
+* src default 1024w → 640w (mobil öncelikli)
+
+**Font Optimizasyonu**
+* Playfair Display @font-face'ler kaldırıldı (kullanılmıyor)
+* Inter 500/600/700 @font-face'ler kaldırıldı (aynı dosya, synth yeterli)
+* Libre Baskerville TTF preload kaldırıldı (fonts.css lazy-load zaten yüklüyor)
+
+**Konsol Hataları**
+* /gtm route worker.js'den kaldırıldı (204 dönüyordu, tarayıcı script sanıyordu)
+* CSP'ye fundingchoicesmessages.google.com + securepubads.g.doubleclick.net eklendi
+
+**Build & Deploy**
+* Vite build başarılı
+* Production deploy başarılı

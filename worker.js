@@ -338,10 +338,6 @@ export default {
       }
     }
 
-    if (path === "/gtm" || path.startsWith("/gtm/")) {
-      return new Response(null, { status: 204 });
-    }
-
     if (path === "/robots.txt") {
       return new Response(
         "User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /giris\nDisallow: /hesabim\nDisallow: /sepet\nDisallow: /odeme\nDisallow: /odeme/sonuc\nDisallow: /api/\n\n# AI Botlari\nUser-agent: GPTBot\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /\n\nUser-agent: CCBot\nAllow: /\n\nUser-agent: Google-Extended\nAllow: /\n\nUser-agent: anthropic-ai\nAllow: /\n\nUser-agent: YandexBot\nAllow: /\n\nUser-agent: DuckDuckBot\nAllow: /\n\nUser-agent: Bingbot\nAllow: /\n\nUser-agent: Slurp\nAllow: /\n\nSitemap: https://mazzgord.com/sitemap.xml",
