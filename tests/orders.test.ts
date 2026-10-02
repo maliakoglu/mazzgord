@@ -39,6 +39,7 @@ describe("handleOrdersRoute POST", () => {
     const res = await handleOrdersRoute("/api/orders", createPostRequest({
       customer_name: "Ahmet Yılmaz",
       customer_email: "ahmet@email.com",
+      customer_phone: "05551234567",
       items: [{ name: "Yeminli Tercüme", price: 500 }],
       total: 500,
     }), env);
@@ -53,6 +54,7 @@ describe("handleOrdersRoute POST", () => {
     const res = await handleOrdersRoute("/api/orders", createPostRequest({
       customer_name: "Ahmet",
       customer_email: "ahmet@email.com",
+      customer_phone: "05551234567",
       total: 100,
     }), env);
     const body = await res.json();
@@ -65,6 +67,7 @@ describe("handleOrdersRoute POST", () => {
     const res = await handleOrdersRoute("/api/orders", createPostRequest({
       customer_name: "Ahmet",
       customer_email: "ahmet@email.com",
+      customer_phone: "05551234567",
       items: [],
       total: 0,
     }), env);
@@ -91,6 +94,7 @@ describe("handleOrdersRoute POST", () => {
     const res = await handleOrdersRoute("/api/orders", createPostRequest({
       customer_name: "Ahmet",
       customer_email: "ahmet@email.com",
+      customer_phone: "05551234567",
       items: [{ name: "Test", price: 100 }],
       total: -50,
     }), env);
@@ -114,6 +118,7 @@ describe("handleOrdersRoute GET", () => {
       payment_link_id: "abc123def456",
       customer_name: "Ahmet",
       customer_email: "ahmet@email.com",
+      customer_phone: "05551234567",
       items_json: '[{"name":"Yeminli Tercüme","price":500}]',
       total: 500,
       status: "pending",

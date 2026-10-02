@@ -39,14 +39,14 @@ describe("contactSchema", () => {
     expect(result.success).toBe(false);
   });
 
-  it("should accept empty phone", () => {
+  it("should reject empty phone", () => {
     const result = contactSchema.safeParse({
       name: "Ahmet",
       email: "ahmet@email.com",
       phone: "",
       message: "Test mesajı",
     });
-    expect(result.success).toBe(true);
+    expect(result.success).toBe(false);
   });
 });
 
@@ -55,6 +55,7 @@ describe("quoteSchema", () => {
     const result = quoteSchema.safeParse({
       name: "Ahmet Yılmaz",
       email: "ahmet@email.com",
+      phone: "05551234567",
       source_language: "İngilizce",
       target_language: "Türkçe",
     });
@@ -85,6 +86,7 @@ describe("quoteSchema", () => {
     const result = quoteSchema.safeParse({
       name: "Ahmet",
       email: "ahmet@email.com",
+      phone: "05551234567",
       source_language: "İngilizce",
       target_language: "Türkçe",
       urgency: "acil",
@@ -96,6 +98,7 @@ describe("quoteSchema", () => {
     const result = quoteSchema.safeParse({
       name: "Ahmet",
       email: "ahmet@email.com",
+      phone: "05551234567",
       source_language: "İngilizce",
       target_language: "Türkçe",
     });
@@ -107,6 +110,7 @@ describe("quoteSchema", () => {
     const result = quoteSchema.safeParse({
       name: "Ahmet",
       email: "ahmet@email.com",
+      phone: "05551234567",
       source_language: "İngilizce",
       target_language: "Türkçe",
     });
@@ -131,6 +135,7 @@ describe("orderSchema", () => {
     const result = orderSchema.safeParse({
       customer_name: "Ahmet Yılmaz",
       customer_email: "ahmet@email.com",
+      customer_phone: "05551234567",
       items: [{ name: "Yeminli Tercüme", price: 500 }],
       total: 500,
     });
@@ -171,6 +176,7 @@ describe("orderSchema", () => {
     const result = orderSchema.safeParse({
       customer_name: "Ahmet",
       customer_email: "ahmet@email.com",
+      customer_phone: "05551234567",
       items: [
         { name: "Yeminli Tercüme", price: 500 },
         { name: "Noter Onayı", price: 100 },
@@ -223,6 +229,7 @@ describe("validateBody", () => {
     const result = validateBody(contactSchema, {
       name: "Ahmet",
       email: "ahmet@email.com",
+      phone: "05551234567",
       message: "Test mesajı",
     });
     expect(result.success).toBe(true);

@@ -100,6 +100,7 @@ export default function ProcessWorkflow() {
               return (
                 <button
                   key={step.id}
+                  aria-label={`Adım: ${step.title}`}
                   onClick={() => setActiveStep(index)}
                   className="relative text-left p-4 md:p-5 rounded-2xl transition-all duration-500 overflow-hidden cursor-pointer group border"
                   style={{

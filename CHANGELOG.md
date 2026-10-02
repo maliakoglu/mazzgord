@@ -272,3 +272,34 @@
 * Sitemap: 46 URL güncellendi
 * Meta tags: 26 HTML dosyası işlendi
 * Production deploy başarılı (Version: 478aaa07)
+
+---
+
+## 2026-10-02 — SEO, A11y & Test Düzeltmeleri
+
+**SEO**
+
+* `add-meta-tags.py`'e canonical link logic'i eklendi — 58 HTML dosyasına build-time canonical eklendi
+* Ana sayfa canonical eksikti → düzeltildi (`https://mazzgord.com`)
+* Tüm hizmet ve blog sayfalarında canonical doğrulandı
+
+**Erişilebilirlik (a11y)**
+
+* GalleryModal: 3 button'a aria-label eklendi (kapat, önceki, sonraki)
+* BlogLayout: mobile menu button'una aria-label eklendi
+* Navbar: services dropdown button'una aria-label eklendi
+* FAQ: her soru button'una aria-label eklendi
+* ProcessWorkflow: her adım button'una aria-label eklendi
+
+**Test Düzeltmeleri**
+
+* 13 failing test → 0 failing (86/86 passing)
+* validation.test.ts: phone zorunlu olduğu için test'ler güncellendi
+* contact.test.ts: "should accept empty phone" → "should reject empty phone"
+* quote.test.ts, orders.test.ts: phone/customer_phone eklendi
+* auth.test.ts: createMockEnvWithQuote() eklendi (quotes tablosu mock'u)
+
+**Build & Deploy**
+
+* Vite build başarılı (8.35s)
+* Production deploy: Version 90bd2db1

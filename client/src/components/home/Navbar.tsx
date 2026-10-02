@@ -58,7 +58,7 @@ export default function Navbar() {
         <>
           <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setMobileOpen(false)}></div>
           <div className="fixed top-0 right-0 w-72 h-full bg-card z-50 p-8 pt-24 flex flex-col gap-2 md:hidden" style={{ boxShadow: 'rgba(213, 208, 184, 0.4) 0px 4px 12px 0px' }}>
-            <button className="block w-full text-left px-4 py-3 text-foreground hover:bg-secondary rounded-lg text-lg no-underline hover:no-underline transition" onClick={() => setServicesOpen(!servicesOpen)}>Hizmetler <ChevronDown className={`w-4 h-4 inline transition-transform ${servicesOpen ? "rotate-180" : ""}`} /></button>
+            <button aria-label="Hizmetler menüsünü aç/kapat" className="block w-full text-left px-4 py-3 text-foreground hover:bg-secondary rounded-lg text-lg no-underline hover:no-underline transition" onClick={() => setServicesOpen(!servicesOpen)}>Hizmetler <ChevronDown className={`w-4 h-4 inline transition-transform ${servicesOpen ? "rotate-180" : ""}`} /></button>
             {servicesOpen && (
               <div className="pl-4">
                 <a href="/yeminli-tercume" className="block px-4 py-2 text-foreground hover:bg-secondary rounded-lg text-base no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Yeminli Tercüme</a>

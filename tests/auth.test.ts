@@ -14,6 +14,29 @@ function createMockEnv(existingCustomer = null) {
       })),
     },
     ADMIN_TOKEN: "test-secret",
+    CUSTOMER_TOKEN_SECRET: "test-customer-secret",
+  };
+}
+
+// Override: ilk sorgu (customers) null, ikinci sorgu (quotes) { id: 1 } dönsün
+function createMockEnvWithQuote() {
+  let prepareCount = 0;
+  return {
+    DB: {
+      prepare: vi.fn(() => {
+        prepareCount++;
+        const isFirst = prepareCount === 1;
+        return {
+          bind: vi.fn(() => ({
+            first: vi.fn(async () => isFirst ? null : { id: 1 }),
+            run: vi.fn(async () => ({ meta: { last_row_id: 1 } })),
+          })),
+          first: vi.fn(async () => isFirst ? null : { id: 1 }),
+        };
+      }),
+    },
+    ADMIN_TOKEN: "test-secret",
+    CUSTOMER_TOKEN_SECRET: "test-customer-secret",
   };
 }
 
@@ -27,7 +50,7 @@ function createRequest(body: any) {
 
 describe("handleAuthRoute register", () => {
   it("should register new customer", async () => {
-    const env = createMockEnv(null);
+    const env = createMockEnvWithQuote();
     const res = await handleAuthRoute("/api/auth/register", createRequest({
       name: "Ahmet Yılmaz",
       email: "ahmet@email.com",
@@ -46,6 +69,7 @@ describe("handleAuthRoute register", () => {
       name: "Ahmet",
       email: "ahmet@email.com",
       password: "sifre123",
+      phone: "05551234567",
     }), env);
     const body = await res.json();
     expect(body.success).toBe(false);

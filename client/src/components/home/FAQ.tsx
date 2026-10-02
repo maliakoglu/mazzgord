@@ -35,6 +35,7 @@ export default function FAQ() {
           {faqs.map((faq, idx) => (
             <div key={idx} style={{ backgroundColor: "var(--color-paper-white)", borderRadius: "16px", overflow: "hidden", boxShadow: "rgba(213, 208, 184, 0.3) 0px 1px 2px 0px" }}>
               <button
+                aria-label={`Soru: ${faq.q}`}
                 className="w-full flex justify-between items-center p-6 text-left cursor-pointer"
                 style={{ border: "none", background: "transparent" }}
                 onClick={() => { setOpen(open === idx ? null : idx); if (open !== idx) track.faqOpened(faq.q); }}

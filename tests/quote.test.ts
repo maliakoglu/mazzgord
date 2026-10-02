@@ -44,6 +44,7 @@ describe("handleQuote POST", () => {
     const res = await handleQuote(createPostRequest({
       name: "Ahmet Yılmaz",
       email: "ahmet@email.com",
+      phone: "05551234567",
       source_language: "İngilizce",
       target_language: "Türkçe",
     }), env, "/api/quote", "POST");
@@ -56,6 +57,7 @@ describe("handleQuote POST", () => {
     const res = await handleQuote(createPostRequest({
       name: "Ahmet",
       email: "ahmet@email.com",
+      phone: "05551234567",
       target_language: "Türkçe",
     }), env, "/api/quote", "POST");
     const body = await res.json();
@@ -81,6 +83,7 @@ describe("handleQuote POST", () => {
     const res = await handleQuote(createPostRequest({
       name: "A",
       email: "ahmet@email.com",
+      phone: "05551234567",
       source_language: "İngilizce",
       target_language: "Türkçe",
     }), env, "/api/quote", "POST");
@@ -110,6 +113,7 @@ describe("handleQuote GET", () => {
   it("should return quote status for valid order", async () => {
     const quoteRow = {
       id: 1, name: "Ahmet", email: "ahmet@email.com",
+      phone: "05551234567",
       source_language: "İngilizce", target_language: "Türkçe",
       document_type: "Pasaport", page_count: 1, word_count: null,
       urgency: "standart", delivery_method: "digital",

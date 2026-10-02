@@ -70,7 +70,7 @@ describe("handleContact", () => {
     expect(res.status).toBe(400);
   });
 
-  it("should accept empty phone", async () => {
+  it("should reject empty phone", async () => {
     const env = createMockEnv();
     const res = await handleContact(createRequest({
       name: "Ahmet",
@@ -79,6 +79,6 @@ describe("handleContact", () => {
       message: "Test mesajı yeterince uzun",
     }), env);
     const body = await res.json();
-    expect(body.success).toBe(true);
+    expect(body.success).toBe(false);
   });
 });

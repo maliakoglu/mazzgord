@@ -27,6 +27,7 @@ html_files = glob.glob(os.path.join(dist_dir, "**", "*.html"), recursive=True)
 count = 0
 title_fixed = 0
 desc_fixed = 0
+canonical_fixed = 0
 
 for html_path in html_files:
     with open(html_path, "r", encoding="utf-8") as f:
@@ -71,6 +72,17 @@ for html_path in html_files:
         if re.search(og_desc_pattern, content):
             content = re.sub(og_desc_pattern, f'<meta property="og:description" content="{seo["description"]}"/>', content)
 
+    # --- Canonical link (tüm sayfalar için) ---
+    canonical_url = "https://mazzgord.com" + ("" if route == "/" else route)
+    canonical_tag = f'<link rel="canonical" href="{canonical_url}"/>'
+    canonical_pattern = r'<link\s+rel="canonical"\s+href="[^"]*"\s*/?>'
+    if re.search(canonical_pattern, content):
+        content = re.sub(canonical_pattern, canonical_tag, content)
+    else:
+        content = re.sub(r'(<title>[^<]*</title>)', r'\1\n    ' + canonical_tag, content, count=1)
+    modified = True
+    canonical_fixed += 1
+
     # --- p:domain_verify logic (existing) ---
     existing = re.findall(r'<meta\s+name="p:domain_verify"[^>]*/?>', content)
     if len(existing) > 1:
@@ -78,12 +90,10 @@ for html_path in html_files:
         content = re.sub(r'<meta\s+name="p:domain_verify"[^>]*/?>', '', content)
         content = content.replace(first, '', 1)
         content = re.sub(r"(<head[^>]*>)", r"\1\n    " + first, content, count=1)
-        modified = True
     elif len(existing) == 0:
         for tag in META_TAGS:
             if tag not in content:
                 content = re.sub(r"(<head[^>]*>)", r"\1\n    " + tag, content, count=1)
-                modified = True
 
     if modified:
         with open(html_path, "w", encoding="utf-8") as f:
@@ -93,3 +103,4 @@ for html_path in html_files:
 print(f"✅ {count} HTML dosyası işlendi")
 print(f"   📝 {title_fixed} title düzeltildi")
 print(f"   📝 {desc_fixed} description düzeltildi")
+print(f"   🔗 {canonical_fixed} canonical eklendi/düzeltildi")
