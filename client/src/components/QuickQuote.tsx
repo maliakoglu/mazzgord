@@ -91,25 +91,34 @@ export default function QuickQuote() {
       </div>
       <p className="text-sm text-muted-foreground mb-4">Sadece 3 alan doldurun, gerisini WhatsApp'tan halledelim.</p>
       <form onSubmit={handleSubmit} className="grid sm:grid-cols-3 gap-3">
+        <label htmlFor="qq-name" className="sr-only">Adınız Soyadınız</label>
         <input
+          id="qq-name"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Adınız Soyadınız"
+          aria-label="Adınız Soyadınız"
           required
           className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground"
         />
+        <label htmlFor="qq-phone" className="sr-only">Telefon numaranız</label>
         <input
+          id="qq-phone"
           type="tel"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           placeholder="05XX XXX XX XX"
+          aria-label="Telefon numaranız"
           required
           className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground"
         />
+        <label htmlFor="qq-doc-type" className="sr-only">Belge türü</label>
         <select
+          id="qq-doc-type"
           value={docType}
           onChange={(e) => setDocType(e.target.value)}
+          aria-label="Belge türü"
           required
           className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground"
         >

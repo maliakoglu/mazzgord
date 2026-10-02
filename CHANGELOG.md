@@ -303,3 +303,12 @@
 
 * Vite build başarılı (8.35s)
 * Production deploy: Version 90bd2db1
+
+---
+
+## 2026-10-02 — Erişilebilirlik Ek Düzeltmeleri
+
+* Skip-to-content linki eklendi (App.tsx) — klavye kullanıcısı için "Ana içeriğe geç"
+* sr-only CSS sınıfı eklendi (index.css) — screen reader için gizli label'lar
+* QuickQuote formuna sr-only label + aria-label eklendi (3 alan)
+* skip-link CSS sınıfı eklendi — focus'ta görünür hale gelir
