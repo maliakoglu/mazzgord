@@ -7,7 +7,7 @@ export default function Hero() {
   const subtitleText = getExperimentValue("hero_subtitle");
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
-      <div style={{ position: "absolute", inset: "0 0 0 42%", pointerEvents: "none", maskImage: "linear-gradient(to right, transparent 0%, black 38%, black 100%)", WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 38%, black 100%)" }}><img src="/images/hero-document-translation.webp" alt="" aria-hidden="true" fetchpriority="high" decoding="async" width="2176" height="1632" style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.18 }} /></div>
+      <img src="/images/hero-document-translation.webp" alt="" aria-hidden="true" fetchpriority="high" decoding="async" width="2176" height="1632" style={{ position: "absolute", inset: "0 0 0 42%", width: "58%", height: "100%", objectFit: "cover", opacity: 0.18, pointerEvents: "none" }} />
       <style>{`
         @keyframes fadeUp {
           0% { opacity: 0; transform: translateY(20px); }
