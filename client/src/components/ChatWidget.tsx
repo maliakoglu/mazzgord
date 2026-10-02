@@ -1,11 +1,11 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, lazy, Suspense } from "react";
 import { MessageCircle, X, Send, Loader2, Paperclip, CheckCircle2 } from "lucide-react";
 import { Link } from "wouter";
-import { Streamdown } from "streamdown";
+const Streamdown = lazy(() => import("streamdown").then(m => ({ default: m.Streamdown })));
 
 function renderContent(text: string, useMarkdown: boolean = true) {
   if (!useMarkdown) return <span>{text}</span>;
-  return <Streamdown className="chat-md">{text}</Streamdown>;
+  return <Suspense fallback={<span>{text}</span>}><Streamdown className="chat-md">{text}</Streamdown></Suspense>;
 }
 
 interface Message { role: "user" | "assistant"; content: string; }

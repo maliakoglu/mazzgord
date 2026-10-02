@@ -240,3 +240,35 @@
 
 * Production deployment başarılı.
 * Preview deployment başarılı.
+
+---
+
+## 2026-10-02 — Cloudflare Güvenlik & Performans Optimizasyonu
+
+**Cloudflare Zone (mazzgord.com)**
+
+* HSTS açıldı (max-age: 15552000, includeSubDomains, preload)
+* Browser Cache TTL: 1 saat → 1 yıl (31536000s) — Vite hash-based asset'ler için
+* `mazzgord.com/iyzico-test/*` Worker route kaldırıldı (production'da test endpoint'i güvenlik riski)
+* Amazon SES DNS kayıtları temizlendi (send.mazzgord.com MX + SPF) — Resend aktif korundu
+
+**Proje Temizliği**
+
+* `kaldır` boş dosyası silindi
+* `mazzgordwebsite-content.js` (737KB) ve `mazzgordwebsite-worker.js` (737KB) eski bundle dosyaları silindi (1.4MB disk kazancı)
+* 4 iyzico test dosyası root'tan `tests/` klasörüne taşındı (iyzico_test.cjs, iyzico_test.js, iyzico_3ds_test.cjs, iyzico_checkout_test.cjs)
+* `.dev.vars` `.gitignore`'da olduğu doğrulandı
+
+**Performans**
+
+* `Streamdown` (streamdown) React.lazy + Suspense ile lazy-load'a alındı
+* Ana bundle: ~2MB+ → 49.73 kB (gzip: 16.53 kB)
+* Shiki dil paketleri + mermaid artık sadece chat açıldığında on-demand yükleniyor
+
+**Build & Deploy**
+
+* Vite build: 6528 modül başarılı
+* Prerender: 58 sayfa render edildi
+* Sitemap: 46 URL güncellendi
+* Meta tags: 26 HTML dosyası işlendi
+* Production deploy başarılı (Version: 478aaa07)

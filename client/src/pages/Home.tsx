@@ -9,7 +9,7 @@ import WhyChooseUs from "@/components/home/WhyChooseUs";
 import Contact from "@/components/home/Contact";
 import Footer from "@/components/home/Footer";
 import GalleryModal from "@/components/home/GalleryModal";
-import Process from "@/components/home/Process";
+import ProcessWorkflow from "@/components/home/ProcessWorkflow";
 import PricingPreview from "@/components/home/PricingPreview";
 import FAQ from "@/components/home/FAQ";
 import DenizliLocal from "@/components/home/DenizliLocal";
@@ -110,7 +110,7 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
-        <Process />
+        <ProcessWorkflow />
         <Services />
         <About />
         <WhyChooseUs />
