@@ -333,3 +333,15 @@
 **Build & Deploy**
 * Vite build başarılı
 * Production deploy başarılı
+
+---
+
+## 2026-10-02 — PageSpeed 2. Tur — Kontrast Düzeltmeleri
+
+**Erişilebilirlik (a11y)**
+* --color-warm-gray: #7f7e7b → #6b6a67 (WCAG AA 4.5:1 uyumlu)
+* ProcessWorkflow "Şeffaf & Hızlı Prosedür" etiket rengi: var(--color-sage) → #2d5f57 (kontrast düzeltildi)
+
+**Notlar**
+* GTM/gtag, Clarity ve Google Ads zaten requestIdleCallback ile lazy-load ediliyordu — ek değişiklik gerekmedi
+* CSS kritik inline atlandı (build karmaşıklığı riski)

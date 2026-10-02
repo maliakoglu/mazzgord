@@ -53,7 +53,7 @@ export default function ProcessWorkflow() {
           <span
             className="inline-block text-xs font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full border"
             style={{
-              color: "var(--color-sage)",
+              color: "#2d5f57",
               backgroundColor: "rgba(57, 117, 109, 0.08)",
               borderColor: "rgba(57, 117, 109, 0.25)",
             }}
