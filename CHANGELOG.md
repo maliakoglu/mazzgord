@@ -312,3 +312,24 @@
 * sr-only CSS sınıfı eklendi (index.css) — screen reader için gizli label'lar
 * QuickQuote formuna sr-only label + aria-label eklendi (3 alan)
 * skip-link CSS sınıfı eklendi — focus'ta görünür hale gelir
+
+---
+
+## 2026-10-02 — PageSpeed Mobil Optimizasyonu (1. Tur)
+
+**LCP İyileştirmesi (6,7 sn hedef: ~3-4 sn)**
+* Hero arka plan görseli CSS background-image'dan <img> etiketine çevrildi
+* fetchpriority="high" + decoding="async" eklendi
+* Hero görseline preload linki eklendi (index.html)
+
+**Render-Blocking Azaltma**
+* fonts.css: media="print" onload="this.media='all'" ile lazy-load'a alındı
+* Lordicon JS: defer attribute eklendi
+
+**Erişilebilirlik**
+* Skip-to-content linki için <main id="main-content"> eklendi (App.tsx)
+* iyzico-logo.svg'ye width/height attribute eklendi (CLS dayanıklılık)
+
+**Build & Deploy**
+* Vite build başarılı
+* Production deploy başarılı

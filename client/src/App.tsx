@@ -109,7 +109,7 @@ function App() {
         <a href="#main-content" className="skip-link">Ana içeriğe geç</a>
         <TooltipProvider>
             <Toaster />
-            <Router />
+            <main id="main-content"><Router /></main>
             <Suspense fallback={null}><ChatWidget /></Suspense>
             <MobileStickyCTA />
           </TooltipProvider>

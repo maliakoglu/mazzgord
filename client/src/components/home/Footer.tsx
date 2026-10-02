@@ -91,7 +91,7 @@ export default function Footer() {
             </button>
           </div>
           <a href="https://www.iyzico.com" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', opacity: 0.7 }} aria-label="iyzico ile Öde">
-            <img src="/images/iyzico-logo.svg" alt="iyzico ile Öde" style={{ height: '32px', width: 'auto' }} />
+            <img src="/images/iyzico-logo.svg" alt="iyzico ile Öde" width="100" height="32" style={{ height: '32px', width: 'auto' }} />
           </a>
         </div>
       </div>
