@@ -345,3 +345,11 @@
 **Notlar**
 * GTM/gtag, Clarity ve Google Ads zaten requestIdleCallback ile lazy-load ediliyordu — ek değişiklik gerekmedi
 * CSS kritik inline atlandı (build karmaşıklığı riski)
+
+---
+
+## 2026-10-02 — PageSpeed 3. Tur — Responsive Görsel
+
+* official-documents.webp için 3 responsive varyant oluşturuldu (640px, 1024px, 1920px)
+* Services.tsx'e srcset + sizes eklendi
+* Mobil tasarruf: 84.7 KB → 15.9 KB (%81)

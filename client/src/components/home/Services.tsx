@@ -9,7 +9,7 @@ export default function Services() {
           İngilizce-Türkçe yeminli tercüme. Resmi belgeler ve vize evrakları için belgenizi gönderin, net teklif alın.
         </p>
 
-        <img src="/images/official-documents.webp" alt="Pasaport, diploma ve resmi belgelerin çeviri için hazırlanması" width={2176} height={1632} className="w-full rounded-2xl mb-12" style={{ maxHeight: "400px", objectFit: "cover" }} loading="lazy" />
+        <img src="/images/official-documents-1024.webp" alt="Pasaport, diploma ve resmi belgelerin çeviri için hazırlanması" width={2176} height={1632} className="w-full rounded-2xl mb-12" style={{ maxHeight: "400px", objectFit: "cover" }} loading="lazy" srcSet="/images/official-documents-640.webp 640w, /images/official-documents-1024.webp 1024w, /images/official-documents-1920.webp 1920w" sizes="(max-width: 768px) 640px, (max-width: 1200px) 1024px, 1920px" />
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
             {
