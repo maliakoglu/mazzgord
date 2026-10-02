@@ -353,3 +353,21 @@
 * official-documents.webp için 3 responsive varyant oluşturuldu (640px, 1024px, 1920px)
 * Services.tsx'e srcset + sizes eklendi
 * Mobil tasarruf: 84.7 KB → 15.9 KB (%81)
+
+---
+
+## 2026-10-02 — PageSpeed 2. Ölçüm Düzeltmeleri
+
+**404/403/Hata Düzeltmeleri**
+* /api/reviews/approved route'u worker.js'e eklendi (Testimonials.tsx 404'ü)
+* official-documents-*.webp varyantları client/public/images/'e kopyalandı (404 düzeltme)
+* Lordicon: defer → async (effectsManager Promise hatası düzeltme)
+
+**Kontrast**
+* WhatsApp buton yeşili: #22C55E → #1a8a3e (WCAG AA uyumlu, Hero + Footer)
+
+**Görsel Optimizasyonu**
+* Hero görsel sıkıştırma: 110 KB → 80 KB (quality 75, %27 tasarruf)
+
+**Notlar**
+* /gtm 403 zararsız — worker 204 dönüyor, tarayıcı script olarak değerlendiriyor

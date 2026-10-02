@@ -109,6 +109,22 @@ export default {
     }
 
 
+    // GET /api/reviews/approved — Onaylı müşteri değerlendirmeleri (public)
+    if (path === "/api/reviews/approved" && request.method === "GET") {
+      try {
+        const result = await env.DB.prepare(
+          "SELECT r.id, r.rating, r.customer_name, r.comment, r.created_at FROM reviews r WHERE r.approved = 1 ORDER BY r.created_at DESC LIMIT 20"
+        ).all();
+        return new Response(JSON.stringify({ success: true, data: result.results }), {
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      } catch (err) {
+        return new Response(JSON.stringify({ success: true, data: [] }), {
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+    }
+
     // POST /api/chat/submit-quote — Chatbot icinden teklif olustur
     if (path === "/api/chat/submit-quote" && request.method === "POST") {
       try {
