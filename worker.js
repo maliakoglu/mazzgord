@@ -264,14 +264,14 @@ export default {
         let pricingContext = "";
         try {
           const prices = await env.DB.prepare(
-            "SELECT document_name, yeminli_price, noter_price, apostil_price, category FROM pricing ORDER BY category, document_name"
+            "SELECT document_name, yeminli_price, noter_price, apostil_price, noter_masraf, noter_takip, apostil_takip, category FROM pricing ORDER BY category, document_name"
           ).all();
           if (prices.results && prices.results.length > 0) {
-            pricingContext = "\n\nGUNCEL FIYAT LISTESI (sabit fiyatlar, sayfa başına degil):\n" +
+            pricingContext = "\n\nGUNCEL FIYAT LISTESI (2026 Noterlik Ucret Tarifesi gore dokumlu):\n" +
               prices.results.map(p => {
                 let line = `- ${p.document_name}: Yeminli ${p.yeminli_price} TL`;
-                if (p.noter_price) line += `, Noter onayli ${p.noter_price} TL`;
-                if (p.apostil_price) line += `, Apostil ${p.apostil_price} TL`;
+                if (p.noter_price) line += `, Noter ile toplam ${p.noter_price} TL (noter masrafi ${p.noter_masraf || 0} TL + islem/takip ${p.noter_takip || 0} TL)`;
+                if (p.apostil_price) line += `, Apostil ile toplam ${p.apostil_price} TL (apostil islem/takip ${p.apostil_takip || 0} TL)`;
                 return line;
               }).join("\n");
           }

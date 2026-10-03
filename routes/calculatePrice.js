@@ -77,13 +77,25 @@ export async function handleCalculatePrice(request, env) {
 
       // document_type pricing tablosunda var mı?
       const priceRow = await env.DB.prepare(
-        `SELECT yeminli_price, noter_price, apostil_price FROM pricing WHERE document_name = ?`
+        `SELECT yeminli_price, noter_price, apostil_price, noter_masraf, noter_takip, apostil_takip FROM pricing WHERE document_name = ?`
       ).bind(document_type).first();
 
       if (priceRow) {
         const firstPagePrice = priceRow[serviceColumn] || priceRow.yeminli_price;
         let base = firstPagePrice;
-        const breakdown = { base: firstPagePrice, source: "pricing_table", document_type, service_type, multipliers: {} };
+        const breakdown = {
+          base: firstPagePrice,
+          source: "pricing_table",
+          document_type,
+          service_type,
+          yeminli_price: priceRow.yeminli_price,
+          noter_masraf: priceRow.noter_masraf || 0,
+          noter_takip: priceRow.noter_takip || 0,
+          apostil_takip: priceRow.apostil_takip || 0,
+          noter_price: priceRow.noter_price,
+          apostil_price: priceRow.apostil_price,
+          multipliers: {}
+        };
 
         // Sayfa sayısına göre kademeli fiyatlandırma
         const pages = page_count || 1;

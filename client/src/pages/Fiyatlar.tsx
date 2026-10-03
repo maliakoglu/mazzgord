@@ -9,6 +9,9 @@ interface PriceItem {
   yeminli_price: number;
   noter_price: number;
   apostil_price: number;
+  noter_masraf: number;
+  noter_takip: number;
+  apostil_takip: number;
   has_apostil_variant: number;
   category: string;
 }
@@ -141,8 +144,10 @@ export default function Fiyatlar() {
                 <tr className="border-b-2 border-border">
                   <th className="text-left py-3 px-4 font-bold text-foreground">Belge Adı</th>
                   <th className="text-right py-3 px-4 font-bold text-foreground whitespace-nowrap">Yeminli Tercüme</th>
-                  <th className="text-right py-3 px-4 font-bold text-foreground whitespace-nowrap">Noter İşlem/Takip</th>
+                  <th className="text-right py-3 px-4 font-bold text-foreground whitespace-nowrap">Noter Masrafı</th>
+                  <th className="text-right py-3 px-4 font-bold text-foreground whitespace-nowrap">Noter Takip</th>
                   <th className="text-right py-3 px-4 font-bold text-foreground whitespace-nowrap">Noter ile Toplam</th>
+                  <th className="text-right py-3 px-4 font-bold text-foreground whitespace-nowrap">Apostil Takip</th>
                   <th className="text-right py-3 px-4 font-bold text-foreground whitespace-nowrap">Apostil ile Toplam</th>
                 </tr>
               </thead>
@@ -151,8 +156,10 @@ export default function Fiyatlar() {
                   <tr key={p.id} className="border-b border-border hover:bg-secondary/20 transition">
                     <td className="py-3 px-4 text-foreground font-medium">{p.document_name}</td>
                     <td className="py-3 px-4 text-right text-foreground whitespace-nowrap">{formatPrice(p.yeminli_price)} ₺</td>
-                    <td className="py-3 px-4 text-right text-foreground whitespace-nowrap">+{formatPrice(p.noter_price - p.yeminli_price)} ₺</td>
+                    <td className="py-3 px-4 text-right text-muted-foreground whitespace-nowrap text-sm">{formatPrice(p.noter_masraf || 0)} ₺</td>
+                    <td className="py-3 px-4 text-right text-muted-foreground whitespace-nowrap text-sm">{formatPrice(p.noter_takip || 0)} ₺</td>
                     <td className="py-3 px-4 text-right text-foreground whitespace-nowrap font-semibold">{formatPrice(p.noter_price)} ₺</td>
+                    <td className="py-3 px-4 text-right text-muted-foreground whitespace-nowrap text-sm">{p.has_apostil_variant ? `${formatPrice(p.apostil_takip || 0)} ₺` : "—"}</td>
                     <td className="py-3 px-4 text-right text-foreground whitespace-nowrap font-semibold">{p.has_apostil_variant ? `${formatPrice(p.apostil_price)} ₺` : "—"}</td>
                   </tr>
                 ))}
@@ -169,10 +176,11 @@ export default function Fiyatlar() {
           </h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>• Yeminli tercüme bedeli belge türü ve yoğunluğa göre değişir; her belge için sabit değildir.</li>
-            <li>• Noter bedeli belge türüne göre değişir; işlem öncesi noter makbuzuyla teyit edilir.</li>
-            <li>• Noter işlem/takip bedeli, belgeyi notere götürme, takip etme ve teslim alma hizmetidir.</li>
+            <li>• Noter masrafı, 2026 Noterlik Ücret Tarifesi'ne göre hesaplanır: yazı ücreti (80,68 ₺/sayfa), karşılaştırma ücreti (80,68 ₺/sayfa) ve noter ücreti (min 58,82 ₺).</li>
+            <li>• Noter masrafı, belgenin sayfa sayısına göre değişir; işlem öncesi noter makbuzuyla teyit edilir.</li>
+            <li>• Noter takip bedeli, belgeyi notere götürme, takip etme ve teslim alma hizmetidir.</li>
             <li>• Apostil şerhi valilik/kaymakamlıkça düzenlenir; devlet apostil bedeli ayrı alınmaz.</li>
-            <li>• Apostil işlem/takip bedeli, başvuru, takip ve teslim hizmetidir.</li>
+            <li>• Apostil takip bedeli, başvuru, takip ve teslim hizmetidir.</li>
             <li>• Acil teslimde +%30-%50 ek ücret uygulanır; kapasiteye bağlıdır.</li>
             <li>• Kargo bedeli gerçek gönderim bedelidir; şehir ve teslim şekline göre değişir.</li>
             <li className="font-medium text-foreground">• Kurum kabulü veya vize sonucu garanti edilmez; belgenin kullanılacağı kurumun güncel şartlarını ayrıca kontrol edin.</li>

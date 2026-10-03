@@ -44,7 +44,7 @@ export default function BlogYeminliTercumeFiyatlari2026() {
   <li><strong>Sayfa sayısı:</strong> Uzun belgelerde fiyat sayfa bazında hesaplanır.</li>
   <li><strong>Dil çifti:</strong> İngilizce-Türkçe çeviriler en yaygın ve ekonomik seçenektir.</li>
   <li><strong>Aciliyet:</strong> Aynı gün teslimat için acil hizmet ücreti uygulanabilir.</li>
-  <li><strong>Noter onayı:</strong> Noter onayı gerektiğinde noter ücreti ayrıca uygulanır.</li>
+  <li><strong>Noter onayı:</strong> Noter masrafı 2026 Noterlik Ücret Tarifesi'ne göre hesaplanır: tercüme harcı (104 ₺), yazı ücreti (80,68 ₺/sayfa), değerli kâğıt bedeli (149 ₺ standart / 298 ₺ vekâletname), noter ücreti (min 58,82 ₺) ve KDV (%20). Çeviri yeminli tercüman tarafından yapıldığından noter çevirme ücreti (667,67 ₺/sayfa) alınmaz.</li>
 </ul>
 
 <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">2026 Yeminli Tercüme Fiyat Listesi</h2>
@@ -59,7 +59,7 @@ export default function BlogYeminliTercumeFiyatlari2026() {
 
 <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">Yeminli Tercüme Neden Pahalıdır?</h2>
 <p>Yeminli tercüme, normal çeviriden farklıdır çünkü <strong>yeminli tercüman imzası ve kaşesi</strong> içerir. Tercüman, çevirisinin doğru ve eksiksiz olduğunu yasal olarak taahhüt eder. Bu nedenle yeminli tercüme fiyatları, normal çeviriye göre daha yüksektir.</p>
-<p>Ayrıca yeminli tercümanların maliyetleri — yeminname yenileme, noter masrafları, meslek odası üyelikleri — fiyatlara yansır.</p>
+<p>Ayrıca yeminli tercümanların maliyetleri — yeminname yenileme, noter masrafları, meslek odası üyelikleri — fiyatlara yansır. 2026 Noterlik Ücret Tarifesi'ne göre noter masrafı; tercüme harcı, yazı ücreti, değerli kâğıt bedeli, noter ücreti ve KDV'den oluşur.</p>
 
 <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">Denizli'de Yeminli Tercüme Fiyatları</h2>
 <p>Denizli merkezli yeminli tercüme hizmeti veriyorum. Online hizmet sayesinde Türkiye'nin her yerinden belgelerinizi gönderebilir, çevirinizi dijital olarak alabilirsiniz.</p>
