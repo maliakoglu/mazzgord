@@ -1,3 +1,36 @@
+## [2026-10-03] — 2026 Noterlik Ücret Tarifesi Fiyatlandırma Güncellemesi
+
+### Eklendi
+- D1 `pricing` tablosuna 3 yeni kolon: `noter_masraf`, `noter_takip`, `apostil_takip`
+- 63 belge türü 2026 gerçek noter maliyetlerine göre güncellendi (Senaryo A — çevirme ücreti yok)
+- `Fiyatlar.tsx`: 7 kolonlu tablo (Belge, Yeminli, Noter Masrafı, Noter Takip, Noter ile Toplam, Apostil Takip, Apostil ile Toplam)
+- `Fiyatlar.tsx`: "Belgelendirme ve Ödeme" bölümü — SMM, noter makbuzu, KDV %20 ayrımı
+- `Fiyatlar.tsx`: "Önemli Bilgiler" bölümüne 2026 tarife kalemleri eklendi
+- `BlogYeminliTercumeFiyatlari2026.tsx`: 2026 fiyat tablosu eklendi
+- `worker.js`: Chat AI prompt'u dökümlü fiyat bilgisi veriyor
+- `routes/calculatePrice.js`: Sorgu ve breakdown güncellendi (noter_masraf, noter_takip, apostil_takip)
+
+### Noter Masrafı Kalemleri (2026)
+- Tercüme harcı: 104 ₺ (Harçlar Kanunu)
+- Yazı ücreti: 80,68 ₺/sayfa (Noterlik Tarifesi Madde 3)
+- Değerli kâğıt bedeli: 149 ₺ standart / 298 ₺ vekâletname-taahhütname
+- Noter ücreti: min 58,82 ₺ (Madde 1)
+- KDV: %20
+- Çevirme ücreti: ALINMAZ (yeminli tercüman çeviriyor)
+
+### Fiyat Örneği (Diploma)
+- Yeminli tercüme: 550 ₺
+- Noter masrafı: 450 ₺
+- Noter takip: 300 ₺
+- Noter ile toplam: 1.300 ₺
+- Apostil takip: 500 ₺
+- Apostil ile toplam: 1.800 ₺
+
+### Değiştirildi
+- `pricing_schema.sql` ve `add_pricing_items.sql` referans güncellendi
+- Noter takip bedeli piyasa rayicine ayarlandı: 300 ₺ (1 sayfa) / 400 ₺ (2 sayfa)
+- Apostil takip bedeli: 500 ₺
+
 # MAZZGORD Change Log
 ### 2026-09-29 — SEO, Fiyatlandırma, Sipariş Takibi, Chatbot ve İçerik Güncellemeleri
 
