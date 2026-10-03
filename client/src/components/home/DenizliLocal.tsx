@@ -14,7 +14,7 @@ export default function DenizliLocal() {
           </p>
         </div>
 
-        <img src="/images/online-translation.webp" alt="Online çalışan yeminli tercümanın belge ve bilgisayar başındaki çalışma ortamı" width={2560} height={1440} className="w-full rounded-2xl mb-12" style={{ maxHeight: "400px", objectFit: "cover" }} loading="lazy" />
+        <img src="/images/online-translation.webp" alt="Online çalışan yeminli tercümanın belge ve bilgisayar başındaki çalışma ortamı" width={2560} height={1440} className="w-full rounded-2xl mb-12" style={{ maxHeight: "400px", objectFit: "cover" }} loading="lazy" srcSet="/images/online-translation-640.webp 640w, /images/online-translation-1024.webp 1024w, /images/online-translation.webp 2560w" sizes="(max-width: 768px) 100vw, 1200px" />
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           <div className="flex gap-4 p-6 rounded-2xl" style={{ backgroundColor: 'var(--color-paper-white)', boxShadow: 'rgba(213, 208, 184, 0.4) 0px 2px 6px 0px' }}>
             <MapPin className="w-8 h-8 flex-shrink-0" style={{ color: 'var(--color-sage)' }} />
