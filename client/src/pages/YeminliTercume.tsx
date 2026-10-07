@@ -34,10 +34,11 @@ export default function YeminliTercume() {
           </div>
         </div>
         <div className="bg-secondary/30 rounded-xl p-8 mb-8">
-          <h2 className="text-2xl font-bold text-primary mb-4">Denizli'de Yeminli Tercüme</h2>
-          <p className="text-muted-foreground leading-relaxed mb-4">Pamukkale, Denizli merkezli bağımsız yeminli tercümanım. Yemin zaptım Denizli 2. Noterliği'nde düzenlenmiştir; imza ve kaşem resmi kurumlarda geçerlidir. Denizli Adliyesi, Denizli Valiliği, Pamukkale Üniversitesi ve diğer kurumlar tarafından kabul edilen yeminli tercümelerle resmi işlemlerinizi sorunsuz tamamlayabilirsiniz.</p>
-          <p className="text-muted-foreground leading-relaxed mb-4">Ancak online hizmet verdiğim için Denizli dışından da müşterilerim var. İstanbul, Ankara, İzmir ve hatta yurt dışından belge gönderen müşterilerim var. Tüm süreci online yürütebilirsiniz — belgenizi WhatsApp ile gönderir, çeviriyi dijital olarak teslim alırsınız.</p>
+          <h2 className="text-2xl font-bold text-primary mb-4">Online Yeminli Tercüme — Tüm Türkiye</h2>
+          <p className="text-muted-foreground leading-relaxed mb-4">Denizli merkezli yeminli tercümanım; ancak tüm Türkiye'ye online hizmet veriyorum. Yemin zaptım Denizli 2. Noterliği'nde düzenlenmiştir, imza ve kaşem tüm resmi kurumlarda geçerlidir. Belgenizi WhatsApp ile gönderir, çeviriyi dijital olarak teslim alırsınız — şehir dışında olmanız engel değil.</p>
+          <p className="text-muted-foreground leading-relaxed mb-4">İstanbul, Ankara, İzmir ve yurt dışından belge gönderen müşterilerim var. Tüm süreci online yürütebilirsiniz — belgenizi gönderir, yeminli çeviriyi imzalı ve kaşeli olarak teslim alırsınız.</p>
           <p className="text-muted-foreground leading-relaxed">WhatsApp üzerinden ulaşabilir, belgenizin fotoğrafını göndererek net teklif alabilirsiniz. Pzt–Cmt 09:00–18:00 arasında yanıt veririm.</p>
+          <a href="/denizli-yeminli-tercume" className="inline-block mt-3 text-primary font-medium hover:underline">Denizli yeminli tercüman sayfası için tıklayın →</a>
         </div>
 
         <div className="bg-primary/5 p-6 rounded-xl border border-primary/10 mb-8">

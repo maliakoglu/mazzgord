@@ -32,6 +32,7 @@ export default function Footer() {
               <li><a href="/vize-ceviri" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }} className="hover:opacity-100 transition">Vize Çevirisi</a></li>
               <li><a href="/ingilizce-turkce-ceviri" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }} className="hover:opacity-100 transition">İngilizce-Türkçe Çeviri</a></li>
               <li><a href="/fiyatlar" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }} className="hover:opacity-100 transition">Fiyatlar</a></li>
+              <li><a href="/denizli-yeminli-tercume" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }} className="hover:opacity-100 transition">Denizli Yeminli Tercüman</a></li>
             </ul>
           </div>
           <div>
