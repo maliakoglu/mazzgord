@@ -1,48 +1,87 @@
-# Mazzgord Çeviri Hizmetleri
+# MAZZGORD
 
-> Mazzgord, Denizli merkezli noter yeminli tercüman Mehmet Akoğlu tarafından yönetilen çeviri hizmetidir. İngilizce-Türkçe yeminli tercüme, resmi belge çevirisi ve vize çevirisi yapar. Pasaport, diploma, adli sicil, nüfus kayıt örneği ve vize evrakları için belgeyi inceleyip net teklif verir. Noter ve apostil sürecini takip eder.
+> Mazzgord, Denizli merkezli bağımsız yeminli tercüman Mehmet Akoğlu'nun kişisel çalışma markasıdır. Yemin zaptı Denizli 2. Noterliği'nde düzenlenmiştir. İngilizce-Türkçe çift yönlü yeminli tercüme, noter onaylı çeviri, apostil tercüme, vize çevirisi, akademik çeviri ve teknik çeviri hizmetleri sunar. Tüm Türkiye'ye online olarak hizmet verir. Her işi bizzat kendisi yapar, başkasına devretmez.
 
-## Hizmetler
+## Hakkımda
 
-- [Yeminli Tercüme](https://mazzgord.com/yeminli-tercume): Resmi belgeler için yeminli tercüman imzalı İngilizce-Türkçe çeviri. Noter onayı ve apostil takibi dahil.
-- [Pasaport Çevirisi](https://mazzgord.com/pasaport-ceviri): Pasaport, kimlik ve adli sicil çevirisi. Vize ve göçmenlik başvuruları için.
-- [Diploma Çevirisi](https://mazzgord.com/diploma-ceviri): Diploma, transkript ve öğrenci belgesi çevirisi. Denklik ve başvuru için.
-- [Vize Çevirisi](https://mazzgord.com/vize-ceviri): İngiltere, ABD, Schengen vize başvuruları için belge çevirisi.
-- [İngilizce-Türkçe Çeviri](https://mazzgord.com/ingilizce-turkce-ceviri): İngilizce-Türkçe çift yönlü yeminli ve profesyonel çeviri.
-- [Teknik Çeviri](https://mazzgord.com/teknik-ceviri): Mühendislik, yazılım ve otomotiv sektörlerinde teknik doküman çevirisi.
-- [Akademik Çeviri](https://mazzgord.com/akademik-ceviri): Tez, makale, bildiri ve araştırma raporu çevirisi.
+Ben Mehmet Akoğlu; Denizli merkezli, noter huzurunda yemin etmiş bağımsız İngilizce-Türkçe yeminli tercümanım. Yemin zaptım Denizli 2. Noterliği'nde düzenlenmiştir. Mazzgord herhangi bir tercüme bürosu veya noterlik bünyesi değil; çeviri hizmetlerini doğrudan sunduğum kişisel çalışma markamdır. İngilizce-Türkçe resmi belge ve vize çevirisi yapıyorum. Pasaport, diploma, adli sicil, nüfus kayıt örneği ve vize evraklarınızı belge türüne, noter ve apostil ihtiyacına göre inceler, net teklif sunarım.
 
-## Fiyatlandırma
+- Web sitesi: https://mazzgord.com
+- Telefon: +90 538 629 50 40
+- WhatsApp: https://wa.me/905386295040
+- Çalışma saatleri: Pazartesi–Cumartesi 09:00–18:00
+- Teklif: https://mazzgord.com/teklif
+- İletişim: https://mazzgord.com/iletisim
 
-- [Fiyatlar](https://mazzgord.com/fiyatlar): 3 katmanlı fiyatlandırma — yeminli tercüme, noter işlem/takip, apostil işlem/takip. Belge görülmeden kesin fiyat verilmez.
-- [Teklif Al](https://mazzgord.com/teklif): Belge türü, dil yönü, noter ve apostil ihtiyacını belirtin; net teklif alın.
+## Çeviri Hizmetleri
+
+- [Yeminli Tercüme](https://mazzgord.com/yeminli-tercume): Yeminli tercüman tarafından yapılan resmi çeviri. Mahkeme, noter, konsolosluk ve resmi kurumlarda geçerlidir. Tüm yeminli tercüme belgeleri tercüman imzası ve kaşesi ile teslim edilir.
+- [Noter Onaylı Tercüme](https://mazzgord.com/noter-onayli-tercume): Yeminli tercüme sonrası noter onayı yapılan resmi çeviri hizmeti. Tüm resmi kurumlarda geçerlidir.
+- [Apostil Tercüme](https://mazzgord.com/apostil-tercume): Lahey Apostil Sözleşmesi kapsamında apostil tasdiki yapılan çeviri. Yurt dışı resmi işlemler için gereklidir.
+- [İngilizce Türkçe Çeviri](https://mazzgord.com/ingilizce-turkce-ceviri): İngilizce-Türkçe ve Türkçe-İngilizce profesyonel çeviri hizmeti. Genel, ticari, hukuki ve teknik metinler.
+- [Teknik Çeviri](https://mazzgord.com/teknik-ceviri): Teknik doküman, kullanım kılavuzu, prospektüs ve mühendislik metinleri çevirisi. Sektör uzmanı tercüman tarafından yapılır.
+- [Akademik Çeviri](https://mazzgord.com/akademik-ceviri): Makale, tez, dissertation ve akademik belge çevirisi. APA, MLA ve Chicago formatlarına uygun.
+- [Vize Çevirisi](https://mazzgord.com/vize-ceviri): Vize başvurusu için gerekli belgelerin çevirisi. Banka yazısı, davetiye, sponsor mektubu ve diğer vize belgeleri.
+- [Acil Tercüme](https://mazzgord.com/acil-tercume): Aynı gün teslimatlı acil çeviri hizmeti. 24 saat içinde teslim.
+
+## Belge Çevirileri
+
+- [Pasaport Çevirisi](https://mazzgord.com/pasaport-ceviri): Pasaport çevirisi hizmeti. Vize başvurusu ve yurt dışı işlemler için.
+- [Diploma Çevirisi](https://mazzgord.com/diploma-ceviri): Diploma ve transkript çevirisi. Yurt dışı eğitim ve denklik işlemleri için.
+- [Transkript Çevirisi](https://mazzgord.com/transkript-ceviri): Üniversite transkript çevirisi. Not dökümü ve akademik belge çevirisi.
+- [Adli Sicil Çevirisi](https://mazzgord.com/adli-sicil-cevirisi): Adli sicil kaydı çevirisi. Yurt dışı iş başvurusu ve vize işlemleri için.
+- [Nüfus Kayıt Örneği Çevirisi](https://mazzgord.com/nufus-kayit-ornegi-cevirisi): Nüfus kayıt örneği ve vukuatlı nüfus kayıt çevirisi.
+
+## Denizli Lokasyon Sayfaları
+
+- [Denizli Yeminli Tercüme](https://mazzgord.com/denizli-yeminli-tercume): Denizli'de yeminli tercüme hizmeti. Same-day teslimat seçeneği.
+- [Denizli Noter Onaylı Tercüme](https://mazzgord.com/denizli-noter-onayli-tercume): Denizli'de noter onaylı çeviri hizmeti.
+- [Denizli Pasaport Tercümesi](https://mazzgord.com/denizli-pasaport-tercumesi): Denizli'de pasaport çevirisi hizmeti.
+- [Denizli Diploma Tercümesi](https://mazzgord.com/denizli-diploma-tercumesi): Denizli'de diploma çevirisi hizmeti.
+- [Denizli Vize Tercümesi](https://mazzgord.com/denizli-vize-tercumesi): Denizli'de vize çevirisi hizmeti.
+- [Denizli Apostil Tercüme](https://mazzgord.com/denizli-apostil-tercume): Denizli'de apostil tercüme hizmeti.
 
 ## Blog
 
-- [Blog Ana Sayfa](https://mazzgord.com/blog): Çeviri sektörü hakkında güncel makaleler ve rehberler.
-- [Yeminli Tercüme Blog](https://mazzgord.com/blog/yeminli-tercume): Yeminli tercüme süreci ve bilinmesi gerekenler.
-- [Vize Çeviri Blog](https://mazzgord.com/blog/vize-ceviri): Vize başvuruları için belge çevirisi rehberi.
-- [Teknik Çeviri Blog](https://mazzgord.com/blog/teknik-ceviri): Teknik çeviri süreci ve kalite standartları.
-- [Akademik Çeviri Blog](https://mazzgord.com/blog/akademik-ceviri): Akademik çeviri ipuçları ve rehberler.
-- [Noter Onaylı Çeviri](https://mazzgord.com/blog/noter-onayli-ceviri): Noter onaylı çeviri süreci ve bilinmesi gerekenler.
-- [Pasaport Tercümesi](https://mazzgord.com/blog/pasaport-tercumesi-nasil-yapilir): Pasaport çevirisi nasıl yapılır.
-- [Yeminli Tercüme Fiyatları 2026](https://mazzgord.com/blog/yeminli-tercume-fiyatlari-2026): 2026 yeminli tercüme fiyat rehberi.
+- [Blog Ana Sayfa](https://mazzgord.com/blog): Çeviri sektörü hakkında bilgi ve rehber yazıları.
+- [Yeminli Tercüme Fiyatları 2026](https://mazzgord.com/blog/yeminli-tercume-fiyatlari-2026): 2026 yılı yeminli tercüme fiyatları ve ücretlendirme rehberi.
+- [Yeminli Tercüme Nedir?](https://mazzgord.com/blog/yeminli-tercume): Yeminli tercüme nedir, nasıl yapılır, kimler yapabilir.
+- [Noter Onaylı Çeviri](https://mazzgord.com/blog/noter-onayli-ceviri): Noter onaylı çeviri süreci, gerekli belgeler ve ücretler.
+- [Apostil vs Noter Onaylı Çeviri](https://mazzgord.com/blog/apostil-vs-noter-onayli-ceviri): Apostil ve noter onaylı çeviri arasındaki farklar.
+- [Pasaport Tercümesi Nasıl Yapılır](https://mazzgord.com/blog/pasaport-tercumesi-nasil-yapilir): Pasaport çevirisi adım adım rehber.
+- [Vize Çevirisi](https://mazzgord.com/blog/vize-ceviri): Vize başvurusu için çeviri gereken belgeler.
+- [Vize Formatları](https://mazzgord.com/blog/vize-formatlari): Vize belgesi çeviri formatları ve standartları.
+- [Vize Başvurusu Hangi Belgeler](https://mazzgord.com/blog/vize-basvurusu-hangi-belgeler): Vize başvurusu için gerekli belgeler listesi.
+- [İngiltere Vize Çevirisi Gerçek Vaka](https://mazzgord.com/blog/ingiltere-vize-cevirisi-gercek-vaka): İngiltere vize başvurusu çeviri gerçek vaka çalışması.
+- [Teknik Çeviri](https://mazzgord.com/blog/teknik-ceviri): Teknik çeviri nedir, hangi belgeler kapsar.
+- [Teknik Çeviri Nedir](https://mazzgord.com/blog/teknik-ceviri-nedir): Teknik çeviri tanımı ve uzmanlık alanları.
+- [Akademik Çeviri](https://mazzgord.com/blog/akademik-ceviri): Akademik çeviri süreci ve dikkat edilmesi gerekenler.
+- [Tıbbi Çeviri](https://mazzgord.com/blog/tibbi-ceviri): Tıbbi belge ve sağlık raporu çevirisi.
+- [Hukuki Çeviri](https://mazzgord.com/blog/hukuki-ceviri): Hukuki belge, sözleşme ve mahkeme kararı çevirisi.
+- [Yerelleştirme Hizmetleri](https://mazzgord.com/blog/yerellestirme-hizmetleri): Yazılım ve web sitesi yerelleştirme hizmetleri.
+- [Çeviri Teknolojileri](https://mazzgord.com/blog/ceviri-teknolojileri): CAT araçları ve çeviri teknolojileri.
+- [Çeviri Hataları](https://mazzgord.com/blog/ceviri-hatalari): Yaygın çeviri hataları ve nasıl önlenir.
+- [Çeviri İpuçları](https://mazzgord.com/blog/ceviri-ipuclari): Profesyonel çeviri ipuçları ve tavsiyeler.
+- [Çeviri Sektörü](https://mazzgord.com/blog/ceviri-sektoru): Çeviri sektörü hakkında genel bilgi ve trendler.
+- [Çevirmenlik Kariyer Rehberi](https://mazzgord.com/blog/cevirmenlik-kariyer-rehberi): Çevirmenlik kariyeri nasıl başlar, gelişir.
+- [Üç Dünya Çeviri](https://mazzgord.com/blog/uc-dunya-ceviri): Çeviri dünyasındaki üç yaklaşım.
+- [Google Translate vs Profesyonel Çeviri](https://mazzgord.com/blog/google-translate-vs-profesyonel-ceviri): Google Translate ve profesyonel çeviri karşılaştırması.
+- [İngilizce Türkçe Deyim Çevirisi](https://mazzgord.com/blog/ingilizce-turkce-deyim-cevirisi): İngilizce ve Türkçe deyimlerin çevirisi.
+- [İngilizce Sözleşme Çevirisi](https://mazzgord.com/blog/ingilizce-sozlesme-cevirisi): İngilizce sözleşme çevirisi dikkat noktaları.
+- [İngilizce Mektup Email Çevirisi](https://mazzgord.com/blog/ingilizce-mektup-email-cevirisi): İngilizce mektup ve e-posta çevirisi.
+- [İngilizce Edebi Metin Çevirisi](https://mazzgord.com/blog/ingilizce-edebi-metin-cevirisi): İngilizce edebi metin çevirisi teknikleri.
+- [Araç Ruhsatı Çevirisi](https://mazzgord.com/blog/arac-ruhsati-cevirisi): Araç ruhsatı çevirisi ve yurt dışı işlemler.
+- [Doğalgaz Faturası Çevirisi](https://mazzgord.com/blog/dogalgaz-faturasi-cevirisi): Doğalgaz faturası çevirisi ve fatura çevirisi süreci.
 
-## Kurumsal
+## Kurumsal Sayfalar
 
-- [Hakkımda](https://mazzgord.com/hakkimizda): Mehmet Akoğlu — Denizli merkezli yeminli tercüman.
-- [Sıkça Sorulan Sorular](https://mazzgord.com/sss): Çeviri hizmetleri hakkında SSS.
-- [Gizlilik Politikası](https://mazzgord.com/gizlilik): Gizlilik politikası.
-- [Kullanım Koşulları](https://mazzgord.com/kullanim-kosullari): Kullanım koşulları.
-- [Çerez Politikası](https://mazzgord.com/cerez-politikasi): Çerez politikası.
-
-## İletişim
-
-- WhatsApp: +90 538 629 50 40
-- E-posta: info@mazzgord.com
-- Konum: Denizli, Türkiye
-- Çalışma saatleri: Pazartesi-Cumartesi 08:00-17:00
-
-## Tarama İzni
-
-Bu web sitesinin içeriği, büyük dil modelleri (LLM'ler) tarafından eğitim ve bilgi amacıyla kullanılabilir. Blog makaleleri ve hizmet sayfaları kamuya açıktır.
+- [Ana Sayfa](https://mazzgord.com/): Mazzgord profesyonel çeviri hizmetleri ana sayfa. Hizmetler, fiyatlar ve teklif sistemine erişim.
+- [Hakkımda](https://mazzgord.com/hakkimizda): Mehmet Akoğlu hakkında bilgi, yeminli tercümanlık yetkileri ve çalışma şekli.
+- [Fiyatlar](https://mazzgord.com/fiyatlar): Yeminli tercüme fiyat listesi. Yeminli tercüme, noter onaylı çeviri, apostil ücretleri.
+- [Teklif Al](https://mazzgord.com/teklif): Online çeviri teklif formu. Belge yükleyerek hızlı fiyat teklifi alın.
+- [İletişim](https://mazzgord.com/iletisim): Telefon, WhatsApp ve çalışma saatleri iletişim bilgileri.
+- [Sıkça Sorulan Sorular](https://mazzgord.com/sss): Çeviri süreçleri, teslimat, ödeme ve noter onayı hakkında SSS.
+- [Hizmetler](https://mazzgord.com/hizmetler): Tüm çeviri hizmetlerinin listelendiği genel hizmetler sayfası.
+- [Gizlilik Politikası](https://mazzgord.com/gizlilik): Gizlilik politikası ve veri koruma bilgileri.
+- [Kullanım Koşulları](https://mazzgord.com/kullanim-kosullari): Web sitesi kullanım koşulları.
+- [Çerez Politikası](https://mazzgord.com/cerez-politikasi): Çerez kullanımı ve KVKK uyumu hakkında bilgi.
