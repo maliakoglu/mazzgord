@@ -12,7 +12,7 @@ export default function YeminliTercume() {
       <Navbar />
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <Breadcrumb items={[{label: "Hizmetler", href: "/"}, {label: "Yeminli Tercüme"}]} />
-        <h1 className="text-4xl font-bold text-primary mb-4">Denizli Yeminli Tercüman | Noter Onaylı Tercüme</h1>
+        <h1 className="text-4xl font-bold text-primary mb-4">İngilizce-Türkçe Yeminli Tercüme Hizmeti</h1>
         <p className="text-xl text-muted-foreground mb-8">Ben Mehmet Akoğlu; Denizli merkezli, noter huzurunda yemin etmiş bağımsız İngilizce-Türkçe yeminli tercümanım. Yemin zaptım Denizli 2. Noterliği'nde düzenlenmiştir. Pasaport, diploma, vize ve resmi belgelerinizi çeviriyorum. Belgenizi WhatsApp'tan gönderin — mesai içinde aynı gün net fiyat ve teslim süresi alın.</p>
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           <div className="flex gap-4 p-6 bg-card rounded-xl border border-border"><Shield className="w-8 h-8 text-primary flex-shrink-0" /><div><h3 className="font-bold mb-2">Resmi Geçerlilik</h3><p className="text-muted-foreground text-sm">Yeminli tercüman imzam tüm resmi kurumlarda geçerlidir.</p></div></div>

@@ -12,7 +12,7 @@ export default function DenizliYeminliTercume() {
       <Navbar />
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <Breadcrumb items={[{label: "Hizmetler", href: "/"}, {label: "Denizli Yeminli Tercüme"}]} />
-        <h1 className="text-4xl font-bold text-primary mb-4">Denizli Yeminli Tercüman | İngilizce-Türkçe Yeminli Çeviri</h1>
+        <h1 className="text-4xl font-bold text-primary mb-4">Denizli Yeminli Tercüman — Mehmet Akoğlu</h1>
         <p className="text-xl text-muted-foreground mb-8">Denizli merkezli yeminli tercüman. İngilizce-Türkçe resmi belge çevirisi — pasaport, diploma, vize evrakı. Online veya yüz yüze hizmet, aynı gün teslimat seçeneği.</p>
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           <div className="flex gap-4 p-6 bg-card rounded-xl border border-border"><Shield className="w-8 h-8 text-primary flex-shrink-0" /><div><h3 className="font-bold mb-2">Yeminli Tercüman İmzası</h3><p className="text-muted-foreground text-sm">Yeminname vererek çevirinin doğru ve eksiksiz olduğunu taahhüt ederim. İmza ve kaşe dahil.</p></div></div>
