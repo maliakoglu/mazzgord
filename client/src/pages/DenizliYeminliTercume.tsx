@@ -78,6 +78,14 @@ export default function DenizliYeminliTercume() {
           </div>
         </div>
         <div className="mb-8">
+          <h2 className="text-2xl font-bold text-primary mb-6">İlgili Blog Yazıları</h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            <a href="/blog/yeminli-tercume" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Yeminli Tercüme Sürecinde SSS</a>
+            <a href="/blog/yeminli-tercume-fiyatlari-2026" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Yeminli Tercüme Fiyatları 2026</a>
+            <a href="/blog/pasaport-tercumesi-nasil-yapilir" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Pasaport Tercümesi Nasıl Yapılır?</a>
+          </div>
+        </div>
+        <div className="mb-8">
           <h2 className="text-2xl font-bold text-primary mb-6">İlgili Hizmetler</h2>
           <div className="grid md:grid-cols-2 gap-4">
             <a href="/yeminli-tercume" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Yeminli Tercüme Hizmeti (Genel)</a>

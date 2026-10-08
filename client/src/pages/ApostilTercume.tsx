@@ -50,6 +50,14 @@ export default function ApostilTercume() {
           <p className="text-muted-foreground leading-relaxed">Net fiyat teklifi için belgenizi göndermeniz yeterlidir. Fiyat teklifi ücretsizdir.</p>
           <a href="/teklif" className="inline-flex items-center gap-2 mt-4 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition no-underline">Teklif Al <ArrowLeft className="w-4 h-4 rotate-180" /></a>
         </div>
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-primary mb-6">İlgili Blog Yazıları</h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            <a href="/blog/noter-onayli-ceviri" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Noter Onaylı Çeviri Rehberi</a>
+            <a href="/blog/vize-formatlari" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Vize Tercüme Formatları Rehberi</a>
+            <a href="/blog/yeminli-tercume" className="block px-4 py-3 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Yeminli Tercüme Sürecinde SSS</a>
+          </div>
+        </div>
         <div className="grid md:grid-cols-2 gap-4">
           <a href="/yeminli-tercume" className="block p-4 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Yeminli Tercüme</a>
           <a href="/noter-onayli-tercume" className="block p-4 bg-card rounded-lg border border-border hover:border-primary hover:shadow-md transition no-underline text-foreground">Noter Onaylı Tercüme</a>
