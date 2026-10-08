@@ -14,7 +14,7 @@ import { handleOrdersRoute } from "./routes/orders.js";
 import { handleAuthRoute } from "./routes/auth.js";
 import { handleAccountRoute } from "./routes/account.js";
 import { handleMessagesRoute } from "./routes/messages.js";
-import { processResponse } from "./lib/seoProcessor.js";
+import { processResponse, blogDates } from "./lib/seoProcessor.js";
 import { escapeHtml } from "./lib/escapeHtml.js";
 import { buildSystemPrompt } from "./lib/chatSystemPrompt.js";
 import { handlePaymentRoute } from "./routes/payment.js";
@@ -358,7 +358,7 @@ export default {
     }
 
     if (path === "/sitemap-pages.xml") {
-      const pages = ["/", "/hakkimizda", "/yeminli-tercume", "/teknik-ceviri", "/akademik-ceviri", "/vize-ceviri", "/ingilizce-turkce-ceviri", "/pasaport-ceviri", "/diploma-ceviri", "/fiyatlar", "/hizmetler", "/blog", "/gizlilik", "/kullanim-kosullari", "/cerez-politikasi", "/sss", "/teklif", "/noter-onayli-tercume", "/denizli-yeminli-tercume", "/apostil-tercume", "/transkript-ceviri", "/adli-sicil-cevirisi", "/nufus-kayit-ornegi-cevirisi", "/acil-tercume", "/denizli-noter-onayli-tercume", "/denizli-pasaport-tercumesi", "/denizli-diploma-tercumesi", "/denizli-vize-tercumesi", "/denizli-apostil-tercume", "/iletisim"];
+      const pages = ["/", "/hakkimizda", "/yeminli-tercume", "/teknik-ceviri", "/akademik-ceviri", "/vize-ceviri", "/ingilizce-turkce-ceviri", "/pasaport-ceviri", "/diploma-ceviri", "/fiyatlar", "/hizmetler", "/blog", "/sss", "/teklif", "/noter-onayli-tercume", "/denizli-yeminli-tercume", "/apostil-tercume", "/transkript-ceviri", "/adli-sicil-cevirisi", "/nufus-kayit-ornegi-cevirisi", "/acil-tercume", "/denizli-noter-onayli-tercume", "/denizli-pasaport-tercumesi", "/denizli-diploma-tercumesi", "/denizli-vize-tercumesi", "/denizli-apostil-tercume", "/iletisim"];
       const today = new Date().toISOString().split("T")[0];
       const urls = pages.map(p =>
         "  <url>\n    <loc>https://mazzgord.com" + p + "</loc>\n    <lastmod>" + today + "</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>" + (p === "/" ? "1.0" : "0.9") + "</priority>\n  </url>"
@@ -373,7 +373,7 @@ export default {
       const blogPosts = Object.keys(seoData).filter(p => p.startsWith("/blog/"));
       const today = new Date().toISOString().split("T")[0];
       const urls = blogPosts.map(p =>
-        "  <url>\n    <loc>https://mazzgord.com" + p + "</loc>\n    <lastmod>" + today + "</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>"
+        "  <url>\n    <loc>https://mazzgord.com" + p + "</loc>\n    <lastmod>" + (blogDates[p] || today) + "</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>"
       ).join("\n");
       return new Response(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + "\n</urlset>",

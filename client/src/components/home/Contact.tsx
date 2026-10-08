@@ -38,7 +38,7 @@ export default function Contact() {
               </div>
               <div style={{ borderRadius: '16px', overflow: 'hidden', boxShadow: 'rgba(213, 208, 184, 0.3) 0px 1px 2px 0px' }}>
                 <iframe
-                  src="https://www.google.com/maps?q=37.7765,29.0864&z=13&output=embed"
+                  src="https://www.google.com/maps?q=37.7470977,29.0954121&z=13&output=embed"
                   width="100%"
                   height="200"
                   style={{ border: 'none' }}

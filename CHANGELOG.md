@@ -1,5 +1,43 @@
 # Changelog
 
+## 2026-10-08
+
+### SEO Düzeltmeleri — Sitemap, Schema, Geo Koordinat
+
+#### Sitemap Çakışması Çözüldü
+- `client/public/sitemap.xml` ve `dist/public/sitemap.xml` statik dosyaları silindi
+- Worker'ın dinamik sitemap üretimi tek kaynak olarak korundu (sitemap.xml → sitemap-pages.xml + sitemap-blog.xml)
+
+#### Noindex Sayfaları Sitemap'ten Çıkarıldı
+- `/gizlilik`, `/kullanim-kosullari`, `/cerez-politikasi` sitemap-pages.xml'den kaldırıldı
+- Bu sayfalar robots meta ile noindex ama sitemap'te yer almıyordu — tutarlılık sağlandı
+
+#### Blog Sitemap lastmod Tarihleri
+- `blogDates` seoProcessor.js'den export edildi, worker.js'e import edildi
+- `/sitemap-blog.xml` artık her blog post için gerçek yayın tarihini (blogDates) kullanıyor
+- Önceki: tüm blog URL'leri bugünün tarihini alıyordu — Google her gün "güncellendi" sanıyordu
+
+#### Geo Koordinat Tutarlılığı
+- Tüm 3 dosya tek koordinata sabitlendi: `37.7470977, 29.0954121`
+  - `lib/seoProcessor.js` — LocalBusiness schema GeoCoordinates (eski: 37.9200, 29.1200)
+  - `client/src/components/home/Contact.tsx` — Google Maps embed (eski: 37.7765, 29.0864)
+  - `client/src/components/Map.tsx` — default center (eski: 37.7749, -122.4194 — San Francisco!)
+
+#### BlogPosting Schema Güçlendirildi
+- `image` (ImageObject, 1200x630) eklendi
+- `mainEntityOfPage` eklendi
+- `wordCount` — HTML'den dinamik kelime sayısı hesaplanıyor
+- `articleSection` ("Ceviri Hizmetleri") eklendi
+- `inLanguage` ("tr-TR") eklendi
+
+#### /blog Sayfasına ItemList Schema
+- Blog listeleme sayfasına ItemList schema eklendi
+- Tüm blog postlar ListItem olarak işaretlendi (position + url + name)
+- Google'da blog yazılarının koleksiyon olarak görünmesi için
+
+### Build
+- `npm run build` başarılı
+- 58 HTML dosyası işlendi, 26 title + 26 description düzeltildi, 58 canonical eklendi
 ## 2026-10-07
 
 ### Sitemap Güncellemeleri

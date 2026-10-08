@@ -9,7 +9,7 @@ interface MapViewProps {
 
 export function MapView({
   className,
-  initialCenter = { lat: 37.7749, lng: -122.4194 },
+  initialCenter = { lat: 37.7470977, lng: 29.0954121 },
   initialZoom = 12,
 }: MapViewProps) {
   const { lat, lng } = initialCenter;
