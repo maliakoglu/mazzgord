@@ -71,3 +71,14 @@
 ### Kontrol
 - llms.txt ve sitemap-blog.xml blog linkleri tam eşleşiyor (28/28)
 - Eksik blog yok
+
+## 2026-10-08
+
+### SEO Sitemap & Schema İyileştirmeleri
+- Statik `client/public/sitemap.xml` silindi — worker'ın dinamik sitemap'i ile çakışıyordu
+- Noindex sayfalar (`/gizlilik`, `/kullanim-kosullari`, `/cerez-politikasi`) `/sitemap-pages.xml`'den çıkarıldı
+- Blog sitemap (`/sitemap-blog.xml`) `lastmod` tarihleri artık `blogDates`'ten geliyor (gerçek yayın tarihi)
+- Geo koordinatlar düzeltildi: `37.7470977, 29.0954121` (seoProcessor schema, Contact maps embed, Map.tsx default center)
+- BlogPosting schema zenginleştirildi: `image`, `wordCount`, `articleSection`, `inLanguage`, `mainEntityOfPage` eklendi
+- `/blog` liste sayfasına `ItemList` schema eklendi (Google için blog kataloğu)
+- Build + deploy tamamlandı
