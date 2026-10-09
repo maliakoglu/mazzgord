@@ -90,7 +90,7 @@
 - 63 kayıt toplu olarak güncellendi
 
 ### Apostil Takip Ücreti
-- `apostil_takip` tüm belgeler için 300 TL olarak güncellendi (önceki: 500 TL)
+- `apostil_takip` tüm belgeler için 150 TL olarak güncellendi (önceki: 500 TL)
 
 ### Tutar Hesaplama
 - `noter_price` = `yeminli_price` + `noter_masraf` + `noter_takip` olarak yeniden hesaplandı
