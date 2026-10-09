@@ -82,3 +82,18 @@
 - BlogPosting schema zenginleştirildi: `image`, `wordCount`, `articleSection`, `inLanguage`, `mainEntityOfPage` eklendi
 - `/blog` liste sayfasına `ItemList` schema eklendi (Google için blog kataloğu)
 - Build + deploy tamamlandı
+
+## [2026-10-09] — Fiyatlandırma güncellemesi
+
+### Noter Masrafı
+- Tüm belgeler için `noter_masraf` 1400 TL olarak güncellendi (önceki: 450 TL)
+- 63 kayıt toplu olarak güncellendi
+
+### Apostil Takip Ücreti
+- `apostil_takip` tüm belgeler için 300 TL olarak güncellendi (önceki: 500 TL)
+
+### Tutar Hesaplama
+- `noter_price` = `yeminli_price` + `noter_masraf` + `noter_takip` olarak yeniden hesaplandı
+- `apostil_price` = `yeminli_price` + `noter_masraf` + `noter_takip` + `apostil_takip` olarak yeniden hesaplandı
+- Örnek: Pasaport çevirisi — yeminli 450 + noter 1400 + takip 300 = noter_price 2150 TL
+- Örnek: Diploma çevirisi — yeminli 550 + noter 1400 + takip 300 = noter_price 2250 TL
