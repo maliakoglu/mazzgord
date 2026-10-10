@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/home/Navbar";
 import { Upload, FileText, CheckCircle2, Loader2, X, Globe, Clock, FileType, Mail, Phone, User } from "lucide-react";
 import { track } from "@/lib/analytics";
+import Turnstile from "@/components/Turnstile";
 
 const LANGUAGES = [
   "Türkçe", "İngilizce"
@@ -35,6 +36,7 @@ const URGENCY_OPTIONS = [
 
 export default function TeklifFormu() {
   const [submitStatus, setSubmitStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [turnstileToken, setTurnstileToken] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [emailVerified, setEmailVerified] = useState(false);
   const [verifyStatus, setVerifyStatus] = useState<"idle" | "sending" | "sent" | "verifying" | "error">("idle");
@@ -272,7 +274,8 @@ export default function TeklifFormu() {
           delivery_date: formData.delivery_date || null,
           meeting_day: formData.delivery_method === "hand_delivery" ? (formData.meeting_day || null) : null,
           meeting_time: formData.delivery_method === "hand_delivery" ? (formData.meeting_time || null) : null,
-          idempotency_key: idempotencyKey }) });
+          idempotency_key: idempotencyKey,
+          turnstile_token: turnstileToken }) });
 
       // Web3Forms'e de gönder (e-posta düşer)
       const emailBody = {
@@ -857,6 +860,11 @@ mazzgord.com`;
           </div>
 
           {/* Submit */}
+
+        {/* Turnstile güvenlik doğrulaması */}
+        <div className="flex justify-center mb-6">
+          <Turnstile onToken={setTurnstileToken} />
+        </div>
 
         {/* Güven Badge'leri */}
         <div className="flex flex-wrap justify-center gap-4 mb-6 text-sm text-muted-foreground">

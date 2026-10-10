@@ -6,6 +6,7 @@ import { quoteSchema, validateBody } from "../lib/validation.js";
 import { generateCode, storeVerifyCode, checkVerifyCode, sendVerifyEmail, markEmailVerified, isEmailVerified } from "../lib/emailVerify.js";
 import { getCustomerFromRequest } from "../lib/customerAuth.js";
 import { sendStatusNotification, sendTelegramNotification } from "../lib/notifications.js";
+import { verifyTurnstile } from "../lib/turnstile.js";
 
 export async function handleQuote(request, env, path = "", method = "POST") {
   // GET /api/quote/:id/review — Değerlendirme getir
@@ -548,6 +549,19 @@ export async function handleQuote(request, env, path = "", method = "POST") {
         return new Response(JSON.stringify({ success: false, error: "E-posta dogrulamasi gerekli" }), {
           status: 403, headers: { "Content-Type": "application/json", ...corsHeaders },
         });
+      }
+    }
+
+    // Turnstile bot korumasi (opsiyonel - token varsa dogrula, yoksa gec)
+    if (!authCustomer) {
+      const turnstileToken = validation.data.turnstile_token;
+      if (turnstileToken) {
+        const turnstileResult = await verifyTurnstile(turnstileToken, env, request.headers.get("CF-Connecting-IP"));
+        if (!turnstileResult.success) {
+          return new Response(JSON.stringify({ success: false, error: turnstileResult.error }), {
+            status: 403, headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
       }
     }
 

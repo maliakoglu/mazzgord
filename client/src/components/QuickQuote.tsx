@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Zap, Send, CheckCircle2, Loader2 } from "lucide-react";
 import { track } from "@/lib/analytics";
+import Turnstile from "./Turnstile";
 
 const DOC_TYPES = [
   "Pasaport",
@@ -22,6 +23,7 @@ export default function QuickQuote() {
   const [docType, setDocType] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [orderNo, setOrderNo] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,6 +46,7 @@ export default function QuickQuote() {
           urgency: "standart",
           delivery_method: "digital",
           idempotency_key: crypto.randomUUID(),
+          turnstile_token: turnstileToken,
         }),
       });
 
@@ -127,6 +130,9 @@ export default function QuickQuote() {
             <option key={d} value={d}>{d}</option>
           ))}
         </select>
+        <div className="sm:col-span-3">
+          <Turnstile onToken={setTurnstileToken} />
+        </div>
         <button
           type="submit"
           disabled={status === "sending"}

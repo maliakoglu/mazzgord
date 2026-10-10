@@ -338,9 +338,236 @@ export default {
       }
     }
 
-    if (path === "/robots.txt") {
+    if (path === "/.well-known/api-catalog") {
+      const catalog = JSON.stringify({
+        linkset: [
+          {
+            anchor: "https://mazzgord.com",
+            describedby: [{ href: "https://mazzgord.com/sitemap.xml", type: "application/xml" }],
+            "service-doc": [{ href: "https://mazzgord.com/robots.txt", type: "text/plain" }],
+            "service-desc": [{ href: "https://mazzgord.com/sitemap-pages.xml", type: "application/xml" }]
+          }
+        ]
+      });
+      return new Response(catalog, {
+        headers: {
+          "Content-Type": "application/linkset+json; charset=utf-8",
+          "Cache-Control": "public, max-age=86400"
+        }
+      });
+    }
+
+    if (path === "/auth.md") {
       return new Response(
-        "User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /giris\nDisallow: /hesabim\nDisallow: /sepet\nDisallow: /odeme\nDisallow: /odeme/sonuc\nDisallow: /api/\n\n# AI Botlari\nUser-agent: GPTBot\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /\n\nUser-agent: CCBot\nAllow: /\n\nUser-agent: Google-Extended\nAllow: /\n\nUser-agent: anthropic-ai\nAllow: /\n\nUser-agent: YandexBot\nAllow: /\n\nUser-agent: DuckDuckBot\nAllow: /\n\nUser-agent: Bingbot\nAllow: /\n\nUser-agent: Slurp\nAllow: /\n\nSitemap: https://mazzgord.com/sitemap.xml",
+        "# auth.md\n\n"
+        + "Mazzgord \u00c7eviri Hizmetleri \u2014 Agent Authentication\n\n"
+        + "## Audience\n\n"
+        + "This document is for AI agents and automated clients accessing mazzgord.com.\n\n"
+        + "## Authentication\n\n"
+        + "mazzgord.com is a public website. No authentication is required to access public content.\n\n"
+        + "## Agent Registration\n\n"
+        + "This site supports anonymous access. No registration is required.\n\n"
+        + "```yaml\n"
+        + "identity_types_supported:\n"
+        + "  - anonymous\n"
+        + "anonymous:\n"
+        + "  credential_types_supported:\n"
+        + "    - none\n"
+        + "claim_uri: https://mazzgord.com/auth.md\n"
+        + "agent_auth:\n"
+        + "  skill: https://mazzgord.com/auth.md\n"
+        + "  register_uri: https://mazzgord.com/auth.md\n"
+        + "  methods:\n"
+        + "    - type: anonymous\n"
+        + "      register_uri: https://mazzgord.com/auth.md\n"
+        + "      credential_use: No credentials needed for public content access.\n"
+        + "```\n\n"
+        + "## Protected Resources\n\n"
+        + "The following endpoints require user authentication (session-based) and are disallowed for bots:\n\n"
+        + "- /admin \u2014 Admin panel\n"
+        + "- /giris \u2014 Login\n"
+        + "- /hesabim \u2014 Account\n"
+        + "- /sepet \u2014 Cart\n"
+        + "- /odeme \u2014 Payment\n\n"
+        + "## Agent Auth\n\n"
+        + "OAuth Authorization Server metadata: https://mazzgord.com/.well-known/oauth-authorization-server\n\n"
+        + "agent_auth block is available in the AS metadata with anonymous registration method.\n\n"
+        + "## Contact\n\n"
+        + "For questions about automated access: info@mazzgord.com",
+        {
+          headers: {
+            "Content-Type": "text/markdown; charset=utf-8",
+            "Cache-Control": "public, max-age=86400"
+          }
+        }
+      );
+    }
+
+    if (path === "/.well-known/agent-card.json") {
+      const card = JSON.stringify({
+        name: "Mazzgord Çeviri Hizmetleri",
+        version: "1.0.0",
+        description: "Profesyonel çeviri hizmetleri — yeminli tercüme, teknik çeviri, akademik çeviri, vize çevirisi, noter onaylı çeviri ve daha fazlası.",
+        supportedInterfaces: [
+          {
+            url: "https://mazzgord.com",
+            transportProtocol: "HTTPS"
+          }
+        ],
+        capabilities: [
+          { name: "translation-quote", description: "Get a quote for translation services" },
+          { name: "translation-services", description: "Browse available translation services" },
+          { name: "translation-languages", description: "List supported language pairs" }
+        ],
+        skills: [
+          { id: "translation-quote", name: "Translation Quote", description: "Request a quote for professional translation services" },
+          { id: "translation-services", name: "Translation Services", description: "Browse the full catalog of translation services offered" },
+          { id: "translation-languages", name: "Supported Languages", description: "List of supported source and target language pairs" }
+        ]
+      });
+      return new Response(card, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "public, max-age=86400"
+        }
+      });
+    }
+
+    if (path === "/.well-known/agent-skills/index.json") {
+      const index = JSON.stringify({
+        "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+        skills: [
+          {
+            name: "mazzgord-translation",
+            type: "skill-md",
+            description: "Mazzgord çeviri hizmetleri için agent skill — teklif, hizmet listesi ve dil çiftleri",
+            url: "https://mazzgord.com/.well-known/agent-skills/mazzgord-translation/SKILL.md",
+            digest: "sha256:8f89161e9438c122da901058e1c48f33ee694a4e731d3a065be6dc9fe8974d25"
+          }
+        ]
+      });
+      return new Response(index, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "public, max-age=86400"
+        }
+      });
+    }
+
+    if (path === "/.well-known/agent-skills/mazzgord-translation/SKILL.md") {
+      return new Response(
+        "# Mazzgord Çeviri Hizmetleri\n\n## Description\n\nMazzgord, Denizli merkezli profesyonel çeviri hizmetleri sunan bir platformdur. Yeminli tercüme, teknik çeviri, akademik çeviri, vize çevirisi, noter onaylı çeviri, pasaport çevirisi, diploma çevirisi ve apostil hizmetleri sağlar.\n\n## Capabilities\n\n- **translation-quote**: Çeviri hizmetleri için fiyat teklifi al\n- **translation-services**: Mevcut çeviri hizmetlerini listele\n- **translation-languages**: Desteklenen dil çiftlerini göster\n\n## Usage\n\nAgentlar mazzgord.com'daki tüm herkese açık sayfalara erişebilir. Fiyat teklifi için /teklif sayfası, hizmet listesi için /hizmetler sayfası kullanılabilir.\n\n## Contact\n\ninfo@mazzgord.com",
+        {
+          headers: {
+            "Content-Type": "text/markdown; charset=utf-8",
+            "Cache-Control": "public, max-age=86400"
+          }
+        }
+      );
+    }
+
+    if (path === "/.well-known/oauth-protected-resource") {
+      const prm = JSON.stringify({
+        resource: "https://mazzgord.com",
+        authorization_servers: ["https://mazzgord.com"],
+        scopes_supported: ["public", "read"],
+        bearer_methods_supported: ["header"],
+        agent_auth: {
+          skill: "https://mazzgord.com/auth.md",
+          register_uri: "https://mazzgord.com/auth.md",
+          identity_types_supported: ["anonymous"],
+          methods: [
+            { type: "anonymous", register_uri: "https://mazzgord.com/auth.md", credential_use: "No credentials needed for public content access." }
+          ]
+        }
+      });
+      return new Response(prm, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "public, max-age=86400"
+        }
+      });
+    }
+
+    if (path === "/.well-known/oauth-authorization-server") {
+      const metadata = JSON.stringify({
+        issuer: "https://mazzgord.com",
+        authorization_endpoint: "https://mazzgord.com/giris",
+        token_endpoint: "https://mazzgord.com/api/token",
+        response_types_supported: ["code"],
+        grant_types_supported: ["authorization_code", "implicit"],
+        scopes_supported: ["public", "read"],
+        token_endpoint_auth_methods_supported: ["none"],
+        code_challenge_methods_supported: ["S256"],
+        identity_types_supported: ["anonymous"],
+        anonymous: {
+          credential_types_supported: ["none"]
+        },
+        claim_uri: "https://mazzgord.com/auth.md",
+        agent_auth: {
+          skill: "https://mazzgord.com/auth.md",
+          register_uri: "https://mazzgord.com/auth.md",
+          methods: [
+            { type: "anonymous", register_uri: "https://mazzgord.com/auth.md", credential_use: "No credentials needed for public content access." }
+          ]
+        }
+      });
+      return new Response(metadata, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "public, max-age=86400"
+        }
+      });
+    }
+
+    if (path === "/.well-known/mcp/server-card.json") {
+      const card = JSON.stringify({
+        name: "Mazzgord Çeviri Hizmetleri",
+        version: "1.0.0",
+        description: "Profesyonel çeviri hizmetleri — yeminli tercüme, teknik çeviri, akademik çeviri ve daha fazlası.",
+        tools: []
+      });
+      return new Response(card, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "public, max-age=86400"
+        }
+      });
+    }
+
+    if (path === "/.well-known/ai-catalog.json") {
+      const catalog = JSON.stringify({
+        name: "Mazzgord Çeviri Hizmetleri",
+        version: "1.0.0",
+        specVersion: "0.1",
+        description: "Profesyonel çeviri hizmetleri kataloğu",
+        capabilities: [
+          { name: "translation-quote", description: "Get a quote for translation services" },
+          { name: "translation-services", description: "Browse available translation services" },
+          { name: "translation-languages", description: "List supported language pairs" }
+        ],
+        entries: [
+          { identifier: "translation-quote", displayName: "Translation Quote", type: "capability", description: "Get a quote for translation services", url: "https://mazzgord.com/teklif" },
+          { identifier: "translation-services", displayName: "Translation Services", type: "capability", description: "Browse available translation services", url: "https://mazzgord.com/hizmetler" },
+          { identifier: "translation-languages", displayName: "Supported Languages", type: "capability", description: "List supported language pairs", url: "https://mazzgord.com" }
+        ],
+        endpoints: [
+          { url: "https://mazzgord.com/.well-known/agent-card.json", type: "agent-card" },
+          { url: "https://mazzgord.com/.well-known/api-catalog", type: "api-catalog" },
+          { url: "https://mazzgord.com/.well-known/agent-skills/index.json", type: "agent-skills" }
+        ]
+      });
+      return new Response(catalog, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "public, max-age=86400"
+        }
+      });
+    }
+
+        if (path === "/robots.txt") {
+      return new Response(
+        "User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /giris\nDisallow: /hesabim\nDisallow: /sepet\nDisallow: /odeme\nDisallow: /odeme/sonuc\nDisallow: /api/\n\n# AI Botlari\nUser-agent: GPTBot\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /\n\nUser-agent: CCBot\nAllow: /\n\nUser-agent: Google-Extended\nAllow: /\n\nUser-agent: anthropic-ai\nAllow: /\n\nUser-agent: YandexBot\nAllow: /\n\nUser-agent: DuckDuckBot\nAllow: /\n\nUser-agent: Bingbot\nAllow: /\n\nUser-agent: Slurp\nAllow: /\n\nContent-Signal: ai-train=no, search=yes, ai-input=no\nSitemap: https://mazzgord.com/sitemap.xml",
         {
           headers: {
             "Content-Type": "text/plain; charset=utf-8",

@@ -2,6 +2,7 @@
 import { corsHeaders } from "../lib/cors.js";
 import { sendTelegramNotification } from "../lib/notifications.js";
 import { contactSchema, validateBody } from "../lib/validation.js";
+import { verifyTurnstile } from "../lib/turnstile.js";
 
 export async function handleContact(request, env) {
   try {
@@ -9,7 +10,17 @@ export async function handleContact(request, env) {
     const validation = validateBody(contactSchema, body);
     if (!validation.success) return validation.response;
 
-    const { name, email, phone, message } = validation.data;
+    const { name, email, phone, message, turnstile_token } = validation.data;
+
+    // Turnstile dogrulama (opsiyonel — token varsa dogrula)
+    if (turnstile_token) {
+      const turnstileResult = await verifyTurnstile(turnstile_token, env, request.headers.get("CF-Connecting-IP"));
+      if (!turnstileResult.success) {
+        return new Response(JSON.stringify({ success: false, error: turnstileResult.error }), {
+          status: 403, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+    }
 
     await env.DB.prepare(
       "INSERT INTO messages (name, email, phone, subject, message) VALUES (?, ?, ?, ?, ?)"

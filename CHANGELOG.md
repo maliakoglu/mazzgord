@@ -97,3 +97,31 @@
 - `apostil_price` = `yeminli_price` + `noter_masraf` + `noter_takip` + `apostil_takip` olarak yeniden hesaplandı
 - Örnek: Pasaport çevirisi — yeminli 450 + noter 1400 + takip 300 = noter_price 2150 TL
 - Örnek: Diploma çevirisi — yeminli 550 + noter 1400 + takip 300 = noter_price 2250 TL
+
+## 2026-10-10 — Agent Readiness (isitagentready.com)
+
+### worker.js
+- robots.txt'ye Content-Signal direktifi eklendi (ai-train=no, search=yes, ai-input=no)
+- /.well-known/api-catalog endpoint'i eklendi (linkset+json)
+- /auth.md endpoint'i eklendi (agent authentication, anonymous registration)
+- /.well-known/agent-card.json endpoint'i eklendi (A2A Agent Card)
+- /.well-known/agent-skills/index.json endpoint'i eklendi (skills discovery)
+- /.well-known/agent-skills/mazzgord-translation/SKILL.md endpoint'i eklendi
+- /.well-known/oauth-protected-resource endpoint'i eklendi (OAuth PRM)
+- /.well-known/oauth-authorization-server endpoint'i eklendi (OAuth AS metadata)
+- /.well-known/mcp/server-card.json endpoint'i eklendi (MCP Server Card)
+- /.well-known/ai-catalog.json endpoint'i eklendi (ARD capability manifest)
+
+### lib/seoProcessor.js
+- Homepage (/) yanıtına Link headers eklendi (RFC 8288 / RFC 9727)
+  - describedby: sitemap.xml
+  - service-doc: robots.txt
+  - service-desc: sitemap-pages.xml
+
+### DNS
+- _index._agents.mazzgord.com SVCB/HTTPS kaydı eklendi (DNS-AID)
+
+### Sonuç
+- Level 2 (Bot-Aware) — 14/16 check pass
+- markdownNegotiation: fail (ücretli Cloudflare özelliği)
+- authMd: fail (agent_auth metadata formatı sorunu — sonraki sefere düzeltilecek)

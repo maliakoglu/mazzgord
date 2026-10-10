@@ -1,0 +1,134 @@
+import { useEffect, useRef, useState, useCallback } from "react";
+
+const TURNSTILE_SITE_KEY = "0x4AAAAAAFSE5c4qWTQfO8vi";
+
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (container: string | HTMLElement, options: any) => string;
+      reset: (widgetId: string) => void;
+      remove: (widgetId: string) => void;
+      getResponse: (widgetId: string) => string | undefined;
+    };
+  }
+}
+
+export default function Turnstile({ onToken }: { onToken: (token: string) => void }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<string | null>(null);
+  const onTokenRef = useRef(onToken);
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
+  const [timedOut, setTimedOut] = useState(false);
+  const [retryKey, setRetryKey] = useState(0);
+
+  useEffect(() => {
+    onTokenRef.current = onToken;
+  }, [onToken]);
+
+  // Script yükle
+  useEffect(() => {
+    if (window.turnstile) {
+      setLoaded(true);
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+    script.async = true;
+    script.defer = true;
+    script.onload = () => setLoaded(true);
+    script.onerror = () => setError(true);
+    document.head.appendChild(script);
+  }, []);
+
+  // Widget render
+  useEffect(() => {
+    if (!loaded || !containerRef.current || !window.turnstile) return;
+    if (widgetIdRef.current) return;
+
+    setTimedOut(false);
+
+    try {
+      widgetIdRef.current = window.turnstile.render(containerRef.current, {
+        sitekey: TURNSTILE_SITE_KEY,
+        callback: (token: string) => {
+          onTokenRef.current(token);
+          setTimedOut(false);
+        },
+        "expired-callback": () => onTokenRef.current(""),
+        "error-callback": () => {
+          onTokenRef.current("");
+          setError(true);
+        },
+        "refresh-expired": "auto",
+        theme: "light",
+      });
+    } catch {
+      setError(true);
+    }
+  }, [loaded, retryKey]);
+
+  // Timeout — 12 sn içinde token gelmezse uyar
+  useEffect(() => {
+    if (!loaded || error) return;
+    const t = setTimeout(() => {
+      if (widgetIdRef.current && window.turnstile) {
+        const token = window.turnstile.getResponse(widgetIdRef.current);
+        if (token) {
+          onTokenRef.current(token);
+        } else {
+          setTimedOut(true);
+        }
+      }
+    }, 12000);
+    return () => clearTimeout(t);
+  }, [loaded, retryKey, error]);
+
+  // Cleanup
+  useEffect(() => {
+    return () => {
+      if (widgetIdRef.current && window.turnstile) {
+        try { window.turnstile.remove(widgetIdRef.current); } catch {}
+      }
+    };
+  }, []);
+
+  const handleRetry = useCallback(() => {
+    if (widgetIdRef.current && window.turnstile) {
+      try { window.turnstile.remove(widgetIdRef.current); } catch {}
+    }
+    widgetIdRef.current = null;
+    setError(false);
+    setTimedOut(false);
+    onTokenRef.current("");
+    setRetryKey(k => k + 1);
+  }, []);
+
+  if (error || timedOut) {
+    return (
+      <div className="flex flex-col items-center gap-3 p-3 border border-amber-200 rounded-lg bg-amber-50">
+        <p className="text-sm text-amber-700 text-center">
+          Güvenlik doğrulaması {error ? "yüklenemedi" : "zaman aşımına uğradı"}. Lütfen tekrar deneyin.
+        </p>
+        <button
+          type="button"
+          onClick={handleRetry}
+          className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition"
+        >
+          Tekrar Dene
+        </button>
+      </div>
+    );
+  }
+
+  if (!loaded) {
+    return (
+      <div className="flex items-center gap-2 text-sm text-muted-foreground p-2">
+        <span className="inline-block w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        Güvenlik doğrulaması yükleniyor...
+      </div>
+    );
+  }
+
+  return <div ref={containerRef} />;
+}
