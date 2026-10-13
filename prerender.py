@@ -126,7 +126,7 @@ for route in ROUTES:
             ],
             capture_output=True,
             text=True,
-            timeout=60,
+            timeout=120,
         )
     except subprocess.TimeoutExpired:
         print(f"⚠️ Timeout (60s): {route} - atlanıyor")

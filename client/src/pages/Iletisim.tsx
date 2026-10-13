@@ -11,6 +11,7 @@ export default function Iletisim() {
       <Navbar />
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <Breadcrumb items={[{label: "İletişim"}]} />
+        <h1 className="text-4xl font-bold text-primary mb-8">İletişim</h1>
         <Contact />
       </div>
       <Footer />

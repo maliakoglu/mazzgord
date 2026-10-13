@@ -585,7 +585,7 @@ export default {
     }
 
     if (path === "/sitemap-pages.xml") {
-      const pages = ["/", "/hakkimizda", "/yeminli-tercume", "/teknik-ceviri", "/akademik-ceviri", "/vize-ceviri", "/ingilizce-turkce-ceviri", "/pasaport-ceviri", "/diploma-ceviri", "/fiyatlar", "/hizmetler", "/blog", "/sss", "/teklif", "/noter-onayli-tercume", "/denizli-yeminli-tercume", "/apostil-tercume", "/transkript-ceviri", "/adli-sicil-cevirisi", "/nufus-kayit-ornegi-cevirisi", "/acil-tercume", "/denizli-noter-onayli-tercume", "/denizli-pasaport-tercumesi", "/denizli-diploma-tercumesi", "/denizli-vize-tercumesi", "/denizli-apostil-tercume", "/iletisim"];
+      const pages = ["/", "/hakkimizda", "/yeminli-tercume", "/teknik-ceviri", "/akademik-ceviri", "/vize-ceviri", "/ingilizce-turkce-ceviri", "/pasaport-ceviri", "/diploma-ceviri", "/fiyatlar", "/blog", "/sss", "/teklif", "/noter-onayli-tercume", "/denizli-yeminli-tercume", "/apostil-tercume", "/transkript-ceviri", "/adli-sicil-cevirisi", "/nufus-kayit-ornegi-cevirisi", "/acil-tercume", "/denizli-noter-onayli-tercume", "/denizli-pasaport-tercumesi", "/denizli-diploma-tercumesi", "/denizli-vize-tercumesi", "/denizli-apostil-tercume", "/iletisim"];
       const today = new Date().toISOString().split("T")[0];
       const urls = pages.map(p =>
         "  <url>\n    <loc>https://mazzgord.com" + p + "</loc>\n    <lastmod>" + today + "</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>" + (p === "/" ? "1.0" : "0.9") + "</priority>\n  </url>"

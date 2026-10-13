@@ -43,9 +43,8 @@ for html_path in html_files:
         if route.endswith("/"):
             route = route.rstrip("/")
 
-    # Only fix pages where title is still the default (page didn't set its own)
-    title_match = re.search(r'<title>([^<]*)</title>', content)
-    if title_match and title_match.group(1) == DEFAULT_TITLE and route in seo_data:
+    # seoData'da varsa her zaman title/description zorla yaz
+    if route in seo_data:
         seo = seo_data[route]
 
         # Replace title
@@ -62,15 +61,7 @@ for html_path in html_files:
             content = re.sub(r'(<title>[^<]*</title>)', r'\1\n    ' + new_desc, content, count=1)
         desc_fixed += 1
 
-        # Replace og:title
-        og_title_pattern = r'<meta\s+property="og:title"\s+content="[^"]*"\s*/?>'
-        if re.search(og_title_pattern, content):
-            content = re.sub(og_title_pattern, f'<meta property="og:title" content="{seo["title"]}"/>', content)
 
-        # Replace og:description
-        og_desc_pattern = r'<meta\s+property="og:description"\s+content="[^"]*"\s*/?>'
-        if re.search(og_desc_pattern, content):
-            content = re.sub(og_desc_pattern, f'<meta property="og:description" content="{seo["description"]}"/>', content)
 
     # --- Canonical link (tüm sayfalar için) ---
     canonical_url = "https://mazzgord.com" + ("" if route == "/" else route)
@@ -82,6 +73,45 @@ for html_path in html_files:
         content = re.sub(r'(<title>[^<]*</title>)', r'\1\n    ' + canonical_tag, content, count=1)
     modified = True
     canonical_fixed += 1
+
+    # --- noindex: ozel sayfalar ---
+    NOINDEX_ROUTES = {"/giris", "/hesabim", "/odeme", "/odeme/sonuc", "/admin", "/degerlendir", "/siparis-takip", "/gizlilik", "/kullanim-kosullari", "/cerez-politikasi"}
+    if route in NOINDEX_ROUTES:
+        robots_pattern = r'<meta\s+name="robots"\s+content="[^"]*"\s*/?>'
+        noindex_tag = '<meta name="robots" content="noindex, follow"/>'
+        if re.search(robots_pattern, content):
+            content = re.sub(robots_pattern, noindex_tag, content)
+        else:
+            content = re.sub(r'(<title>[^<]*</title>)', r'\1\n    ' + noindex_tag, content, count=1)
+        modified = True
+
+
+    # --- OG ve Twitter etiketleri (tum sayfalar, seoData'dan) ---
+    if route in seo_data:
+        seo = seo_data[route]
+        og_title_pattern = r'<meta\s+property="og:title"\s+content="[^"]*"\s*/?>'
+        if re.search(og_title_pattern, content):
+            content = re.sub(og_title_pattern, f'<meta property="og:title" content="{seo["title"]}"/>', content)
+        og_desc_pattern = r'<meta\s+property="og:description"\s+content="[^"]*"\s*/?>'
+        if re.search(og_desc_pattern, content):
+            content = re.sub(og_desc_pattern, f'<meta property="og:description" content="{seo["description"]}"/>', content)
+        og_url_pattern = r'<meta\s+property="og:url"\s+content="[^"]*"\s*/?>'
+        if re.search(og_url_pattern, content):
+            content = re.sub(og_url_pattern, f'<meta property="og:url" content="{canonical_url}"/>', content)
+        tw_title_pattern = r'<meta\s+name="twitter:title"\s+content="[^"]*"\s*/?>'
+        tw_title_tag = f'<meta name="twitter:title" content="{seo["title"]}"/>'
+        if re.search(tw_title_pattern, content):
+            content = re.sub(tw_title_pattern, tw_title_tag, content)
+        else:
+            tw_card_pattern = r'(<meta\s+name="twitter:card"[^>]*/?>)'
+            if re.search(tw_card_pattern, content):
+                content = re.sub(tw_card_pattern, r'\1\n    ' + tw_title_tag, content, count=1)
+        tw_desc_pattern = r'<meta\s+name="twitter:description"\s+content="[^"]*"\s*/?>'
+        tw_desc_tag = f'<meta name="twitter:description" content="{seo["description"]}"/>'
+        if re.search(tw_desc_pattern, content):
+            content = re.sub(tw_desc_pattern, tw_desc_tag, content)
+        else:
+            content = re.sub(r'(<meta\s+name="twitter:title"[^>]*/?>)', r'\1\n    ' + tw_desc_tag, content, count=1)
 
     # --- p:domain_verify logic (existing) ---
     existing = re.findall(r'<meta\s+name="p:domain_verify"[^>]*/?>', content)
