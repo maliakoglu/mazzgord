@@ -1,5 +1,26 @@
 # Changelog
 
+## [2026-10-17] — ARD ai-catalog.json şema düzeltmesi ve PageSpeed performans optimizasyonu
+
+### ARD ai-catalog.json şema düzeltmesi
+- `specVersion` `"0.1"` → `"1.0"` (ARD 1.0 spesifikasyonu)
+- Root'ta izin verilmeyen özellikler kaldırıldı: `name`, `version`, `description`, `capabilities`, `endpoints`
+- Identifier'lar RFC 8141 URN formatına çevrildi:
+  - `translation-quote` → `urn:air:mazzgord:translation:quote`
+  - `translation-services` → `urn:air:mazzgord:translation:services`
+  - `translation-languages` → `urn:air:mazzgord:translation:languages`
+- `type: "capability"` → `mediaType: "application/ai-registry+json"` (standart keşif türü)
+- Her kayıt için 3'er adet `representativeQueries` eklendi (vector index embedding için)
+- Değişiklik Worker `processResponse` içindeki `/.well-known/ai-catalog.json` handler'ında yapıldı
+
+### PageSpeed performans optimizasyonu (Worker `processResponse`)
+- **Render-blocking CSS**: Tüm `<link rel="stylesheet">` link'leri artık global regex ile işleniyor (eski kod sadece ilkini buluyordu)
+- **Font CSS non-render-blocking**: `fonts.css` artık `preload + onload` pattern ile async yükleniyor, `<noscript>` fallback eklendi
+- **Font-display: swap**: CSS yanıtlarındaki `@font-face` bloklarına otomatik `font-display: swap` ekleniyor (zaten varsa dokunulmuyor)
+- **Ana CSS korunuyor**: `index-*.css` render-blocking olarak bırakıldı (React SPA ilk render için gerekli)
+- **Cloudflare Insights**: RUM (Browser Insights) açık olduğu doğrulandı — `beacon.min.js` ve `/cdn-cgi/rum` projeden değil Cloudflare edge'inden geliyor, kapatılmadı
+- **Forced reflow**: Worker JS içinde ölçüm pattern'i bulunamadı — reflow client-side React bundle'ında, kaynak kod değişikliği gerektiriyor
+
 ## 2026-10-08
 
 ### SEO Düzeltmeleri — Sitemap, Schema, Geo Koordinat
