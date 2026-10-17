@@ -1,5 +1,24 @@
 # Changelog
 
+## [2026-10-17] — Bundle optimizasyonu: shiki dil grameri sınırlandırma ve recharts kaldırma
+
+### Shiki dil grameri optimizasyonu (streamdown patch)
+- `code-block-IT6T5CEO.js` patch'lendi: `createHighlighter` (shiki full) → `createHighlighterCore` (shiki/core)
+- `bundledLanguages` import'u kaldırıldı — shiki'nin yüzlerce dil grameri (emacs-lisp, wasm vb.) artık bundle'da yok
+- Yerel `bundledLanguages` sadece 15 dil ile sınırlandırıldı: bash, css, go, html, javascript, json, jsx, markdown, python, shellscript, sql, toml, tsx, typescript, yaml
+- Theme import'ları `shiki/themes/github-light.mjs` ve `github-dark.mjs` olarak doğrudan eklendi
+- `scripts/patch-streamdown.sh` postinstall script'i ile patch kalıcı hale getirildi
+- `package.json`'a `postinstall` script eklendi
+
+### recharts kaldırma
+- `recharts` package.json'dan kaldırıldı (hiçbir source dosyasında import edilmiyordu)
+
+### Bulgular
+- `cynefin` bir shiki dili değil, mermaid diyagram tipi — mermaid zaten lazy-loaded
+- `vendor-motion` (framer-motion) zaten lazy-loaded (sadece /teklif route'unda)
+- `vendor-charts` (d3) mermaid'den geliyor, zaten lazy-loaded
+- Tüm ağır chunk'lar (shiki, mermaid, d3) sadece chat widget açılınca yüklenir, ana sayfada değil
+
 ## [2026-10-17] — ARD ai-catalog.json şema düzeltmesi ve PageSpeed performans optimizasyonu
 
 ### ARD ai-catalog.json şema düzeltmesi

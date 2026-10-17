@@ -10,7 +10,8 @@
     "check": "tsc --noEmit",
     "test": "vitest run",
     "format": "prettier --write .",
-    "prerender": "node prerender.cjs"
+    "prerender": "node prerender.cjs",
+    "postinstall": "bash scripts/patch-streamdown.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -32,7 +33,6 @@
     "react-dom": "^19.2.1",
     "react-hook-form": "^7.64.0",
     "react-resizable-panels": "^3.0.6",
-    "recharts": "^2.15.2",
     "sonner": "^2.0.7",
     "streamdown": "^1.4.0",
     "tailwind-merge": "^3.3.1",
