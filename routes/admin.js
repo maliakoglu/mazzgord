@@ -22,11 +22,33 @@ export async function handleAdminRoute(path, request, env) {
     }
   }
 
-  // GET /api/customers — Admin: müşteri listesi (özet)
-  if (path === "/api/customers" && request.method === "GET") {
+
+  // GET /api/customers/unmatched — Admin: customers ile eşleşmeyen mesajlar
+  if (path === "/api/customers/unmatched" && request.method === "GET") {
     try {
       if (!checkAdminAuth(request, env)) return unauthorizedResponse();
       const result = await env.DB.prepare(
+        `SELECT m.id, m.name, m.email, m.subject, m.created_at
+         FROM messages m
+         WHERE lower(m.email) NOT IN (SELECT lower(email) FROM customers)
+         ORDER BY m.created_at DESC`
+      ).all();
+      return new Response(JSON.stringify({ success: true, data: result.results }), {
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    } catch (err) {
+      return new Response(JSON.stringify({ success: false, error: "Sunucu hatasi" }), {
+        status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+  }
+
+  // GET /api/customers — Admin: müşteri listesi (customers tablosu + quotes birleşik)
+  if (path === "/api/customers" && request.method === "GET") {
+    try {
+      if (!checkAdminAuth(request, env)) return unauthorizedResponse();
+
+      const quotesResult = await env.DB.prepare(
         `SELECT q.email, q.name, q.phone,
           COUNT(*) as total_orders,
           COUNT(DISTINCT q.source_language || '→' || q.target_language) as lang_variety,
@@ -39,7 +61,50 @@ export async function handleAdminRoute(path, request, env) {
         GROUP BY q.email
         ORDER BY last_order DESC`
       ).all();
-      return new Response(JSON.stringify({ success: true, data: result.results }), {
+
+      const registeredResult = await env.DB.prepare(
+        `SELECT id, email, name, phone, created_at FROM customers ORDER BY created_at DESC`
+      ).all();
+
+      const registeredMap = new Map();
+      for (const c of registeredResult.results) {
+        registeredMap.set(c.email.toLowerCase(), c);
+      }
+
+      const customers = [];
+      const seenEmails = new Set();
+
+      for (const q of quotesResult.results) {
+        const reg = registeredMap.get(q.email.toLowerCase());
+        customers.push({
+          ...q,
+          customer_id: reg ? reg.id : null,
+          has_account: !!reg,
+          account_created_at: reg ? reg.created_at : null,
+        });
+        seenEmails.add(q.email.toLowerCase());
+      }
+
+      for (const c of registeredResult.results) {
+        if (!seenEmails.has(c.email.toLowerCase())) {
+          customers.push({
+            email: c.email,
+            name: c.name,
+            phone: c.phone,
+            total_orders: 0,
+            lang_variety: 0,
+            first_order: null,
+            last_order: null,
+            total_spent: 0,
+            lang_pairs: null,
+            customer_id: c.id,
+            has_account: true,
+            account_created_at: c.created_at,
+          });
+        }
+      }
+
+      return new Response(JSON.stringify({ success: true, data: customers }), {
         headers: { "Content-Type": "application/json", ...corsHeaders },
       });
     } catch (err) {
@@ -49,18 +114,86 @@ export async function handleAdminRoute(path, request, env) {
     }
   }
 
-  // GET /api/customer/:email — Admin: müşteri detayı
-  if (path.startsWith("/api/customer/") && request.method === "GET") {
+  // GET /api/customer-detail?email=<encoded> — Admin: müşteri detayı (email query param)
+  if (path === "/api/customer-detail" && request.method === "GET") {
     try {
       if (!checkAdminAuth(request, env)) return unauthorizedResponse();
-      const customerEmail = decodeURIComponent(path.replace("/api/customer/", ""));
-      const orders = await env.DB.prepare(
-        "SELECT * FROM quotes WHERE email = ? ORDER BY created_at DESC"
+      const url = new URL(request.url);
+      const customerEmail = url.searchParams.get("email");
+      if (!customerEmail) {
+        return new Response(JSON.stringify({ success: false, error: "E-posta gerekli" }), {
+          status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+
+      const customer = await env.DB.prepare(
+        "SELECT id, email, name, phone, created_at FROM customers WHERE lower(email) = lower(?)"
+      ).bind(customerEmail).first();
+
+      const quotes = await env.DB.prepare(
+        "SELECT * FROM quotes WHERE lower(email) = lower(?) ORDER BY created_at DESC"
       ).bind(customerEmail).all();
-      const payments = await env.DB.prepare(
-        "SELECT p.* FROM payments p JOIN quotes q ON p.quote_id = q.id WHERE q.email = ? ORDER BY p.created_at DESC"
+
+      const quoteIds = quotes.results.map(q => q.id);
+
+      let payments = [];
+      if (quoteIds.length > 0) {
+        const ph = quoteIds.map(() => '?').join(',');
+        const payResult = await env.DB.prepare(
+          `SELECT * FROM payments WHERE quote_id IN (${ph}) ORDER BY created_at DESC`
+        ).bind(...quoteIds).all();
+        payments = payResult.results;
+      }
+
+      const messages = await env.DB.prepare(
+        "SELECT id, name, email, phone, subject, message, created_at FROM messages WHERE lower(email) = lower(?) ORDER BY created_at DESC"
       ).bind(customerEmail).all();
-      return new Response(JSON.stringify({ success: true, data: { orders: orders.results, payments: payments.results } }), {
+
+      let reviews = [];
+      if (quoteIds.length > 0) {
+        const ph2 = quoteIds.map(() => '?').join(',');
+        const revResult = await env.DB.prepare(
+          `SELECT id, quote_id, rating, comment, created_at, approved FROM reviews WHERE quote_id IN (${ph2}) ORDER BY created_at DESC`
+        ).bind(...quoteIds).all();
+        reviews = revResult.results;
+      }
+
+      let orderMessages = [];
+      if (quoteIds.length > 0) {
+        const ph3 = quoteIds.map(() => '?').join(',');
+        const omResult = await env.DB.prepare(
+          `SELECT id, quote_id, sender, message, created_at FROM order_messages WHERE quote_id IN (${ph3}) ORDER BY created_at ASC`
+        ).bind(...quoteIds).all();
+        orderMessages = omResult.results;
+      }
+
+      const activity = [];
+      for (const q of quotes.results) {
+        activity.push({ type: 'quote', id: q.id, date: q.created_at, label: `Teklif talebi — ${q.source_language} → ${q.target_language}`, status: q.order_status });
+      }
+      for (const p of payments) {
+        activity.push({ type: 'payment', id: p.id, date: p.created_at, label: `Ödeme — ${p.amount}₺`, status: p.status });
+      }
+      for (const m of messages.results) {
+        activity.push({ type: 'message', id: m.id, date: m.created_at, label: `Mesaj — ${m.subject || 'Konu yok'}` });
+      }
+      for (const r of reviews) {
+        activity.push({ type: 'review', id: r.id, date: r.created_at, label: `Değerlendirme — ${r.rating}★` });
+      }
+      activity.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      return new Response(JSON.stringify({
+        success: true,
+        data: {
+          customer: customer ? { id: customer.id, email: customer.email, name: customer.name, phone: customer.phone, created_at: customer.created_at } : null,
+          quotes: quotes.results,
+          payments,
+          messages: messages.results,
+          reviews,
+          orderMessages,
+          activity,
+        }
+      }), {
         headers: { "Content-Type": "application/json", ...corsHeaders },
       });
     } catch (err) {

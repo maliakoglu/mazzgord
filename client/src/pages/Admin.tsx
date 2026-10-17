@@ -55,6 +55,35 @@ interface Customer {
   last_order: string;
   total_spent: number;
   lang_pairs: string | null;
+  customer_id: number | null;
+  has_account: boolean;
+  account_created_at: string | null;
+}
+
+interface ActivityItem {
+  type: string;
+  id: number;
+  date: string;
+  label: string;
+  status?: string;
+}
+
+interface CustomerDetail {
+  customer: { id: number; email: string; name: string; phone: string; created_at: string } | null;
+  quotes: Quote[];
+  payments: Payment[];
+  messages: Message[];
+  reviews: Review[];
+  orderMessages: Array<{ id: number; quote_id: number; sender: string; message: string; created_at: string }>;
+  activity: ActivityItem[];
+}
+
+interface UnmatchedMessage {
+  id: number;
+  name: string;
+  email: string;
+  subject: string;
+  created_at: string;
 }
 
 interface DashboardData {
@@ -163,6 +192,12 @@ export default function Admin() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [selectedCustomerEmail, setSelectedCustomerEmail] = useState<string | null>(null);
+  const [customerDetail, setCustomerDetail] = useState<CustomerDetail | null>(null);
+  const [customerDetailLoading, setCustomerDetailLoading] = useState(false);
+  const [customerSearch, setCustomerSearch] = useState("");
+  const [unmatchedMessages, setUnmatchedMessages] = useState<UnmatchedMessage[]>([]);
+  const [customerDetailTab, setCustomerDetailTab] = useState<"summary" | "activity" | "messages" | "quotes" | "payments">("summary");
   const [deliveringOrderId, setDeliveringOrderId] = useState<string | null>(null);
   const [deliverForm, setDeliverForm] = useState<{ tracking_number: string; delivery_note: string; file: File | null }>({ tracking_number: "", delivery_note: "", file: null });
   const [deliverLoading, setDeliverLoading] = useState(false);
@@ -294,7 +329,7 @@ export default function Admin() {
     setLoading(true);
     try {
       const headers = { Authorization: `Bearer ${adminToken}` };
-      const [msgRes, quoteRes, payRes, dashRes, custRes, ordRes, revRes] = await Promise.all([
+      const [msgRes, quoteRes, payRes, dashRes, custRes, ordRes, revRes, unmatchedRes] = await Promise.all([
         fetch("/api/messages", { headers }),
         fetch("/api/quotes", { headers }),
         fetch("/api/payments", { headers }),
@@ -302,6 +337,7 @@ export default function Admin() {
         fetch("/api/customers", { headers }),
         fetch("/api/orders", { headers }),
         fetch("/api/admin/reviews", { headers }),
+        fetch("/api/customers/unmatched", { headers }),
       ]);
       if (msgRes.ok) {
         const msgData = await msgRes.json();
@@ -331,10 +367,38 @@ export default function Admin() {
         const revData = await revRes.json();
         setReviews(revData.data || []);
       }
+      if (unmatchedRes.ok) {
+        const unmatchedData = await unmatchedRes.json();
+        setUnmatchedMessages(unmatchedData.data || []);
+      }
     } catch (err) {
       console.error("Veri çekme hatası:", err);
     }
     setLoading(false);
+  };
+
+  const fetchCustomerDetail = async (email: string) => {
+    setCustomerDetailLoading(true);
+    try {
+      const res = await fetch(`/api/customer-detail?email=${encodeURIComponent(email)}`, {
+        headers: { Authorization: `Bearer ${adminToken}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setCustomerDetail(data.data);
+        setCustomerDetailTab("summary");
+      }
+    } catch (err) {
+      console.error("Müşteri detayı yüklenemedi:", err);
+    } finally {
+      setCustomerDetailLoading(false);
+    }
+  };
+
+  const openCustomerDetail = (email: string) => {
+    setSelectedCustomerEmail(email);
+    fetchCustomerDetail(email);
+    setTab("customers");
   };
 
   const updateQuoteStatus = async (quoteId: number) => {
@@ -774,50 +838,339 @@ export default function Admin() {
 
         {tab === "customers" && (
           <div className="space-y-4">
-            {customers.length === 0 ? (
-              <div className="text-center py-20 text-muted-foreground">
-                <Users className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                <p>Henüz müşteri yok</p>
+            {selectedCustomerEmail ? (
+              <div>
+                <button
+                  onClick={() => setSelectedCustomerEmail(null)}
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-4"
+                >
+                  ← Müşteri Listesine Dön
+                </button>
+                {customerDetailLoading ? (
+                  <div className="text-center py-20 text-muted-foreground">
+                    <RefreshCw className="w-8 h-8 mx-auto mb-4 animate-spin" />
+                    <p>Yükleniyor...</p>
+                  </div>
+                ) : customerDetail ? (
+                  <div className="space-y-4">
+                    <div className="bg-card border border-border rounded-lg p-6">
+                      <div className="flex justify-between items-start mb-4">
+                        <div>
+                          <h2 className="text-xl font-bold text-foreground">
+                            {customerDetail.customer?.name || customerDetail.quotes[0]?.name || "İsimsiz Müşteri"}
+                          </h2>
+                          <p className="text-sm text-muted-foreground">{selectedCustomerEmail}</p>
+                          {customerDetail.customer?.phone && (
+                            <p className="text-sm text-muted-foreground">📞 {customerDetail.customer.phone}</p>
+                          )}
+                          {customerDetail.customer && (
+                            <span className="inline-block mt-2 px-2 py-1 text-xs bg-green-100 text-green-800 rounded">
+                              ✓ Kayıtlı Hesap
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-right space-y-1">
+                          <div>
+                            <span className="text-xs text-muted-foreground">Teklif</span>
+                            <p className="text-lg font-bold text-foreground">{customerDetail.quotes.length}</p>
+                          </div>
+                          <div>
+                            <span className="text-xs text-muted-foreground">Ödeme</span>
+                            <p className="text-lg font-bold text-foreground">{customerDetail.payments.length}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 flex-wrap border-b border-border pb-2">
+                      {[
+                        { key: "summary", label: "Özet" },
+                        { key: "activity", label: "Aktivite" },
+                        { key: "messages", label: `Mesajlar (${customerDetail.messages.length})` },
+                        { key: "quotes", label: `Teklifler (${customerDetail.quotes.length})` },
+                        { key: "payments", label: `Ödemeler (${customerDetail.payments.length})` },
+                      ].map((t) => (
+                        <button
+                          key={t.key}
+                          onClick={() => setCustomerDetailTab(t.key as any)}
+                          className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
+                            customerDetailTab === t.key
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-secondary text-foreground hover:bg-secondary/80"
+                          }`}
+                        >
+                          {t.label}
+                        </button>
+                      ))}
+                    </div>
+
+                    {customerDetailTab === "summary" && (
+                      <div className="space-y-3">
+                        {customerDetail.customer && (
+                          <div className="bg-card border border-border rounded-lg p-4">
+                            <h3 className="font-semibold text-foreground mb-2">Hesap Bilgileri</h3>
+                            <p className="text-sm text-muted-foreground">
+                              Kayıt Tarihi: {new Date(customerDetail.customer.created_at + "Z").toLocaleDateString("tr-TR")}
+                            </p>
+                          </div>
+                        )}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                          <div className="bg-card border border-border rounded-lg p-4">
+                            <span className="text-xs text-muted-foreground">Toplam Teklif</span>
+                            <p className="text-xl font-bold text-foreground">{customerDetail.quotes.length}</p>
+                          </div>
+                          <div className="bg-card border border-border rounded-lg p-4">
+                            <span className="text-xs text-muted-foreground">Toplam Ödeme</span>
+                            <p className="text-xl font-bold text-foreground">{customerDetail.payments.length}</p>
+                          </div>
+                          <div className="bg-card border border-border rounded-lg p-4">
+                            <span className="text-xs text-muted-foreground">Mesajlar</span>
+                            <p className="text-xl font-bold text-foreground">{customerDetail.messages.length}</p>
+                          </div>
+                          <div className="bg-card border border-border rounded-lg p-4">
+                            <span className="text-xs text-muted-foreground">Değerlendirmeler</span>
+                            <p className="text-xl font-bold text-foreground">{customerDetail.reviews.length}</p>
+                          </div>
+                        </div>
+                        {customerDetail.quotes.length > 0 && (
+                          <div className="bg-card border border-border rounded-lg p-4">
+                            <h3 className="font-semibold text-foreground mb-2">Dil Çiftleri</h3>
+                            <div className="flex flex-wrap gap-2">
+                              {[...new Set(customerDetail.quotes.map(q => `${q.source_language} → ${q.target_language}`))].map((pair, i) => (
+                                <span key={i} className="px-2 py-1 text-xs bg-secondary rounded">{pair}</span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {customerDetailTab === "activity" && (
+                      <div className="space-y-2">
+                        {customerDetail.activity.length === 0 ? (
+                          <div className="text-center py-12 text-muted-foreground">
+                            <Clock className="w-10 h-10 mx-auto mb-3 opacity-50" />
+                            <p>Aktivite kaydı yok</p>
+                          </div>
+                        ) : (
+                          customerDetail.activity.map((item, i) => (
+                            <div key={i} className="flex items-start gap-3 bg-card border border-border rounded-lg p-3">
+                              <div className="mt-1">
+                                {item.type === "quote" && <FileText className="w-4 h-4 text-blue-500" />}
+                                {item.type === "payment" && <CreditCard className="w-4 h-4 text-green-500" />}
+                                {item.type === "message" && <Mail className="w-4 h-4 text-amber-500" />}
+                                {item.type === "review" && <Star className="w-4 h-4 text-purple-500" />}
+                              </div>
+                              <div className="flex-1">
+                                <p className="text-sm text-foreground">{item.label}</p>
+                                <p className="text-xs text-muted-foreground">
+                                  {new Date(item.date + "Z").toLocaleDateString("tr-TR")}
+                                  {item.status && ` · ${item.status}`}
+                                </p>
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    )}
+
+                    {customerDetailTab === "messages" && (
+                      <div className="space-y-2">
+                        {customerDetail.messages.length === 0 ? (
+                          <div className="text-center py-12 text-muted-foreground">
+                            <Mail className="w-10 h-10 mx-auto mb-3 opacity-50" />
+                            <p>Mesaj kaydı yok</p>
+                          </div>
+                        ) : (
+                          customerDetail.messages.map((m) => (
+                            <div key={m.id} className="bg-card border border-border rounded-lg p-4">
+                              <div className="flex justify-between items-start mb-2">
+                                <span className="text-sm font-medium text-foreground">{m.subject || "Konu yok"}</span>
+                                <span className="text-xs text-muted-foreground">
+                                  {new Date(m.created_at + "Z").toLocaleDateString("tr-TR")}
+                                </span>
+                              </div>
+                              <p className="text-sm text-muted-foreground whitespace-pre-wrap">{m.message}</p>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    )}
+
+                    {customerDetailTab === "quotes" && (
+                      <div className="space-y-2">
+                        {customerDetail.quotes.length === 0 ? (
+                          <div className="text-center py-12 text-muted-foreground">
+                            <FileText className="w-10 h-10 mx-auto mb-3 opacity-50" />
+                            <p>Teklif kaydı yok</p>
+                          </div>
+                        ) : (
+                          customerDetail.quotes.map((q) => {
+                            const statusInfo = ORDER_STATUSES.find(s => s.value === q.order_status);
+                            return (
+                              <div key={q.id} className="bg-card border border-border rounded-lg p-4">
+                                <div className="flex justify-between items-start mb-2">
+                                  <div>
+                                    <span className="text-sm font-medium text-foreground">
+                                      MZ-{String(q.id).padStart(5, "0")}
+                                    </span>
+                                    <span className="text-sm text-muted-foreground ml-2">
+                                      {q.source_language} → {q.target_language}
+                                    </span>
+                                  </div>
+                                  <span className={`px-2 py-1 text-xs rounded ${statusInfo?.color || "bg-gray-100 text-gray-800"}`}>
+                                    {statusInfo?.label || q.order_status || "Bilinmiyor"}
+                                  </span>
+                                </div>
+                                <div className="text-xs text-muted-foreground">
+                                  {new Date(q.created_at + "Z").toLocaleDateString("tr-TR")}
+                                  {q.estimated_price ? ` · ${q.estimated_price}₺` : ""}
+                                  {q.offer_status ? ` · Teklif: ${q.offer_status}` : ""}
+                                </div>
+                              </div>
+                            );
+                          })
+                        )}
+                      </div>
+                    )}
+
+                    {customerDetailTab === "payments" && (
+                      <div className="space-y-2">
+                        {customerDetail.payments.length === 0 ? (
+                          <div className="text-center py-12 text-muted-foreground">
+                            <CreditCard className="w-10 h-10 mx-auto mb-3 opacity-50" />
+                            <p>Ödeme kaydı yok</p>
+                          </div>
+                        ) : (
+                          customerDetail.payments.map((p) => (
+                            <div key={p.id} className="bg-card border border-border rounded-lg p-4">
+                              <div className="flex justify-between items-start mb-2">
+                                <span className="text-sm font-medium text-foreground">{p.amount}₺</span>
+                                <span className={`px-2 py-1 text-xs rounded ${
+                                  p.status === "paid" ? "bg-green-100 text-green-800" :
+                                  p.status === "pending" ? "bg-yellow-100 text-yellow-800" :
+                                  "bg-red-100 text-red-800"
+                                }`}>
+                                  {p.status === "paid" ? "Ödendi" : p.status === "pending" ? "Bekliyor" : p.status}
+                                </span>
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                {new Date(p.created_at + "Z").toLocaleDateString("tr-TR")}
+                                {p.paid_at ? ` · Ödeme: ${new Date(p.paid_at + "Z").toLocaleDateString("tr-TR")}` : ""}
+                                {p.description ? ` · ${p.description}` : ""}
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="text-center py-20 text-muted-foreground">
+                    <Users className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                    <p>Müşteri detayı bulunamadı</p>
+                  </div>
+                )}
               </div>
             ) : (
-              customers.map((c) => (
-                <div key={c.email} className="bg-card border border-border rounded-lg p-6">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className="font-bold text-foreground">{c.name}</h3>
-                      <p className="text-sm text-muted-foreground">{c.email}</p>
-                      {c.phone && <p className="text-sm text-muted-foreground">📞 {c.phone}</p>}
-                    </div>
-                    <div className="text-right">
-                      <span className="text-xs text-muted-foreground">Son Sipariş:</span>
-                      <p className="text-sm font-medium text-foreground">{new Date(c.last_order + "Z").toLocaleDateString("tr-TR")}</p>
+              <div className="space-y-4">
+                <input
+                  type="text"
+                  placeholder="İsim veya e-posta ara..."
+                  value={customerSearch}
+                  onChange={(e) => setCustomerSearch(e.target.value)}
+                  className="w-full px-4 py-2 bg-card border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+
+                {unmatchedMessages.length > 0 && (
+                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                    <h3 className="font-semibold text-amber-900 mb-2 flex items-center gap-2">
+                      <AlertTriangle className="w-4 h-4" />
+                      Eşleştirilmemiş Mesajlar ({unmatchedMessages.length})
+                    </h3>
+                    <p className="text-xs text-amber-700 mb-3">
+                      Bu mesajlar herhangi bir müşteri hesabıyla eşleşmiyor.
+                    </p>
+                    <div className="space-y-2">
+                      {unmatchedMessages.map((m) => (
+                        <div key={m.id} className="bg-white border border-amber-200 rounded p-3 flex justify-between items-center">
+                          <div>
+                            <span className="text-sm font-medium text-foreground">{m.name}</span>
+                            <span className="text-xs text-muted-foreground ml-2">{m.subject || "Konu yok"}</span>
+                          </div>
+                          <span className="text-xs text-muted-foreground">
+                            {new Date(m.created_at + "Z").toLocaleDateString("tr-TR")}
+                          </span>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                  <div className="grid grid-cols-3 gap-4 mt-4 pt-4 border-t border-border">
-                    <div>
-                      <span className="text-xs text-muted-foreground">Toplam Sipariş</span>
-                      <p className="text-lg font-bold text-foreground">{c.total_orders}</p>
-                    </div>
-                    <div>
-                      <span className="text-xs text-muted-foreground">Toplam Harcama</span>
-                      <p className="text-lg font-bold text-green-600">{c.total_spent.toFixed(2)} ₺</p>
-                    </div>
-                    <div>
-                      <span className="text-xs text-muted-foreground">Dil Çeşitliliği</span>
-                      <p className="text-lg font-bold text-foreground">{c.lang_variety}</p>
-                    </div>
+                )}
+
+                {customers.length === 0 ? (
+                  <div className="text-center py-20 text-muted-foreground">
+                    <Users className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                    <p>Henüz müşteri yok</p>
                   </div>
-                  {c.lang_pairs && (
-                    <div className="mt-3 pt-3 border-t border-border">
-                      <span className="text-xs text-muted-foreground">Dil Çiftleri: </span>
-                      <span className="text-sm text-foreground">{c.lang_pairs}</span>
-                    </div>
-                  )}
-                  <div className="mt-2 text-xs text-muted-foreground">
-                    İlk Sipariş: {new Date(c.first_order + "Z").toLocaleDateString("tr-TR")}
-                  </div>
-                </div>
-              ))
+                ) : (
+                  customers
+                    .filter((c) => {
+                      if (!customerSearch) return true;
+                      const s = customerSearch.toLowerCase();
+                      return c.name?.toLowerCase().includes(s) || c.email?.toLowerCase().includes(s);
+                    })
+                    .map((c) => (
+                      <div
+                        key={c.email}
+                        onClick={() => openCustomerDetail(c.email)}
+                        className="bg-card border border-border rounded-lg p-6 cursor-pointer hover:border-primary transition"
+                      >
+                        <div className="flex justify-between items-start mb-3">
+                          <div>
+                            <h3 className="font-bold text-foreground">
+                              {c.name}
+                              {c.has_account && (
+                                <span className="ml-2 inline-block px-1.5 py-0.5 text-xs bg-green-100 text-green-800 rounded">Hesap</span>
+                              )}
+                            </h3>
+                            <p className="text-sm text-muted-foreground">{c.email}</p>
+                            {c.phone && <p className="text-sm text-muted-foreground">📞 {c.phone}</p>}
+                          </div>
+                          <div className="text-right">
+                            <span className="text-xs text-muted-foreground">Son Aktivite:</span>
+                            <p className="text-sm font-medium text-foreground">
+                              {c.last_order ? new Date(c.last_order + "Z").toLocaleDateString("tr-TR") : c.account_created_at ? new Date(c.account_created_at + "Z").toLocaleDateString("tr-TR") : "—"}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-4 mt-4 pt-4 border-t border-border">
+                          <div>
+                            <span className="text-xs text-muted-foreground">Toplam Teklif</span>
+                            <p className="text-lg font-bold text-foreground">{c.total_orders}</p>
+                          </div>
+                          <div>
+                            <span className="text-xs text-muted-foreground">Toplam Harcama</span>
+                            <p className="text-lg font-bold text-green-600">{c.total_spent.toFixed(2)} ₺</p>
+                          </div>
+                          <div>
+                            <span className="text-xs text-muted-foreground">Dil Çeşitliliği</span>
+                            <p className="text-lg font-bold text-foreground">{c.lang_variety}</p>
+                          </div>
+                        </div>
+                        {c.lang_pairs && (
+                          <div className="mt-3 pt-3 border-t border-border">
+                            <span className="text-xs text-muted-foreground">Dil Çiftleri: </span>
+                            <span className="text-sm text-foreground">{c.lang_pairs}</span>
+                          </div>
+                        )}
+                        {c.first_order && (
+                          <div className="mt-2 text-xs text-muted-foreground">
+                            İlk Teklif: {new Date(c.first_order + "Z").toLocaleDateString("tr-TR")}
+                          </div>
+                        )}
+                      </div>
+                    ))
+                )}
+              </div>
             )}
           </div>
         )}
@@ -999,6 +1352,12 @@ export default function Admin() {
                       <h3 className="font-bold text-foreground">{q.name}</h3>
                       <p className="text-sm text-muted-foreground">{q.email}</p>
                       {q.phone && <p className="text-sm text-muted-foreground">📞 {q.phone}</p>}
+                      <button
+                        onClick={() => openCustomerDetail(q.email)}
+                        className="mt-1 text-xs text-primary hover:underline flex items-center gap-1"
+                      >
+                        <Users className="w-3 h-3" /> Müşteriyi Gör
+                      </button>
                     </div>
                     <div className="flex items-center gap-2 flex-wrap justify-end">
                       {q.offer_status && q.offer_status !== "pending" && (
@@ -1465,6 +1824,12 @@ export default function Admin() {
                       <h3 className="font-bold text-foreground">{p.customer_name}</h3>
                       <p className="text-sm text-muted-foreground">{p.customer_email}</p>
                       {p.customer_phone && <p className="text-sm text-muted-foreground">📞 {p.customer_phone}</p>}
+                      <button
+                        onClick={() => openCustomerDetail(p.customer_email)}
+                        className="mt-1 text-xs text-primary hover:underline flex items-center gap-1"
+                      >
+                        <Users className="w-3 h-3" /> Müşteriyi Gör
+                      </button>
                     </div>
                     <div className="flex items-center gap-2">
                       <span className={`text-xs px-2 py-1 rounded-full ${p.status === "paid" ? "bg-green-100 text-green-800" : p.status === "failed" ? "bg-red-100 text-red-800" : p.status === "refunded" ? "bg-purple-100 text-purple-800" : "bg-yellow-100 text-yellow-800"}`}>

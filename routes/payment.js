@@ -323,24 +323,25 @@ export async function handlePaymentRoute(path, request, env) {
         }
 
         const iyzicoPaymentId = String(iyzicoData.paymentId || token);
-        await env.DB.prepare(
-          "UPDATE payments SET status = 'paid', iyzico_payment_id = ?, paid_at = datetime('now') WHERE payment_link_id = ?"
+        const paidResult = await env.DB.prepare(
+          "UPDATE payments SET status = 'paid', iyzico_payment_id = ?, paid_at = datetime('now') WHERE payment_link_id = ? AND status IS NOT 'paid'"
         ).bind(iyzicoPaymentId, link_id).run();
 
-        if (payment.quote_id) {
-          await env.DB.prepare(
-            "UPDATE quotes SET order_status = 'in_progress' WHERE id = ? AND order_status NOT IN ('completed', 'delivered')"
-          ).bind(payment.quote_id).run();
+        if (paidResult.meta.changes > 0) {
+          if (payment.quote_id) {
+            await env.DB.prepare(
+              "UPDATE quotes SET order_status = 'in_progress' WHERE id = ? AND order_status NOT IN ('completed', 'delivered')"
+            ).bind(payment.quote_id).run();
+          }
+          try { await sendPaymentEmails(env, payment, iyzicoPaymentId); } catch (err) { console.log("E-posta bildirim hatası:", String(err)); }
         }
-
-        try { await sendPaymentEmails(env, payment, iyzicoPaymentId); } catch (err) { console.log("E-posta bildirim hatası:", String(err)); }
 
         return new Response(JSON.stringify({ success: true, status: "paid" }), {
           headers: { "Content-Type": "application/json", ...corsHeaders },
         });
       } else {
         await env.DB.prepare(
-          "UPDATE payments SET status = 'failed', iyzico_payment_id = ? WHERE payment_link_id = ?"
+          "UPDATE payments SET status = 'failed', iyzico_payment_id = ? WHERE payment_link_id = ? AND status IS NOT 'paid'"
         ).bind(String(iyzicoData.paymentId || token), link_id).run();
 
         return new Response(JSON.stringify({ success: false, status: "failed", error: iyzicoData.errorMessage || "Ödeme başarısız" }), {
@@ -479,10 +480,12 @@ export async function handlePaymentRoute(path, request, env) {
         ).bind(body.conversationId || "").first();
 
         if (payment) {
-          await env.DB.prepare(
-            "UPDATE payments SET status = 'paid', iyzico_payment_id = ?, paid_at = datetime('now') WHERE id = ?"
+          const whPaidResult = await env.DB.prepare(
+            "UPDATE payments SET status = 'paid', iyzico_payment_id = ?, paid_at = datetime('now') WHERE id = ? AND status IS NOT 'paid'"
           ).bind(String(body.paymentId), payment.id).run();
-          try { await sendPaymentEmails(env, payment, String(body.paymentId)); } catch (e) { console.log("Webhook e-posta hatası:", String(e)); }
+          if (whPaidResult.meta.changes > 0) {
+            try { await sendPaymentEmails(env, payment, String(body.paymentId)); } catch (e) { console.log("Webhook e-posta hatası:", String(e)); }
+          }
         }
       }
       if (body.status === "success" && body.token) {
@@ -490,10 +493,12 @@ export async function handlePaymentRoute(path, request, env) {
           "SELECT id, customer_name, customer_email, customer_phone, description, amount, payment_link_id, quote_id FROM payments WHERE payment_link_id = ?"
         ).bind(body.token || "").first();
         if (payment) {
-          await env.DB.prepare(
-            "UPDATE payments SET status = 'paid', paid_at = datetime('now') WHERE id = ?"
+          const whTokenPaidResult = await env.DB.prepare(
+            "UPDATE payments SET status = 'paid', paid_at = datetime('now') WHERE id = ? AND status IS NOT 'paid'"
           ).bind(payment.id).run();
-          try { await sendPaymentEmails(env, payment, String(body.paymentId || body.token)); } catch (e) { console.log("Webhook e-posta hatası:", String(e)); }
+          if (whTokenPaidResult.meta.changes > 0) {
+            try { await sendPaymentEmails(env, payment, String(body.paymentId || body.token)); } catch (e) { console.log("Webhook e-posta hatası:", String(e)); }
+          }
         }
       }
       if (body.status === "failure") {
@@ -502,7 +507,7 @@ export async function handlePaymentRoute(path, request, env) {
         ).bind(body.conversationId || "").first();
         if (payment) {
           await env.DB.prepare(
-            "UPDATE payments SET status = 'failed' WHERE id = ?"
+            "UPDATE payments SET status = 'failed' WHERE id = ? AND status IS NOT 'paid'"
           ).bind(payment.id).run();
         }
       }
@@ -554,19 +559,21 @@ export async function handlePaymentRoute(path, request, env) {
               const iyzicoData = await iyzicoResponse.json();
               if (iyzicoData.status === "success") {
                 const iyzicoPaymentId = String(iyzicoData.paymentId || token);
-                await env.DB.prepare(
-                  "UPDATE payments SET status = 'paid', iyzico_payment_id = ?, paid_at = datetime('now') WHERE payment_link_id = ?"
+                const cbPaidResult = await env.DB.prepare(
+                  "UPDATE payments SET status = 'paid', iyzico_payment_id = ?, paid_at = datetime('now') WHERE payment_link_id = ? AND status IS NOT 'paid'"
                 ).bind(iyzicoPaymentId, linkId).run();
-                if (payment.quote_id) {
-                  await env.DB.prepare(
-                    "UPDATE quotes SET order_status = 'in_progress' WHERE id = ? AND order_status NOT IN ('completed', 'delivered')"
-                  ).bind(payment.quote_id).run();
+                if (cbPaidResult.meta.changes > 0) {
+                  if (payment.quote_id) {
+                    await env.DB.prepare(
+                      "UPDATE quotes SET order_status = 'in_progress' WHERE id = ? AND order_status NOT IN ('completed', 'delivered')"
+                    ).bind(payment.quote_id).run();
+                  }
+                  try { await sendPaymentEmails(env, payment, iyzicoPaymentId); } catch {}
                 }
-                try { await sendPaymentEmails(env, payment, iyzicoPaymentId); } catch {}
                 verifyStatus = "success";
               } else {
                 await env.DB.prepare(
-                  "UPDATE payments SET status = 'failed', iyzico_payment_id = ? WHERE payment_link_id = ?"
+                  "UPDATE payments SET status = 'failed', iyzico_payment_id = ? WHERE payment_link_id = ? AND status IS NOT 'paid'"
                 ).bind(String(iyzicoData.paymentId || token), linkId).run();
                 verifyStatus = "failed";
               }
