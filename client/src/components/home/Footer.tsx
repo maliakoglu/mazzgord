@@ -10,7 +10,7 @@ export default function Footer() {
       <div className="container mx-auto px-4" style={{ maxWidth: '1200px' }}>
         <div className="grid md:grid-cols-5 gap-8 mb-8">
           <div>
-            <h4 style={{ fontFamily: '"Libre Baskerville", serif', fontSize: '18px', fontWeight: 700, marginBottom: '16px' }}>Mazzgord</h4>
+            <h4 style={{ fontFamily: '"Libre Baskerville", serif', fontSize: '18px', fontWeight: 700, marginBottom: '16px', color: '#ffffff' }}>Mazzgord</h4>
             <p style={{ fontSize: '14px', lineHeight: 1.63, color: 'rgba(255,255,255,0.7)', marginBottom: '16px' }}>Yeminli tercüme ve resmi belge çevirisi</p>
             <img
               src="/images/denizli-pamukkale-horoz-armasi.png"
@@ -22,7 +22,7 @@ export default function Footer() {
             />
           </div>
           <div>
-            <h4 style={{ fontFamily: '"Inter", sans-serif', fontSize: '14px', fontWeight: 700, marginBottom: '16px' }}>Hizmetler</h4>
+            <h4 style={{ fontFamily: '"Inter", sans-serif', fontSize: '14px', fontWeight: 700, marginBottom: '16px', color: '#ffffff' }}>Hizmetler</h4>
             <ul className="space-y-2">
               <li><a href="/yeminli-tercume" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }} className="hover:opacity-100 transition">Yeminli Tercüme</a></li>
               <li><a href="/pasaport-ceviri" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }} className="hover:opacity-100 transition">Pasaport Çevirisi</a></li>
@@ -36,7 +36,7 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h4 style={{ fontFamily: '"Inter", sans-serif', fontSize: '14px', fontWeight: 700, marginBottom: '16px' }}>Mazzgord</h4>
+            <h4 style={{ fontFamily: '"Inter", sans-serif', fontSize: '14px', fontWeight: 700, marginBottom: '16px', color: '#ffffff' }}>Mazzgord</h4>
             <ul className="space-y-2">
               <li><a href="/hakkimizda" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }} className="hover:opacity-100 transition">Hakkımda</a></li>
               <li><a href="/blog" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }} className="hover:opacity-100 transition">Blog</a></li>
@@ -46,7 +46,7 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h4 style={{ fontFamily: '"Inter", sans-serif', fontSize: '14px', fontWeight: 700, marginBottom: '16px' }}>Yasal</h4>
+            <h4 style={{ fontFamily: '"Inter", sans-serif', fontSize: '14px', fontWeight: 700, marginBottom: '16px', color: '#ffffff' }}>Yasal</h4>
             <ul className="space-y-2">
               <li><a href="/gizlilik" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }} className="hover:opacity-100 transition">Gizlilik Politikası</a></li>
               <li><a href="/kullanim-kosullari" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }} className="hover:opacity-100 transition">Kullanım Koşulları</a></li>
@@ -54,7 +54,7 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h4 style={{ fontFamily: '"Inter", sans-serif', fontSize: '14px', fontWeight: 700, marginBottom: '16px' }}>İletişim</h4>
+            <h4 style={{ fontFamily: '"Inter", sans-serif', fontSize: '14px', fontWeight: 700, marginBottom: '16px', color: '#ffffff' }}>İletişim</h4>
             <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', marginBottom: '4px' }}><a href="tel:+905386295040" onClick={() => track.phoneClick()} style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>+90 538 629 50 40</a></p>
             <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', marginBottom: '4px' }}><a href="mailto:info@mazzgord.com" onClick={() => track.emailClick()} style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>info@mazzgord.com</a></p>
             <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', marginBottom: '12px' }}>Denizli, Türkiye</p>

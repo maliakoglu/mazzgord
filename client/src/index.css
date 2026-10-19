@@ -122,6 +122,13 @@
     text-decoration: underline;
     text-underline-offset: 2px;
   }
+  .bg-primary h1, .bg-primary h2, .bg-primary h3,
+  .bg-primary h4, .bg-primary h5, .bg-primary h6 {
+    color: var(--color-primary-foreground);
+  }
+  .bg-primary p {
+    color: var(--color-primary-foreground);
+  }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
   [type="button"]:not(:disabled),

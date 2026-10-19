@@ -1,5 +1,22 @@
 # Changelog
 
+## [2026-10-19] — Footer ve teklif bölümü okunaklılık düzeltmeleri + blog CTA tekrar giderme
+
+### Footer başlık renkleri
+- `Footer.tsx`: 5 başlık (Mazzgord, Hizmetler, Mazzgord, Yasal, İletişim) inline `color: '#ffffff'` ile açık renge çevrildi
+- Koyu footer arka planı (#1a1a18) üzerinde kontrast sağlandı
+
+### Teklif bölümleri okunaklılığı (tüm servis ve blog sayfaları)
+- `index.css` `@layer base`: `.bg-primary h1-h6` ve `.bg-primary p` kuralları eklendi
+- Global `h2 { color: var(--color-heading) }` ve `p { color: var(--color-mid-stone) }` element kuralları `.bg-primary` kapsamında geçersiz kılındı
+- Light mode: koyu zemin üzerinde beyaz metin; dark mode: açık zemin üzerinde koyu metin (tema duyarlı)
+- Butonlar (`text-accent-foreground`, `text-white`) ve adım daireleri (`text-white`) etkilenmedi
+
+### Blog CTA tekrar giderme
+- 19 blog sayfasından inline `bg-primary` CTA blokları kaldırıldı
+- BlogLayout zaten `BlogCTA` render ettiği için sayfa içi inline CTA gereksizdi ve altta iki CTA arka arkaya görünüyordu
+- Etkilenen sayfalar: BlogAkademikCeviri, BlogApostilVsNoterOnayli, BlogCeviriHatalari, BlogCeviriIpuclari, BlogCeviriSektoru, BlogCeviriTeknolojileri, BlogCevirmenlikKariyer, BlogDeyimCevirisi, BlogGoogleTranslateVsProfesyonel, BlogHukukiCeviri, BlogMektupEmailCevirisi, BlogNoterOnayliCeviri, BlogTeknikCeviriNedir, BlogTibbiCeviri, BlogUcDunyaCeviri, BlogVizeBasvurusuBelgeler, BlogVizeFormatlari, BlogYeminliTercume, BlogYerellestirme
+
 ## [2026-10-17] — Bundle optimizasyonu: shiki dil grameri sınırlandırma ve recharts kaldırma
 
 ### Shiki dil grameri optimizasyonu (streamdown patch)
