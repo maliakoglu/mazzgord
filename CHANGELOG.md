@@ -1,5 +1,28 @@
 # Changelog
 
+## [2026-10-27] — On-page SEO düzeltmeleri, nofollow ve AdSense temizliği
+
+### On-page SEO: çift meta etiket düzeltmesi (lib/seoProcessor.js)
+- og:site_name ve twitter:image çift tanım sorunu giderildi
+- seoProcessor.js'ye og:site_name ve twitter:image removal regex eklendi
+- Canlıda doğrulandı: her iki etiketten sadece 1'er tane çıkıyor
+
+### Dış linklere nofollow eklendi (32 dosya)
+- Tüm dış linklere rel="nofollow noopener noreferrer" eklendi
+- WhatsApp, Instagram, Facebook, LinkedIn, Google Maps, iyzico linkleri
+- Link equity sızıntısı önlendi
+
+### AdSense temizliği (2 blog sayfası)
+- BlogAkademikCeviri.tsx: 2 sahte ad unit kaldırıldı (slot: 5555555555, 6666666666)
+- BlogNoterOnayliCeviri.tsx: 2 sahte ad unit kaldırıldı (slot: 7777777777, 8888888888)
+- google-adsense-account meta etiketi ve AdSense lazy-load script korundu
+
+### Build + Deploy
+- npm run build başarılı — 58 HTML dosyası
+- npx wrangler deploy --env production tamamlandı
+- Canlıda doğrulandı
+
+
 ## [2026-10-19] — Footer ve teklif bölümü okunaklılık düzeltmeleri + blog CTA tekrar giderme
 
 ### Footer başlık renkleri

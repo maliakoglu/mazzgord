@@ -43,7 +43,7 @@ export default function DenizliLocal() {
           <a href="/teklif" onClick={() => track.servicePageCtaClick("denizli_local")} className="px-8 py-3 rounded-lg font-medium transition no-underline" style={{ backgroundColor: 'var(--color-sage)', color: 'white' }}>
             Teklif Alın
           </a>
-          <a href="https://wa.me/905386295040" target="_blank" rel="noopener noreferrer" onClick={() => track.whatsappClick("denizli_local")} className="px-8 py-3 rounded-lg font-medium transition" style={{ backgroundColor: '#22C55E', color: 'white' }}>
+          <a href="https://wa.me/905386295040" target="_blank" rel="nofollow noopener noreferrer" onClick={() => track.whatsappClick("denizli_local")} className="px-8 py-3 rounded-lg font-medium transition" style={{ backgroundColor: '#22C55E', color: 'white' }}>
             WhatsApp'tan Gönderin
           </a>
         </div>

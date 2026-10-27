@@ -128,7 +128,7 @@ export default function Fiyatlar() {
                 <a
                   href="https://wa.me/905386295040?text=Merhaba,%20fiyat%20listesinde%20arad%C4%B1%C4%9F%C4%B1m%20belgeyi%20bulamad%C4%B1m.%20Fiyat%20teklifi%20alabilir%20miyim?"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="nofollow noopener noreferrer"
                   onClick={() => track.whatsappClick("pricing_section", "general")}
                   className="inline-block px-8 py-3 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition"
                 >
@@ -257,7 +257,7 @@ export default function Fiyatlar() {
           <a
             href="https://wa.me/905386295040?text=Merhaba,%20belgem%20için%20fiyat%20teklifi%20almak%20istiyorum."
             target="_blank"
-            rel="noopener noreferrer"
+            rel="nofollow noopener noreferrer"
             onClick={() => track.whatsappClick("pricing_section")}
             className="inline-block px-8 py-4 bg-green-500 text-white rounded-lg font-bold text-lg hover:bg-green-600 transition"
           >

@@ -430,7 +430,7 @@ mazzgord.com`;
                 <a href="/siparis?id={orderToken}" className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition">
                   Teklifi Takip Et
                 </a>
-                <a href="https://wa.me/905386295040" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-2.5 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition">
+                <a href="https://wa.me/905386295040" target="_blank" rel="nofollow noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-2.5 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition">
                   WhatsApp'tan Yaz
                 </a>
               </div>
@@ -444,7 +444,7 @@ mazzgord.com`;
           <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4 text-center">
             <p className="text-red-700 font-medium">{errorMsg || "Bir hata olustu. Lutfen tekrar deneyin veya WhatsApp'tan iletisime gecin."}</p>
             <p className="text-sm text-red-600 mt-1">
-              <a href="https://wa.me/905386295040" className="underline hover:no-underline" target="_blank" rel="noopener noreferrer">+90 538 629 50 40 (WhatsApp)</a>
+              <a href="https://wa.me/905386295040" className="underline hover:no-underline" target="_blank" rel="nofollow noopener noreferrer">+90 538 629 50 40 (WhatsApp)</a>
             </p>
           </div>
         )}

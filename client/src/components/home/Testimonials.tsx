@@ -68,7 +68,7 @@ export default function Testimonials({ openGallery }: { openGallery: (images: st
           Doğrulanmış müşteri değerlendirmeleri ve Bionluk üzerinden alınan geri bildirimler
         </p>
         <div className="flex justify-center mb-16">
-          <a href="https://maps.app.goo.gl/QUpy2H12rKtegBAaA" target="_blank" rel="noopener noreferrer"
+          <a href="https://maps.app.goo.gl/QUpy2H12rKtegBAaA" target="_blank" rel="nofollow noopener noreferrer"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium text-sm transition"
             style={{ backgroundColor: '#fff', border: '1px solid #dadce0', color: '#1f1f1f' }}>
             <svg className="w-4 h-4" viewBox="0 0 24 24">

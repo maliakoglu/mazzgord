@@ -54,10 +54,6 @@ export default function BlogNoterOnayliCeviri() {
 
           <p>2026 yılında Türkiye'de ve uluslararası alanda geçerli olacak bir çeviri belgesi elde etmek istiyorsanız, bu yazıda aradığınız tüm cevapları bulacaksınız. <strong>Noter onayı nedir, hangi durumlarda şarttır, fiyatları neye göre belirlenir</strong> ve <strong>online olarak nasıl yapılır</strong> — hepsi bu rehberde.</p>
 
-          <div className="my-8 p-6 bg-slate-50 border border-border rounded-xl">
-            <ins className="adsbygoogle" style={{display:"block"}} data-ad-client="ca-pub-8661028263390679" data-ad-slot="7777777777" data-ad-format="auto" data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-          </div>
 
           <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">Noter Onaylı Çeviri Nedir?</h2>
           <p>Noter onaylı çeviri, bir belgenin yeminli tercüman tarafından çevrilmesinin ardından, tercümanın imzasının <strong>noter tarafından tasdik edilmesi</strong> işlemidir. Bu işlem, çevirinin doğruluğunu ve tercümanın yetkisini resmi olarak onaylar.</p>
@@ -129,10 +125,6 @@ export default function BlogNoterOnayliCeviri() {
             </div>
           </div>
 
-          <div className="my-8 p-6 bg-slate-50 border border-border rounded-xl">
-            <ins className="adsbygoogle" style={{display:"block"}} data-ad-client="ca-pub-8661028263390679" data-ad-slot="8888888888" data-ad-format="auto" data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-          </div>
 
           <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">Hangi Belgeler İçin Noter Onaylı Çeviri Gerekir?</h2>
           <p>Aşağıdaki belgeler için noter onaylı çeviri sıkça talep edilir:</p>

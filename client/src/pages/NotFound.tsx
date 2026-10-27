@@ -29,7 +29,7 @@ export default function NotFound() {
           <a
             href="https://wa.me/905386295040?text=Merhaba,%20belgem%20için%20teklif%20almak%20istiyorum."
             target="_blank"
-            rel="noopener noreferrer"
+            rel="nofollow noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 font-semibold transition no-underline hover:no-underline"
             style={{ padding: '12px 28px', fontSize: '16px', borderRadius: '10000px', border: '1px solid var(--color-lavender-mist)', color: 'var(--color-ink-black)', background: 'var(--color-paper-white)' }}
           >

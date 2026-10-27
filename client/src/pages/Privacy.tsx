@@ -59,7 +59,7 @@ export default function Privacy() {
               size ilgi alanlarınıza göre reklamlar göstermek için çerezler kullanır.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              Detaylı bilgi: <a href="https://policies.google.com/technologies/ads" className="text-primary hover:underline" target="_blank">Google Reklam ve Gizlilik</a>
+              Detaylı bilgi: <a href="https://policies.google.com/technologies/ads" className="text-primary hover:underline" target="_blank" rel="nofollow noopener noreferrer">Google Reklam ve Gizlilik</a>
             </p>
           </div>
 

@@ -46,7 +46,7 @@ export default function Hero() {
           <a
             href="https://wa.me/905386295040?text=Merhaba,%20belgem%20için%20teklif%20almak%20istiyorum." onClick={() => track.whatsappClick("hero")}
             target="_blank"
-            rel="noopener noreferrer"
+            rel="nofollow noopener noreferrer"
             className="btn-secondary"
             style={{ padding: '12px 28px', fontSize: '16px' }}
           >

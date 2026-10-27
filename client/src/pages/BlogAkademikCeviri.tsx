@@ -25,10 +25,6 @@ export default function BlogAkademikCeviri() {
 
           <p>Akademik çeviriye ihtiyaç duyan başlıca gruplar arasında <strong>yüksek lisans ve doktora öğrencileri, üniversite öğretim üyeleri, araştırmacılar, bilimsel dergiler ve yayınevleri</strong> bulunmaktadır. Bu çeviriler, bilimsel bilginin evrenselleşmesine ve farklı kültürler arasında köprüler kurulmasına yardımcı olur.</p>
 
-          <div className="my-8 p-6 bg-slate-50 border border-border rounded-xl">
-            <ins className="adsbygoogle" style={{display:"block"}} data-ad-client="ca-pub-8661028263390679" data-ad-slot="5555555555" data-ad-format="auto" data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-          </div>
 
           <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">Akademik Çevirinin Temel Özellikleri</h2>
           <p>Akademik çeviriyi diğer çeviri türlerinden ayıran ve onu özel kılan temel özellikler şunlardır:</p>
@@ -79,10 +75,6 @@ export default function BlogAkademikCeviri() {
             </div>
           </div>
 
-          <div className="my-8 p-6 bg-slate-50 border border-border rounded-xl">
-            <ins className="adsbygoogle" style={{display:"block"}} data-ad-client="ca-pub-8661028263390679" data-ad-slot="6666666666" data-ad-format="auto" data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-          </div>
 
           <h2 className="text-2xl md:text-3xl font-bold text-primary mt-12 mb-6">Akademik Çeviri Türleri</h2>
           <p>Akademik çeviri, farklı bilimsel çalışmalar ve yayın türlerine göre çeşitlilik gösterir:</p>

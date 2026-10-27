@@ -17,7 +17,7 @@ export default function Contact() {
               <div>
                 <h3 style={{ fontFamily: '"Libre Baskerville", serif', fontSize: '18px', fontWeight: 500, marginBottom: '4px', color: 'var(--color-heading)' }}>Telefon</h3>
                 <a href="tel:+905386295040" onClick={() => track.phoneClick()} style={{ color: 'var(--color-ink-black)', fontWeight: 600, textDecoration: 'underline', textUnderlineOffset: '2px' }}>+90 538 629 50 40</a>
-                <a href="https://wa.me/905386295040" target="_blank" rel="noopener noreferrer" onClick={() => track.whatsappClick("contact")} style={{ color: 'var(--color-warm-gray)', fontSize: '14px', display: 'block', marginTop: '4px' }}>WhatsApp üzerinden iletişim için tıklayın</a>
+                <a href="https://wa.me/905386295040" target="_blank" rel="nofollow noopener noreferrer" onClick={() => track.whatsappClick("contact")} style={{ color: 'var(--color-warm-gray)', fontSize: '14px', display: 'block', marginTop: '4px' }}>WhatsApp üzerinden iletişim için tıklayın</a>
               </div>
             </div>
             <div className="flex gap-4">
@@ -71,7 +71,7 @@ export default function Contact() {
               <a
                 href="https://wa.me/905386295040?text=Merhaba,%20belgem%20için%20teklif%20almak%20istiyorum."
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="nofollow noopener noreferrer"
                 onClick={() => track.whatsappClick("contact")}
                 className="btn-secondary flex items-center justify-center gap-2"
                 style={{ padding: '14px 28px', fontSize: '16px' }}

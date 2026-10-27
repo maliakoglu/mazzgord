@@ -78,7 +78,7 @@ export default function About() {
               <p className="flex items-center gap-2"><Clock className="w-5 h-5 text-primary" /> Çalışma Saatleri: Pzt–Cmt 09:00–18:00</p>
               <p>Telefon: <a href="tel:+905386295040" className="text-primary hover:underline">+90 538 629 50 40</a></p>
               <p>E-posta: <a href="mailto:info@mazzgord.com" className="text-primary hover:underline">info@mazzgord.com</a></p>
-              <p>WhatsApp: <a href="https://wa.me/905386295040" onClick={() => track.whatsappClick("service_card", "general")} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Mesaj Gönder</a></p>
+              <p>WhatsApp: <a href="https://wa.me/905386295040" onClick={() => track.whatsappClick("service_card", "general")} target="_blank" rel="nofollow noopener noreferrer" className="text-primary hover:underline">Mesaj Gönder</a></p>
             </div>
           </div>
         </div>

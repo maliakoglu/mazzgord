@@ -1719,7 +1719,7 @@ export default function Admin() {
                         <a
                           href={createdPaymentUrl}
                           target="_blank"
-                          rel="noopener noreferrer"
+                          rel="nofollow noopener noreferrer"
                           className="flex-1 py-2 bg-secondary text-foreground rounded-lg text-sm font-medium text-center hover:bg-secondary/80 transition"
                         >
                           Ödeme Sayfasını Aç

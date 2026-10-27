@@ -75,7 +75,7 @@ export default function IngilizceTurkceCeviri() {
           <p className="mb-6 opacity-90">Belgenizi gönderin, net teklif alın.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="/teklif" className="px-8 py-3 bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg font-medium transition">Belgem İçin Teklif Al</a>
-            <a href="https://wa.me/905386295040" onClick={() => track.whatsappClick("service_card", "ingilizce_turkce")} target="_blank" className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition">WhatsApp</a>
+            <a href="https://wa.me/905386295040" onClick={() => track.whatsappClick("service_card", "ingilizce_turkce")} target="_blank" rel="nofollow noopener noreferrer" className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition">WhatsApp</a>
           </div>
         </div>
       </div>
