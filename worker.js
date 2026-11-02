@@ -535,21 +535,16 @@ export default {
       });
     }
 
-    if (path === "/.well-known/ai-catalog.json") {
+    if (path === "/.well-known/ai-catalog.json" || path === "/.well-known/ard.json") {
       const catalog = JSON.stringify({
         name: "Mazzgord Çeviri Hizmetleri",
         version: "1.0.0",
         specVersion: "0.1",
         description: "Profesyonel çeviri hizmetleri kataloğu",
-        capabilities: [
-          { name: "translation-quote", description: "Get a quote for translation services" },
-          { name: "translation-services", description: "Browse available translation services" },
-          { name: "translation-languages", description: "List supported language pairs" }
-        ],
         entries: [
-          { identifier: "translation-quote", displayName: "Translation Quote", type: "capability", description: "Get a quote for translation services", url: "https://mazzgord.com/teklif" },
-          { identifier: "translation-services", displayName: "Translation Services", type: "capability", description: "Browse available translation services", url: "https://mazzgord.com/hizmetler" },
-          { identifier: "translation-languages", displayName: "Supported Languages", type: "capability", description: "List supported language pairs", url: "https://mazzgord.com" }
+          { identifier: "urn:air:mazzgord:translation:quote", displayName: "Translation Quote", mediaType: "text/html", description: "Get a quote for translation services", url: "https://mazzgord.com/teklif", representativeQueries: ["translation quote", "çeviri teklif al", "how much does translation cost"] },
+          { identifier: "urn:air:mazzgord:translation:services", displayName: "Translation Services", mediaType: "text/html", description: "Browse available translation services", url: "https://mazzgord.com/hizmetler", representativeQueries: ["translation services", "çeviri hizmetleri", "professional translation"] },
+          { identifier: "urn:air:mazzgord:translation:languages", displayName: "Supported Languages", mediaType: "text/html", description: "List supported language pairs", url: "https://mazzgord.com", representativeQueries: ["supported languages", "desteklenen diller", "language pairs translation"] }
         ],
         endpoints: [
           { url: "https://mazzgord.com/.well-known/agent-card.json", type: "agent-card" },
