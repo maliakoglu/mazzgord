@@ -10,7 +10,6 @@
     "check": "tsc --noEmit",
     "test": "vitest run",
     "format": "prettier --write .",
-    "prerender": "node prerender.cjs",
     "postinstall": "bash scripts/patch-streamdown.sh"
   },
   "dependencies": {
