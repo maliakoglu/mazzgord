@@ -1,5 +1,44 @@
 # Changelog
 
+## [2026-11-09] — AdSense denetim düzeltmeleri: prerender, gizlilik, hakkimizda, Denizli apostil
+
+### Prerender düzeltmesi (prerender.cjs)
+- Build süreci python3 prerender.py → node prerender.cjs (Puppeteer) olarak değiştirildi
+- waitUntil: networkidle0 + waitForSelector('h1') + 2sn ek bekleme
+- express bağımlılığı kaldırıldı, Node.js http modülü kullanıldı
+- 61 route prerender ediliyor (eski 42'den 61'e)
+- Düzeltilen sayfalar: /hakkimizda, /odeme, /adli-sicil-cevirisi (ana sayfa içeriği yerine doğru içerik)
+- Eksik sayfalar eklendi: /gizlilik, /kullanim-kosullari, /cerez-politikasi
+
+### Gizlilik politikası düzeltmesi (Action #1)
+- /gizlilik noindex'ten çıkarıldı (generate_sitemap.py, add-meta-tags.py, seoProcessor.js)
+- /gizlilik sitemap-pages.xml'e eklendi (worker.js)
+- Navbar'a Gizlilik linki eklendi (desktop + mobile)
+- Privacy.tsx: AdSense bölümü koşullu yapıldı ("reklam gösterilmemektedir, etkinleştirilirse")
+- Privacy.tsx: Teknik Veriler bölümü eklendi (Cloudflare, Turnstile)
+- Canonical, noindex, sitemap canlıda doğrulandı
+
+### Hakkımda sayfası genişletmesi (Action #3)
+- About.tsx: "Mazzgord'un Amacı" bölümü eklendi (site amacı, sunulan hizmetler)
+- About.tsx: "Rehber İçerikler Neden Yayınlanıyor?" bölümü eklendi
+- About.tsx: "Rehber İçerikler Nasıl Hazırlanıyor?" bölümü eklendi (saha deneyimi, resmi teyit uyarısı)
+- About.tsx: "Son güncelleme: Kasım 2026" eklendi
+- H1, canonical, sitemap, navbar/footer linkleri canlıda doğrulandı
+
+### Denizli apostil sayfası genişletmesi (Action #2)
+- DenizliApostilTercume.tsx: 27 → 152 satır
+- H1 ana sayfadan farklılaştırıldı: "Denizli'de Apostil Tercüme Süreci: Valilik, Çeviri ve Teslim Adımları"
+- 3 temsili örnek eklendi (Pamukkale Üni. mezunu, Denizli tekstil firması, evlenen yabancı uyruklu)
+- "temsili örneklerdir" etiketi ile gerçek müşteri vakası olmadığı belirtildi
+- Resmi kaynak linkleri: HCCH (Lahey Apostil Sözleşmesi), Denizli Valiliği
+- SSS 4'den 7'ye çıkarıldı, Denizli'ye özgü sorular eklendi
+- seoData.js: title ve description güncellendi
+
+### Build + Deploy
+- npm run build başarılı — 61 HTML dosyası prerender edildi
+- npx wrangler deploy --env production tamamlandı
+- Tüm değişiklikler canlıda doğrulandı
+
 ## [2026-10-27] — On-page SEO düzeltmeleri, nofollow ve AdSense temizliği
 
 ### On-page SEO: çift meta etiket düzeltmesi (lib/seoProcessor.js)

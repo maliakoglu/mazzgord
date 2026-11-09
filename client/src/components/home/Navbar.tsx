@@ -39,6 +39,7 @@ export default function Navbar() {
             <a href="/blog" className="text-foreground hover:underline underline-offset-2 transition no-underline hover:no-underline">Rehber</a>
             <a href="/hakkimizda" className="text-foreground hover:underline underline-offset-2 transition no-underline hover:no-underline">Hakkımda</a>
             <a href="/iletisim" className="text-foreground hover:underline underline-offset-2 transition no-underline hover:no-underline">İletişim</a>
+            <a href="/gizlilik" className="text-foreground hover:underline underline-offset-2 transition no-underline hover:no-underline" style={{ fontSize: '14px' }}>Gizlilik</a>
             <a href="/teklif" className="btn-nav no-underline hover:no-underline">Teklif Al</a>
             <a href="/hesabim" className="flex items-center gap-1 text-foreground hover:underline underline-offset-2 transition no-underline hover:no-underline"><User className="w-4 h-4" /> Hesabım</a>
             <button onClick={toggleTheme} className="p-2 rounded-lg text-foreground hover:bg-secondary transition no-underline cursor-pointer bg-transparent border-none" aria-label="Temayı değiştir" title="Temayı değiştir">{theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}</button>
@@ -77,6 +78,7 @@ export default function Navbar() {
             <a href="/iletisim" className="block px-4 py-3 text-foreground hover:bg-secondary rounded-lg text-lg no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>İletişim</a>
             <a href="/teklif" className="btn-nav no-underline hover:no-underline" style={{ display: 'block', textAlign: 'center', marginTop: 8 }} onClick={() => setMobileOpen(false)}>Teklif Al</a>
             <a href="/hesabim" className="block px-4 py-3 text-foreground hover:bg-secondary rounded-lg text-lg no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Hesabım</a>
+            <a href="/gizlilik" className="block px-4 py-3 text-foreground hover:bg-secondary rounded-lg text-lg no-underline hover:no-underline transition" onClick={() => setMobileOpen(false)}>Gizlilik Politikası</a>
             <button onClick={toggleTheme} className="block w-full text-left px-4 py-3 text-foreground hover:bg-secondary rounded-lg text-lg no-underline hover:no-underline transition bg-transparent border-none cursor-pointer" aria-label="Temayı değiştir">{theme === "light" ? "🌙 Gece Modu" : "☀️ Gündüz Modu"}</button>
           </div>
         </>

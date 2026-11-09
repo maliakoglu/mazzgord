@@ -50,22 +50,33 @@ export default function Privacy() {
           <h2 className="text-2xl font-bold text-primary mt-8">5. Verilerin Saklanması</h2>
           <p>Kişisel verileriniz, işleme amacının gerekli kıldığı süre boyunca saklanmaktadır. Yüklenen belgeler güvenli bulut depolamada 90 gün saklanır ve bu sürenin sonunda otomatik olarak silinir. Belge saklama süresi talep üzerine uzatılabilir.</p>
 
-          <h2 className="text-2xl font-bold text-primary mt-8">6. Çerezler</h2>
+          <h2 className="text-2xl font-bold text-primary mt-8">6. Teknik Veriler ve Sunucu Kayıtları</h2>
+          <p>Web sitemiz Cloudflare altyapısı üzerinde barındırılmaktadır. Siteyi ziyaret ettiğinizde Cloudflare otomatik olarak aşağıdaki teknik verileri işleyebilir:</p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>IP adresi</li>
+            <li>Tarayıcı türü ve sürümü</li>
+            <li>Ziyaret edilen sayfalar ve süre</li>
+            <li>Ziyaret zamanı</li>
+            <li>Yönlendiren kaynak (referer)</li>
+          </ul>
+          <p>Bu veriler site güvenliği, kötü niyetli trafik engelleme ve hizmet sürekliliği amacıyla işlenir. Cloudflare'in veri işleme uygulamaları hakkında detaylı bilgi: <a href="https://www.cloudflare.com/privacypolicy/" className="text-primary hover:underline" target="_blank" rel="nofollow noopener noreferrer">Cloudflare Gizlilik Politikası</a>.</p>
+          <p>Form gönderimlerinde kötü niyetli kullanımı engellemek için Cloudflare Turnstile doğrulama hizmeti kullanılmaktadır. Turnstile, bot olmayan doğrulama için tarayıcı ve etkileşim verilerini analiz eder.</p>
+
+          <h2 className="text-2xl font-bold text-primary mt-8">7. Çerezler</h2>
           
           <div className="bg-secondary/30 rounded-xl p-8">
             <h2 className="text-2xl font-bold text-primary mb-4">Reklam ve Google AdSense</h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Mazzgord.com, Google AdSense reklam hizmetini kullanmaktadır. Google AdSense,
-              size ilgi alanlarınıza göre reklamlar göstermek için çerezler kullanır.
+              Sitemizde şu anda reklam gösterilmemektedir. İleride Google AdSense veya benzer bir reklam hizmeti etkinleştirilirse, bu hizmetler çerezler kullanarak ilgi alanlarınıza göre reklam gösterebilir. Bu durumda çerez tercihlerinizi tarayıcı ayarlarınızdan yönetebilirsiniz.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              Detaylı bilgi: <a href="https://policies.google.com/technologies/ads" className="text-primary hover:underline" target="_blank" rel="nofollow noopener noreferrer">Google Reklam ve Gizlilik</a>
+              Google'ın reklam çerezleri hakkında detaylı bilgi: <a href="https://policies.google.com/technologies/ads" className="text-primary hover:underline" target="_blank" rel="nofollow noopener noreferrer">Google Reklam ve Gizlilik</a>
             </p>
           </div>
 
           <p>Web sitemiz, kullanıcı deneyimini iyileştirmek amacıyla çerezler kullanmaktadır. Detaylı bilgi için <a href="/cerez-politikasi" className="text-primary hover:underline">Çerez Politikası</a> sayfamızı inceleyebilirsiniz.</p>
 
-          <h2 className="text-2xl font-bold text-primary mt-8">7. Haklarınız</h2>
+          <h2 className="text-2xl font-bold text-primary mt-8">8. Haklarınız</h2>
           <p>6698 sayılı KVKK kapsamında aşağıdaki haklara sahipsiniz:</p>
           <ul className="list-disc pl-6 space-y-2">
             <li>Kişisel verilerinizin işlenip işlenmediğini öğrenme</li>
@@ -76,7 +87,7 @@ export default function Privacy() {
             <li>KVKK'nın 7. maddesinde öngörülen şartlar çerçevesinde kişisel verilerinizin silinmesini veya yok edilmesini isteme</li>
           </ul>
 
-          <h2 className="text-2xl font-bold text-primary mt-8">8. İletişim</h2>
+          <h2 className="text-2xl font-bold text-primary mt-8">9. İletişim</h2>
           <p>Gizlilik politikamızla ilgili sorularınız için benimle iletişime geçebilirsiniz:</p>
           <p>E-posta: <a href="mailto:info@mazzgord.com" className="text-primary hover:underline">info@mazzgord.com</a></p>
           <p>Telefon: +90 538 629 50 40</p>

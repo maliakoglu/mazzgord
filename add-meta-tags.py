@@ -75,7 +75,7 @@ for html_path in html_files:
     canonical_fixed += 1
 
     # --- noindex: ozel sayfalar ---
-    NOINDEX_ROUTES = {"/giris", "/hesabim", "/odeme", "/odeme/sonuc", "/admin", "/degerlendir", "/siparis-takip", "/gizlilik", "/kullanim-kosullari", "/cerez-politikasi"}
+    NOINDEX_ROUTES = {"/giris", "/hesabim", "/odeme", "/odeme/sonuc", "/admin", "/degerlendir", "/siparis-takip", "/kullanim-kosullari", "/cerez-politikasi"}
     if route in NOINDEX_ROUTES:
         robots_pattern = r'<meta\s+name="robots"\s+content="[^"]*"\s*/?>'
         noindex_tag = '<meta name="robots" content="noindex, follow"/>'

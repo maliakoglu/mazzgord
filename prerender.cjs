@@ -1,52 +1,70 @@
 const puppeteer = require('puppeteer');
-const { createServer } = require('http');
-const express = require('express');
+const http = require('http');
 const path = require('path');
 const fs = require('fs');
 
 const ROUTES = [
-  '/',
-  '/hakkimizda',
-  '/yeminli-tercume',
-  '/teknik-ceviri',
-  '/akademik-ceviri',
-  '/vize-ceviri',
-  '/ingilizce-turkce-ceviri',
-  '/pasaport-ceviri',
-  '/diploma-ceviri',
-  '/blog',
-  '/fiyatlar',
-  '/hizmetler',
-  '/sepet',
-  '/sss',
-  '/admin',
-  '/teklif',
-  '/odeme',
-  '/gizlilik',
-  '/kullanim-kosullari',
-  '/cerez-politikasi',
-  '/blog/yeminli-tercume',
-  '/blog/teknik-ceviri',
-  '/blog/akademik-ceviri',
-  '/blog/cevirmenlik-kariyer-rehberi',
-  '/blog/teknik-hukuk-vize-ceviri-rehberi',
-  '/blog/hukuki-ceviri',
-  '/blog/teknik-ceviri-nedir',
-  '/blog/ceviri-hatalari',
-  '/blog/ceviri-teknolojileri',
-  '/blog/yerellestirme-hizmetleri',
-  '/blog/tibbi-ceviri',
-  '/blog/ingilizce-turkce-deyim-cevirisi',
-  '/blog/google-translate-vs-profesyonel-ceviri',
-  '/blog/ingilizce-sozlesme-cevirisi',
-  '/blog/ingilizce-mektup-email-cevirisi',
-  '/blog/ingilizce-edebi-metin-cevirisi',
-  '/blog/vize-ceviri',
-  '/blog/ceviri-ipuclari',
-  '/blog/ceviri-sektoru',
-  '/blog/noter-onayli-ceviri',
-  '/blog/pasaport-tercumesi-nasil-yapilir',
-  '/blog/yeminli-tercume-fiyatlari-2026',
+  "/",
+  "/hakkimizda",
+  "/yeminli-tercume",
+  "/ingilizce-turkce-ceviri",
+  "/teknik-ceviri",
+  "/akademik-ceviri",
+  "/vize-ceviri",
+  "/pasaport-ceviri",
+  "/diploma-ceviri",
+  "/transkript-ceviri",
+  "/adli-sicil-cevirisi",
+  "/nufus-kayit-ornegi-cevirisi",
+  "/acil-tercume",
+  "/denizli-yeminli-tercume",
+  "/denizli-noter-onayli-tercume",
+  "/denizli-pasaport-tercumesi",
+  "/denizli-diploma-tercumesi",
+  "/denizli-vize-tercumesi",
+  "/denizli-apostil-tercume",
+  "/noter-onayli-tercume",
+  "/apostil-tercume",
+  "/fiyatlar",
+  "/teklif",
+  "/sss",
+  "/iletisim",
+  "/gizlilik",
+  "/kullanim-kosullari",
+  "/cerez-politikasi",
+  "/giris",
+  "/hesabim",
+  "/odeme",
+  "/odeme/sonuc",
+  "/blog",
+  "/blog/yeminli-tercume",
+  "/blog/vize-ceviri",
+  "/blog/teknik-ceviri",
+  "/blog/akademik-ceviri",
+  "/blog/ceviri-ipuclari",
+  "/blog/ceviri-sektoru",
+  "/blog/tibbi-ceviri",
+  "/blog/yerellestirme-hizmetleri",
+  "/blog/ceviri-teknolojileri",
+  "/blog/ceviri-hatalari",
+  "/blog/teknik-ceviri-nedir",
+  "/blog/hukuki-ceviri",
+  "/blog/uc-dunya-ceviri",
+  "/blog/cevirmenlik-kariyer-rehberi",
+  "/blog/ingilizce-turkce-deyim-cevirisi",
+  "/blog/google-translate-vs-profesyonel-ceviri",
+  "/blog/ingilizce-sozlesme-cevirisi",
+  "/blog/ingilizce-mektup-email-cevirisi",
+  "/blog/ingilizce-edebi-metin-cevirisi",
+  "/blog/noter-onayli-ceviri",
+  "/blog/pasaport-tercumesi-nasil-yapilir",
+  "/blog/yeminli-tercume-fiyatlari-2026",
+  "/blog/vize-formatlari",
+  "/blog/arac-ruhsati-cevirisi",
+  "/blog/ingiltere-vize-cevirisi-gercek-vaka",
+  "/blog/dogalgaz-faturasi-cevirisi",
+  "/blog/apostil-vs-noter-onayli-ceviri",
+  "/blog/vize-basvurusu-hangi-belgeler",
 ];
 
 const DIST_DIR = path.resolve(__dirname, 'dist/public');
@@ -54,14 +72,26 @@ const DIST_DIR = path.resolve(__dirname, 'dist/public');
 async function main() {
   console.log('🚀 Prerender başlıyor...');
 
-  // Express server başlat
-  const app = express();
-  app.use(express.static(DIST_DIR, { index: 'index.html' }));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(DIST_DIR, 'index.html'));
+  // Node.js http server (express gerekmez)
+  const MIME = {'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.woff':'font/woff','.woff2':'font/woff2','.ttf':'font/ttf','.txt':'text/plain','.xml':'application/xml','.ico':'image/x-icon'};
+
+  const server = http.createServer((req, res) => {
+    let urlPath = req.url.split('?')[0];
+    let filePath = path.join(DIST_DIR, urlPath);
+    if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+      filePath = path.join(filePath, 'index.html');
+    }
+    if (!fs.existsSync(filePath)) {
+      filePath = path.join(DIST_DIR, 'index.html');
+    }
+    const ext = path.extname(filePath);
+    fs.readFile(filePath, (err, data) => {
+      if (err) { res.writeHead(500); res.end('Error'); return; }
+      res.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream' });
+      res.end(data);
+    });
   });
 
-  const server = createServer(app);
   await new Promise((resolve) => server.listen(3001, resolve));
   console.log('✅ Server başlatıldı: http://localhost:3001');
 
@@ -75,13 +105,13 @@ async function main() {
     try {
       console.log(`📄 Render: ${route}`);
       await page.goto(`http://localhost:3001${route}`, {
-        waitUntil: 'domcontentloaded',
+        waitUntil: 'networkidle0',
         timeout: 30000,
       });
 
       // React'in render etmesi için bekle
-      await page.waitForSelector('#root > *', { timeout: 10000 }).catch(() => {});
-      await new Promise((r) => setTimeout(r, 500));
+      await page.waitForSelector('h1', { timeout: 15000 }).catch(() => {});
+      await new Promise((r) => setTimeout(r, 2000));
 
       let html = await page.content();
       // iyzico widget'i prerender'da donmus halde kaydetme, tarayicida fresh calissin
@@ -108,7 +138,7 @@ async function main() {
   }
 
   await browser.close();
-  await new Promise((resolve) => server.close(resolve));
+  server.close();
   console.log('🎉 Prerender tamamlandı!');
 }
 

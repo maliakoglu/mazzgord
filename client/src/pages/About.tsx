@@ -10,7 +10,8 @@ export default function About() {
       <Navbar />
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <Breadcrumb items={[{label: "Hakkımda"}]} />
-        <h1 className="text-4xl font-bold text-primary mb-8">Hakkımda</h1>
+        <h1 className="text-4xl font-bold text-primary mb-4">Hakkımda</h1>
+        <p className="text-sm text-muted-foreground mb-8">Son güncelleme: Kasım 2026</p>
         <div className="space-y-8">
           <div className="bg-secondary/30 rounded-xl p-8">
             <h2 className="text-2xl font-bold text-primary mb-4">Ben Kimim?</h2>
@@ -71,6 +72,40 @@ export default function About() {
             <h2 className="text-2xl font-bold text-primary mb-4">Nasıl Çalışıyorum?</h2>
             <p className="text-muted-foreground leading-relaxed text-lg">Belgenizi WhatsApp veya teklif formu üzerinden gönderirsiniz. Belge türünü, dil yönünü, noter ve apostil ihtiyacını inceleyip net fiyat ve teslim süresi veririm. Teklifi onayladığınızda ödeme bilgileri gönderilir, ödeme doğrulanınca çeviri üretime alınır. Teslim öncesi isim, tarih, sayı ve kurum adlarını ikinci kez kontrol ederim.</p>
           </div>
+          <div className="bg-secondary/30 rounded-xl p-8">
+            <h2 className="text-2xl font-bold text-primary mb-4">Mazzgord'un Amacı</h2>
+            <p className="text-muted-foreground leading-relaxed mb-4">Mazzgord, Denizli merkezli yeminli tercüman Mehmet Akoğlu'nun kişisel çalışma markasıdır. Sitenin amacı, İngilizce-Türkçe resmi belge çevirisi ihtiyacı olan kişilere hizmet sunmak ve süreç hakkında şeffaf bilgi vermektir.</p>
+            <p className="text-muted-foreground leading-relaxed mb-4">Sitede sunduğum hizmetler:</p>
+            <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
+              <li>Yeminli tercüme (pasaport, diploma, transkript, vize evrakı, adli sicil, nüfus kayıt örneği)</li>
+              <li>Noter onaylı tercüme süreci takibi</li>
+              <li>Apostil tercüme ve Denizli Valiliği süreci</li>
+              <li>Vize başvurusu için belge çevirisi</li>
+              <li>Akademik ve teknik belge çevirisi</li>
+            </ul>
+            <p className="text-muted-foreground leading-relaxed mt-4">Hizmet sayfaları her belge türü için süreç, gereken evraklar, fiyat bileşenleri ve teslim süresini açıklar. Teklif formu veya WhatsApp üzerinden belgenizi göndererek ücretsiz fiyat teklifi alabilirsiniz.</p>
+          </div>
+
+          <div className="bg-secondary/30 rounded-xl p-8">
+            <h2 className="text-2xl font-bold text-primary mb-4">Rehber İçerikler Neden Yayınlanıyor?</h2>
+            <p className="text-muted-foreground leading-relaxed mb-4">Sitedeki blog ve rehber içerikleri, ziyaretçilerin çeviri sürecini baştan sona anlaması için yayınlanıyor. Belge çevirisi, yeminli tercüme, noter onayı ve apostil süreçleri karmaşık olabilir; hangi belgenin ne şekilde çevrilmesi gerektiği, hangi kurumun ne istediği sıkça sorulan sorulardır.</p>
+            <p className="text-muted-foreground leading-relaxed mb-4">Rehber içeriklerle amaçladığım şeyler:</p>
+            <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
+              <li>Vize başvurusu için hangi belgelerin çevrilmesi gerektiğini açıklamak</li>
+              <li>Yeminli tercüme, noter onayı ve apostil arasındaki farkları netleştirmek</li>
+              <li>Belge türüne göre çeviri süreci ve dikkat edilecek noktaları paylaşmak</li>
+              <li>Çeviri yaptırmadan önce bilinmesi gereken pratik bilgileri sunmak</li>
+            </ul>
+            <p className="text-muted-foreground leading-relaxed mt-4">Bu içerikler birer rehberdir; resmi kurumların güncel gerekliliklerinin yerine geçmez. Başvuru yapacağınız kurumun güncel şartlarını işlem öncesinde teyit etmeniz gerekir.</p>
+          </div>
+
+          <div className="bg-secondary/30 rounded-xl p-8">
+            <h2 className="text-2xl font-bold text-primary mb-4">Rehber İçerikler Nasıl Hazırlanıyor?</h2>
+            <p className="text-muted-foreground leading-relaxed mb-4">Rehber içerikler, yeminli tercüman olarak yürüttüğüm çeviri çalışmalarında edindiğim saha deneyimine dayanır. Vize başvuruları, noter onayı, apostil süreci ve belge çevirisi konusunda karşılaştığım gerçek durumlar içeriklere yansır.</p>
+            <p className="text-muted-foreground leading-relaxed mb-4">Ancak vize, konsolosluk, noter ve apostil gibi resmi işlemlerin kuralları değişebilir. İçeriklerde verilen bilgiler yazım tarihindeki uygulamaya dayanır; okuyucunun ilgili kurumdan güncel şartları teyit etmesi gerekir. İçerikler hiçbir kurumun onayını, kabul garantisini veya vize sonucunu taahhüt etmez.</p>
+            <p className="text-muted-foreground leading-relaxed">İçeriklerde anlatılan vaka örnekleri, gizlilik nedeniyle kişisel bilgileri içermeyen temsili senaryolardır. Gerçek müşteri belgeleri, mesajları veya yorumları izin alınmadan yayımlanmaz.</p>
+          </div>
+
           <div className="bg-secondary/30 rounded-xl p-8">
             <h2 className="text-2xl font-bold text-primary mb-4">İletişim</h2>
             <div className="space-y-3 text-muted-foreground text-lg">
