@@ -215,8 +215,8 @@ export default function Home() {
               <div className="flex gap-4">
                 <MapPin className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="font-bold text-lg text-foreground mb-1">Konum</h3>
-                  <p className="text-muted-foreground">Türkiye</p>
+                  <h3 className="font-bold text-lg text-foreground mb-1">Hizmet Alanı</h3>
+                  <p className="text-muted-foreground">Pamukkale / Denizli</p>
                 </div>
               </div>
             </div>
