@@ -8,7 +8,7 @@ export default function CookiePolicy() {
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <h1 className="text-4xl font-bold text-primary mb-8">Çerez Politikası</h1>
         <div className="prose prose-lg max-w-none text-foreground space-y-6">
-          <p className="text-muted-foreground">Son güncelleme: 23 Mayıs 2026</p>
+          <p className="text-muted-foreground">Son güncelleme: 16 Kasım 2026</p>
           <h2 className="text-2xl font-bold text-primary mt-8">1. Çerez Nedir?</h2>
           <p>Çerezler, web sitelerinin tarayıcınız aracılığıyla cihazınıza yerleştirdiği küçük metin dosyalarıdır. Bu dosyalar, siteyi bir sonraki ziyaretinizde sizi tanımak ve daha iyi bir deneyim sunmak için kullanılır.</p>
           <h2 className="text-2xl font-bold text-primary mt-8">2. Kullandığımız Çerezler</h2>
@@ -21,7 +21,7 @@ export default function CookiePolicy() {
             <li>_ga_* — Google Analytics oturum durumu (2 yıl)</li>
           </ul>
           <h3 className="text-xl font-bold mt-6">Reklam Çerezleri</h3>
-          <p>Google AdSense tarafından kullanılan çerezler, ilgi alanlarınıza göre ilgili reklamlar göstermek için kullanılır.</p>
+          <p>Google AdSense reklam betiği, sitenin reklam gösterimine açık sayfalarında yüklenebilir. Şu anda ziyaretçilere reklam gösterilmemektedir. Betik yüklendiğinde Google; reklam sunumu ve ölçümü ile kötüye kullanımı önleme amaçlarıyla çerezler veya benzer tanımlayıcılar ve teknik kullanım verilerini işleyebilir. Reklam sunumu ve kişiselleştirme Google ayarlarına, kullanıcı tercihlerine ve gerekli onaylara bağlıdır.</p>
           <ul className="list-disc pl-6 space-y-2">
             <li>__gads — Google AdSense reklam tercihleri (13 ay)</li>
             <li>__gpi — Google AdSense reklam kişiselleştirme (13 ay)</li>

@@ -9,7 +9,7 @@ export default function Privacy() {
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <h1 className="text-4xl font-bold text-primary mb-8">Gizlilik Politikası</h1>
         <div className="prose prose-lg max-w-none text-foreground space-y-6">
-          <p className="text-muted-foreground">Son güncelleme: 23 Mayıs 2026</p>
+          <p className="text-muted-foreground">Son güncelleme: 16 Kasım 2026</p>
 
           <h2 className="text-2xl font-bold text-primary mt-8">1. Genel</h2>
           <p>Kişisel verilerinizin güvenliğine önem veriyorum. Bu gizlilik politikası, web sitemi (mazzgord.com) ziyaret ettiğinizde topladığım bilgileri ve bu bilgileri nasıl kullandığımı açıklamaktadır.</p>
@@ -67,7 +67,7 @@ export default function Privacy() {
           <div className="bg-secondary/30 rounded-xl p-8">
             <h2 className="text-2xl font-bold text-primary mb-4">Reklam ve Google AdSense</h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Sitemizde şu anda reklam gösterilmemektedir. İleride Google AdSense veya benzer bir reklam hizmeti etkinleştirilirse, bu hizmetler çerezler kullanarak ilgi alanlarınıza göre reklam gösterebilir. Bu durumda çerez tercihlerinizi tarayıcı ayarlarınızdan yönetebilirsiniz.
+              Google AdSense reklam betiği, sitenin reklam gösterimine açık sayfalarında yüklenebilir. Şu anda ziyaretçilere reklam gösterilmemektedir. Betik yüklendiğinde Google; reklam sunumu ve ölçümü ile kötüye kullanımı önleme amaçlarıyla çerezler veya benzer tanımlayıcılar ve teknik kullanım verilerini işleyebilir. Reklam sunumu ve kişiselleştirme Google ayarlarına, kullanıcı tercihlerine ve gerekli onaylara bağlıdır.
             </p>
             <p className="text-muted-foreground leading-relaxed">
               Google'ın reklam çerezleri hakkında detaylı bilgi: <a href="https://policies.google.com/technologies/ads" className="text-primary hover:underline" target="_blank" rel="nofollow noopener noreferrer">Google Reklam ve Gizlilik</a>

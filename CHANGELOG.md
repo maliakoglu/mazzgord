@@ -1,5 +1,10 @@
 # Changelog
 
+## [2026-11-16] — AdSense açıklamalarının güncellenmesi
+- `Privacy.tsx` ve `CookiePolicy.tsx`: AdSense betiğinin reklam gösterimine açık sayfalarda yüklenebileceği ve çalıştığında Google'ın çerez/benzer tanımlayıcılar ile teknik kullanım verilerini işleyebileceği açıklandı.
+- Şu anda ziyaretçilere reklam gösterilmediği ve reklam sunumu/kişiselleştirmenin Google ayarları, kullanıcı tercihleri ve gerekli onaylara bağlı olduğu belirtildi.
+- AdSense kodunda değişiklik yapılmadı.
+
 ## [2026-11-09] — AdSense denetim düzeltmeleri: prerender, gizlilik, hakkimizda, Denizli apostil
 
 ### Prerender düzeltmesi (prerender.cjs)
