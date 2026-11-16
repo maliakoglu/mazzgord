@@ -93,5 +93,8 @@
     "onlyBuiltDependencies": [
       "puppeteer"
     ]
+  },
+  "overrides": {
+    "qs": "6.16.1"
   }
 }
