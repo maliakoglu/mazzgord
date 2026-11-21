@@ -1,5 +1,36 @@
 # Changelog
 
+## [2026-11-21] — Güvenlik sertleştirmesi: log sızıntıları, dosya yükleme, R2 tarama
+
+### Log sızıntılarının kapatılması (worker.js)
+- CSRF hata logundan `Authorization` başlığı kaldırıldı; artık yalnızca `hasAuth` (true/false) yazılıyor. Oturum anahtarı loglara düşmüyor.
+- Gece R2 temizlik logundan dosya anahtarı kaldırıldı; müşteri adı ve belge türü loglara yazılmıyor.
+
+### E-posta şablonu XSS kaçışı (worker.js)
+- `/api/chat/submit-quote` bildirim e-postasında `name`, `source_language`, `target_language`, `document_type` alanları `escapeHtml` ile kaçışlandı.
+
+### R2 temizlik taraması sayfalama (worker.js)
+- `env.DOCS.list()` tek çağrıda 1000 nesne döndürdüğü için 1000'den fazla dosyada süresi dolan kayıtlar silinmiyordu. `truncated`/`cursor` döngüsü eklendi; tüm nesneler taranıyor.
+
+### Dosya yükleme sertleştirmesi (routes/upload.js)
+- Gerçek dosya imzası (magic bytes) doğrulaması eklendi: PDF, DOCX, DOC, JPG, PNG, WEBP, RTF. Uzantı ile içerik uyuşmazsa istek 400 ile reddediliyor.
+- Dosya anahtarı tahmin edilebilir `uploads/Ad-Soyad_tarih_saat_dosya.pdf` yerine `uploads/<uuid>.<ext>` olarak üretiliyor.
+- Boş dosya kontrolü eklendi.
+- 90 günlük saklama (`retention_until`) ve metadata davranışı korundu.
+
+### Testler (tests/upload.test.ts)
+- Test yardımcısı gerçek imza baytları ve doğru MIME türü üretecek şekilde güncellendi.
+- Yeni testler: dosya anahtarının UUID formatında olması ve müşteri adı içermemesi; içerik/uzantı uyuşmazlığının reddedilmesi.
+- Toplam: 12 dosya, 94 test geçiyor.
+
+### Yapılandırma temizliği (vite.config.ts)
+- Kullanılmayan `writeToLogFile` fonksiyonu ve tanımsız referansları (`LogSource`, `LOG_DIR`, `ensureLogDir`, `trimLogFile`, `MAX_LOG_SIZE_BYTES`) kaldırıldı.
+- Kullanılmayan `isDev` değişkeni ve `fs`, `type Plugin`, `type ViteDevServer` importları kaldırıldı.
+
+### Deploy
+- `mazzgordwebsite` production ortamına deploy edildi (Version ID: `50481eff-fa7f-4846-912b-5ac690c78130`).
+- Canlı doğrulama: `https://mazzgord.com` HTTP 200, `/api/reviews/approved` 200.
+
 ## [2026-11-16] — AdSense açıklamalarının güncellenmesi
 - `Privacy.tsx` ve `CookiePolicy.tsx`: AdSense betiğinin reklam gösterimine açık sayfalarda yüklenebileceği ve çalıştığında Google'ın çerez/benzer tanımlayıcılar ile teknik kullanım verilerini işleyebileceği açıklandı.
 - Şu anda ziyaretçilere reklam gösterilmediği ve reklam sunumu/kişiselleştirmenin Google ayarları, kullanıcı tercihleri ve gerekli onaylara bağlı olduğu belirtildi.

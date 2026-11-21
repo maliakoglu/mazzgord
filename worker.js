@@ -43,8 +43,8 @@ export default {
         console.log("CSRF FAILED:", {
           path,
           method: request.method,
-          auth: request.headers.get("Authorization") || "NONE",
-          mobile: request.headers.get("X-Mazzgord-Mobile") || "NONE",
+          hasAuth: !!request.headers.get("Authorization"),
+          isMobile: !!request.headers.get("X-Mazzgord-Mobile"),
           origin: request.headers.get("Origin") || "NONE",
         });
         return csrfFailedResponse();
@@ -192,7 +192,7 @@ export default {
         try {
           const resendKey = env.RESEND_API_KEY;
           if (resendKey) {
-            const html = `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333"><div style="background:#f8f9fa;padding:30px;border-radius:10px"><h1 style="color:#2563eb">📋 Teklif Talebiniz Alındı!</h1><p>Sayın <strong>${name}</strong>,</p><p>Çeviri hizmeti teklif talebiniz başarıyla alınmıştır.</p><div style="background:#fff;padding:20px;border-radius:8px;margin:20px 0;border:1px solid #e5e7eb"><table style="width:100%;border-collapse:collapse"><tr><td style="padding:8px 0;color:#666">Sipariş No:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${orderNo}</td></tr><tr><td style="padding:8px 0;color:#666">Kaynak Dil:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${source_language || "İngilizce"}</td></tr><tr><td style="padding:8px 0;color:#666">Hedef Dil:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${target_language || "Türkçe"}</td></tr>${document_type ? `<tr><td style="padding:8px 0;color:#666">Belge Türü:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${document_type}</td></tr>` : ""}</table></div><p>En kısa sürede teklifinizi hazırlayıp size bildireceğiz.</p><hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0"><p style="font-size:13px;color:#666">Mazzgord Çeviri Hizmetleri<br>Denizli, Türkiye<br>info@mazzgord.com | +90 538 629 50 40</p></div></body></html>`;
+            const html = `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333"><div style="background:#f8f9fa;padding:30px;border-radius:10px"><h1 style="color:#2563eb">📋 Teklif Talebiniz Alındı!</h1><p>Sayın <strong>${escapeHtml(name)}</strong>,</p><p>Çeviri hizmeti teklif talebiniz başarıyla alınmıştır.</p><div style="background:#fff;padding:20px;border-radius:8px;margin:20px 0;border:1px solid #e5e7eb"><table style="width:100%;border-collapse:collapse"><tr><td style="padding:8px 0;color:#666">Sipariş No:</td><td style="padding:8px 0;font-weight:bold;text-align:right;font-family:monospace">${orderNo}</td></tr><tr><td style="padding:8px 0;color:#666">Kaynak Dil:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${escapeHtml(source_language || "İngilizce")}</td></tr><tr><td style="padding:8px 0;color:#666">Hedef Dil:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${escapeHtml(target_language || "Türkçe")}</td></tr>${document_type ? `<tr><td style="padding:8px 0;color:#666">Belge Türü:</td><td style="padding:8px 0;font-weight:bold;text-align:right">${escapeHtml(document_type)}</td></tr>` : ""}</table></div><p>En kısa sürede teklifinizi hazırlayıp size bildireceğiz.</p><hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0"><p style="font-size:13px;color:#666">Mazzgord Çeviri Hizmetleri<br>Denizli, Türkiye<br>info@mazzgord.com | +90 538 629 50 40</p></div></body></html>`;
             await fetch("https://api.resend.com/emails", {
               method: "POST",
               headers: { "Authorization": `Bearer ${resendKey}`, "Content-Type": "application/json" },
@@ -642,20 +642,23 @@ export default {
   async scheduled(event, env) {
     try {
       const now = new Date();
-      const list = await env.DOCS.list({ prefix: "uploads/" });
       let deleted = 0;
+      let cursor;
+      do {
+        const list = await env.DOCS.list({ prefix: "uploads/", cursor, limit: 1000 });
+        for (const item of list.objects) {
+          const meta = await env.DOCS.head(item.key);
+          if (!meta || !meta.customMetadata || !meta.customMetadata.retention_until) continue;
 
-      for (const item of list.objects) {
-        const meta = await env.DOCS.head(item.key);
-        if (!meta || !meta.customMetadata || !meta.customMetadata.retention_until) continue;
-
-        const retentionUntil = new Date(meta.customMetadata.retention_until);
-        if (now > retentionUntil) {
-          await env.DOCS.delete(item.key);
-          deleted++;
-          console.log(`Deleted expired file: ${item.key}`);
+          const retentionUntil = new Date(meta.customMetadata.retention_until);
+          if (now > retentionUntil) {
+            await env.DOCS.delete(item.key);
+            deleted++;
+            console.log("Deleted expired file (retention policy)");
+          }
         }
-      }
+        cursor = list.truncated ? list.cursor : undefined;
+      } while (cursor);
 
       console.log(`R2 cleanup complete: ${deleted} files deleted`);
 
